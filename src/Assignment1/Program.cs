@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Numerics;
+using System.Text.RegularExpressions;
 
 namespace Contact_Manager
 {
@@ -18,6 +19,15 @@ namespace Contact_Manager
         {
             string pattern = @"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$";
             return Regex.IsMatch(email, pattern);
+        }
+
+        /// <summary>
+        /// The method ValidateEmail is used to find whether the record for the name exists or not.
+        /// </summary>
+        /// <returns>Either True or False based on the emptiness of the contact list.</returns>
+        public static bool ContactIsEmpty()
+        {
+            return contacts.Count == 0;
         }
 
         /// <summary>
@@ -81,7 +91,7 @@ namespace Contact_Manager
 
             List<string> entry = new List<string> { name, email, phone, notes };
             contacts.Add(entry);
-            Console.WriteLine("Contact added succesfully!\n");
+            Console.WriteLine("Contact added successfully!\n");
         }
 
         /// <summary>
@@ -89,7 +99,7 @@ namespace Contact_Manager
         /// </summary>
         public static void DisplayContacts()
         {
-            if (contacts.Count == 0)
+            if (ContactIsEmpty())
             {
                 Console.WriteLine("Contacts list is empty");
                 return;
@@ -108,12 +118,14 @@ namespace Contact_Manager
         /// <summary>
         /// The method IsContactFound is used to find whether the record for the name exists or not.
         /// </summary>
-        /// <param name="name">The name to be found.</param>
+        /// <param name="phone">The name to be found.</param>
         /// <returns>Either True or False based on the availability of the record.</returns>
-        public static bool IsContactFound(string name)
+        public static bool IsContactFound(string phone)
         {
-            if (name == null)
+            List<string>? result = contacts.Find(row => row[2] == phone);
+            if (result == null)
             {
+                Console.WriteLine("There is no record with the following phone number! Try again.\n");
                 return false;
             }
 
@@ -123,10 +135,12 @@ namespace Contact_Manager
         /// <summary>
         /// The method GetAndPrintContact displays the list of details of the searched name.
         /// </summary>
-        /// <param name="name">The name to be found.</param>
-        public static void GetAndPrintContact(string name)
+        /// <param name="phone">The name to be found.</param>
+        public static void GetAndPrintContact(string phone)
         {
-            int i = 0;
+            List<string>? result = contacts.Find(row => row[2] == phone);
+            Console.WriteLine("Contact found.");
+            Console.WriteLine($"Name: {result[0]}\nEmail: {result[1]}\nPhone: {result[2]}\nNotes: {result[3]}\n\n");
         }
 
         /// <summary>
@@ -144,14 +158,13 @@ namespace Contact_Manager
         /// <param name="phone">The phone no of the contact to be edited.</param>
         public static void EditContact(string phone)
         {
-            List<string>? result = contacts.Find(row => row[2] == phone);
-            if (result == null)
+            if (!IsContactFound(phone))
             {
-                Console.WriteLine("There is no record with the following phone number! Try again.\n");
                 return;
             }
             else
             {
+                List<string>? result = contacts.Find(row => row[2] == phone);
                 bool shallExit = false;
                 while (!shallExit)
                 {
@@ -165,10 +178,10 @@ namespace Contact_Manager
                         Console.WriteLine("Enter the option properly!\n");
                         break;
                     }
-                    switch (option)
+
+                    switch (option.ToUpper())
                     {
                         case "A":
-                        case "a":
                             Console.WriteLine("Enter the name to be changed: ");
                             string? name = Console.ReadLine();
                             if (string.IsNullOrWhiteSpace(name))
@@ -183,7 +196,6 @@ namespace Contact_Manager
                             break;
 
                         case "B":
-                        case "b":
                             Console.WriteLine("Enter the email to be changed: ");
                             string? email = Console.ReadLine();
                             if (string.IsNullOrWhiteSpace(email))
@@ -204,7 +216,6 @@ namespace Contact_Manager
                             break;
 
                         case "C":
-                        case "c":
                             Console.WriteLine("Enter the notes to be changed: ");
                             string? notes = Console.ReadLine();
                             if (string.IsNullOrWhiteSpace(notes))
@@ -265,19 +276,27 @@ namespace Contact_Manager
                         break;
 
                     case "S":
-                        string? nameToSearch = Console.ReadLine();
-                        if (string.IsNullOrWhiteSpace(nameToSearch))
+                        if (ContactIsEmpty())
                         {
-                            int i = 0;
+                            Console.WriteLine("Contact list is empty\n");
+                            break;
                         }
 
-                        if (IsContactFound(nameToSearch) == true)
+                        Console.WriteLine("Enter your phone number of the contact to search: ");
+                        string? phoneToSearch = Console.ReadLine();
+                        if (string.IsNullOrWhiteSpace(phoneToSearch))
                         {
-                            GetAndPrintContact(nameToSearch);
+                            Console.WriteLine("Enter a valid phone no!");
+                            break;
+                        }
+
+                        if (!IsContactFound(phoneToSearch))
+                        {
+                            break;
                         }
                         else
                         {
-                            Console.WriteLine($"There is no record of {nameToSearch}. Add the data before searching\n");
+                            GetAndPrintContact(phoneToSearch);
                         }
 
                         break;
@@ -288,7 +307,7 @@ namespace Contact_Manager
                         break;
 
                     case "R":
-                        if (contacts.Count == 0)
+                        if (ContactIsEmpty())
                         {
                             Console.WriteLine("The contact list is empty\n");
                             break;
@@ -302,7 +321,7 @@ namespace Contact_Manager
                             break;
                         }
 
-                        bool isNumeric = int.TryParse(phoneNoToEdit, out int result);
+                        bool isNumeric = long.TryParse(phoneNoToEdit, out long result);
                         if (isNumeric)
                         {
                             EditContact(phoneNoToEdit);
@@ -311,6 +330,7 @@ namespace Contact_Manager
                         {
                             Console.WriteLine("Enter the right phone number instead of characters!");
                         }
+
                         break;
 
                     case "E":
