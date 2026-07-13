@@ -131,12 +131,91 @@ namespace Contact_Manager
         }
 
         /// <summary>
-        /// The method RenameContact renames the name for the given old name.
+        /// The method EditContact renames the name for the given old name.
         /// </summary>
-        /// <param name="name">The name to be renamed.</param>
-        public static void EditContact(string name)
+        /// <param name="phone">The phone no of the contact to be edited.</param>
+        public static void EditContact(string phone)
         {
-            int i = 0;
+            List<string>? result = contacts.Find(row => row[2] == phone);
+            if (result == null)
+            {
+                Console.WriteLine("There is no record with the following phone number! Try again.\n");
+                return;
+            }
+            else
+            {
+                Console.WriteLine("Enter which field you want to edit:");
+                Console.WriteLine("[A] - Name");
+                Console.WriteLine("[B] - Email");
+                Console.WriteLine("[C] - Notes");
+                bool shallExit = false;
+                while (!shallExit)
+                {
+                    string? option = Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(option))
+                    {
+                        Console.WriteLine("Enter the option properly!");
+                        break;
+                    }
+                    switch (option)
+                    {
+                        case "A":
+                        case "a":
+                            Console.WriteLine("Enter the name to be changed: ");
+                            string? name = Console.ReadLine();
+                            if (string.IsNullOrWhiteSpace(name))
+                            {
+                                Console.WriteLine("Enter the name properly!");
+                                break;
+                            }
+
+                            result[0] = name;
+                            Console.WriteLine("Name changed successfully");
+                            shallExit = true;
+                            break;
+
+                        case "B":
+                        case "b":
+                            Console.WriteLine("Enter the email to be changed: ");
+                            string? email = Console.ReadLine();
+                            if (string.IsNullOrWhiteSpace(email))
+                            {
+                                Console.WriteLine("Enter the name properly!");
+                                break;
+                            }
+
+                            if (!ValidateEmail(email))
+                            {
+                                Console.WriteLine("Enter a valid email.\n");
+                                break;
+                            }
+
+                            result[1] = email;
+                            Console.WriteLine("Email changed successfully");
+                            shallExit = true;
+                            break;
+
+                        case "C":
+                        case "c":
+                            Console.WriteLine("Enter the notes to be changed: ");
+                            string? notes = Console.ReadLine();
+                            if (string.IsNullOrWhiteSpace(notes))
+                            {
+                                Console.WriteLine("Enter the notes properly!");
+                                break;
+                            }
+
+                            result[3] = notes;
+                            Console.WriteLine("Notes changed successfully");
+                            shallExit = true;
+                            break;
+
+                        default:
+                            Console.WriteLine("Enter a valid option!");
+                            break;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -156,7 +235,7 @@ namespace Contact_Manager
                 Console.WriteLine("[D] - To Display Names of all Contacts");
                 Console.WriteLine("[S] - To Search for a Specific Contact");
                 Console.WriteLine("[W] - Delete a specific Contact");
-                Console.WriteLine("[R] - Rename a specific Contact");
+                Console.WriteLine("[R] - Edit a Specific Contact");
                 Console.WriteLine("[E] - Exit the Application\n");
                 userInput = Console.ReadLine();
                 switch (userInput)
@@ -193,8 +272,23 @@ namespace Contact_Manager
 
                     case "R":
                     case "r":
-                        string? phoneNoToRename = Console.ReadLine();
-                        EditContact(phoneNoToRename);
+                        Console.WriteLine("Enter phone number of the contact to edit: ");
+                        string? phoneNoToEdit = Console.ReadLine();
+                        if (string.IsNullOrWhiteSpace(phoneNoToEdit) == true)
+                        {
+                            Console.WriteLine("Enter the phone number properly without whitespaces.\n");
+                            break;
+                        }
+
+                        bool isNumeric = int.TryParse(phoneNoToEdit, out int result);
+                        if (isNumeric)
+                        {
+                            EditContact(phoneNoToEdit);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Enter the right phone number instead of characters!");
+                        }
                         break;
 
                     case "E":
