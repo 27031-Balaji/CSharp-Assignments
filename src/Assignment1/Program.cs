@@ -78,11 +78,6 @@ namespace Contact_Manager
 
             Console.WriteLine("Enter any additional notes: ");
             string? notes = Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(notes))
-            {
-                Console.WriteLine("Ensure you enter the notes properly.\n");
-                return;
-            }
 
             List<string> entry = new List<string> { name, email, phone, notes };
             contacts.Add(entry);
@@ -106,6 +101,7 @@ namespace Contact_Manager
             {
                 Console.WriteLine($"Contact {i}:");
                 Console.WriteLine($"Name: {contact[0]}\nEmail: {contact[1]}\nPhone: {contact[2]}\nNotes: {contact[3]}\n\n");
+                i++;
             }
         }
 
@@ -292,6 +288,12 @@ namespace Contact_Manager
                         break;
 
                     case "R":
+                        if (contacts.Count == 0)
+                        {
+                            Console.WriteLine("The contact list is empty\n");
+                            break;
+                        }
+
                         Console.WriteLine("Enter phone number of the contact to edit: ");
                         string? phoneNoToEdit = Console.ReadLine();
                         if (string.IsNullOrWhiteSpace(phoneNoToEdit) == true)
