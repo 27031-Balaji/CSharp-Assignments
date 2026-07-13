@@ -94,7 +94,19 @@ namespace Contact_Manager
         /// </summary>
         public static void DisplayContacts()
         {
-            int i;
+            if (contacts.Count == 0)
+            {
+                Console.WriteLine("Contacts list is empty");
+                return;
+            }
+
+            Console.WriteLine("Contact List: \n");
+            int i = 1;
+            foreach (var contact in contacts)
+            {
+                Console.WriteLine($"Contact {i}:");
+                Console.WriteLine($"Name: {contact[0]}\nEmail: {contact[1]}\nPhone: {contact[2]}\nNotes: {contact[3]}\n\n");
+            }
         }
 
         /// <summary>
@@ -144,17 +156,17 @@ namespace Contact_Manager
             }
             else
             {
-                Console.WriteLine("Enter which field you want to edit:");
-                Console.WriteLine("[A] - Name");
-                Console.WriteLine("[B] - Email");
-                Console.WriteLine("[C] - Notes");
                 bool shallExit = false;
                 while (!shallExit)
                 {
+                    Console.WriteLine("Enter which field you want to edit:");
+                    Console.WriteLine("[A] - Name");
+                    Console.WriteLine("[B] - Email");
+                    Console.WriteLine("[C] - Notes");
                     string? option = Console.ReadLine();
                     if (string.IsNullOrWhiteSpace(option))
                     {
-                        Console.WriteLine("Enter the option properly!");
+                        Console.WriteLine("Enter the option properly!\n");
                         break;
                     }
                     switch (option)
@@ -165,12 +177,12 @@ namespace Contact_Manager
                             string? name = Console.ReadLine();
                             if (string.IsNullOrWhiteSpace(name))
                             {
-                                Console.WriteLine("Enter the name properly!");
+                                Console.WriteLine("Enter the name properly!\n");
                                 break;
                             }
 
                             result[0] = name;
-                            Console.WriteLine("Name changed successfully");
+                            Console.WriteLine("Name changed successfully\n");
                             shallExit = true;
                             break;
 
@@ -180,7 +192,7 @@ namespace Contact_Manager
                             string? email = Console.ReadLine();
                             if (string.IsNullOrWhiteSpace(email))
                             {
-                                Console.WriteLine("Enter the name properly!");
+                                Console.WriteLine("Enter the name properly!\n");
                                 break;
                             }
 
@@ -191,7 +203,7 @@ namespace Contact_Manager
                             }
 
                             result[1] = email;
-                            Console.WriteLine("Email changed successfully");
+                            Console.WriteLine("Email changed successfully\n");
                             shallExit = true;
                             break;
 
@@ -201,17 +213,17 @@ namespace Contact_Manager
                             string? notes = Console.ReadLine();
                             if (string.IsNullOrWhiteSpace(notes))
                             {
-                                Console.WriteLine("Enter the notes properly!");
+                                Console.WriteLine("Enter the notes properly!\n");
                                 break;
                             }
 
                             result[3] = notes;
-                            Console.WriteLine("Notes changed successfully");
+                            Console.WriteLine("Notes changed successfully\n");
                             shallExit = true;
                             break;
 
                         default:
-                            Console.WriteLine("Enter a valid option!");
+                            Console.WriteLine("Enter a valid option!\n");
                             break;
                     }
                 }
@@ -238,40 +250,48 @@ namespace Contact_Manager
                 Console.WriteLine("[R] - Edit a Specific Contact");
                 Console.WriteLine("[E] - Exit the Application\n");
                 userInput = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(userInput))
+                {
+                    Console.WriteLine("Enter a valid option.\n");
+                    continue;
+                }
+
+                userInput = userInput.ToUpper();
+
                 switch (userInput)
                 {
                     case "A":
-                    case "a":
                         AddContact();
                         break;
 
                     case "D":
-                    case "d":
                         DisplayContacts();
                         break;
 
                     case "S":
-                    case "s":
                         string? nameToSearch = Console.ReadLine();
+                        if (string.IsNullOrWhiteSpace(nameToSearch))
+                        {
+                            int i = 0;
+                        }
+
                         if (IsContactFound(nameToSearch) == true)
                         {
                             GetAndPrintContact(nameToSearch);
                         }
                         else
                         {
-                            Console.WriteLine($"There is no record of {nameToSearch}. Add the data before searching");
+                            Console.WriteLine($"There is no record of {nameToSearch}. Add the data before searching\n");
                         }
 
                         break;
 
                     case "W":
-                    case "w":
                         string? nameToDelete = Console.ReadLine();
                         DeleteContact(nameToDelete);
                         break;
 
                     case "R":
-                    case "r":
                         Console.WriteLine("Enter phone number of the contact to edit: ");
                         string? phoneNoToEdit = Console.ReadLine();
                         if (string.IsNullOrWhiteSpace(phoneNoToEdit) == true)
@@ -292,7 +312,6 @@ namespace Contact_Manager
                         break;
 
                     case "E":
-                    case "e":
                         Console.WriteLine("Exiting the application...");
                         shallExit = true;
                         break;
