@@ -1,4 +1,4 @@
-### Basic Contact Manager
+# Basic Contact Manager
 
 I have implemented a basic contact manager that allows us to store and manage contacts.
 This application has the following features.
@@ -34,10 +34,10 @@ This application has the following features.
 - I used many methods to validate the input to check whether it is right or not.
 - Phone number alone has 2 separate validations, one for the length and one for checking if there are any characters in between them.
 
-### Challenges Faced
+# Challenges Faced
 - Since this is the first time, I had difficulties adding the XML documentation for each of the methods and classes in the program.
 - There are multiple conditions to check for each inputs, so I had a lot of time thinking about resolving them, than to code it in the program.
 
-### Functionalities to be Implemented
+# Functionalities to be Implemented
 1. I need to check on various tests and verify the correctness of the application.
 2. I need to add some more exceptional case handling methods after checking on the tests.
