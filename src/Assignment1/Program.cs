@@ -304,10 +304,9 @@ namespace Contact_Manager
         }
 
         /// <summary>
-        /// This method Main is the main method that runs when the application is built.
+        /// This method ConsoleOperation() is the method used to do the console operations.
         /// </summary>
-        /// <param name="args">The command line arguments.</param>
-        public static void Main(string[] args)
+        public static void ConsoleOperation()
         {
             string? userInput;
             Console.WriteLine("Welcome to Contact Manager");
@@ -436,9 +435,21 @@ namespace Contact_Manager
                         Console.WriteLine("Exiting the application...");
                         shallExit = true;
                         break;
+
+                    default:
+                        Console.WriteLine("Give the right option.\n");
+                        break;
                 }
             }
+        }
 
+        /// <summary>
+        /// This method Main is the main method that runs when the application is built.
+        /// </summary>
+        /// <param name="args">The command line arguments.</param>
+        public static void Main(string[] args)
+        {
+            ConsoleOperation();
             Console.ReadKey();
         }
     }
