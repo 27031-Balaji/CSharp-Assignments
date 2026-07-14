@@ -97,6 +97,12 @@ namespace Contact_Manager
                 return;
             }
 
+            if (!IsNumeric(phone))
+            {
+                Console.WriteLine("Phone number has characters! Enter it correctly.\n");
+                return;
+            }
+
             if (IsContactFound(phone))
             {
                 Console.WriteLine("Phone number already exists in the contact list.\n");
