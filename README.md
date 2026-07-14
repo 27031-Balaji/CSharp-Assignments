@@ -29,7 +29,7 @@ This application has the following features.
 1. You can sort contacts based on their names with this functionality.
 2. After sorting, it displays the contact list sorted for ensuring righteousness of sorting.
 
-### Techniques Used for Implementation
+# Techniques Used for Implementation
 - I used a list of lists data structure to implement the contact list without using classes and objects.
 - I used many methods to validate the input to check whether it is right or not.
 - Phone number alone has 2 separate validations, one for the length and one for checking if there are any characters in between them.
