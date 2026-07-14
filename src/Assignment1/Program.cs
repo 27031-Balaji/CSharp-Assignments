@@ -97,6 +97,12 @@ namespace Contact_Manager
                 return;
             }
 
+            if (IsContactFound(phone))
+            {
+                Console.WriteLine("Phone number already exists in the contact list.\n");
+                return;
+            }
+
             Console.WriteLine("Enter any additional notes: ");
             string? notes = Console.ReadLine();
 
@@ -136,7 +142,6 @@ namespace Contact_Manager
             List<string>? result = contacts.Find(row => row[2] == phone);
             if (result == null)
             {
-                Console.WriteLine("There is no record with the following phone number! Try again.\n");
                 return false;
             }
 
@@ -167,6 +172,7 @@ namespace Contact_Manager
         {
             if (!IsContactFound(phone))
             {
+                Console.WriteLine("There is no record with the following phone number! Try again.\n");
                 return;
             }
             else
@@ -203,6 +209,7 @@ namespace Contact_Manager
         {
             if (!IsContactFound(phone))
             {
+                Console.WriteLine("There is no record with the following phone number! Try again.\n");
                 return;
             }
             else
