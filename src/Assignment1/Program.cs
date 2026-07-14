@@ -11,6 +11,17 @@ namespace Contact_Manager
         private static List<List<string>> contacts = new List<List<string>>();
 
         /// <summary>
+        /// The method IsNumeric is used to find whether the record for the name exists or not.
+        /// </summary>
+        /// <param name="phone">The phone no to be validated.</param>
+        /// <returns>Either True or False based on the validation of phone number.</returns>
+        public static bool IsNumeric(string phone)
+        {
+            bool isNumeric = long.TryParse(phone, out long result);
+            return isNumeric;
+        }
+
+        /// <summary>
         /// The method ValidateEmail is used to find whether the record for the name exists or not.
         /// </summary>
         /// <param name="email">The email to be validated.</param>
@@ -138,6 +149,11 @@ namespace Contact_Manager
         /// <param name="phone">The name to be found.</param>
         public static void GetAndPrintContact(string phone)
         {
+            if (!IsContactFound(phone))
+            {
+                return;
+            }
+
             List<string>? result = contacts.Find(row => row[2] == phone);
             Console.WriteLine("Contact found.");
             Console.WriteLine($"Name: {result[0]}\nEmail: {result[1]}\nPhone: {result[2]}\nNotes: {result[3]}\n\n");
@@ -265,6 +281,16 @@ namespace Contact_Manager
         }
 
         /// <summary>
+        /// This method SortContact() is the method used to sort the contacts based on their names.
+        /// </summary>
+        public static void SortContact()
+        {
+            contacts.Sort((a, b) => a[0].CompareTo(b[0]));
+            Console.WriteLine("Contact List Sorted");
+            DisplayContacts();
+        }
+
+        /// <summary>
         /// This method Main is the main method that runs when the application is built.
         /// </summary>
         /// <param name="args">The command line arguments.</param>
@@ -278,11 +304,12 @@ namespace Contact_Manager
             {
                 Console.WriteLine("Enter inputs for the following tasks: ");
                 Console.WriteLine("[A] - To Add a New Contact");
-                Console.WriteLine("[D] - To Display Names of all Contacts");
-                Console.WriteLine("[S] - To Search for a Specific Contact");
-                Console.WriteLine("[W] - Delete a specific Contact");
-                Console.WriteLine("[R] - Edit a Specific Contact");
-                Console.WriteLine("[E] - Exit the Application\n");
+                Console.WriteLine("[B] - To Display Names of all Contacts");
+                Console.WriteLine("[C] - To Search for a Specific Contact");
+                Console.WriteLine("[D] - Delete a specific Contact");
+                Console.WriteLine("[E] - Edit a Specific Contact");
+                Console.WriteLine("[F] - Sort the Contact List");
+                Console.WriteLine("[G] - Exit the Application\n");
                 userInput = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(userInput))
                 {
@@ -298,11 +325,11 @@ namespace Contact_Manager
                         AddContact();
                         break;
 
-                    case "D":
+                    case "B":
                         DisplayContacts();
                         break;
 
-                    case "S":
+                    case "C":
                         if (ContactIsEmpty())
                         {
                             Console.WriteLine("Contact list is empty\n");
@@ -317,37 +344,45 @@ namespace Contact_Manager
                             break;
                         }
 
-                        if (!IsContactFound(phoneToSearch))
+                        bool isAllowed = IsNumeric(phoneToSearch);
+                        if (isAllowed)
                         {
-                            break;
+                            GetAndPrintContact(phoneToSearch);
                         }
                         else
                         {
-                            GetAndPrintContact(phoneToSearch);
+                            Console.WriteLine("Enter the right phone number instead of characters!\n");
                         }
 
                         break;
 
-                    case "W":
+                    case "D":
                         if (ContactIsEmpty())
                         {
                             Console.WriteLine("The contact list is empty\n");
                             break;
                         }
+
                         Console.WriteLine("Enter phone number of the contact to remove: ");
                         string? phoneToDelete = Console.ReadLine();
-                        if (string.IsNullOrWhiteSpace (phoneToDelete))
+                        if (string.IsNullOrWhiteSpace(phoneToDelete) == true)
                         {
-                            Console.WriteLine("Ensure you entered the phone number properly");
+                            Console.WriteLine("Ensure you entered the phone number properly without whitespaces.\n");
+                        }
+
+                        bool isNumeric = IsNumeric(phoneToDelete);
+                        if (isNumeric)
+                        {
+                            DeleteContact(phoneToDelete);
                         }
                         else
                         {
-                            DeleteContact(phoneToDelete);
+                            Console.WriteLine("Enter the right phone number instead of characters!\n");
                         }
 
                         break;
 
-                    case "R":
+                    case "E":
                         if (ContactIsEmpty())
                         {
                             Console.WriteLine("The contact list is empty\n");
@@ -362,8 +397,8 @@ namespace Contact_Manager
                             break;
                         }
 
-                        bool isNumeric = long.TryParse(phoneNoToEdit, out long result);
-                        if (isNumeric)
+                        bool allowed = IsNumeric(phoneNoToEdit);
+                        if (allowed)
                         {
                             EditContact(phoneNoToEdit);
                         }
@@ -374,7 +409,17 @@ namespace Contact_Manager
 
                         break;
 
-                    case "E":
+                    case "F":
+                        if (ContactIsEmpty())
+                        {
+                            Console.WriteLine("The contact list is empty\n");
+                            break;
+                        }
+
+                        SortContact();
+                        break;
+
+                    case "G":
                         Console.WriteLine("Exiting the application...");
                         shallExit = true;
                         break;
