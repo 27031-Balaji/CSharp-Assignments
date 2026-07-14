@@ -1,6 +1,6 @@
 # Basic Contact Manager
 
-I have implemented a basic contact manager that allows us to store and manage contacts.
+I have implemented a basic contact manager that allows us to store and manage contacts using C# fundamentals.
 This application has the following features.
 
 ## Add Contacts
