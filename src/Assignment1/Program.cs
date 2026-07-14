@@ -146,10 +146,37 @@ namespace Contact_Manager
         /// <summary>
         /// The method DeleteContact deletes a list of contacts with the following name.
         /// </summary>
-        /// <param name="name">The name to be deleted.</param>
-        public static void DeleteContact(string name)
+        /// <param name="phone">The name to be deleted.</param>
+        public static void DeleteContact(string phone)
         {
-            int i = 0;
+            if (!IsContactFound(phone))
+            {
+                return;
+            }
+            else
+            {
+                try
+                {
+                    List<string>? result = contacts.Find(row => row[2] == phone);
+                    if (result == null)
+                    {
+                        throw new Exception("Contact cannot be found\n");
+                    }
+
+                    GetAndPrintContact(phone);
+                    contacts.Remove(result);
+
+                    Console.WriteLine("Contact Deleted Successfully\n");
+                }
+                catch (ArgumentException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
         }
 
         /// <summary>
@@ -302,8 +329,22 @@ namespace Contact_Manager
                         break;
 
                     case "W":
-                        string? nameToDelete = Console.ReadLine();
-                        DeleteContact(nameToDelete);
+                        if (ContactIsEmpty())
+                        {
+                            Console.WriteLine("The contact list is empty\n");
+                            break;
+                        }
+                        Console.WriteLine("Enter phone number of the contact to remove: ");
+                        string? phoneToDelete = Console.ReadLine();
+                        if (string.IsNullOrWhiteSpace (phoneToDelete))
+                        {
+                            Console.WriteLine("Ensure you entered the phone number properly");
+                        }
+                        else
+                        {
+                            DeleteContact(phoneToDelete);
+                        }
+
                         break;
 
                     case "R":
