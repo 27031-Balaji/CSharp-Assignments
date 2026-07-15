@@ -18,7 +18,7 @@ namespace Assignment1.View
         {
             Console.Write("Enter your name: ");
             string? name = Console.ReadLine();
-            if (_contactService.IsNullName(name))
+            if (_contactService.IsNullString(name))
             {
                 Console.WriteLine("Ensure you entered the name properly.");
                 return;
@@ -26,7 +26,7 @@ namespace Assignment1.View
 
             Console.Write("Enter your email: ");
             string? email = Console.ReadLine();
-            if (_contactService.IsNullEmail(email))
+            if (_contactService.IsNullString(email))
             {
                 Console.WriteLine("Ensure you entered the email properly.");
                 return;
@@ -40,7 +40,7 @@ namespace Assignment1.View
 
             Console.Write("Enter your phone number: ");
             string? phone = Console.ReadLine();
-            if (_contactService.IsNullPhone(phone))
+            if (_contactService.IsNullString(phone))
             {
                 Console.WriteLine("Ensure you entered the phone number properly.");
                 return;
@@ -90,7 +90,7 @@ namespace Assignment1.View
 
             Console.Write("Enter the phone number: ");
             string? phone = Console.ReadLine();
-            if (_contactService.IsNullPhone(phone))
+            if (_contactService.IsNullString(phone))
             {
                 Console.WriteLine("Enter the phone number properly.");
                 return;
@@ -124,7 +124,7 @@ namespace Assignment1.View
 
             Console.Write("Enter the phone number: ");
             string? phone = Console.ReadLine();
-            if (_contactService.IsNullPhone(phone))
+            if (_contactService.IsNullString(phone))
             {
                 Console.WriteLine("Enter the phone number properly.");
                 return;
@@ -158,7 +158,7 @@ namespace Assignment1.View
 
             Console.Write("Enter the phone number of the contact to edit: ");
             string? phone = Console.ReadLine();
-            if (_contactService.IsNullPhone(phone))
+            if (_contactService.IsNullString(phone))
             {
                 Console.WriteLine("Enter the phone number properly.");
                 return;
@@ -192,7 +192,7 @@ namespace Assignment1.View
                 Console.Write("Choose an option: ");
                 string? option = Console.ReadLine();
 
-                if (_contactService.IsNullOption(option))
+                if (_contactService.IsNullString(option))
                 {
                     Console.WriteLine("Enter a valid option.\n");
                     continue;
@@ -204,7 +204,7 @@ namespace Assignment1.View
                         Console.Write("Enter the new name: ");
                         string? name = Console.ReadLine();
 
-                        if (_contactService.IsNullName(name))
+                        if (_contactService.IsNullString(name))
                         {
                             Console.WriteLine("Enter the name properly.");
                             break;
@@ -217,7 +217,7 @@ namespace Assignment1.View
                         Console.Write("Enter the new email: ");
                         string? email = Console.ReadLine();
 
-                        if (_contactService.IsNullEmail(email))
+                        if (_contactService.IsNullString(email))
                         {
                             Console.WriteLine("Enter the email properly.");
                             break;

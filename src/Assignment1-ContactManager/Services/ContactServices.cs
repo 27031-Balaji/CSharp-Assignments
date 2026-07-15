@@ -206,41 +206,11 @@ namespace Assignment1.Services
         /// <summary>
         /// Checks whether the name is empty.
         /// </summary>
-        /// <param name="name">The phone number.</param>
+        /// <param name="value">The phone number.</param>
         /// <returns>Return True or False based on the name emptiness.</returns>
-        public bool IsNullName(string name)
+        public bool IsNullString(string value)
         {
-            return string.IsNullOrWhiteSpace(name);
-        }
-
-        /// <summary>
-        /// Checks whether the email is empty.
-        /// </summary>
-        /// <param name="email">The phone number.</param>
-        /// <returns>Return True or False based on the email emptiness.</returns>
-        public bool IsNullEmail(string email)
-        {
-            return string.IsNullOrWhiteSpace(email);
-        }
-
-        /// <summary>
-        /// Checks whether the phone number is empty.
-        /// </summary>
-        /// <param name="phone">The phone number.</param>
-        /// <returns>Return True or False based on the phone number emptiness.</returns>
-        public bool IsNullPhone(string phone)
-        {
-            return string.IsNullOrWhiteSpace(phone);
-        }
-
-        /// <summary>
-        /// Checks whether the option in edit is empty.
-        /// </summary>
-        /// <param name="option">The phone number.</param>
-        /// <returns>Return True or False based on the option emptiness.</returns>
-        public bool IsNullOption(string option)
-        {
-            return string.IsNullOrWhiteSpace(option);
+            return string.IsNullOrWhiteSpace(value);
         }
 
         /// <summary>
@@ -257,12 +227,17 @@ namespace Assignment1.Services
         /// Checks whether the phone number is correct or not.
         /// </summary>
         /// <param name="phone">The phone number.</param>
-        /// <returns>Return True or False based on the contact list emptiness.</returns>
+        /// <returns>Return True or False based on the contact list validation.</returns>
         public bool ValidatePhoneLength(string phone)
         {
             return _helper.ValidatePhoneLength(phone);
         }
 
+        /// <summary>
+        /// Checks whether the phone number is correct or not.
+        /// </summary>
+        /// <param name="phone">The phone number.</param>
+        /// <returns>Return True or False based on the contact list character validation even if string is equal to 10 digits.</returns>
         public bool ValidatePhoneNoCharacters(string phone)
         {
             return _helper.ValidatePhoneNoCharacters(phone);

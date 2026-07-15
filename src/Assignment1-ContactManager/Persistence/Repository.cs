@@ -15,12 +15,6 @@ namespace Assignment1.Persistence
         /// <param name="contactInfo">The object containing the information.</param>
         public void AddContactInfo(ContactInfo contactInfo)
         {
-            if (contactInfo == null)
-            {
-                Console.WriteLine("Contact info cannot be null");
-                return;
-            }
-
             _contactInfos.Add(contactInfo);
         }
 
