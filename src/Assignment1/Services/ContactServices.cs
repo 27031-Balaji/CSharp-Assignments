@@ -25,6 +25,7 @@ namespace Assignment1.Services
             }
 
             _repository.AddContactInfo(contact);
+            List<ContactInfo> contacts = _repository.GetAllContacts();
             _repository.SortContacts();
             return "Contact Added Successfully.";
         }
@@ -36,7 +37,6 @@ namespace Assignment1.Services
         public string GetAllContacts()
         {
             List<ContactInfo> contacts = _repository.GetAllContacts();
-
             if (_helper.IsContactListEmpty(contacts))
             {
                 return "Contact list is empty";
