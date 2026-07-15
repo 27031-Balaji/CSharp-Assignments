@@ -60,18 +60,17 @@ namespace Assignment1.Services
         /// <summary>
         /// Searches for a contact.
         /// </summary>
-        /// <param name="value">The name, email or phone number.</param>
+        /// <param name="phone">The phone number of the contact.</param>
         /// <returns>Status message.</returns>
-        public string SearchContact(string value)
+        public string SearchContact(string phone)
         {
             List<ContactInfo> contacts = _repository.GetAllContacts();
-
             if (_helper.IsContactListEmpty(contacts))
             {
                 return "Contact list is empty.";
             }
 
-            ContactInfo? contact = contacts.Find(contact => contact.Name == value || contact.Email == value || contact.Phone == value);
+            ContactInfo? contact = contacts.Find(contact => contact.Phone == phone);
             if (contact == null)
             {
                 return "Contact not found.";
@@ -89,18 +88,17 @@ namespace Assignment1.Services
         /// <summary>
         /// Deletes a contact.
         /// </summary>
-        /// <param name="value">The name, email or phone number of the contact.</param>
+        /// <param name="phone">The phone number of the contact.</param>
         /// <returns>Status message.</returns>
-        public string DeleteContact(string value)
+        public string DeleteContact(string phone)
         {
             List<ContactInfo> contacts = _repository.GetAllContacts();
-
             if (_helper.IsContactListEmpty(contacts))
             {
                 return "Contact list is empty.";
             }
 
-            ContactInfo? contact = contacts.Find(contact => contact.Name == value || contact.Email == value || contact.Phone == value);
+            ContactInfo? contact = contacts.Find(contact => contact.Phone == phone);
             if (contact == null)
             {
                 return "Contact not found.";
@@ -113,15 +111,13 @@ namespace Assignment1.Services
         /// <summary>
         /// Edits the name of a contact.
         /// </summary>
-        /// <param name="value">The phone number or name or email of the contact.</param>
+        /// <param name="phone">The phone number of the contact.</param>
         /// <param name="name">The new name.</param>
         /// <returns>Status message.</returns>
-        public string EditName(string value, string name)
+        public string EditName(string phone, string name)
         {
             List<ContactInfo> contacts = _repository.GetAllContacts();
-
-            ContactInfo? foundContact = contacts.Find(contact => contact.Name == value || contact.Email == value || contact.Phone == value);
-
+            ContactInfo? foundContact = contacts.Find(contact => contact.Phone == phone);
             if (foundContact == null)
             {
                 return "Contact not found.";
@@ -135,21 +131,19 @@ namespace Assignment1.Services
 
             contact.Name = name;
             _repository.SortContacts();
-
             return "Name updated successfully.";
         }
 
         /// <summary>
         /// Edits the email of a contact.
         /// </summary>
-        /// <param name="value">The phone number or name or email of the contact.</param>
+        /// <param name="phone">The phone number of the contact.</param>
         /// <param name="email">The new email.</param>
         /// <returns>Status message.</returns>
-        public string EditEmail(string value, string email)
+        public string EditEmail(string phone, string email)
         {
             List<ContactInfo> contacts = _repository.GetAllContacts();
-            ContactInfo? foundContact = contacts.Find(contact => contact.Name == value || contact.Email == value || contact.Phone == value);
-
+            ContactInfo? foundContact = contacts.Find(contact => contact.Phone == phone);
             if (foundContact == null)
             {
                 return "Contact not found.";
@@ -168,22 +162,19 @@ namespace Assignment1.Services
         /// <summary>
         /// Edits the notes of a contact.
         /// </summary>
-        /// <param name="value">The phone number or name or email of the contact.</param>
+        /// <param name="phone">The phone number of the contact.</param>
         /// <param name="notes">The new notes.</param>
         /// <returns>Status message.</returns>
-        public string EditNotes(string value, string? notes)
+        public string EditNotes(string phone, string? notes)
         {
             List<ContactInfo> contacts = _repository.GetAllContacts();
-
-            ContactInfo? foundContact = contacts.Find(contact => contact.Name == value || contact.Email == value || contact.Phone == value);
-
+            ContactInfo? foundContact = contacts.Find(contact => contact.Phone == phone);
             if (foundContact == null)
             {
                 return "Contact not found.";
             }
 
             ContactInfo? contact = _repository.GetContactById(foundContact.Id);
-
             if (contact == null)
             {
                 return "Contact not found.";
@@ -267,9 +258,14 @@ namespace Assignment1.Services
         /// </summary>
         /// <param name="phone">The phone number.</param>
         /// <returns>Return True or False based on the contact list emptiness.</returns>
-        public bool ValidatePhone(string phone)
+        public bool ValidatePhoneLength(string phone)
         {
-            return _helper.ValidatePhone(phone);
+            return _helper.ValidatePhoneLength(phone);
+        }
+
+        public bool ValidatePhoneNoCharacters(string phone)
+        {
+            return _helper.ValidatePhoneNoCharacters(phone);
         }
     }
 }

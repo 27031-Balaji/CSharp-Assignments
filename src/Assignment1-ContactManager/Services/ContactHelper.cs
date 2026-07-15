@@ -38,9 +38,14 @@ namespace Assignment1.Helpers
         /// </summary>
         /// <param name="phone">The phone no to be validated.</param>
         /// <returns>Either True or False based on the validation of phone number.</returns>
-        public bool ValidatePhone(string phone)
+        public bool ValidatePhoneLength(string phone)
         {
-            return phone.Length == 10 || long.TryParse(phone, out long _);
+            return phone.Length == 10;
+        }
+
+        public bool ValidatePhoneNoCharacters(string phone)
+        {
+            return long.TryParse(phone, out long _);
         }
 
         /// <summary>
