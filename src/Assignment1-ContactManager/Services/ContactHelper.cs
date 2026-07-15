@@ -15,8 +15,22 @@ namespace Assignment1.Helpers
         /// <returns>Either True or False based on the validation of phone number.</returns>
         public bool ValidateEmail(string email)
         {
-            string pattern = @"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$";
-            return Regex.IsMatch(email, pattern);
+            if (!email.Contains("@"))
+            {
+                return false;
+            }
+
+            if (!email.Contains("."))
+            {
+                return false;
+            }
+
+            if (email.StartsWith("@") || email.EndsWith("@"))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -26,17 +40,7 @@ namespace Assignment1.Helpers
         /// <returns>Either True or False based on the validation of phone number.</returns>
         public bool ValidatePhone(string phone)
         {
-            return phone.Length == 10;
-        }
-
-        /// <summary>
-        /// The method IsNumeric is used to find whether the phone number is full numbers or contains any characters.
-        /// </summary>
-        /// <param name="phone">The phone no to be validated.</param>
-        /// <returns>Either True or False based on the validation of phone number.</returns>
-        public bool IsNumeric(string phone)
-        {
-            return long.TryParse(phone, out long _);
+            return phone.Length == 10 || long.TryParse(phone, out long _);
         }
 
         /// <summary>

@@ -9,14 +9,15 @@
         /// Initializes a new instance of the <see cref="ContactInfo"/> class.
         /// Joins a first name and a last name together into a single string.
         /// </summary>
+        /// <param name="id">The Guid of the contact.</param>
         /// <param name="name">The name to be added.</param>
         /// <param name="email">The email to be added.</param>
         /// <param name="phone">The phone no to be added.</param>
         /// <param name="notes">The additional notes to be added if needed.</param>
         /// <returns>The joined names.</returns>
-        public ContactInfo(string? name, string? email, string? phone, string? notes)
+        public ContactInfo(Guid id, string? name, string? email, string? phone, string? notes)
         {
-            Id = Guid.NewGuid();
+            Id = id;
             Name = name;
             Email = email;
             Phone = phone;
@@ -24,10 +25,10 @@
         }
 
         /// <summary>
-        /// Gets the Guid for the contact.
+        /// Gets or sets the Guid for the contact.
         /// </summary>
         /// <value>The Guid is the value used.</value>
-        public Guid Id { get; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Gets or sets the Name for the contact.

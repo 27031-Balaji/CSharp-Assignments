@@ -15,17 +15,16 @@ namespace Assignment1.Services
         /// <summary>
         /// Adds a contact to the repository.
         /// </summary>
-        /// <param name="contact">The contact object.</param>
+        /// <param name="name">The name to be added.</param>
+        /// <param name="email">The email to be added.</param>
+        /// <param name="phone">The phone number to be added.</param>
+        /// <param name="notes">The notes to be added.</param>
         /// <returns>Status message.</returns>
-        public string AddContact(ContactInfo contact)
+        public string AddContact(string? name, string? email, string? phone, string? notes)
         {
-            if (_repository.IsContactExists(contact.Id))
-            {
-                return "Phone number already exists. Try again with a different phone number.";
-            }
-
+            Guid id = Guid.NewGuid();
+            ContactInfo contact = new ContactInfo(id, name, email, phone, notes);
             _repository.AddContactInfo(contact);
-            List<ContactInfo> contacts = _repository.GetAllContacts();
             _repository.SortContacts();
             return "Contact Added Successfully.";
         }
@@ -59,19 +58,20 @@ namespace Assignment1.Services
         }
 
         /// <summary>
-        /// Searches for a contact using the phone number.
+        /// Searches for a contact.
         /// </summary>
-        /// <param name="phone">The phone number to search.</param>
-        /// <returns>The contact details or an error message.</returns>
-        public string SearchContact(string phone)
+        /// <param name="value">The name, email or phone number.</param>
+        /// <returns>Status message.</returns>
+        public string SearchContact(string value)
         {
             List<ContactInfo> contacts = _repository.GetAllContacts();
+
             if (_helper.IsContactListEmpty(contacts))
             {
                 return "Contact list is empty.";
             }
 
-            ContactInfo? contact = contacts.Find(contact => contact.Phone == phone);
+            ContactInfo? contact = contacts.Find(contact => contact.Name == value || contact.Email == value || contact.Phone == value);
             if (contact == null)
             {
                 return "Contact not found.";
@@ -89,17 +89,18 @@ namespace Assignment1.Services
         /// <summary>
         /// Deletes a contact.
         /// </summary>
-        /// <param name="phone">The phone number of the contact.</param>
+        /// <param name="value">The name, email or phone number of the contact.</param>
         /// <returns>Status message.</returns>
-        public string DeleteContact(string phone)
+        public string DeleteContact(string value)
         {
             List<ContactInfo> contacts = _repository.GetAllContacts();
+
             if (_helper.IsContactListEmpty(contacts))
             {
                 return "Contact list is empty.";
             }
 
-            ContactInfo? contact = contacts.Find(contact => contact.Phone == phone);
+            ContactInfo? contact = contacts.Find(contact => contact.Name == value || contact.Email == value || contact.Phone == value);
             if (contact == null)
             {
                 return "Contact not found.";
@@ -112,13 +113,15 @@ namespace Assignment1.Services
         /// <summary>
         /// Edits the name of a contact.
         /// </summary>
-        /// <param name="phone">The phone number of the contact.</param>
+        /// <param name="value">The phone number or name or email of the contact.</param>
         /// <param name="name">The new name.</param>
         /// <returns>Status message.</returns>
-        public string EditName(string phone, string name)
+        public string EditName(string value, string name)
         {
             List<ContactInfo> contacts = _repository.GetAllContacts();
-            ContactInfo? foundContact = contacts.Find(contact => contact.Phone == phone);
+
+            ContactInfo? foundContact = contacts.Find(contact => contact.Name == value || contact.Email == value || contact.Phone == value);
+
             if (foundContact == null)
             {
                 return "Contact not found.";
@@ -132,19 +135,21 @@ namespace Assignment1.Services
 
             contact.Name = name;
             _repository.SortContacts();
+
             return "Name updated successfully.";
         }
 
         /// <summary>
         /// Edits the email of a contact.
         /// </summary>
-        /// <param name="phone">The phone number of the contact.</param>
+        /// <param name="value">The phone number or name or email of the contact.</param>
         /// <param name="email">The new email.</param>
         /// <returns>Status message.</returns>
-        public string EditEmail(string phone, string email)
+        public string EditEmail(string value, string email)
         {
             List<ContactInfo> contacts = _repository.GetAllContacts();
-            ContactInfo? foundContact = contacts.Find(contact => contact.Phone == phone);
+            ContactInfo? foundContact = contacts.Find(contact => contact.Name == value || contact.Email == value || contact.Phone == value);
+
             if (foundContact == null)
             {
                 return "Contact not found.";
@@ -163,19 +168,22 @@ namespace Assignment1.Services
         /// <summary>
         /// Edits the notes of a contact.
         /// </summary>
-        /// <param name="phone">The phone number of the contact.</param>
+        /// <param name="value">The phone number or name or email of the contact.</param>
         /// <param name="notes">The new notes.</param>
         /// <returns>Status message.</returns>
-        public string EditNotes(string phone, string? notes)
+        public string EditNotes(string value, string? notes)
         {
             List<ContactInfo> contacts = _repository.GetAllContacts();
-            ContactInfo? foundContact = contacts.Find(contact => contact.Phone == phone);
+
+            ContactInfo? foundContact = contacts.Find(contact => contact.Name == value || contact.Email == value || contact.Phone == value);
+
             if (foundContact == null)
             {
                 return "Contact not found.";
             }
 
             ContactInfo? contact = _repository.GetContactById(foundContact.Id);
+
             if (contact == null)
             {
                 return "Contact not found.";
@@ -197,13 +205,71 @@ namespace Assignment1.Services
         /// <summary>
         /// Checks whether a contact exists.
         /// </summary>
-        /// <param name="phone">The phone number.</param>
+        /// <param name="value">The phone number.</param>
         /// <returns>True if the contact exists, otherwise false.</returns>
-        public bool IsContactExists(string phone)
+        public bool IsContactExists(string value)
         {
-            List<ContactInfo> contacts = _repository.GetAllContacts();
-            ContactInfo? contact = contacts.Find(contact => contact.Phone == phone);
-            return _repository.IsContactExists(contact.Id);
+            return _repository.IsContactExists(value);
+        }
+
+        /// <summary>
+        /// Checks whether the name is empty.
+        /// </summary>
+        /// <param name="name">The phone number.</param>
+        /// <returns>Return True or False based on the name emptiness.</returns>
+        public bool IsNullName(string name)
+        {
+            return string.IsNullOrWhiteSpace(name);
+        }
+
+        /// <summary>
+        /// Checks whether the email is empty.
+        /// </summary>
+        /// <param name="email">The phone number.</param>
+        /// <returns>Return True or False based on the email emptiness.</returns>
+        public bool IsNullEmail(string email)
+        {
+            return string.IsNullOrWhiteSpace(email);
+        }
+
+        /// <summary>
+        /// Checks whether the phone number is empty.
+        /// </summary>
+        /// <param name="phone">The phone number.</param>
+        /// <returns>Return True or False based on the phone number emptiness.</returns>
+        public bool IsNullPhone(string phone)
+        {
+            return string.IsNullOrWhiteSpace(phone);
+        }
+
+        /// <summary>
+        /// Checks whether the option in edit is empty.
+        /// </summary>
+        /// <param name="option">The phone number.</param>
+        /// <returns>Return True or False based on the option emptiness.</returns>
+        public bool IsNullOption(string option)
+        {
+            return string.IsNullOrWhiteSpace(option);
+        }
+
+        /// <summary>
+        /// Checks whether the email is correct.
+        /// </summary>
+        /// <param name="email">The phone number.</param>
+        /// <returns>Return True or False based on the email validation.</returns>
+        public bool ValidateEmail(string email)
+        {
+            return _helper.ValidateEmail(email);
+        }
+
+        /// <summary>
+        /// Checks whether the phone number is correct or not.
+        /// </summary>
+        /// <param name="phone">The phone number.</param>
+        /// <returns>Return True or False based on the contact list emptiness.</returns>
+        public bool ValidatePhone(string phone)
+        {
+            return _helper.ValidatePhone(phone);
         }
     }
 }
