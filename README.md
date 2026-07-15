@@ -7,6 +7,7 @@ This application has the following features.
 1. You can enter your name, phone number and email and optionally can add additional notes in the contact list.
 2. Duplicate phone number entries are not allowed (Phone number acts as primary key).
 3. Multiple if statements checking the right validation is done.
+4. After adding contacts, it automatically sorts with the ascending order of name.
 
 ## Display Contacts
 1. You can view the contact list entirely.
@@ -24,10 +25,7 @@ This application has the following features.
 1. You can edit a specific contact's name, email or notes using the phone number as the input.
 2. You can only edit either the name or email or notes and not all of them at the same time.
 3. Multiple methods and exception handling techniques are used to ensure the correct entry of details by the user.
-
-## Sort Contacts
-1. You can sort contacts based on their names with this functionality.
-2. After sorting, it displays the contact list sorted for ensuring righteousness of sorting.
+4. After editing contacts, it automatically sorts with the ascending order of name.
 
 # Techniques Used for Implementation
 - I used a list of lists data structure to implement the contact list without using classes and objects.
