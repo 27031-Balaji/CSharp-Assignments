@@ -32,7 +32,7 @@ namespace Assignment1.View
                 return;
             }
 
-            if (!this._contactService.ValidateEmail(email))
+            if (!this._contactService.ValidateEmail(email!))
             {
                 Console.WriteLine("Enter a valid email.");
                 return;
@@ -46,19 +46,19 @@ namespace Assignment1.View
                 return;
             }
 
-            if (!this._contactService.ValidatePhoneLength(phone))
+            if (!this._contactService.ValidatePhoneLength(phone!))
             {
                 Console.WriteLine("The phone number should only be 10 digits.");
                 return;
             }
 
-            if (!this._contactService.ValidatePhoneNoCharacters(phone))
+            if (!this._contactService.ValidatePhoneNoCharacters(phone!))
             {
                 Console.WriteLine("The phone number should only be numbers and no characters.");
                 return;
             }
 
-            if (this._contactService.IsContactExists(phone))
+            if (this._contactService.IsContactExists(phone!))
             {
                 Console.WriteLine("Phone number already exists. Try again with a different phone number.");
                 return;
@@ -96,19 +96,19 @@ namespace Assignment1.View
                 return;
             }
 
-            if (!this._contactService.ValidatePhoneLength(phone))
+            if (!this._contactService.ValidatePhoneLength(phone!))
             {
                 Console.WriteLine("The phone number should only be 10 digits.");
                 return;
             }
 
-            if (!this._contactService.ValidatePhoneNoCharacters(phone))
+            if (!this._contactService.ValidatePhoneNoCharacters(phone!))
             {
                 Console.WriteLine("The phone number should only be numbers and no characters.");
                 return;
             }
 
-            Console.WriteLine(this._contactService.SearchContact(phone));
+            Console.WriteLine(this._contactService.SearchContact(phone!));
         }
 
         /// <summary>
@@ -130,19 +130,19 @@ namespace Assignment1.View
                 return;
             }
 
-            if (!this._contactService.ValidatePhoneLength(phone))
+            if (!this._contactService.ValidatePhoneLength(phone!))
             {
                 Console.WriteLine("The phone number should only be 10 digits.");
                 return;
             }
 
-            if (!this._contactService.ValidatePhoneNoCharacters(phone))
+            if (!this._contactService.ValidatePhoneNoCharacters(phone!))
             {
                 Console.WriteLine("The phone number should only be numbers and no characters.");
                 return;
             }
 
-            Console.WriteLine(this._contactService.DeleteContact(phone));
+            Console.WriteLine(this._contactService.DeleteContact(phone!));
         }
 
         /// <summary>
@@ -164,19 +164,19 @@ namespace Assignment1.View
                 return;
             }
 
-            if (!this._contactService.ValidatePhoneLength(phone))
+            if (!this._contactService.ValidatePhoneLength(phone!))
             {
                 Console.WriteLine("The phone number should only be 10 digits.");
                 return;
             }
 
-            if (!this._contactService.ValidatePhoneNoCharacters(phone))
+            if (!this._contactService.ValidatePhoneNoCharacters(phone!))
             {
                 Console.WriteLine("The phone number should only be numbers and no characters.");
                 return;
             }
 
-            if (!this._contactService.IsContactExists(phone))
+            if (!this._contactService.IsContactExists(phone!))
             {
                 Console.WriteLine("Contact not found.");
                 return;
@@ -198,7 +198,7 @@ namespace Assignment1.View
                     continue;
                 }
 
-                switch (option.ToUpper())
+                switch (option!.ToUpper())
                 {
                     case "A":
                         Console.Write("Enter the new name: ");
@@ -210,7 +210,7 @@ namespace Assignment1.View
                             break;
                         }
 
-                        Console.WriteLine(this._contactService.EditName(phone, name));
+                        Console.WriteLine(this._contactService.EditName(phone!, name));
                         break;
 
                     case "B":
@@ -223,19 +223,19 @@ namespace Assignment1.View
                             break;
                         }
 
-                        if (!this._contactService.ValidateEmail(email))
+                        if (!this._contactService.ValidateEmail(email!))
                         {
                             Console.WriteLine("Enter a valid email.");
                             break;
                         }
 
-                        Console.WriteLine(this._contactService.EditEmail(phone, email));
+                        Console.WriteLine(this._contactService.EditEmail(phone!, email!));
                         break;
 
                     case "C":
                         Console.Write("Enter the new notes: ");
                         string? notes = Console.ReadLine();
-                        Console.WriteLine(this._contactService.EditNotes(phone, notes));
+                        Console.WriteLine(this._contactService.EditNotes(phone!, notes));
                         break;
 
                     case "D":

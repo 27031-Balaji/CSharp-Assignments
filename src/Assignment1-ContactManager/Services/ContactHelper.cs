@@ -15,17 +15,17 @@ namespace Assignment1.Helpers
         /// <returns>Either True or False based on the validation of phone number.</returns>
         public bool ValidateEmail(string email)
         {
-            if (!email.Contains("@"))
+            if (!email.Contains('@'))
             {
                 return false;
             }
 
-            if (!email.Contains("."))
+            if (!email.Contains('.'))
             {
                 return false;
             }
 
-            if (email.StartsWith("@") || email.EndsWith("@"))
+            if (email.StartsWith('@') || email.EndsWith('@'))
             {
                 return false;
             }

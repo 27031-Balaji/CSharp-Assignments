@@ -114,7 +114,7 @@ namespace Assignment1.Services
         /// <param name="phone">The phone number of the contact.</param>
         /// <param name="name">The new name.</param>
         /// <returns>Status message.</returns>
-        public string EditName(string phone, string name)
+        public string EditName(string phone, string? name)
         {
             List<ContactInfo> contacts = this._repository.GetAllContacts();
             ContactInfo? foundContact = contacts.Find(contact => contact.Phone == phone);
@@ -208,7 +208,7 @@ namespace Assignment1.Services
         /// </summary>
         /// <param name="value">The phone number.</param>
         /// <returns>Return True or False based on the name emptiness.</returns>
-        public bool IsNullString(string value)
+        public bool IsNullString(string? value)
         {
             return string.IsNullOrWhiteSpace(value);
         }

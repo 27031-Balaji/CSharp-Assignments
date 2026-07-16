@@ -25,7 +25,14 @@ namespace Assignment1.Persistence
         /// <returns>It returns the copy of the total contact list.</returns>
         public List<ContactInfo> GetAllContacts()
         {
-            return new List<ContactInfo>(this._contactInfos);
+            List<ContactInfo> duplicate = new List<ContactInfo>();
+            foreach (ContactInfo contact in this._contactInfos)
+            {
+                ContactInfo rc = contact;
+                duplicate.Add(rc);
+            }
+
+            return duplicate;
         }
 
         /// <summary>
@@ -53,7 +60,7 @@ namespace Assignment1.Persistence
         /// </summary>
         public void SortContacts()
         {
-            this._contactInfos.Sort((a, b) => a.Name.CompareTo(b.Name));
+            this._contactInfos.Sort((a, b) => string.Compare(a.Name, b.Name));
         }
 
         /// <summary>
