@@ -17,11 +17,11 @@
         /// <returns>The joined names.</returns>
         public ContactInfo(Guid id, string? name, string? email, string? phone, string? notes)
         {
-            Id = id;
-            Name = name;
-            Email = email;
-            Phone = phone;
-            Notes = notes;
+            this.Id = id;
+            this.Name = name;
+            this.Email = email;
+            this.Phone = phone;
+            this.Notes = notes;
         }
 
         /// <summary>

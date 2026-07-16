@@ -15,7 +15,7 @@ namespace Assignment1.Persistence
         /// <param name="contactInfo">The object containing the information.</param>
         public void AddContactInfo(ContactInfo contactInfo)
         {
-            _contactInfos.Add(contactInfo);
+            this._contactInfos.Add(contactInfo);
         }
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace Assignment1.Persistence
         /// <returns>It returns the copy of the total contact list.</returns>
         public List<ContactInfo> GetAllContacts()
         {
-            return new List<ContactInfo>(_contactInfos);
+            return new List<ContactInfo>(this._contactInfos);
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Assignment1.Persistence
         /// <returns>It returns either True or False based on the existing list.</returns>
         public bool IsContactExists(string? value)
         {
-            return _contactInfos.Any(contact => contact.Name == value || contact.Email == value || contact.Phone == value);
+            return this._contactInfos.Any(contact => contact.Name == value || contact.Email == value || contact.Phone == value);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Assignment1.Persistence
         /// <returns>The contact if found, otherwise null.</returns>
         public ContactInfo? GetContactById(Guid id)
         {
-            return _contactInfos.Find(contact => contact.Id == id);
+            return this._contactInfos.Find(contact => contact.Id == id);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace Assignment1.Persistence
         /// </summary>
         public void SortContacts()
         {
-            _contactInfos.Sort((a, b) => a.Name.CompareTo(b.Name));
+            this._contactInfos.Sort((a, b) => a.Name.CompareTo(b.Name));
         }
 
         /// <summary>
@@ -62,13 +62,13 @@ namespace Assignment1.Persistence
         /// <param name="id">The Guid of the contact.</param>
         public void DeleteContact(Guid id)
         {
-            ContactInfo? contact = GetContactById(id);
+            ContactInfo? contact = this.GetContactById(id);
             if (contact == null)
             {
                 return;
             }
 
-            _contactInfos.Remove(contact);
+            this._contactInfos.Remove(contact);
         }
     }
 }

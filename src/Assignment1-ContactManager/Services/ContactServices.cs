@@ -24,8 +24,8 @@ namespace Assignment1.Services
         {
             Guid id = Guid.NewGuid();
             ContactInfo contact = new ContactInfo(id, name, email, phone, notes);
-            _repository.AddContactInfo(contact);
-            _repository.SortContacts();
+            this._repository.AddContactInfo(contact);
+            this._repository.SortContacts();
             return "Contact Added Successfully.";
         }
 
@@ -35,8 +35,8 @@ namespace Assignment1.Services
         /// <returns>All contacts or an error message.</returns>
         public string GetAllContacts()
         {
-            List<ContactInfo> contacts = _repository.GetAllContacts();
-            if (_helper.IsContactListEmpty(contacts))
+            List<ContactInfo> contacts = this._repository.GetAllContacts();
+            if (this._helper.IsContactListEmpty(contacts))
             {
                 return "Contact list is empty";
             }
@@ -64,8 +64,8 @@ namespace Assignment1.Services
         /// <returns>Status message.</returns>
         public string SearchContact(string phone)
         {
-            List<ContactInfo> contacts = _repository.GetAllContacts();
-            if (_helper.IsContactListEmpty(contacts))
+            List<ContactInfo> contacts = this._repository.GetAllContacts();
+            if (this._helper.IsContactListEmpty(contacts))
             {
                 return "Contact list is empty.";
             }
@@ -92,8 +92,8 @@ namespace Assignment1.Services
         /// <returns>Status message.</returns>
         public string DeleteContact(string phone)
         {
-            List<ContactInfo> contacts = _repository.GetAllContacts();
-            if (_helper.IsContactListEmpty(contacts))
+            List<ContactInfo> contacts = this._repository.GetAllContacts();
+            if (this._helper.IsContactListEmpty(contacts))
             {
                 return "Contact list is empty.";
             }
@@ -104,7 +104,7 @@ namespace Assignment1.Services
                 return "Contact not found.";
             }
 
-            _repository.DeleteContact(contact.Id);
+            this._repository.DeleteContact(contact.Id);
             return "Contact deleted successfully.";
         }
 
@@ -116,21 +116,21 @@ namespace Assignment1.Services
         /// <returns>Status message.</returns>
         public string EditName(string phone, string name)
         {
-            List<ContactInfo> contacts = _repository.GetAllContacts();
+            List<ContactInfo> contacts = this._repository.GetAllContacts();
             ContactInfo? foundContact = contacts.Find(contact => contact.Phone == phone);
             if (foundContact == null)
             {
                 return "Contact not found.";
             }
 
-            ContactInfo? contact = _repository.GetContactById(foundContact.Id);
+            ContactInfo? contact = this._repository.GetContactById(foundContact.Id);
             if (contact == null)
             {
                 return "Contact not found.";
             }
 
             contact.Name = name;
-            _repository.SortContacts();
+            this._repository.SortContacts();
             return "Name updated successfully.";
         }
 
@@ -142,14 +142,14 @@ namespace Assignment1.Services
         /// <returns>Status message.</returns>
         public string EditEmail(string phone, string email)
         {
-            List<ContactInfo> contacts = _repository.GetAllContacts();
+            List<ContactInfo> contacts = this._repository.GetAllContacts();
             ContactInfo? foundContact = contacts.Find(contact => contact.Phone == phone);
             if (foundContact == null)
             {
                 return "Contact not found.";
             }
 
-            ContactInfo? contact = _repository.GetContactById(foundContact.Id);
+            ContactInfo? contact = this._repository.GetContactById(foundContact.Id);
             if (contact == null)
             {
                 return "Contact not found.";
@@ -167,14 +167,14 @@ namespace Assignment1.Services
         /// <returns>Status message.</returns>
         public string EditNotes(string phone, string? notes)
         {
-            List<ContactInfo> contacts = _repository.GetAllContacts();
+            List<ContactInfo> contacts = this._repository.GetAllContacts();
             ContactInfo? foundContact = contacts.Find(contact => contact.Phone == phone);
             if (foundContact == null)
             {
                 return "Contact not found.";
             }
 
-            ContactInfo? contact = _repository.GetContactById(foundContact.Id);
+            ContactInfo? contact = this._repository.GetContactById(foundContact.Id);
             if (contact == null)
             {
                 return "Contact not found.";
@@ -190,7 +190,7 @@ namespace Assignment1.Services
         /// <returns>Return True or False based on the contact list emptiness.</returns>
         public bool IsContactListEmpty()
         {
-            return _helper.IsContactListEmpty(_repository.GetAllContacts());
+            return this._helper.IsContactListEmpty(this._repository.GetAllContacts());
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace Assignment1.Services
         /// <returns>True if the contact exists, otherwise false.</returns>
         public bool IsContactExists(string value)
         {
-            return _repository.IsContactExists(value);
+            return this._repository.IsContactExists(value);
         }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace Assignment1.Services
         /// <returns>Return True or False based on the email validation.</returns>
         public bool ValidateEmail(string email)
         {
-            return _helper.ValidateEmail(email);
+            return this._helper.ValidateEmail(email);
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace Assignment1.Services
         /// <returns>Return True or False based on the contact list validation.</returns>
         public bool ValidatePhoneLength(string phone)
         {
-            return _helper.ValidatePhoneLength(phone);
+            return this._helper.ValidatePhoneLength(phone);
         }
 
         /// <summary>
@@ -240,7 +240,7 @@ namespace Assignment1.Services
         /// <returns>Return True or False based on the contact list character validation even if string is equal to 10 digits.</returns>
         public bool ValidatePhoneNoCharacters(string phone)
         {
-            return _helper.ValidatePhoneNoCharacters(phone);
+            return this._helper.ValidatePhoneNoCharacters(phone);
         }
     }
 }

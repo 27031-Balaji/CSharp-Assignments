@@ -18,7 +18,7 @@ namespace Assignment1.View
         {
             Console.Write("Enter your name: ");
             string? name = Console.ReadLine();
-            if (_contactService.IsNullString(name))
+            if (this._contactService.IsNullString(name))
             {
                 Console.WriteLine("Ensure you entered the name properly.");
                 return;
@@ -26,13 +26,13 @@ namespace Assignment1.View
 
             Console.Write("Enter your email: ");
             string? email = Console.ReadLine();
-            if (_contactService.IsNullString(email))
+            if (this._contactService.IsNullString(email))
             {
                 Console.WriteLine("Ensure you entered the email properly.");
                 return;
             }
 
-            if (!_contactService.ValidateEmail(email))
+            if (!this._contactService.ValidateEmail(email))
             {
                 Console.WriteLine("Enter a valid email.");
                 return;
@@ -40,25 +40,25 @@ namespace Assignment1.View
 
             Console.Write("Enter your phone number: ");
             string? phone = Console.ReadLine();
-            if (_contactService.IsNullString(phone))
+            if (this._contactService.IsNullString(phone))
             {
                 Console.WriteLine("Ensure you entered the phone number properly.");
                 return;
             }
 
-            if (!_contactService.ValidatePhoneLength(phone))
+            if (!this._contactService.ValidatePhoneLength(phone))
             {
                 Console.WriteLine("The phone number should only be 10 digits.");
                 return;
             }
 
-            if (!_contactService.ValidatePhoneNoCharacters(phone))
+            if (!this._contactService.ValidatePhoneNoCharacters(phone))
             {
                 Console.WriteLine("The phone number should only be numbers and no characters.");
                 return;
             }
 
-            if (_contactService.IsContactExists(phone))
+            if (this._contactService.IsContactExists(phone))
             {
                 Console.WriteLine("Phone number already exists. Try again with a different phone number.");
                 return;
@@ -66,7 +66,7 @@ namespace Assignment1.View
 
             Console.Write("Enter notes (Optional): ");
             string? notes = Console.ReadLine();
-            Console.WriteLine(_contactService.AddContact(name, email, phone, notes));
+            Console.WriteLine(this._contactService.AddContact(name, email, phone, notes));
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Assignment1.View
         /// </summary>
         public void DisplayContacts()
         {
-            Console.WriteLine(_contactService.GetAllContacts());
+            Console.WriteLine(this._contactService.GetAllContacts());
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Assignment1.View
         /// </summary>
         public void SearchContact()
         {
-            if (_contactService.IsContactListEmpty())
+            if (this._contactService.IsContactListEmpty())
             {
                 Console.WriteLine("Contact list is empty.");
                 return;
@@ -90,25 +90,25 @@ namespace Assignment1.View
 
             Console.Write("Enter the phone number: ");
             string? phone = Console.ReadLine();
-            if (_contactService.IsNullString(phone))
+            if (this._contactService.IsNullString(phone))
             {
                 Console.WriteLine("Enter the phone number properly.");
                 return;
             }
 
-            if (!_contactService.ValidatePhoneLength(phone))
+            if (!this._contactService.ValidatePhoneLength(phone))
             {
                 Console.WriteLine("The phone number should only be 10 digits.");
                 return;
             }
 
-            if (!_contactService.ValidatePhoneNoCharacters(phone))
+            if (!this._contactService.ValidatePhoneNoCharacters(phone))
             {
                 Console.WriteLine("The phone number should only be numbers and no characters.");
                 return;
             }
 
-            Console.WriteLine(_contactService.SearchContact(phone));
+            Console.WriteLine(this._contactService.SearchContact(phone));
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace Assignment1.View
         /// </summary>
         public void DeleteContact()
         {
-            if (_contactService.IsContactListEmpty())
+            if (this._contactService.IsContactListEmpty())
             {
                 Console.WriteLine("Contact list is empty.");
                 return;
@@ -124,25 +124,25 @@ namespace Assignment1.View
 
             Console.Write("Enter the phone number: ");
             string? phone = Console.ReadLine();
-            if (_contactService.IsNullString(phone))
+            if (this._contactService.IsNullString(phone))
             {
                 Console.WriteLine("Enter the phone number properly.");
                 return;
             }
 
-            if (!_contactService.ValidatePhoneLength(phone))
+            if (!this._contactService.ValidatePhoneLength(phone))
             {
                 Console.WriteLine("The phone number should only be 10 digits.");
                 return;
             }
 
-            if (!_contactService.ValidatePhoneNoCharacters(phone))
+            if (!this._contactService.ValidatePhoneNoCharacters(phone))
             {
                 Console.WriteLine("The phone number should only be numbers and no characters.");
                 return;
             }
 
-            Console.WriteLine(_contactService.DeleteContact(phone));
+            Console.WriteLine(this._contactService.DeleteContact(phone));
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace Assignment1.View
         /// </summary>
         public void EditContact()
         {
-            if (_contactService.IsContactListEmpty())
+            if (this._contactService.IsContactListEmpty())
             {
                 Console.WriteLine("Contact list is empty.");
                 return;
@@ -158,25 +158,25 @@ namespace Assignment1.View
 
             Console.Write("Enter the phone number of the contact to edit: ");
             string? phone = Console.ReadLine();
-            if (_contactService.IsNullString(phone))
+            if (this._contactService.IsNullString(phone))
             {
                 Console.WriteLine("Enter the phone number properly.");
                 return;
             }
 
-            if (!_contactService.ValidatePhoneLength(phone))
+            if (!this._contactService.ValidatePhoneLength(phone))
             {
                 Console.WriteLine("The phone number should only be 10 digits.");
                 return;
             }
 
-            if (!_contactService.ValidatePhoneNoCharacters(phone))
+            if (!this._contactService.ValidatePhoneNoCharacters(phone))
             {
                 Console.WriteLine("The phone number should only be numbers and no characters.");
                 return;
             }
 
-            if (!_contactService.IsContactExists(phone))
+            if (!this._contactService.IsContactExists(phone))
             {
                 Console.WriteLine("Contact not found.");
                 return;
@@ -192,7 +192,7 @@ namespace Assignment1.View
                 Console.Write("Choose an option: ");
                 string? option = Console.ReadLine();
 
-                if (_contactService.IsNullString(option))
+                if (this._contactService.IsNullString(option))
                 {
                     Console.WriteLine("Enter a valid option.\n");
                     continue;
@@ -204,38 +204,38 @@ namespace Assignment1.View
                         Console.Write("Enter the new name: ");
                         string? name = Console.ReadLine();
 
-                        if (_contactService.IsNullString(name))
+                        if (this._contactService.IsNullString(name))
                         {
                             Console.WriteLine("Enter the name properly.");
                             break;
                         }
 
-                        Console.WriteLine(_contactService.EditName(phone, name));
+                        Console.WriteLine(this._contactService.EditName(phone, name));
                         break;
 
                     case "B":
                         Console.Write("Enter the new email: ");
                         string? email = Console.ReadLine();
 
-                        if (_contactService.IsNullString(email))
+                        if (this._contactService.IsNullString(email))
                         {
                             Console.WriteLine("Enter the email properly.");
                             break;
                         }
 
-                        if (!_contactService.ValidateEmail(email))
+                        if (!this._contactService.ValidateEmail(email))
                         {
                             Console.WriteLine("Enter a valid email.");
                             break;
                         }
 
-                        Console.WriteLine(_contactService.EditEmail(phone, email));
+                        Console.WriteLine(this._contactService.EditEmail(phone, email));
                         break;
 
                     case "C":
                         Console.Write("Enter the new notes: ");
                         string? notes = Console.ReadLine();
-                        Console.WriteLine(_contactService.EditNotes(phone, notes));
+                        Console.WriteLine(this._contactService.EditNotes(phone, notes));
                         break;
 
                     case "D":
