@@ -1,13 +1,12 @@
 # Basic Contact Manager
 
-I have implemented a basic contact manager that allows us to store and manage contacts using C# fundamentals.
-This application has the following features.
+This is a basic contact manager using C# using the MVC architecture. This has the following functionalities.
 
 ## Add Contacts
 1. You can enter your name, phone number and email and optionally can add additional notes in the contact list.
-2. Duplicate phone number entries are not allowed (Phone number acts as primary key).
-3. Multiple if statements checking the right validation is done.
-4. After adding contacts, it automatically sorts with the ascending order of name.
+2. Duplicate phone number entries are not allowed.
+3. Multiple validations are checked for email and phone number.
+4. After adding contacts, it automatically sorts the contact list with the ascending order of name.
 
 ## Display Contacts
 1. You can view the contact list entirely.
@@ -23,19 +22,21 @@ This application has the following features.
 
 ## Edit Contacts
 1. You can edit a specific contact's name, email or notes using the phone number as the input.
-2. You can only edit either the name or email or notes and not all of them at the same time.
+2. You can edit name, email or notes and this can loop multiple times ensuring multiple changes.
 3. Multiple methods and exception handling techniques are used to ensure the correct entry of details by the user.
-4. After editing contacts, it automatically sorts with the ascending order of name.
+4. After editing contacts, it automatically sorts the contact list with the ascending order of name.
 
 # Techniques Used for Implementation
-- I used a list of lists data structure to implement the contact list without using classes and objects.
-- I used many methods to validate the input to check whether it is right or not.
-- Phone number alone has 2 separate validations, one for the length and one for checking if there are any characters in between them.
+- I used a list of contact objects to store the contact list.
+- Repository class is used to perform the CRUD operations of the contact list.
+- Services class is used to do different services such as Add, Delete, Search, Display, Edit.
+- Helper class is made to validate the data entered by the user and check conditions like contact emptiness and whether the contact is already present or not.
+- ConsoleOperation class is used for I/O operations.
 
 # Challenges Faced
-- Since this is the first time, I had difficulties adding the XML documentation for each of the methods and classes in the program.
-- There are multiple conditions to check for each inputs, so I had a lot of time thinking about resolving them, than to code it in the program.
+- The introduction of MVC architecture was new to me and learning and adapting to it has been a challenge.
+- Learning to segregate the methods to different classes was difficult to me.
 
-# Functionalities to be Implemented
-1. I need to check on various tests and verify the correctness of the application.
-2. I need to add some more exceptional case handling methods after checking on the tests.
+# Future Implementations
+- Can upgrade the database functionalities by using either a file or using a database.
+- Can use other means to search, edit or delete contact instead of just using the phone number.
