@@ -190,7 +190,8 @@ namespace Assignment1.Services
         /// <returns>Return True or False based on the contact list emptiness.</returns>
         public bool IsContactListEmpty()
         {
-            return this._helper.IsContactListEmpty(this._repository.GetAllContacts());
+            List<ContactInfo>? contacts = this._repository.GetAllContacts();
+            return this._helper.IsContactListEmpty(contacts);
         }
 
         /// <summary>
@@ -210,7 +211,7 @@ namespace Assignment1.Services
         /// <returns>Return True or False based on the name emptiness.</returns>
         public bool IsNullString(string? value)
         {
-            return string.IsNullOrWhiteSpace(value);
+            return this._helper.IsNullString(value);
         }
 
         /// <summary>

@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using Assignment1.Models;
+﻿using Assignment1.Models;
 
 namespace Assignment1.Helpers
 {
@@ -61,6 +60,16 @@ namespace Assignment1.Helpers
         public bool IsContactListEmpty(List<ContactInfo> contacts)
         {
             return contacts.Count == 0;
+        }
+
+        /// <summary>
+        /// Checks whether the name is empty.
+        /// </summary>
+        /// <param name="value">The phone number.</param>
+        /// <returns>Return True or False based on the name emptiness.</returns>
+        public bool IsNullString(string? value)
+        {
+            return string.IsNullOrWhiteSpace(value);
         }
     }
 }
