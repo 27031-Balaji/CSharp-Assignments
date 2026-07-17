@@ -19,17 +19,15 @@ namespace Assignment1.Persistence
         }
 
         /// <summary>
-        /// Adds the contact to the repository list.
+        /// Returns a copy of the contact list.
         /// </summary>
-        /// <param name="contactInfo">The object containing the information.</param>
         /// <returns>It returns the copy of the total contact list.</returns>
         public List<ContactInfo> GetAllContacts()
         {
             List<ContactInfo> duplicate = new List<ContactInfo>();
             foreach (ContactInfo contact in this._contactInfos)
             {
-                ContactInfo rc = contact;
-                duplicate.Add(rc);
+                duplicate.Add(new ContactInfo(contact.Id, contact.Name, contact.Email, contact.Phone, contact.Notes));
             }
 
             return duplicate;
@@ -38,21 +36,21 @@ namespace Assignment1.Persistence
         /// <summary>
         /// Sends whether the contact exists or not.
         /// </summary>
-        /// <param name="value">The Guid to verify.</param>
-        /// <returns>It returns either True or False based on the existing list.</returns>
-        public bool IsContactExists(string? value)
+        /// <param name="phone">The phone number to verify.</param>
+        /// <returns>It returns either True or False based on whether the contact exists or not.</returns>
+        public bool IsContactExists(string? phone)
         {
-            return this._contactInfos.Any(contact => contact.Name == value || contact.Email == value || contact.Phone == value);
+            return this._contactInfos.Any(contact => contact.Phone == phone);
         }
 
         /// <summary>
-        /// Returns the contact with the given Guid.
+        /// Returns the contact with the given phone number.
         /// </summary>
-        /// <param name="id">The Guid of the contact.</param>
+        /// <param name="phone">The phone number of the contact.</param>
         /// <returns>The contact if found, otherwise null.</returns>
-        public ContactInfo? GetContactById(Guid id)
+        public ContactInfo? GetContactByPhone(string phone)
         {
-            return this._contactInfos.Find(contact => contact.Id == id);
+            return this._contactInfos.Find(contact => contact.Phone == phone);
         }
 
         /// <summary>
@@ -64,18 +62,21 @@ namespace Assignment1.Persistence
         }
 
         /// <summary>
-        /// Deletes the contact with the given Guid.
+        /// Deletes the contact with the given phone number.
         /// </summary>
-        /// <param name="id">The Guid of the contact.</param>
-        public void DeleteContact(Guid id)
+        /// <param name="phone">The phone number of the contact.</param>
+        /// <returns>Either true or false depending on the deletion operation.</returns>
+        public bool DeleteContact(string phone)
         {
-            ContactInfo? contact = this.GetContactById(id);
+            ContactInfo? contact = this._contactInfos.Find(contact => contact.Phone == phone);
+
             if (contact == null)
             {
-                return;
+                return false;
             }
 
             this._contactInfos.Remove(contact);
+            return true;
         }
     }
 }

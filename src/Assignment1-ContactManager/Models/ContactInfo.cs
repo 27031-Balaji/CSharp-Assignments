@@ -15,7 +15,7 @@
         /// <param name="phone">The phone no to be added.</param>
         /// <param name="notes">The additional notes to be added if needed.</param>
         /// <returns>The joined names.</returns>
-        public ContactInfo(Guid id, string? name, string? email, string? phone, string? notes)
+        public ContactInfo(Guid id, string name, string email, string phone, string? notes)
         {
             this.Id = id;
             this.Name = name;
@@ -34,19 +34,19 @@
         /// Gets or sets the Name for the contact.
         /// </summary>
         /// <value>The name is the value used.</value>
-        public string? Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the email for the contact.
         /// </summary>
         /// <value>The email is the value used.</value>
-        public string? Email { get; set; }
+        public string Email { get; set; }
 
         /// <summary>
         /// Gets or sets the phone number for the contact.
         /// </summary>
         /// <value>The phone number is the value used.</value>
-        public string? Phone { get; set; }
+        public string Phone { get; set; }
 
         /// <summary>
         /// Gets or sets the notes for the contact if needed.
