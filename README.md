@@ -108,5 +108,5 @@ This is a basic banking system implemented using C# following the MVC architectu
  
 # Challenges Faced
  
-- Understanding and properly implementing abstraction and polymorphism was initially challenging.
+- Understanding and properly implementing abstraction and inheritance was initially challenging.
 - Identifying and removing duplicate code while keeping the application simple was another challenge.
