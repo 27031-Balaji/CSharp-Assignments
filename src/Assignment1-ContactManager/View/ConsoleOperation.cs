@@ -143,16 +143,16 @@ namespace Assignment1.View
                 return;
             }
 
-            int i = 1;
+            int count = 1;
             Console.WriteLine("Contact List\n");
             foreach (ContactInfo contact in contacts)
             {
-                Console.WriteLine($"Contact {i}: ");
+                Console.WriteLine($"Contact {count}: ");
                 Console.WriteLine($"Name: {contact.Name}");
                 Console.WriteLine($"Email: {contact.Email}");
                 Console.WriteLine($"Phone No.: {contact.Phone}");
                 Console.WriteLine($"Notes: {contact.Notes}\n");
-                i++;
+                count++;
             }
         }
 
