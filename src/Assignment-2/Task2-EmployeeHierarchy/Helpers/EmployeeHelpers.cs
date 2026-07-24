@@ -16,6 +16,16 @@
         }
 
         /// <summary>
+        /// Determines whether the specified choice is valid.
+        /// </summary>
+        /// <param name="choice">The choice character to validate.</param>
+        /// <returns>True if choice is A or B and not null or whitespace, else false.</returns>
+        public bool IsValidChoice(char choice)
+        {
+            return choice == 'A' || choice == 'B';
+        }
+
+        /// <summary>
         /// Determines whether the input string represents a positive decimal number.
         /// </summary>
         /// <param name="input">The input string representing the number to evaluate.</param>

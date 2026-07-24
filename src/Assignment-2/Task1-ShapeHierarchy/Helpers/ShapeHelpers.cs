@@ -12,7 +12,17 @@
         /// <returns>True if color is not null, empty, or whitespace, otherwise false.</returns>
         public bool IsValidColor(string color)
         {
-            return !string.IsNullOrWhiteSpace(color);
+            return !string.IsNullOrWhiteSpace(color) && Enum.TryParse<Color>(color, true, out _);
+        }
+
+        /// <summary>
+        /// Determines whether the specified choice is valid.
+        /// </summary>
+        /// <param name="choice">The choice character to validate.</param>
+        /// <returns>True if choice is A or B and not null or whitespace, else false.</returns>
+        public bool IsValidChoice(char choice)
+        {
+            return choice == 'A' || choice == 'B';
         }
 
         /// <summary>

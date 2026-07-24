@@ -5,6 +5,8 @@
     /// </summary>
     internal class Manager : Employee
     {
+        private const decimal BonusPercentage = 0.2m; // Managers receive a 20% bonus
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Manager"/> class.
         /// </summary>
@@ -21,7 +23,7 @@
         /// <returns>The calculated bonus as a decimal.</returns>
         public override decimal CalculateBonus()
         {
-            return this.Salary * 0.2m; // Managers receive a 20% bonus
+            return this.Salary * BonusPercentage;
         }
 
         /// <summary>

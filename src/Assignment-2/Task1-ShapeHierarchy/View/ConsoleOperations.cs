@@ -56,6 +56,12 @@ namespace Task1.View
                 Console.WriteLine("[B] Circle");
                 Console.Write("Enter your choice: ");
                 char choice = char.ToUpper(Console.ReadKey().KeyChar);
+                if (!this._shapeHelpers.IsValidChoice(choice))
+                {
+                    Console.WriteLine("\nEnter a valid choice (A or B). Please try again.");
+                    continue;
+                }
+
                 Console.WriteLine();
 
                 string color = this.GetColor();
@@ -69,10 +75,6 @@ namespace Task1.View
                     case 'B':
                         double radius = this.GetPositiveNumber("Radius");
                         return this._shapeServices.CreateCircle(color, radius);
-
-                    default:
-                        Console.WriteLine("Invalid choice. Please try again.");
-                        break;
                 }
             }
         }
@@ -92,27 +94,27 @@ namespace Task1.View
                     return color;
                 }
 
-                Console.WriteLine("Color cannot be empty. Please try again.");
+                Console.WriteLine("Enter a valid color.");
             }
         }
 
         /// <summary>
         /// Gets a valid positive number from the user.
         /// </summary>
-        /// <param name="name">The name of the value.</param>
+        /// <param name="dimension">The dimension that we are getting from the user.</param>
         /// <returns>The valid positive number.</returns>
-        private double GetPositiveNumber(string name)
+        private double GetPositiveNumber(string dimension)
         {
             while (true)
             {
-                Console.Write($"Enter {name}: ");
+                Console.Write($"Enter {dimension}: ");
                 string input = Console.ReadLine() ?? string.Empty;
                 if (this._shapeHelpers.IsValidPositiveNumber(input, out double number))
                 {
                     return number;
                 }
 
-                Console.WriteLine($"{name} must be a valid number greater than zero. Please try again.");
+                Console.WriteLine($"{dimension} must be a valid number greater than zero. Please try again.");
             }
         }
 
