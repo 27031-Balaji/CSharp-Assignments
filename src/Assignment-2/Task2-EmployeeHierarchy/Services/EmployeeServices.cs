@@ -10,7 +10,7 @@ namespace Task2.Services
         /// <summary>
         /// Creates a new manager object for bonus calculation and printing description.
         /// </summary>
-        /// <param name="name">The color of the manager.</param>
+        /// <param name="name">The name of the manager.</param>
         /// <param name="salary">The salary of the manager.</param>
         /// <returns>The manager object.</returns>
         public Employee CreateManager(string name, decimal salary)
@@ -21,7 +21,7 @@ namespace Task2.Services
         /// <summary>
         /// Creates a new developer object for bonus calculation and printing description.
         /// </summary>
-        /// <param name="name">The color of the developer.</param>
+        /// <param name="name">The name of the developer.</param>
         /// <param name="salary">The salary of the developer.</param>
         /// <returns>The developer object.</returns>
         public Employee CreateDeveloper(string name, decimal salary)
