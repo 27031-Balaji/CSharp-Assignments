@@ -49,6 +49,12 @@ namespace Task2.View
                 Console.WriteLine("[B] Manager");
                 Console.Write("Enter your choice: ");
                 char choice = char.ToUpper(Console.ReadKey().KeyChar);
+                if (!this._employeeHelper.IsValidChoice(choice))
+                {
+                    Console.WriteLine("\nEnter a valid choice (A or B). Please try again.");
+                    continue;
+                }
+
                 Console.WriteLine();
                 string name = this.GetName();
                 decimal salary = this.GetSalary();
@@ -59,10 +65,6 @@ namespace Task2.View
 
                     case 'B':
                         return this._employeeServices.CreateManager(name, salary);
-
-                    default:
-                        Console.WriteLine("Invalid choice. Please try again.");
-                        break;
                 }
             }
         }
