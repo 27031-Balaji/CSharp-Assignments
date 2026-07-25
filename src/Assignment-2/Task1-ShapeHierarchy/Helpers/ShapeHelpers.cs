@@ -1,4 +1,6 @@
-﻿namespace Task1.Helpers
+﻿using System.Drawing;
+
+namespace Task1.Helpers
 {
     /// <summary>
     /// Provides helper methods to validate user input for shape creation.
@@ -12,7 +14,7 @@
         /// <returns>True if color is not null, empty, or whitespace, otherwise false.</returns>
         public bool IsValidColor(string color)
         {
-            return !string.IsNullOrWhiteSpace(color) && Enum.TryParse<Color>(color, true, out _);
+            return !string.IsNullOrWhiteSpace(color) && Color.FromName(color).IsKnownColor;
         }
 
         /// <summary>
