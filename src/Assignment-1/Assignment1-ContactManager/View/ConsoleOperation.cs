@@ -1,153 +1,117 @@
-﻿using Assignment1.Helpers;
-using Assignment1.Models;
-using Assignment1.Services;
+﻿using Assignment1.Models;
 
 namespace Assignment1.View
 {
     /// <summary>
-    /// Handles all user interactions for contact operations.
+    /// Handles console input/output operations for the application.
     /// </summary>
     internal class ConsoleOperation
     {
-        private ContactServices _contactService = new ContactServices();
-        private ContactHelper _helper = new ContactHelper();
-
         /// <summary>
-        /// Displays the main menu and performs the selected operation.
+        /// Displays the main menu and reads the user's choice.
         /// </summary>
-        public void Run()
+        /// <returns>The user's selected option as a string.</returns>
+        public string ShowMainMenu()
         {
-            bool shallExit = false;
+            Console.WriteLine("Welcome to Contact Manager");
+            Console.WriteLine("========================================================");
+            Console.WriteLine("\nSelect an option:");
+            Console.WriteLine("[A] Add Contact");
+            Console.WriteLine("[B] Display Contacts");
+            Console.WriteLine("[C] Search Contact");
+            Console.WriteLine("[D] Delete Contact");
+            Console.WriteLine("[E] Edit Contact");
+            Console.WriteLine("[F] Exit");
+            Console.Write("\nEnter your choice: ");
 
-            while (!shallExit)
-            {
-                Console.WriteLine("Welcome to Contact Manager");
-                Console.WriteLine("========================================================");
-                Console.WriteLine("\nSelect an option:");
-                Console.WriteLine("[A] Add Contact");
-                Console.WriteLine("[B] Display Contacts");
-                Console.WriteLine("[C] Search Contact");
-                Console.WriteLine("[D] Delete Contact");
-                Console.WriteLine("[E] Edit Contact");
-                Console.WriteLine("[F] Exit");
-                Console.Write("\nEnter your choice: ");
-                string? option = Console.ReadLine();
-                if (this._helper.IsNullString(option))
-                {
-                    Console.WriteLine("Please enter a valid option.\n");
-                    Pause();
-                    continue;
-                }
-
-                switch (option!.ToUpper())
-                {
-                    case "A":
-                        this.AddContact();
-                        Pause();
-                        break;
-
-                    case "B":
-                        this.DisplayContacts();
-                        Pause();
-                        break;
-
-                    case "C":
-                        this.SearchContact();
-                        Pause();
-                        break;
-
-                    case "D":
-                        this.DeleteContact();
-                        Pause();
-                        break;
-
-                    case "E":
-                        this.EditContact();
-                        Pause();
-                        break;
-
-                    case "F":
-                        Console.WriteLine("Exiting Application...");
-                        shallExit = true;
-                        break;
-
-                    default:
-                        Console.WriteLine("Enter a valid option.");
-                        Pause();
-                        break;
-                }
-            }
+            return Console.ReadLine() ?? string.Empty;
         }
 
         /// <summary>
-        /// Gets user input and adds a contact.
+        /// Reads the contact name from the console.
         /// </summary>
-        public void AddContact()
+        /// <returns>The entered name.</returns>
+        public string ReadName()
         {
             Console.Write("Enter your name: ");
-            string? name = Console.ReadLine();
-            if (this._helper.IsNullString(name))
-            {
-                Console.WriteLine("Ensure you entered the name properly.");
-                return;
-            }
-
-            Console.Write("Enter your email: ");
-            string? email = Console.ReadLine();
-            if (this._helper.IsNullString(email))
-            {
-                Console.WriteLine("Ensure you entered the email properly.");
-                return;
-            }
-
-            if (!this._helper.ValidateEmail(email!))
-            {
-                Console.WriteLine("Enter a valid email.");
-                return;
-            }
-
-            Console.Write("Enter your phone number: ");
-            string? phone = Console.ReadLine();
-            if (this._helper.IsNullString(phone))
-            {
-                Console.WriteLine("Ensure you entered the phone number properly.");
-                return;
-            }
-
-            if (!this._helper.ValidatePhone(phone!))
-            {
-                Console.WriteLine("Phone number should contain exactly 10 digits and no characters.");
-                return;
-            }
-
-            if (this._contactService.IsContactExists(phone!))
-            {
-                Console.WriteLine("Phone number already exists. Try again with a different phone number.");
-                return;
-            }
-
-            Console.Write("Enter notes (Optional): ");
-            string? notes = Console.ReadLine();
-            Console.WriteLine(this._contactService.AddContact(name!.Trim(), email!, phone!, notes));
+            return Console.ReadLine() ?? string.Empty;
         }
 
         /// <summary>
-        /// Displays all contacts.
+        /// Reads the contact email from the console.
         /// </summary>
-        public void DisplayContacts()
+        /// <returns>The entered email.</returns>
+        public string ReadEmail()
         {
-            List<ContactInfo> contacts = this._contactService.GetAllContacts();
-            if (this._helper.IsContactListEmpty(contacts))
-            {
-                Console.WriteLine("The contact list is empty.\n");
-                return;
-            }
+            Console.Write("Enter your email: ");
+            return Console.ReadLine() ?? string.Empty;
+        }
 
+        /// <summary>
+        /// Reads the contact phone number from the console.
+        /// </summary>
+        /// <returns>The entered phone number.</returns>
+        public string ReadPhone()
+        {
+            Console.Write("Enter your phone number: ");
+            return Console.ReadLine() ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Reads the phone number used for editing a contact.
+        /// </summary>
+        /// <returns>The entered phone number for edit operations.</returns>
+        public string ReadEditPhone()
+        {
+            Console.Write("Enter the phone number of the contact to edit: ");
+            return Console.ReadLine() ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Reads optional notes for a contact.
+        /// </summary>
+        /// <returns>The entered notes (may be empty).</returns>
+        public string ReadNotes()
+        {
+            Console.Write("Enter notes (Optional): ");
+            return Console.ReadLine() ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Displays the edit menu and reads the user's choice.
+        /// </summary>
+        /// <returns>The user's selected edit option.</returns>
+        public string ShowEditMenu()
+        {
+            Console.WriteLine("\n[A] Edit Name");
+            Console.WriteLine("[B] Edit Email");
+            Console.WriteLine("[C] Edit Notes");
+            Console.WriteLine("[D] Exit");
+            Console.Write("Choose an option: ");
+
+            return Console.ReadLine() ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Shows a message to the console.
+        /// </summary>
+        /// <param name="message">The message to display.</param>
+        public void ShowMessage(string message)
+        {
+            Console.WriteLine(message);
+        }
+
+        /// <summary>
+        /// Displays a list of contacts.
+        /// </summary>
+        /// <param name="contacts">The contacts to display.</param>
+        public void DisplayContacts(List<ContactInfo> contacts)
+        {
             int count = 1;
             Console.WriteLine("Contact List\n");
             foreach (ContactInfo contact in contacts)
             {
-                Console.WriteLine($"Contact {count}: ");
+                Console.WriteLine($"Contact {count}:");
                 Console.WriteLine($"Name: {contact.Name}");
                 Console.WriteLine($"Email: {contact.Email}");
                 Console.WriteLine($"Phone No.: {contact.Phone}");
@@ -157,38 +121,11 @@ namespace Assignment1.View
         }
 
         /// <summary>
-        /// Searches a contact.
+        /// Displays a single contact's details.
         /// </summary>
-        public void SearchContact()
+        /// <param name="contact">The contact to display.</param>
+        public void DisplayContact(ContactInfo contact)
         {
-            List<ContactInfo> contacts = this._contactService.GetAllContacts();
-            if (this._helper.IsContactListEmpty(contacts))
-            {
-                Console.WriteLine("Contact list is empty.");
-                return;
-            }
-
-            Console.Write("Enter the phone number: ");
-            string? phone = Console.ReadLine();
-            if (this._helper.IsNullString(phone))
-            {
-                Console.WriteLine("Enter the phone number properly.");
-                return;
-            }
-
-            if (!this._helper.ValidatePhone(phone!))
-            {
-                Console.WriteLine("Phone number should contain exactly 10 digits and no characters.");
-                return;
-            }
-
-            ContactInfo? contact = this._contactService.SearchContact(phone!);
-            if (contact == null)
-            {
-                Console.WriteLine("Contact not found.");
-                return;
-            }
-
             Console.WriteLine("\nContact Found!\n");
             Console.WriteLine($"Name : {contact.Name}");
             Console.WriteLine($"Email : {contact.Email}");
@@ -197,140 +134,38 @@ namespace Assignment1.View
         }
 
         /// <summary>
-        /// Deletes a contact with the phone number as the input.
+        /// Waits for a key press and clears the console.
         /// </summary>
-        public void DeleteContact()
-        {
-            if (this._contactService.IsContactListEmpty())
-            {
-                Console.WriteLine("Contact list is empty.");
-                return;
-            }
-
-            Console.Write("Enter the phone number: ");
-            string? phone = Console.ReadLine();
-            if (this._helper.IsNullString(phone))
-            {
-                Console.WriteLine("Enter the phone number properly.");
-                return;
-            }
-
-            if (!this._helper.ValidatePhone(phone!))
-            {
-                Console.WriteLine("Phone number should contain exactly 10 digits and no characters.");
-                return;
-            }
-
-            Console.WriteLine(this._contactService.DeleteContact(phone!));
-        }
-
-        /// <summary>
-        /// Edits a contact with phone number as the input.
-        /// </summary>
-        public void EditContact()
-        {
-            if (this._contactService.IsContactListEmpty())
-            {
-                Console.WriteLine("Contact list is empty.");
-                return;
-            }
-
-            Console.Write("Enter the phone number of the contact to edit: ");
-            string? phone = Console.ReadLine();
-            if (this._helper.IsNullString(phone))
-            {
-                Console.WriteLine("Enter the phone number properly.");
-                return;
-            }
-
-            if (!this._helper.ValidatePhone(phone!))
-            {
-                Console.WriteLine("Phone number should contain exactly 10 digits and no characters.");
-                return;
-            }
-
-            if (!this._contactService.IsContactExists(phone!))
-            {
-                Console.WriteLine("Contact not found.");
-                return;
-            }
-
-            bool shallExit = false;
-            while (!shallExit)
-            {
-                Console.WriteLine("\n[A] Edit Name");
-                Console.WriteLine("[B] Edit Email");
-                Console.WriteLine("[C] Edit Notes");
-                Console.WriteLine("[D] Exit");
-                Console.Write("Choose an option: ");
-                string? option = Console.ReadLine();
-
-                if (this._helper.IsNullString(option))
-                {
-                    Console.WriteLine("Enter a valid option.\n");
-                    continue;
-                }
-
-                switch (option!.ToUpper())
-                {
-                    case "A":
-                        Console.Write("Enter the new name: ");
-                        string? name = Console.ReadLine();
-
-                        if (this._helper.IsNullString(name))
-                        {
-                            Console.WriteLine("Enter the name properly.");
-                            break;
-                        }
-
-                        Console.WriteLine(this._contactService.EditName(phone!, name!));
-                        break;
-
-                    case "B":
-                        Console.Write("Enter the new email: ");
-                        string? email = Console.ReadLine();
-
-                        if (this._helper.IsNullString(email))
-                        {
-                            Console.WriteLine("Enter the email properly.");
-                            break;
-                        }
-
-                        if (!this._helper.ValidateEmail(email!))
-                        {
-                            Console.WriteLine("Enter a valid email.");
-                            break;
-                        }
-
-                        Console.WriteLine(this._contactService.EditEmail(phone!, email!));
-                        break;
-
-                    case "C":
-                        Console.Write("Enter the new notes: ");
-                        string? notes = Console.ReadLine();
-                        Console.WriteLine(this._contactService.EditNotes(phone!, notes));
-                        break;
-
-                    case "D":
-                        shallExit = true;
-                        Console.WriteLine("Edit function completed.\n");
-                        break;
-
-                    default:
-                        Console.WriteLine("Enter a valid option.\n");
-                        break;
-                }
-            }
-        }
-
-        /// <summary>
-        /// This method Pause is used to clear the console for a better user experience.
-        /// </summary>
-        private static void Pause()
+        public void FlushScreen()
         {
             Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();
             Console.Clear();
+        }
+
+        /// <summary>
+        /// Asks the user whether they want to retry and returns the result.
+        /// </summary>
+        /// <returns>True if the user chooses to retry; otherwise false.</returns>
+        public bool AskRetry()
+        {
+            while (true)
+            {
+                Console.Write("\nTry again? (Y/N): ");
+                string choice = Console.ReadLine() ?? string.Empty;
+                switch (choice.Trim().ToUpper())
+                {
+                    case "Y":
+                        return true;
+
+                    case "N":
+                        return false;
+
+                    default:
+                        Console.WriteLine("Please enter Y or N.");
+                        break;
+                }
+            }
         }
     }
 }

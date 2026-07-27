@@ -19,14 +19,11 @@ namespace Assignment1.Services
         /// <param name="email">The email to be added.</param>
         /// <param name="phone">The phone number to be added.</param>
         /// <param name="notes">The notes to be added.</param>
-        /// <returns>Status message.</returns>
-        public string AddContact(string name, string email, string phone, string? notes)
+        public void AddContact(string name, string email, string phone, string? notes)
         {
             Guid id = Guid.NewGuid();
             ContactInfo contact = new ContactInfo(id, name, email, phone, notes);
             this._repository.AddContactInfo(contact);
-            this._repository.SortContacts();
-            return "Contact Added Successfully.";
         }
 
         /// <summary>
@@ -35,8 +32,8 @@ namespace Assignment1.Services
         /// <returns>All contacts or an error message.</returns>
         public List<ContactInfo> GetAllContacts()
         {
-            List<ContactInfo> contacts = this._repository.GetAllContacts();
-            return contacts;
+            this._repository.SortContacts();
+            return this._repository.GetAllContacts();
         }
 
         /// <summary>
@@ -46,8 +43,7 @@ namespace Assignment1.Services
         /// <returns>The contact if found; otherwise null.</returns>
         public ContactInfo? SearchContact(string phone)
         {
-            List<ContactInfo> contacts = this._repository.GetAllContacts();
-            return contacts.Find(contact => contact.Phone == phone);
+            return this._repository.GetContactByPhone(phone);
         }
 
         /// <summary>
@@ -55,17 +51,16 @@ namespace Assignment1.Services
         /// </summary>
         /// <param name="phone">The phone number of the contact.</param>
         /// <returns>Status message.</returns>
-        public string DeleteContact(string phone)
+        public bool DeleteContact(string phone)
         {
             ContactInfo? contact = this._repository.GetContactByPhone(phone);
-
             if (contact == null)
             {
-                return "Contact not found.";
+                return false;
             }
 
-            this._repository.DeleteContact(phone);
-            return "Contact deleted successfully.";
+            this._repository.DeleteContact(contact);
+            return true;
         }
 
         /// <summary>
@@ -74,17 +69,16 @@ namespace Assignment1.Services
         /// <param name="phone">The phone number of the contact.</param>
         /// <param name="name">The new name.</param>
         /// <returns>Status message.</returns>
-        public string EditName(string phone, string name)
+        public bool EditName(string phone, string name)
         {
             ContactInfo? contact = this._repository.GetContactByPhone(phone);
             if (contact == null)
             {
-                return "Contact not found.";
+                return false;
             }
 
-            contact.Name = name.Trim();
-            this._repository.SortContacts();
-            return "Name updated successfully.";
+            this._repository.UpdateName(contact, name.Trim());
+            return true;
         }
 
         /// <summary>
@@ -93,16 +87,16 @@ namespace Assignment1.Services
         /// <param name="phone">The phone number of the contact.</param>
         /// <param name="email">The new email.</param>
         /// <returns>Status message.</returns>
-        public string EditEmail(string phone, string email)
+        public bool EditEmail(string phone, string email)
         {
             ContactInfo? contact = this._repository.GetContactByPhone(phone);
             if (contact == null)
             {
-                return "Contact not found.";
+                return false;
             }
 
-            contact.Email = email;
-            return "Email updated successfully.";
+            this._repository.UpdateEmail(contact, email);
+            return true;
         }
 
         /// <summary>
@@ -111,26 +105,25 @@ namespace Assignment1.Services
         /// <param name="phone">The phone number of the contact.</param>
         /// <param name="notes">The new notes.</param>
         /// <returns>Status message.</returns>
-        public string EditNotes(string phone, string? notes)
+        public bool EditNotes(string phone, string? notes)
         {
             ContactInfo? contact = this._repository.GetContactByPhone(phone);
             if (contact == null)
             {
-                return "Contact not found.";
+                return false;
             }
 
-            contact.Notes = notes;
-            return "Notes updated successfully.";
+            this._repository.UpdateNotes(contact, notes);
+            return true;
         }
 
         /// <summary>
         /// Checks whether the contact list is empty.
         /// </summary>
         /// <returns>Return True or False based on the contact list emptiness.</returns>
-        public bool IsContactListEmpty()
+        public bool IsContactEmpty()
         {
-            List<ContactInfo>? contacts = this._repository.GetAllContacts();
-            return this._helper.IsContactListEmpty(contacts);
+            return this._repository.ContactCount == 0;
         }
 
         /// <summary>
@@ -138,9 +131,9 @@ namespace Assignment1.Services
         /// </summary>
         /// <param name="phone">The phone number.</param>
         /// <returns>True if the contact exists, otherwise false.</returns>
-        public bool IsContactExists(string phone)
+        public bool IsContactPhoneNumberExists(string phone)
         {
-            return this._repository.IsContactExists(phone);
+            return this._repository.IsContactExistsByPhoneNumber(phone);
         }
     }
 }

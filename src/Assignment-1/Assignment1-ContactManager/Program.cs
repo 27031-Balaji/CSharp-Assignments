@@ -1,9 +1,9 @@
-﻿using Assignment1.View;
+﻿using Assignment1.Controllers;
 
-namespace Contact_Manager
+namespace ContactManager
 {
     /// <summary>
-    /// This class Program does all the functionalities of the Contact Manager.
+    /// The Program class is the entry point of the application.
     /// </summary>
     internal class Program
     {
@@ -13,8 +13,8 @@ namespace Contact_Manager
         /// <param name="args">The command line arguments.</param>
         public static void Main(string[] args)
         {
-            ConsoleOperation console = new ConsoleOperation();
-            console.Run();
+            ContactController controller = new ContactController();
+            controller.Run();
         }
     }
 }
