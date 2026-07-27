@@ -32,8 +32,9 @@ namespace Assignment1.Services
         /// <returns>All contacts or an error message.</returns>
         public List<ContactInfo> GetAllContacts()
         {
-            this._repository.SortContacts();
-            return this._repository.GetAllContacts();
+            List<ContactInfo> contacts = this._repository.GetAllContacts();
+            contacts.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.Ordinal));
+            return contacts;
         }
 
         /// <summary>

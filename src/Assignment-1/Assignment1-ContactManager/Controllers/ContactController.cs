@@ -23,7 +23,6 @@ namespace Assignment1.Controllers
             while (isRunning)
             {
                 string? option = this._view.ShowMainMenu();
-
                 switch (option!.ToUpper())
                 {
                     case "A":

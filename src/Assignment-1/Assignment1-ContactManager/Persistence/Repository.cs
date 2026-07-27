@@ -69,14 +69,6 @@ namespace Assignment1.Persistence
         }
 
         /// <summary>
-        /// Sorts the contacts based on their names.
-        /// </summary>
-        public void SortContacts()
-        {
-            this._contacts.Sort((a, b) => string.Compare(a.Name, b.Name));
-        }
-
-        /// <summary>
         /// Deletes the contact from the contact list.
         /// </summary>
         /// <param name="contact">The contact entry to be deleted.</param>

@@ -23,7 +23,7 @@
         }
 
         /// <summary>
-        /// Gets or sets the Guid for the contact.
+        /// Gets the Guid for the contact.
         /// </summary>
         /// <value>The Guid is the value used.</value>
         public Guid Id { get; }
