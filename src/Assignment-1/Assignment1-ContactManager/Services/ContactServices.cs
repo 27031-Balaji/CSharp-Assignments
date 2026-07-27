@@ -10,7 +10,6 @@ namespace Assignment1.Services
     internal class ContactServices
     {
         private Repository _repository = new Repository();
-        private ContactHelper _helper = new ContactHelper();
 
         /// <summary>
         /// Adds a contact to the repository.
