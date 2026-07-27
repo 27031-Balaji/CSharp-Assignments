@@ -34,6 +34,7 @@ namespace Assignment1.View
         public string ReadName()
         {
             Console.Write("Enter your name: ");
+
             return Console.ReadLine() ?? string.Empty;
         }
 
@@ -44,6 +45,7 @@ namespace Assignment1.View
         public string ReadEmail()
         {
             Console.Write("Enter your email: ");
+
             return Console.ReadLine() ?? string.Empty;
         }
 
@@ -54,6 +56,7 @@ namespace Assignment1.View
         public string ReadPhone()
         {
             Console.Write("Enter your phone number: ");
+
             return Console.ReadLine() ?? string.Empty;
         }
 
@@ -64,6 +67,7 @@ namespace Assignment1.View
         public string ReadEditPhone()
         {
             Console.Write("Enter the phone number of the contact to edit: ");
+
             return Console.ReadLine() ?? string.Empty;
         }
 
@@ -74,6 +78,7 @@ namespace Assignment1.View
         public string ReadNotes()
         {
             Console.Write("Enter notes (Optional): ");
+
             return Console.ReadLine() ?? string.Empty;
         }
 
@@ -134,9 +139,17 @@ namespace Assignment1.View
         }
 
         /// <summary>
-        /// Waits for a key press and clears the console.
+        /// Clears the console.
         /// </summary>
         public void FlushScreen()
+        {
+            Console.Clear();
+        }
+
+        /// <summary>
+        /// Clears the console with a key press from the user.
+        /// </summary>
+        public void FlushScreenWithKey()
         {
             Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();

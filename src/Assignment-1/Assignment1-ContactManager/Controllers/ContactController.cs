@@ -10,9 +10,32 @@ namespace Assignment1.Controllers
     /// </summary>
     internal class ContactController
     {
-        private ContactServices _contactService = new ContactServices();
-        private ContactHelper _helper = new ContactHelper();
-        private ConsoleOperation _view = new ConsoleOperation();
+        // Validation Messages
+        private const string InvalidNameMessage = "Enter a valid name.";
+        private const string InvalidEmailMessage = "Enter a valid email.";
+        private const string InvalidPhoneMessage = "Enter a valid phone number.";
+        private const string InvalidOptionMessage = "Enter a valid option.";
+
+        // Contact Messages
+        private const string ContactListEmptyMessage = "Contact list is empty.";
+        private const string ContactNotFoundMessage = "Contact not found.";
+        private const string PhoneExistsMessage = "Phone number already exists.";
+        private const string ContactAddedMessage = "Contact added successfully.";
+        private const string ContactDeletedMessage = "Contact deleted successfully.";
+        private const string DeleteFailedMessage = "Failed to delete contact.";
+
+        // Edit Messages
+        private const string NameUpdatedMessage = "Name updated successfully.";
+        private const string EmailUpdatedMessage = "Email updated successfully.";
+        private const string NotesUpdatedMessage = "Notes updated successfully.";
+        private const string EditCompletedMessage = "Edit function completed.";
+
+        // Application Messages
+        private const string ExitMessage = "Exiting Application...";
+
+        private readonly ContactServices _contactService = new ContactServices();
+        private readonly ContactHelper _helper = new ContactHelper();
+        private readonly ConsoleOperation _view = new ConsoleOperation();
 
         /// <summary>
         /// Starts and runs the main controller loop.
@@ -20,10 +43,10 @@ namespace Assignment1.Controllers
         public void Run()
         {
             bool isRunning = true;
-            while (isRunning)
+            do
             {
                 string? option = this._view.ShowMainMenu();
-                switch (option!.ToUpper())
+                switch (option!.Trim().ToUpper())
                 {
                     case "A":
                         this.AddContact();
@@ -46,20 +69,16 @@ namespace Assignment1.Controllers
                         break;
 
                     case "F":
-                        this._view.ShowMessage("Exiting Application...");
+                        this._view.ShowMessage(ExitMessage);
                         isRunning = false;
                         break;
 
                     default:
-                        this._view.ShowMessage("Enter a valid option.");
+                        this._view.ShowMessage(InvalidOptionMessage);
                         break;
                 }
-
-                if (isRunning)
-                {
-                    this._view.FlushScreen();
-                }
             }
+            while (isRunning);
         }
 
         /// <summary>
@@ -70,7 +89,7 @@ namespace Assignment1.Controllers
         {
             if (this._contactService.IsContactEmpty())
             {
-                this._view.ShowMessage("Contact list is empty.");
+                this._view.ShowMessage(ContactListEmptyMessage);
                 return false;
             }
 
@@ -83,14 +102,15 @@ namespace Assignment1.Controllers
         private void AddContact()
         {
             string name;
-            while (true)
+            do
             {
                 name = this._view.ReadName();
                 if (!this._helper.IsValidName(name))
                 {
-                    this._view.ShowMessage("Enter a valid name.");
+                    this._view.ShowMessage(InvalidNameMessage);
                     if (!this._view.AskRetry())
                     {
+                        this._view.FlushScreen();
                         return;
                     }
 
@@ -99,16 +119,18 @@ namespace Assignment1.Controllers
 
                 break;
             }
+            while (true);
 
             string email;
-            while (true)
+            do
             {
                 email = this._view.ReadEmail();
                 if (!this._helper.IsValidEmail(email))
                 {
-                    this._view.ShowMessage("Enter a valid email.");
+                    this._view.ShowMessage(InvalidEmailMessage);
                     if (!this._view.AskRetry())
                     {
+                        this._view.FlushScreen();
                         return;
                     }
 
@@ -117,16 +139,18 @@ namespace Assignment1.Controllers
 
                 break;
             }
+            while (true);
 
             string phone;
-            while (true)
+            do
             {
                 phone = this._view.ReadPhone();
                 if (!this._helper.IsValidPhone(phone))
                 {
-                    this._view.ShowMessage("Enter a valid phone number.");
+                    this._view.ShowMessage(InvalidPhoneMessage);
                     if (!this._view.AskRetry())
                     {
+                        this._view.FlushScreen();
                         return;
                     }
 
@@ -135,9 +159,10 @@ namespace Assignment1.Controllers
 
                 if (this._contactService.IsContactPhoneNumberExists(phone))
                 {
-                    this._view.ShowMessage("Phone number already exists.");
+                    this._view.ShowMessage(PhoneExistsMessage);
                     if (!this._view.AskRetry())
                     {
+                        this._view.FlushScreen();
                         return;
                     }
 
@@ -146,10 +171,12 @@ namespace Assignment1.Controllers
 
                 break;
             }
+            while (true);
 
             string? notes = this._view.ReadNotes();
             this._contactService.AddContact(name.Trim(), email, phone, notes);
-            this._view.ShowMessage("Contact added successfully.");
+            this._view.ShowMessage(ContactAddedMessage);
+            this._view.FlushScreenWithKey();
         }
 
         /// <summary>
@@ -164,6 +191,7 @@ namespace Assignment1.Controllers
 
             List<ContactInfo> contacts = this._contactService.GetAllContacts();
             this._view.DisplayContacts(contacts);
+            this._view.FlushScreenWithKey();
         }
 
         /// <summary>
@@ -177,14 +205,15 @@ namespace Assignment1.Controllers
             }
 
             string phone;
-            while (true)
+            do
             {
                 phone = this._view.ReadPhone();
                 if (!this._helper.IsValidPhone(phone))
                 {
-                    this._view.ShowMessage("Enter a valid phone number.");
+                    this._view.ShowMessage(InvalidPhoneMessage);
                     if (!this._view.AskRetry())
                     {
+                        this._view.FlushScreen();
                         return;
                     }
 
@@ -194,9 +223,10 @@ namespace Assignment1.Controllers
                 ContactInfo? contact = this._contactService.SearchContact(phone);
                 if (contact == null)
                 {
-                    this._view.ShowMessage("Contact not found.");
+                    this._view.ShowMessage(ContactNotFoundMessage);
                     if (!this._view.AskRetry())
                     {
+                        this._view.FlushScreen();
                         return;
                     }
 
@@ -206,6 +236,9 @@ namespace Assignment1.Controllers
                 this._view.DisplayContact(contact);
                 break;
             }
+            while (true);
+
+            this._view.FlushScreenWithKey();
         }
 
         /// <summary>
@@ -219,14 +252,15 @@ namespace Assignment1.Controllers
             }
 
             string phone;
-            while (true)
+            do
             {
                 phone = this._view.ReadPhone();
                 if (!this._helper.IsValidPhone(phone))
                 {
-                    this._view.ShowMessage("Enter a valid phone number.");
+                    this._view.ShowMessage(InvalidPhoneMessage);
                     if (!this._view.AskRetry())
                     {
+                        this._view.FlushScreen();
                         return;
                     }
 
@@ -235,26 +269,22 @@ namespace Assignment1.Controllers
 
                 if (!this._contactService.IsContactPhoneNumberExists(phone))
                 {
-                    this._view.ShowMessage("Contact not found.");
+                    this._view.ShowMessage(ContactNotFoundMessage);
                     if (!this._view.AskRetry())
                     {
+                        this._view.FlushScreen();
                         return;
                     }
 
                     continue;
                 }
 
-                if (this._contactService.DeleteContact(phone))
-                {
-                    this._view.ShowMessage("Contact deleted successfully.");
-                }
-                else
-                {
-                    this._view.ShowMessage("Failed to delete contact.");
-                }
-
+                this._view.ShowMessage(this._contactService.DeleteContact(phone) ? ContactDeletedMessage : DeleteFailedMessage);
                 break;
             }
+            while (true);
+
+            this._view.FlushScreenWithKey();
         }
 
         /// <summary>
@@ -268,14 +298,15 @@ namespace Assignment1.Controllers
             }
 
             string phone;
-            while (true)
+            do
             {
                 phone = this._view.ReadEditPhone();
                 if (!this._helper.IsValidPhone(phone))
                 {
-                    this._view.ShowMessage("Enter a valid phone number.");
+                    this._view.ShowMessage(InvalidPhoneMessage);
                     if (!this._view.AskRetry())
                     {
+                        this._view.FlushScreen();
                         return;
                     }
 
@@ -284,9 +315,10 @@ namespace Assignment1.Controllers
 
                 if (!this._contactService.IsContactPhoneNumberExists(phone))
                 {
-                    this._view.ShowMessage("Contact not found.");
+                    this._view.ShowMessage(ContactNotFoundMessage);
                     if (!this._view.AskRetry())
                     {
+                        this._view.FlushScreen();
                         return;
                     }
 
@@ -295,23 +327,25 @@ namespace Assignment1.Controllers
 
                 break;
             }
+            while (true);
 
             bool isRunning = true;
-            while (isRunning)
+            do
             {
                 string? option = this._view.ShowEditMenu();
                 switch (option?.Trim().ToUpper())
                 {
                     case "A":
                         string name;
-                        while (true)
+                        do
                         {
                             name = this._view.ReadName();
                             if (!this._helper.IsValidName(name))
                             {
-                                this._view.ShowMessage("Enter a valid name.");
+                                this._view.ShowMessage(InvalidNameMessage);
                                 if (!this._view.AskRetry())
                                 {
+                                    this._view.FlushScreen();
                                     return;
                                 }
 
@@ -320,28 +354,22 @@ namespace Assignment1.Controllers
 
                             break;
                         }
+                        while (true);
 
-                        if (this._contactService.EditName(phone, name))
-                        {
-                            this._view.ShowMessage("Name updated successfully.");
-                        }
-                        else
-                        {
-                            this._view.ShowMessage("Contact not found.");
-                        }
-
+                        this._view.ShowMessage(this._contactService.EditName(phone, name) ? NameUpdatedMessage : ContactNotFoundMessage);
                         break;
 
                     case "B":
                         string email;
-                        while (true)
+                        do
                         {
                             email = this._view.ReadEmail();
                             if (!this._helper.IsValidEmail(email))
                             {
-                                this._view.ShowMessage("Enter a valid email.");
+                                this._view.ShowMessage(InvalidEmailMessage);
                                 if (!this._view.AskRetry())
                                 {
+                                    this._view.FlushScreen();
                                     return;
                                 }
 
@@ -350,41 +378,28 @@ namespace Assignment1.Controllers
 
                             break;
                         }
+                        while (true);
 
-                        if (this._contactService.EditEmail(phone, email))
-                        {
-                            this._view.ShowMessage("Email updated successfully.");
-                        }
-                        else
-                        {
-                            this._view.ShowMessage("Contact not found.");
-                        }
-
+                        this._view.ShowMessage(this._contactService.EditName(phone, email) ? EmailUpdatedMessage : ContactNotFoundMessage);
                         break;
 
                     case "C":
                         string? notes = this._view.ReadNotes();
-                        if (this._contactService.EditNotes(phone, notes))
-                        {
-                            this._view.ShowMessage("Notes updated successfully.");
-                        }
-                        else
-                        {
-                            this._view.ShowMessage("Contact not found.");
-                        }
-
+                        this._view.ShowMessage(this._contactService.EditName(phone, notes) ? NotesUpdatedMessage : ContactNotFoundMessage);
                         break;
 
                     case "D":
                         isRunning = false;
-                        this._view.ShowMessage("Edit function completed.");
+                        this._view.ShowMessage(EditCompletedMessage);
                         break;
 
                     default:
-                        this._view.ShowMessage("Enter a valid option.");
+                        this._view.ShowMessage(InvalidOptionMessage);
                         break;
                 }
             }
+            while (isRunning);
+            this._view.FlushScreenWithKey();
         }
     }
 }

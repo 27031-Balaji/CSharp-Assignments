@@ -34,6 +34,7 @@ namespace Assignment1.Services
         {
             List<ContactInfo> contacts = this._repository.GetAllContacts();
             contacts.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.Ordinal));
+
             return contacts;
         }
 
@@ -61,6 +62,7 @@ namespace Assignment1.Services
             }
 
             this._repository.DeleteContact(contact);
+
             return true;
         }
 
@@ -79,6 +81,7 @@ namespace Assignment1.Services
             }
 
             this._repository.UpdateName(contact, name.Trim());
+
             return true;
         }
 
@@ -97,6 +100,7 @@ namespace Assignment1.Services
             }
 
             this._repository.UpdateEmail(contact, email);
+
             return true;
         }
 
@@ -115,6 +119,7 @@ namespace Assignment1.Services
             }
 
             this._repository.UpdateNotes(contact, notes);
+
             return true;
         }
 
