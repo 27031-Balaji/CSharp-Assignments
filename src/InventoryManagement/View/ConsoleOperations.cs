@@ -1,4 +1,5 @@
-﻿using InventoryManagement.Models;
+﻿using ConsoleTables;
+using InventoryManagement.Models;
 
 namespace InventoryManagement.View
 {
@@ -87,12 +88,36 @@ namespace InventoryManagement.View
         }
 
         /// <summary>
-        /// Displays a message.
+        /// This method is used to show success message with Green color.
         /// </summary>
-        /// <param name="message">The message to display.</param>
-        public void ShowMessage(string message)
+        /// <param name="message">The message to be printed.</param>
+        public void ShowSuccess(string message)
         {
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine(message);
+            Console.ResetColor();
+        }
+
+        /// <summary>
+        /// This method is used to show error message with Red color.
+        /// </summary>
+        /// <param name="message">The message to be printed.</param>
+        public void ShowError(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(message);
+            Console.ResetColor();
+        }
+
+        /// <summary>
+        /// This method is used to show information message with Cyan color.
+        /// </summary>
+        /// <param name="message">The message to be printed.</param>
+        public void ShowInfo(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine(message);
+            Console.ResetColor();
         }
 
         /// <summary>
@@ -101,19 +126,16 @@ namespace InventoryManagement.View
         /// <param name="products">The product list to display.</param>
         public void DisplayProducts(List<Product> products)
         {
-            int count = 1;
-            Console.WriteLine("\nProduct List\n");
-            Console.WriteLine("+-----+--------------+----------------------------------------+---------------+----------+");
-            Console.WriteLine($"| {"No.",-3} | {"Product ID",-12} | {"Product Name",-38} | {"Price",-13} | {"Quantity",-8} |");
-            Console.WriteLine("+-----+--------------+----------------------------------------+---------------+----------+");
-            foreach (Product product in products)
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("\nProduct List: \n");
+            Console.ResetColor();
+            var table = new ConsoleTable("Serial Number", "Product Id", "Product Name", "Price", "Stock");
+            for (int i = 0; i < products.Count; i++)
             {
-                string productName = product.Name.Length > 38 ? product.Name.Substring(0, 35) + "..." : product.Name;
-                Console.WriteLine($"| {count,-3} | {product.ProductId,-12} | {productName,-38} | {"Rs. " + product.Price.ToString("F2"),-13} | {product.Quantity,-8} |");
-                count++;
+                table.AddRow(i + 1, products[i].ProductId, products[i].Name, products[i].Price,  products[i].Quantity);
             }
 
-            Console.WriteLine("+-----+--------------+----------------------------------------+---------------+----------+");
+            table.Write(Format.MarkDown);
         }
 
         /// <summary>
@@ -122,14 +144,12 @@ namespace InventoryManagement.View
         /// <param name="product">The specific product to display.</param>
         public void DisplaySingleProduct(Product product)
         {
-            Console.WriteLine("\nProduct Found\n");
-            Console.WriteLine("+--------------+----------------------------------------+---------------+----------+");
-            Console.WriteLine($"| {"Product ID",-12} | {"Product Name",-38} | {"Price",-13} | {"Quantity",-8} |");
-            Console.WriteLine("+--------------+----------------------------------------+---------------+----------+");
-
-            string productName = product.Name.Length > 38 ? product.Name.Substring(0, 35) + "..." : product.Name;
-            Console.WriteLine($"| {product.ProductId,-12} | {productName,-38} | {"Rs. " + product.Price.ToString("F2"),-13} | {product.Quantity,-8} |");
-            Console.WriteLine("+--------------+----------------------------------------+---------------+----------+");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("\nProduct Found!\n");
+            Console.ResetColor();
+            var table = new ConsoleTable("Product Id", "Product Name", "Price", "Stock");
+            table.AddRow(product.ProductId, product.Name, product.Price, product.Quantity);
+            table.Write(Format.MarkDown);
         }
 
         /// <summary>
@@ -154,7 +174,9 @@ namespace InventoryManagement.View
         {
             while (true)
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write("\nDelete this product? (Y/N): ");
+                Console.ResetColor();
                 string choice = Console.ReadLine() ?? string.Empty;
                 switch (choice.Trim().ToUpper())
                 {
@@ -184,9 +206,11 @@ namespace InventoryManagement.View
         /// </summary>
         public void FlushScreenWithKey()
         {
+            Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();
             Console.Clear();
+            Console.ResetColor();
         }
 
         /// <summary>
@@ -197,7 +221,9 @@ namespace InventoryManagement.View
         {
             while (true)
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write("\nTry again? (Y/N): ");
+                Console.ResetColor();
                 string choice = Console.ReadLine() ?? string.Empty;
                 switch (choice.Trim().ToUpper())
                 {

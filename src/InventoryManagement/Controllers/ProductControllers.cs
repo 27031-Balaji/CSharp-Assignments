@@ -96,12 +96,12 @@ namespace InventoryManagement.Controllers
                         break;
 
                     case "I":
-                        this._view.ShowMessage(ExitMessage);
+                        this._view.ShowInfo(ExitMessage);
                         isRunning = false;
                         break;
 
                     default:
-                        this._view.ShowMessage(InvalidOptionMessage);
+                        this._view.ShowError(InvalidOptionMessage);
                         this._view.FlushScreenWithKey();
                         break;
                 }
@@ -117,7 +117,7 @@ namespace InventoryManagement.Controllers
         {
             if (this._services.IsInventoryEmpty())
             {
-                this._view.ShowMessage(InventoryEmptyMessage);
+                this._view.ShowError(InventoryEmptyMessage);
                 this._view.FlushScreenWithKey();
                 return false;
             }
@@ -149,7 +149,7 @@ namespace InventoryManagement.Controllers
             }
 
             this._services.AddProduct(name, price, quantity);
-            this._view.ShowMessage(ProductAddedMessage);
+            this._view.ShowSuccess(ProductAddedMessage);
             this._view.FlushScreenWithKey();
         }
 
@@ -183,7 +183,7 @@ namespace InventoryManagement.Controllers
                         }
 
                         this._services.EditName(product, name);
-                        this._view.ShowMessage(NameUpdatedMessage);
+                        this._view.ShowSuccess(NameUpdatedMessage);
                         break;
 
                     case "B":
@@ -194,17 +194,17 @@ namespace InventoryManagement.Controllers
                         }
 
                         this._services.EditPrice(product, price);
-                        this._view.ShowMessage(PriceUpdatedMessage);
+                        this._view.ShowSuccess(PriceUpdatedMessage);
                         break;
 
                     case "C":
                         isRunning = false;
-                        this._view.ShowMessage(EditCompletedMessage);
+                        this._view.ShowSuccess(EditCompletedMessage);
                         break;
 
                     default:
 
-                        this._view.ShowMessage(InvalidOptionMessage);
+                        this._view.ShowError(InvalidOptionMessage);
                         if (!this._view.AskRetry())
                         {
                             isRunning = false;
@@ -272,7 +272,7 @@ namespace InventoryManagement.Controllers
             if (this._view.ConfirmDelete())
             {
                 this._services.DeleteProduct(product);
-                this._view.ShowMessage(ProductDeletedMessage);
+                this._view.ShowSuccess(ProductDeletedMessage);
             }
 
             this._view.FlushScreenWithKey();
@@ -303,7 +303,7 @@ namespace InventoryManagement.Controllers
             }
 
             this._services.RestockProduct(product, quantity);
-            this._view.ShowMessage(StockRestockedMessage);
+            this._view.ShowSuccess(StockRestockedMessage);
             this._view.FlushScreenWithKey();
         }
 
@@ -331,7 +331,15 @@ namespace InventoryManagement.Controllers
             }
 
             bool isReduced = this._services.ReduceStock(product, quantity);
-            this._view.ShowMessage(isReduced ? StockReducedMessage : InsufficientStockMessage);
+            if (isReduced)
+            {
+                this._view.ShowSuccess(StockReducedMessage);
+            }
+            else
+            {
+                this._view.ShowError(InsufficientStockMessage);
+            }
+
             this._view.FlushScreenWithKey();
         }
 
@@ -348,7 +356,7 @@ namespace InventoryManagement.Controllers
             List<Product> products = this._services.GetLowStockProducts();
             if (products.Count == 0)
             {
-                this._view.ShowMessage(NoLowStockProductsMessage);
+                this._view.ShowError(NoLowStockProductsMessage);
             }
             else
             {
@@ -370,7 +378,7 @@ namespace InventoryManagement.Controllers
                 string productId = this._view.ReadProductId(operation);
                 if (!this._helper.IsValidProductId(productId))
                 {
-                    this._view.ShowMessage(InvalidProductIdMessage);
+                    this._view.ShowError(InvalidProductIdMessage);
                     if (!this._view.AskRetry())
                     {
                         this._view.FlushScreen();
@@ -383,7 +391,7 @@ namespace InventoryManagement.Controllers
                 Product? product = this._services.SearchProduct(productId);
                 if (product == null)
                 {
-                    this._view.ShowMessage(ProductNotFoundMessage);
+                    this._view.ShowError(ProductNotFoundMessage);
                     if (!this._view.AskRetry())
                     {
                         this._view.FlushScreen();
@@ -410,7 +418,7 @@ namespace InventoryManagement.Controllers
                 name = this._view.ReadProductName();
                 if (!this._helper.IsValidName(name))
                 {
-                    this._view.ShowMessage(InvalidNameMessage);
+                    this._view.ShowError(InvalidNameMessage);
                     if (!this._view.AskRetry())
                     {
                         this._view.FlushScreen();
@@ -438,7 +446,7 @@ namespace InventoryManagement.Controllers
                 string input = this._view.ReadProductPrice();
                 if (!this._helper.IsValidPrice(input, out price))
                 {
-                    this._view.ShowMessage(InvalidPriceMessage);
+                    this._view.ShowError(InvalidPriceMessage);
                     if (!this._view.AskRetry())
                     {
                         this._view.FlushScreen();
@@ -465,7 +473,7 @@ namespace InventoryManagement.Controllers
                 string input = this._view.ReadProductQuantity();
                 if (!this._helper.IsValidQuantity(input, out quantity))
                 {
-                    this._view.ShowMessage(InvalidQuantityMessage);
+                    this._view.ShowError(InvalidQuantityMessage);
                     if (!this._view.AskRetry())
                     {
                         this._view.FlushScreen();
