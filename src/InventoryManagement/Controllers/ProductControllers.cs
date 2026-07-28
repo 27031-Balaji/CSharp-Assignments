@@ -323,24 +323,30 @@ namespace InventoryManagement.Controllers
                 return;
             }
 
-            this._view.DisplaySingleProduct(product!);
-            int quantity;
-            if (!this.GetValidQuantity(out quantity))
+            this._view.DisplaySingleProduct(product);
+            do
             {
-                return;
-            }
+                int quantity;
+                if (!this.GetValidQuantity(out quantity))
+                {
+                    return;
+                }
 
-            bool isReduced = this._services.ReduceStock(product, quantity);
-            if (isReduced)
-            {
-                this._view.ShowSuccess(StockReducedMessage);
-            }
-            else
-            {
+                if (this._services.ReduceStock(product, quantity))
+                {
+                    this._view.ShowSuccess(StockReducedMessage);
+                    this._view.FlushScreenWithKey();
+                    return;
+                }
+
                 this._view.ShowError(InsufficientStockMessage);
+                if (!this._view.AskRetry())
+                {
+                    this._view.FlushScreen();
+                    return;
+                }
             }
-
-            this._view.FlushScreenWithKey();
+            while (true);
         }
 
         /// <summary>
