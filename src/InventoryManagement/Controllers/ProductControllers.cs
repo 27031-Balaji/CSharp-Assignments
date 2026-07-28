@@ -1,4 +1,5 @@
-﻿using InventoryManagement.Helpers;
+﻿using InventoryManagement.Exceptions;
+using InventoryManagement.Helpers;
 using InventoryManagement.Models;
 using InventoryManagement.Services;
 using InventoryManagement.View;
@@ -18,7 +19,6 @@ namespace InventoryManagement.Controllers
         private const string InvalidProductIdMessage = "Enter a valid Product ID.";
         private const string InventoryEmptyMessage = "Inventory is empty.";
         private const string ProductNotFoundMessage = "Product not found.";
-        private const string InsufficientStockMessage = "Insufficient stock available.";
 
         // Product Messages
         private const string ProductAddedMessage = "Product added successfully.";
@@ -56,11 +56,9 @@ namespace InventoryManagement.Controllers
         public void Run()
         {
             bool isRunning = true;
-
             do
             {
                 string option = this._view.ShowMainMenu();
-
                 switch (option.Trim().ToUpper())
                 {
                     case "A":
@@ -107,22 +105,6 @@ namespace InventoryManagement.Controllers
                 }
             }
             while (isRunning);
-        }
-
-        /// <summary>
-        /// Checks whether the inventory contains any products.
-        /// </summary>
-        /// <returns>True if the inventory contains products, otherwise false.</returns>
-        private bool HasProducts()
-        {
-            if (this._services.IsInventoryEmpty())
-            {
-                this._view.ShowError(InventoryEmptyMessage);
-                this._view.FlushScreenWithKey();
-                return false;
-            }
-
-            return true;
         }
 
         /// <summary>
@@ -332,18 +314,21 @@ namespace InventoryManagement.Controllers
                     return;
                 }
 
-                if (this._services.ReduceStock(product, quantity))
+                try
                 {
+                    this._services.ReduceStock(product, quantity);
                     this._view.ShowSuccess(StockReducedMessage);
                     this._view.FlushScreenWithKey();
                     return;
                 }
-
-                this._view.ShowError(InsufficientStockMessage);
-                if (!this._view.AskRetry())
+                catch (InsufficientStockException ex)
                 {
-                    this._view.FlushScreen();
-                    return;
+                    this._view.ShowError(ex.Message);
+                    if (!this._view.AskRetry())
+                    {
+                        this._view.FlushScreen();
+                        return;
+                    }
                 }
             }
             while (true);
@@ -362,7 +347,7 @@ namespace InventoryManagement.Controllers
             List<Product> products = this._services.GetLowStockProducts();
             if (products.Count == 0)
             {
-                this._view.ShowError(NoLowStockProductsMessage);
+                this._view.ShowInfo(NoLowStockProductsMessage);
             }
             else
             {
@@ -370,6 +355,22 @@ namespace InventoryManagement.Controllers
             }
 
             this._view.FlushScreenWithKey();
+        }
+
+        /// <summary>
+        /// Checks whether the inventory system has any products.
+        /// </summary>
+        /// <returns>True if the inventory has any products, otherwise false.</returns>
+        private bool HasProducts()
+        {
+            if (this._services.IsInventoryEmpty())
+            {
+                this._view.ShowError(InventoryEmptyMessage);
+                this._view.FlushScreenWithKey();
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>

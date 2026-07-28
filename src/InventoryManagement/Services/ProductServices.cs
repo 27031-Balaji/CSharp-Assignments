@@ -1,4 +1,5 @@
-﻿using InventoryManagement.Models;
+﻿using InventoryManagement.Exceptions;
+using InventoryManagement.Models;
 using InventoryManagement.Persistence;
 
 namespace InventoryManagement.Services
@@ -113,7 +114,7 @@ namespace InventoryManagement.Services
         {
             if (quantity > product.Quantity)
             {
-                return false;
+                throw new InsufficientStockException();
             }
 
             this._repository.UpdateQuantity(product, product.Quantity - quantity);
@@ -128,7 +129,6 @@ namespace InventoryManagement.Services
         public List<Product> GetLowStockProducts()
         {
             List<Product> lowStockProducts = new List<Product>();
-
             foreach (Product product in this._repository.GetAllProducts())
             {
                 if (product.Quantity <= LowStockThreshold)
@@ -137,8 +137,7 @@ namespace InventoryManagement.Services
                 }
             }
 
-            lowStockProducts.Sort((a, b) =>
-                string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase));
+            lowStockProducts.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase));
 
             return lowStockProducts;
         }
