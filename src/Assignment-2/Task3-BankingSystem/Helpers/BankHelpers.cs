@@ -25,5 +25,15 @@
         {
             return accountNumber.Length == 10 && accountNumber.All(char.IsDigit);
         }
+
+        /// <summary>
+        /// Determines whether the specified choice is valid.
+        /// </summary>
+        /// <param name="choice">The choice character to validate.</param>
+        /// <returns>True if choice is 1 or 2, else false.</returns>
+        public bool IsValidChoice(string choice)
+        {
+            return choice == "1" || choice == "2";
+        }
     }
 }

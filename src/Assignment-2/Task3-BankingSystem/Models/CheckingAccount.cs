@@ -1,4 +1,4 @@
-﻿namespace Task3.Models
+﻿namespace BankingSystem.Models
 {
     /// <summary>
     /// Represents a checking account that allows withdrawals without maintaining a minimum balance.

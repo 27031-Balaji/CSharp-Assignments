@@ -1,5 +1,5 @@
-﻿using BankingSystem.Persistence;
-using Task3.Models;
+﻿using BankingSystem.Models;
+using BankingSystem.Repository;
 
 namespace BankingSystem.Services
 {
@@ -12,7 +12,9 @@ namespace BankingSystem.Services
         /// Represents the minimum initial deposit required for a savings account.
         /// </summary>
         private const decimal MinimumBalance = 1000;
+
         private readonly BankRepository _repository;
+        private readonly Random _random = new Random();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BankServices"/> class.
@@ -24,91 +26,91 @@ namespace BankingSystem.Services
         }
 
         /// <summary>
-        /// Creates a new savings account with the specified initial deposit.
+        /// Creates a savings account.
         /// </summary>
-        /// <param name="initialDeposit">The initial amount to be deposited.</param>
-        /// <returns>A success or failure message based on the account creation.</returns>
-        public string CreateSavingsAccount(decimal initialDeposit)
+        /// <param name="initialDeposit">The initial deposit.</param>
+        /// <returns>The created savings account, or null if the deposit is insufficient.</returns>
+        public SavingsAccount? CreateSavingsAccount(decimal initialDeposit)
         {
             if (initialDeposit < MinimumBalance)
             {
-                return $"Initial deposit must be at least Rs. {MinimumBalance}.\n";
+                return null;
             }
 
-            string accountNumber = this.GenerateAccountNumber();
-            SavingsAccount account = new SavingsAccount(accountNumber, initialDeposit);
+            SavingsAccount account = new SavingsAccount(this.GenerateAccountNumber(), initialDeposit);
             this._repository.AddAccount(account);
-            return $"Savings Account Created Successfully.\n\n{account.PrintDetails()}\n";
+
+            return account;
         }
 
         /// <summary>
-        /// Creates a new checking account with the specified initial deposit.
+        /// Creates a checking account.
         /// </summary>
-        /// <param name="initialDeposit">The initial amount to be deposited.</param>
-        /// <returns>A success message after the account is created.</returns>
-        public string CreateCheckingAccount(decimal initialDeposit)
+        /// <param name="initialDeposit">The initial deposit.</param>
+        /// <returns>The created checking account.</returns>
+        public CheckingAccount CreateCheckingAccount(decimal initialDeposit)
         {
-            string accountNumber = this.GenerateAccountNumber();
-            CheckingAccount account = new CheckingAccount(accountNumber, initialDeposit);
+            CheckingAccount account = new CheckingAccount(this.GenerateAccountNumber(), initialDeposit);
             this._repository.AddAccount(account);
-            return $"Checking Account Created Successfully.\n\n{account.PrintDetails()}\n";
+
+            return account;
         }
 
         /// <summary>
         /// Retrieves all bank accounts.
         /// </summary>
-        /// <returns>A list containing all bank accounts.</returns>
+        /// <returns>A list of bank accounts.</returns>
         public List<BankAccount> GetAllAccounts()
         {
             return this._repository.GetAllAccounts();
         }
 
         /// <summary>
-        /// Deposits the specified amount into the given bank account.
+        /// Deposits an amount into the specified account.
         /// </summary>
-        /// <param name="accountNumber">The account number of the bank account.</param>
-        /// <param name="amount">The amount to be deposited.</param>
-        /// <returns>A success or failure message based on the deposit operation.</returns>
-        public string Deposit(string accountNumber, decimal amount)
+        /// <param name="accountNumber">The account number.</param>
+        /// <param name="amount">The amount to deposit.</param>
+        /// <returns>The updated account if successful, otherwise null.</returns>
+        public BankAccount? Deposit(string accountNumber, decimal amount)
         {
             BankAccount? account = this._repository.GetAccountByNumber(accountNumber);
 
             if (account == null)
             {
-                return "Account not found.";
+                return null;
             }
 
             account.Deposit(amount);
-            return $"Deposit successful.\nCurrent Balance : Rs. {account.Balance}\n";
+
+            return account;
         }
 
         /// <summary>
-        /// Withdraws the specified amount from the given bank account.
+        /// Withdraws an amount from the specified account.
         /// </summary>
-        /// <param name="accountNumber">The account number of the bank account.</param>
-        /// <param name="amount">The amount to be withdrawn.</param>
-        /// <returns>A success or failure message based on the withdrawal operation.</returns>
-        public string Withdraw(string accountNumber, decimal amount)
+        /// <param name="accountNumber">The account number.</param>
+        /// <param name="amount">The amount to withdraw.</param>
+        /// <returns>The updated account if successful, otherwise null.</returns>
+        public BankAccount? Withdraw(string accountNumber, decimal amount)
         {
             BankAccount? account = this._repository.GetAccountByNumber(accountNumber);
-
             if (account == null)
             {
-                return "Account not found.\n";
+                return null;
             }
 
             if (!account.Withdraw(amount))
             {
-                return "Withdrawal failed. Please withdraw the right amount.\n";
+                return null;
             }
 
-            return $"Withdrawal successful.\nCurrent Balance : Rs. {account.Balance}\n";
+            return account;
         }
 
         /// <summary>
-        /// Checks whether a bank account with the specified account number exists.
+        /// Checks whether an account exists.
         /// </summary>
-        /// <param name="accountNumber">The account number to search for.</param>
+        /// <param name="accountNumber">The account number.</param>
         /// <returns>True if the account exists; otherwise, false.</returns>
         public bool AccountExists(string accountNumber)
         {
@@ -116,12 +118,12 @@ namespace BankingSystem.Services
         }
 
         /// <summary>
-        /// Checks whether any bank accounts are available.
+        /// Checks whether any accounts are available.
         /// </summary>
-        /// <returns>True if at least one account exists; otherwise, false.</returns>
+        /// <returns>True if accounts exist; otherwise, false.</returns>
         public bool HasAccounts()
         {
-            return this._repository.GetAllAccounts().Any();
+            return this._repository.AccountCount > 0;
         }
 
         /// <summary>
@@ -130,17 +132,17 @@ namespace BankingSystem.Services
         /// <returns>A unique account number.</returns>
         private string GenerateAccountNumber()
         {
-            Random random = new Random();
             string accountNumber;
             do
             {
                 accountNumber = string.Empty;
                 for (int i = 0; i < 10; i++)
                 {
-                    accountNumber += random.Next(0, 10);
+                    accountNumber += this._random.Next(10);
                 }
             }
-            while (this._repository.AccountExists(accountNumber)); // Duplicate check to ensure uniqueness
+            while (this._repository.AccountExists(accountNumber));
+
             return accountNumber;
         }
     }
