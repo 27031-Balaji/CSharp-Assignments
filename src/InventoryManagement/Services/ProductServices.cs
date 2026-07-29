@@ -38,19 +38,16 @@ namespace InventoryManagement.Services
         /// </summary>
         /// <param name="productId">The product ID.</param>
         /// <returns>The matching product if found, otherwise null.</returns>
-        public Product? SearchProduct(string productId)
+        public Product SearchProduct(string productId)
         {
-            return this._repository.GetProductById(productId);
-        }
+            Product? product = this._repository.GetProductById(productId);
 
-        /// <summary>
-        /// Determines whether a product with the specified ID exists.
-        /// </summary>
-        /// <param name="productId">The product ID to search for.</param>
-        /// <returns>True if the product exists, otherwise false.</returns>
-        public bool IsProductExists(string productId)
-        {
-            return this._repository.IsProductExistsById(productId);
+            if (product == null)
+            {
+                throw new ProductNotFoundException();
+            }
+
+            return product;
         }
 
         /// <summary>
@@ -85,13 +82,15 @@ namespace InventoryManagement.Services
         }
 
         /// <summary>
-        /// Deletes a product from the inventory.
+        /// Deletes a product from the inventory, throws exception otherwise.
         /// </summary>
         /// <param name="product">The product entry to delete.</param>
-        /// <returns>True if the product is deleted, else false.</returns>
-        public bool DeleteProduct(Product product)
+        public void DeleteProduct(Product product)
         {
-            return this._repository.DeleteProduct(product);
+            if (!this._repository.DeleteProduct(product))
+            {
+                throw new ProductNotFoundException();
+            }
         }
 
         /// <summary>
@@ -143,16 +142,18 @@ namespace InventoryManagement.Services
         }
 
         /// <summary>
-        /// Determines whether the inventory contains any products.
+        /// Validates that the inventory is not empty. Throws an exception if it is empty.
         /// </summary>
-        /// <returns>True if the inventory is empty, otherwise false.</returns>
-        public bool IsInventoryEmpty()
+        public void ValidateInventory()
         {
-            return this._repository.ProductCount == 0;
+            if (this._repository.ProductCount == 0)
+            {
+                throw new EmptyInventoryException();
+            }
         }
 
         /// <summary>
-        /// Generates a unique product ID.
+        /// Generates a unique product ID generated from the GUID and taking first 12 characters.
         /// </summary>
         /// <returns>A unique product ID.</returns>
         private string GenerateProductId()

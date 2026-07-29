@@ -1,6 +1,5 @@
 ﻿using InventoryManagement.Controllers;
 using InventoryManagement.Helpers;
-using InventoryManagement.Models;
 using InventoryManagement.Persistence;
 using InventoryManagement.Services;
 using InventoryManagement.View;

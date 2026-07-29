@@ -17,8 +17,6 @@ namespace InventoryManagement.Controllers
         private const string InvalidQuantityMessage = "Enter a valid quantity.";
         private const string InvalidOptionMessage = "Enter a valid option.";
         private const string InvalidProductIdMessage = "Enter a valid Product ID.";
-        private const string InventoryEmptyMessage = "Inventory is empty.";
-        private const string ProductNotFoundMessage = "Product not found.";
 
         // Product Messages
         private const string ProductAddedMessage = "Product added successfully.";
@@ -253,8 +251,15 @@ namespace InventoryManagement.Controllers
             this._view.DisplaySingleProduct(product);
             if (this._view.ConfirmDelete())
             {
-                this._services.DeleteProduct(product);
-                this._view.ShowSuccess(ProductDeletedMessage);
+                try
+                {
+                    this._services.DeleteProduct(product);
+                    this._view.ShowSuccess(ProductDeletedMessage);
+                }
+                catch (ProductNotFoundException ex)
+                {
+                    this._view.ShowError(ex.Message);
+                }
             }
 
             this._view.FlushScreenWithKey();
@@ -276,7 +281,7 @@ namespace InventoryManagement.Controllers
                 return;
             }
 
-            this._view.DisplaySingleProduct(product!);
+            this._view.DisplaySingleProduct(product);
 
             int quantity;
             if (!this.GetValidQuantity(out quantity))
@@ -319,6 +324,7 @@ namespace InventoryManagement.Controllers
                     this._services.ReduceStock(product, quantity);
                     this._view.ShowSuccess(StockReducedMessage);
                     this._view.FlushScreenWithKey();
+
                     return;
                 }
                 catch (InsufficientStockException ex)
@@ -327,6 +333,7 @@ namespace InventoryManagement.Controllers
                     if (!this._view.AskRetry())
                     {
                         this._view.FlushScreen();
+
                         return;
                     }
                 }
@@ -363,14 +370,19 @@ namespace InventoryManagement.Controllers
         /// <returns>True if the inventory has any products, otherwise false.</returns>
         private bool HasProducts()
         {
-            if (this._services.IsInventoryEmpty())
+            try
             {
-                this._view.ShowError(InventoryEmptyMessage);
+                this._services.ValidateInventory();
+
+                return true;
+            }
+            catch (EmptyInventoryException ex)
+            {
+                this._view.ShowError(ex.Message);
                 this._view.FlushScreenWithKey();
+
                 return false;
             }
-
-            return true;
         }
 
         /// <summary>
@@ -395,20 +407,19 @@ namespace InventoryManagement.Controllers
                     continue;
                 }
 
-                Product? product = this._services.SearchProduct(productId);
-                if (product == null)
+                try
                 {
-                    this._view.ShowError(ProductNotFoundMessage);
+                    return this._services.SearchProduct(productId);
+                }
+                catch (ProductNotFoundException ex)
+                {
+                    this._view.ShowError(ex.Message);
                     if (!this._view.AskRetry())
                     {
                         this._view.FlushScreen();
                         return null;
                     }
-
-                    continue;
                 }
-
-                return product;
             }
             while (true);
         }
@@ -436,6 +447,7 @@ namespace InventoryManagement.Controllers
                 }
 
                 name = name.Trim();
+
                 return true;
             }
             while (true);

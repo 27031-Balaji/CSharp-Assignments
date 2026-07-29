@@ -77,17 +77,6 @@ namespace InventoryManagement.View
         }
 
         /// <summary>
-        /// Reads the stock quantity.
-        /// </summary>
-        /// <returns>The stock quantity entered by the user.</returns>
-        public string ReadStockQuantity()
-        {
-            Console.Write("Enter Quantity: ");
-
-            return Console.ReadLine() ?? string.Empty;
-        }
-
-        /// <summary>
         /// This method is used to show success message with Green color.
         /// </summary>
         /// <param name="message">The message to be printed.</param>
@@ -132,7 +121,7 @@ namespace InventoryManagement.View
             var table = new ConsoleTable("Serial Number", "Product Id", "Product Name", "Price", "Stock");
             for (int i = 0; i < products.Count; i++)
             {
-                table.AddRow(i + 1, products[i].ProductId, products[i].Name, products[i].Price,  products[i].Quantity);
+                table.AddRow(i + 1, products[i].ProductId, products[i].Name, products[i].Price, products[i].Quantity);
             }
 
             table.Write(Format.MarkDown);
@@ -149,6 +138,7 @@ namespace InventoryManagement.View
             Console.ResetColor();
             var table = new ConsoleTable("Product Id", "Product Name", "Price", "Stock");
             table.AddRow(product.ProductId, product.Name, product.Price, product.Quantity);
+
             table.Write(Format.MarkDown);
         }
 
