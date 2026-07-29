@@ -1,19 +1,19 @@
 ﻿using Assignment1.Models;
 
-namespace Assignment1.Persistence
+namespace Assignment1.Repository
 {
     /// <summary>
     /// Provides an in-memory repository for contact CRUD operations.
     /// </summary>
-    internal class Repository
+    internal class ContactRepository
     {
         private List<ContactInfo> _contacts;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Repository"/> class.
+        /// Initializes a new instance of the <see cref="ContactRepository"/> class.
         /// This is done for future initialization changes if needed. Currently, it initializes an empty list of contacts.
         /// </summary>
-        public Repository()
+        public ContactRepository()
         {
             this._contacts = new List<ContactInfo>();
         }

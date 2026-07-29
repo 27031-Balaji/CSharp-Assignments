@@ -1,6 +1,5 @@
-﻿using Assignment1.Helpers;
-using Assignment1.Models;
-using Assignment1.Persistence;
+﻿using Assignment1.Models;
+using Assignment1.Repository;
 
 namespace Assignment1.Services
 {
@@ -9,7 +8,7 @@ namespace Assignment1.Services
     /// </summary>
     internal class ContactServices
     {
-        private Repository _repository = new Repository();
+        private ContactRepository _repository = new ContactRepository();
 
         /// <summary>
         /// Adds a contact to the repository.
