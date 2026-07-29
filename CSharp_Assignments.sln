@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "unit", "unit", "{C778E127-C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "acceptance", "acceptance", "{93EBAE55-A8BA-40FF-93AA-7D9E4359B6B9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryManagement", "src\Assignment-3\InventoryManagement\InventoryManagement.csproj", "{956436CB-6E48-4D3C-320C-583D6FA1CEA4}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task1-ShapeHierarchy", "src\Assignment-2\Task1-ShapeHierarchy\Task1-ShapeHierarchy.csproj", "{C253FFEF-539C-4242-87CB-6B0E96E96717}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task2-EmployeeHierarchy", "src\Assignment-2\Task2-EmployeeHierarchy\Task2-EmployeeHierarchy.csproj", "{F1B2AF52-5FB2-4742-9C85-DB908951EE6E}"
@@ -46,8 +48,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpenseTracker", "src\Assignment-5\ExpenseTracker\ExpenseTracker.csproj", "{2D96D323-B0AF-A76E-06C6-C580168D4E78}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assignment9-LINQ", "src\Assignment-9\Assignment9-LINQ\Assignment9-LINQ.csproj", "{04419448-6274-4627-B3F8-96DF3268B6BA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryManagement", "src\InventoryManagement\InventoryManagement.csproj", "{956436CB-6E48-4D3C-320C-583D6FA1CEA4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
