@@ -1,4 +1,4 @@
-﻿namespace Task3.Models
+﻿namespace BankingSystem.Models
 {
     /// <summary>
     /// Represents the base class for all bank accounts.

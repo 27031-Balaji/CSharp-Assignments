@@ -1,5 +1,6 @@
-﻿using BankingSystem.Helpers;
-using BankingSystem.Persistence;
+﻿using BankingSystem.Controllers;
+using BankingSystem.Helpers;
+using BankingSystem.Repository;
 using BankingSystem.Services;
 using BankingSystem.View;
 
@@ -18,9 +19,10 @@ namespace Assignments
         {
             BankRepository bankRepository = new BankRepository();
             BankServices bankServices = new BankServices(bankRepository);
-            BankHelpers bankHelper = new BankHelpers();
-            ConsoleOperations consoleOperations = new ConsoleOperations(bankServices, bankHelper);
-            consoleOperations.Start();
+            BankHelpers bankHelpers = new BankHelpers();
+            ConsoleOperations consoleOperations = new ConsoleOperations();
+            BankController bankController = new BankController(bankServices, bankHelpers, consoleOperations);
+            bankController.Run();
         }
     }
 }

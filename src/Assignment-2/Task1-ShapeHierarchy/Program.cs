@@ -1,4 +1,5 @@
-﻿using Task1.Helpers;
+﻿using Task1.Controllers;
+using Task1.Helpers;
 using Task1.Services;
 using Task1.View;
 
@@ -10,15 +11,16 @@ namespace Assignments
     internal class Program
     {
         /// <summary>
-        /// Application entry point. Initializes dependencies and runs the console UI flow.
+        /// Application entry point. Initializes dependencies and runs the controller functions.
         /// </summary>
         /// <param name="args">Command-line arguments passed to the application.</param>
         public static void Main(string[] args)
         {
             ShapeHelpers shapeHelpers = new ShapeHelpers();
             ShapeServices shapeServices = new ShapeServices();
-            ConsoleOperations consoleOperations = new ConsoleOperations(shapeServices, shapeHelpers);
-            consoleOperations.Run();
+            ConsoleOperations view = new ConsoleOperations();
+            ShapeController controller = new ShapeController(shapeServices, shapeHelpers, view);
+            controller.Run();
         }
     }
 }

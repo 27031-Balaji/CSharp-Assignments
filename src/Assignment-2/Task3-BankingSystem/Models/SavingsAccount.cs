@@ -1,4 +1,4 @@
-﻿namespace Task3.Models
+﻿namespace BankingSystem.Models
 {
     /// <summary>
     /// Represents a savings account that requires a minimum balance to be maintained.

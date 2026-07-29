@@ -1,13 +1,27 @@
-﻿using Task3.Models;
+﻿using BankingSystem.Models;
 
-namespace BankingSystem.Persistence
+namespace BankingSystem.Repository
 {
     /// <summary>
     /// Stores and manages bank account records.
     /// </summary>
     internal class BankRepository
     {
-        private readonly List<BankAccount> _accounts = new List<BankAccount>();
+        private readonly List<BankAccount> _accounts;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BankRepository"/> class.
+        /// </summary>
+        public BankRepository()
+        {
+            this._accounts = new List<BankAccount>();
+        }
+
+        /// <summary>
+        /// Gets the total number of bank accounts in the repository.
+        /// </summary>
+        /// <value>The count of accounts in the repository.</value>
+        public int AccountCount { get => this._accounts.Count; }
 
         /// <summary>
         /// Adds a bank account to the repository.
@@ -34,15 +48,7 @@ namespace BankingSystem.Persistence
         /// <returns>The matching bank account if found, otherwise null.</returns>
         public BankAccount? GetAccountByNumber(string accountNumber)
         {
-            foreach (BankAccount account in this._accounts)
-            {
-                if (account.AccountNumber == accountNumber)
-                {
-                    return account;
-                }
-            }
-
-            return null;
+            return this._accounts.Find(account => account.AccountNumber == accountNumber);
         }
 
         /// <summary>
