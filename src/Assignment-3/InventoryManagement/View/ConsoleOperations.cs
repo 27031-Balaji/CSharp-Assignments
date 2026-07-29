@@ -1,4 +1,5 @@
 ﻿using ConsoleTables;
+using InventoryManagement.Enums;
 using InventoryManagement.Models;
 
 namespace InventoryManagement.View
@@ -80,31 +81,16 @@ namespace InventoryManagement.View
         /// This method is used to show success message with Green color.
         /// </summary>
         /// <param name="message">The message to be printed.</param>
-        public void ShowSuccess(string message)
+        /// <param name="type">The message type (Success, Error or Info).</param>
+        public void ShowMessage(string message, MessageType type)
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(message);
-            Console.ResetColor();
-        }
-
-        /// <summary>
-        /// This method is used to show error message with Red color.
-        /// </summary>
-        /// <param name="message">The message to be printed.</param>
-        public void ShowError(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(message);
-            Console.ResetColor();
-        }
-
-        /// <summary>
-        /// This method is used to show information message with Cyan color.
-        /// </summary>
-        /// <param name="message">The message to be printed.</param>
-        public void ShowInfo(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.ForegroundColor = type switch
+            {
+                MessageType.Success => ConsoleColor.Green,
+                MessageType.Error => ConsoleColor.Red,
+                MessageType.Info => ConsoleColor.Cyan,
+                _ => ConsoleColor.White
+            };
             Console.WriteLine(message);
             Console.ResetColor();
         }
