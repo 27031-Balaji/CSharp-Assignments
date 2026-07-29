@@ -35,16 +35,6 @@ namespace InventoryManagement.Persistence
         }
 
         /// <summary>
-        /// Determines whether a product with the specified ID exists.
-        /// </summary>
-        /// <param name="productId">The product ID to search for.</param>
-        /// <returns> True if the product exists, otherwise false.</returns>
-        public bool IsProductExistsById(string productId)
-        {
-            return this._products.Any(product => product.ProductId == productId);
-        }
-
-        /// <summary>
         /// Retrieves a product using its ID.
         /// </summary>
         /// <param name="productId">The product ID.</param>

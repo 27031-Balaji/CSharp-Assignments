@@ -134,7 +134,7 @@ namespace InventoryManagement.Controllers
         }
 
         /// <summary>
-        /// Updates the details of an existing product.
+        /// Updates the details of an existing product by its ID.
         /// </summary>
         private void EditProduct()
         {
@@ -233,7 +233,7 @@ namespace InventoryManagement.Controllers
         }
 
         /// <summary>
-        /// Deletes a product from the inventory.
+        /// Deletes a product from the inventory by its ID.
         /// </summary>
         private void DeleteProduct()
         {
@@ -266,7 +266,7 @@ namespace InventoryManagement.Controllers
         }
 
         /// <summary>
-        /// Increases the stock quantity of a product.
+        /// Increases the stock quantity of a product using ID as the input.
         /// </summary>
         private void RestockProduct()
         {
@@ -295,7 +295,7 @@ namespace InventoryManagement.Controllers
         }
 
         /// <summary>
-        /// Reduces the stock quantity of a product.
+        /// Reduces the stock quantity of a product using ID as the input.
         /// </summary>
         private void ReduceStock()
         {
@@ -386,7 +386,7 @@ namespace InventoryManagement.Controllers
         }
 
         /// <summary>
-        /// Reads and validates a product ID.
+        /// Reads and validates a product ID by searching it in the repository.
         /// </summary>
         /// <param name="operation">The operation being performed.</param>
         /// <returns>The matching proudct if found, otherwise null.</returns>
