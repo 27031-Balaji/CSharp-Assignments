@@ -96,6 +96,16 @@ namespace InventoryManagement.View
         }
 
         /// <summary>
+        /// Displays the invalid error message with different fields.
+        /// </summary>
+        /// <param name="fieldName">The field name to be printed as an invalid message.</param>
+        public void ShowInvalidMessage(string fieldName)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"Enter a valid {fieldName}.");
+        }
+
+        /// <summary>
         /// Displays all products.
         /// </summary>
         /// <param name="products">The product list to display.</param>
