@@ -3,9 +3,16 @@ using static System.Drawing.Color; // Static Directive because using System.Draw
 
 namespace Task1
 {
+    /// <summary>
+    /// The program class is the entry point of the application.
+    /// </summary>
     internal class Program
     {
-        static void Main(string[] args)
+        /// <summary>
+        /// The main class is used as the entry method that runs the application.
+        /// </summary>
+        /// <param name="args">Command-line arguments.</param>
+        public static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Shape Calculator.");
             Shape shape;
