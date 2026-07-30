@@ -1,4 +1,4 @@
-﻿namespace Task1.Models
+﻿namespace Task1.Classes
 {
     /// <summary>
     /// Represents a circle shape with a radius and color.

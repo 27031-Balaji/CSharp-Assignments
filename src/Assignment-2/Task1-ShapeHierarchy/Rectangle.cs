@@ -1,4 +1,4 @@
-﻿namespace Task1.Models
+﻿namespace Task1.Classes
 {
     /// <summary>
     /// Represents a rectangle shape with length, breadth and color.

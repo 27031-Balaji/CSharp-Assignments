@@ -1,4 +1,4 @@
-﻿namespace Task1.Models
+﻿namespace Task1.Classes
 {
     /// <summary>
     /// Represents a geometric shape with a color. Serves as the base class for specific shapes.
