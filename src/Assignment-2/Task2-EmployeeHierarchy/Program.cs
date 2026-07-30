@@ -1,26 +1,110 @@
-﻿using Task2.Controllers;
-using Task2.Helpers;
-using Task2.Services;
-using Task2.View;
+﻿using Task2.Models;
 
-namespace Assignments
+namespace Task2
 {
     /// <summary>
-    /// Represents the entry point of the employee bonus application.
+    /// The program class is the entry point of the application.
     /// </summary>
     internal class Program
     {
         /// <summary>
-        /// Creates the required objects and starts the employee bonus system.
+        /// The main method is the entry method that runs in the application.
         /// </summary>
-        /// <param name="args">The command-line arguments passed to the application.</param>
-        private static void Main(string[] args)
+        /// <param name="args">Command-line arguments.</param>
+        public static void Main(string[] args)
         {
-            EmployeeHelpers employeeHelpers = new EmployeeHelpers();
-            EmployeeServices employeeServices = new EmployeeServices();
-            ConsoleOperations consoleOperations = new ConsoleOperations();
-            EmployeeController employeeController = new EmployeeController(employeeServices, employeeHelpers, consoleOperations);
-            employeeController.Run();
+            Console.WriteLine("Welcome to Employee Bonus Calculator.");
+            Employee employee;
+            while (true)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Choose the designation:");
+                Console.WriteLine("[A] Developer");
+                Console.WriteLine("[B] Manager");
+                Console.Write("Enter your choice: ");
+
+                char choice = char.ToUpper(Console.ReadKey().KeyChar);
+                Console.WriteLine();
+
+                if (choice != 'A' && choice != 'B')
+                {
+                    Console.WriteLine("Enter a valid choice.");
+                    continue;
+                }
+
+                string name;
+
+                while (true)
+                {
+                    Console.Write("Enter Employee Name: ");
+                    name = Console.ReadLine() ?? string.Empty;
+
+                    if (!string.IsNullOrWhiteSpace(name))
+                    {
+                        break;
+                    }
+
+                    Console.WriteLine("Invalid name. Please try again.");
+                }
+
+                decimal salary;
+
+                while (true)
+                {
+                    Console.Write("Enter Employee Salary: ");
+
+                    if (decimal.TryParse(Console.ReadLine(), out salary) && salary > 0)
+                    {
+                        break;
+                    }
+
+                    Console.WriteLine("Invalid salary. Please enter a positive number.");
+                }
+
+                if (choice == 'A')
+                {
+                    employee = new Developer(name, salary);
+                }
+                else
+                {
+                    employee = new Manager(name, salary);
+                }
+
+                break;
+            }
+
+            while (true)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Choose an Operation:");
+                Console.WriteLine("[A] Calculate Bonus");
+                Console.WriteLine("[B] Print Details");
+                Console.WriteLine("[C] Exit");
+                Console.Write("Enter your choice: ");
+
+                char operation = char.ToUpper(Console.ReadKey().KeyChar);
+                Console.WriteLine();
+
+                switch (operation)
+                {
+                    case 'A':
+                        Console.WriteLine($"Bonus: {employee.CalculateBonus():F2}");
+                        break;
+
+                    case 'B':
+                        Console.WriteLine(employee.PrintDetails());
+                        break;
+
+                    case 'C':
+                        Console.WriteLine("Press any key to exit...");
+                        Console.ReadKey();
+                        return;
+
+                    default:
+                        Console.WriteLine("Invalid choice.");
+                        break;
+                }
+            }
         }
     }
 }
