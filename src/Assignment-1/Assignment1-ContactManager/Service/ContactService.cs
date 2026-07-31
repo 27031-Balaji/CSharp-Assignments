@@ -1,12 +1,12 @@
-﻿using Assignment1.Models;
+﻿using Assignment1.Model;
 using Assignment1.Repository;
 
-namespace Assignment1.Services
+namespace Assignment1.Service
 {
     /// <summary>
     /// Contains all business logic related to contacts.
     /// </summary>
-    internal class ContactServices
+    internal class ContactService
     {
         private ContactRepository _repository = new ContactRepository();
 
@@ -21,7 +21,7 @@ namespace Assignment1.Services
         {
             Guid id = Guid.NewGuid();
             ContactInfo contact = new ContactInfo(id, name, email, phone, notes);
-            this._repository.AddContactInfo(contact);
+            this._repository.AddContact(contact);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Assignment1.Services
                 return false;
             }
 
-            this._repository.UpdateName(contact, name.Trim());
+            this._repository.UpdateContactName(contact, name.Trim());
 
             return true;
         }
@@ -97,7 +97,7 @@ namespace Assignment1.Services
                 return false;
             }
 
-            this._repository.UpdateEmail(contact, email);
+            this._repository.UpdateContactEmail(contact, email);
 
             return true;
         }
@@ -116,7 +116,7 @@ namespace Assignment1.Services
                 return false;
             }
 
-            this._repository.UpdateNotes(contact, notes);
+            this._repository.UpdateContactNotes(contact, notes);
 
             return true;
         }
@@ -135,7 +135,7 @@ namespace Assignment1.Services
         /// </summary>
         /// <param name="phone">The phone number.</param>
         /// <returns>True if the contact exists, otherwise false.</returns>
-        public bool IsContactPhoneNumberExists(string phone)
+        public bool IsPhoneRegistered(string phone)
         {
             return this._repository.IsContactExistsByPhoneNumber(phone);
         }

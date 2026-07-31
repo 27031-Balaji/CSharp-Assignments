@@ -1,4 +1,4 @@
-﻿using Assignment1.Models;
+﻿using Assignment1.Model;
 
 namespace Assignment1.Repository
 {
@@ -28,7 +28,7 @@ namespace Assignment1.Repository
         /// Adds the contact to the repository list.
         /// </summary>
         /// <param name="contactInfo">The object containing the information.</param>
-        public void AddContactInfo(ContactInfo contactInfo)
+        public void AddContact(ContactInfo contactInfo)
         {
             this._contacts.Add(contactInfo);
         }
@@ -82,7 +82,7 @@ namespace Assignment1.Repository
         /// </summary>
         /// <param name="contact">The contact entry to be updated.</param>
         /// <param name="name">The name used for updation.</param>
-        public void UpdateName(ContactInfo contact, string name)
+        public void UpdateContactName(ContactInfo contact, string name)
         {
             contact.Name = name;
         }
@@ -92,7 +92,7 @@ namespace Assignment1.Repository
         /// </summary>
         /// <param name="contact">The contact entry to be updated.</param>
         /// <param name="email">The email used for updation.</param>
-        public void UpdateEmail(ContactInfo contact, string email)
+        public void UpdateContactEmail(ContactInfo contact, string email)
         {
             contact.Email = email;
         }
@@ -102,12 +102,10 @@ namespace Assignment1.Repository
         /// </summary>
         /// <param name="contact">The contact entry to be updated.</param>
         /// <param name="notes">The new notes value (may be null).</param>
-        public void UpdateNotes(ContactInfo contact, string? notes)
+        public void UpdateContactNotes(ContactInfo contact, string? notes)
         {
             contact.Notes = notes;
         }
-
-        // This is for future implementations if needed.
 
         /// <summary>
         /// Returns the contact with the given identifier.
@@ -130,13 +128,13 @@ namespace Assignment1.Repository
         }
 
         /// <summary>
-        /// Returns the contact with the given name (case-insensitive).
+        /// Returns the contact with the given user entered name (case-insensitive).
         /// </summary>
         /// <param name="name">The name of the contact.</param>
         /// <returns>The contact if found, otherwise null.</returns>
         public ContactInfo? GetContactByName(string name)
         {
-            return this._contacts.Find(contact => contact.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            return this._contacts.Find(contact => contact.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
         }
 
         /// <summary>

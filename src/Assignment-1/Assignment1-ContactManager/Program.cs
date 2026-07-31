@@ -1,4 +1,4 @@
-﻿using Assignment1.Controllers;
+﻿using Assignment1.Controller;
 
 namespace ContactManager
 {

@@ -1,4 +1,4 @@
-﻿using Assignment1.Models;
+﻿using Assignment1.Model;
 
 namespace Assignment1.View
 {
@@ -52,21 +52,11 @@ namespace Assignment1.View
         /// <summary>
         /// Reads the contact phone number from the console.
         /// </summary>
+        /// <param name="operation">The operation for which we are asking phone number for.</param>
         /// <returns>The entered phone number.</returns>
-        public string ReadPhone()
+        public string ReadPhone(string operation)
         {
-            Console.Write("Enter your phone number: ");
-
-            return Console.ReadLine() ?? string.Empty;
-        }
-
-        /// <summary>
-        /// Reads the phone number used for editing a contact.
-        /// </summary>
-        /// <returns>The entered phone number for edit operations.</returns>
-        public string ReadEditPhone()
-        {
-            Console.Write("Enter the phone number of the contact to edit: ");
+            Console.Write($"Enter the phone number to {operation}: ");
 
             return Console.ReadLine() ?? string.Empty;
         }
@@ -141,7 +131,7 @@ namespace Assignment1.View
         /// <summary>
         /// Clears the console.
         /// </summary>
-        public void FlushScreen()
+        public void ClearScreen()
         {
             Console.Clear();
         }
@@ -149,7 +139,7 @@ namespace Assignment1.View
         /// <summary>
         /// Clears the console with a key press from the user.
         /// </summary>
-        public void FlushScreenWithKey()
+        public void ClearScreenWithKey()
         {
             Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();

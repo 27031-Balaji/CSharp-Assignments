@@ -1,4 +1,4 @@
-﻿namespace Assignment1.Messages
+﻿namespace Assignment1.Helpers
 {
     /// <summary>
     /// ConsoleMessages class is used to store messages used for printing in the UI.
