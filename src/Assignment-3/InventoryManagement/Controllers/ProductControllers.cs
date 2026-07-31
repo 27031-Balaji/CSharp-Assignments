@@ -74,7 +74,8 @@ namespace InventoryManagement.Controllers
                         break;
 
                     case "I":
-                        this._view.ShowMessage(ConsoleMessages.ExitMessage, MessageType.Success);
+                        this._view.ShowMessage(ConsoleMessages.ExitMessage, MessageType.Info);
+                        Thread.Sleep(1000);
                         isRunning = false;
                         break;
 
