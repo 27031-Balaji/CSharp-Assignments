@@ -23,10 +23,10 @@ namespace Task2
                 Console.WriteLine("[B] Manager");
                 Console.Write("Enter your choice: ");
 
-                char choice = char.ToUpper(Console.ReadKey().KeyChar);
+                char menuChoice = char.ToUpper(Console.ReadKey().KeyChar);
                 Console.WriteLine();
 
-                if (choice != 'A' && choice != 'B')
+                if (menuChoice != 'A' && menuChoice != 'B')
                 {
                     Console.WriteLine("Enter a valid choice.");
                     continue;
@@ -61,7 +61,7 @@ namespace Task2
                     Console.WriteLine("Invalid salary. Please enter a positive number.");
                 }
 
-                if (choice == 'A')
+                if (menuChoice == 'A')
                 {
                     employee = new Developer(name, salary);
                 }
@@ -82,10 +82,10 @@ namespace Task2
                 Console.WriteLine("[C] Exit");
                 Console.Write("Enter your choice: ");
 
-                char operation = char.ToUpper(Console.ReadKey().KeyChar);
+                char operationChoice = char.ToUpper(Console.ReadKey().KeyChar);
                 Console.WriteLine();
 
-                switch (operation)
+                switch (operationChoice)
                 {
                     case 'A':
                         Console.WriteLine($"Bonus: {employee.CalculateBonus():F2}");

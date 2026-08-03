@@ -29,9 +29,9 @@ namespace BankingSystem
                 Console.WriteLine("4. Withdraw");
                 Console.WriteLine("5. Exit");
                 Console.Write("Enter your choice: ");
-                string option = Console.ReadLine() ?? string.Empty;
+                string menuChoice = Console.ReadLine() ?? string.Empty;
 
-                switch (option)
+                switch (menuChoice)
                 {
                     case "1":
                         CreateAccount();
@@ -68,7 +68,7 @@ namespace BankingSystem
             Console.WriteLine("\n1. Savings Account");
             Console.WriteLine("2. Checking Account");
             Console.Write("Choose Account Type: ");
-            string choice = Console.ReadLine() ?? string.Empty;
+            string accountTypeChoice = Console.ReadLine() ?? string.Empty;
 
             decimal amount;
             if (!GetValidAmount("Enter Initial Deposit: ", out amount))
@@ -77,7 +77,7 @@ namespace BankingSystem
             }
 
             string accountNumber = GenerateAccountNumber();
-            if (choice == "1")
+            if (accountTypeChoice == "1")
             {
                 if (amount < MinimumBalance)
                 {
@@ -90,7 +90,7 @@ namespace BankingSystem
                 Console.WriteLine("Savings Account Created Successfully.");
                 Console.WriteLine(account.PrintDetails());
             }
-            else if (choice == "2")
+            else if (accountTypeChoice == "2")
             {
                 BankAccount account = new CheckingAccount(accountNumber, amount);
                 Accounts.Add(account);
