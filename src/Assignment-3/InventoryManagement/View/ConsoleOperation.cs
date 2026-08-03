@@ -199,7 +199,7 @@ namespace InventoryManagement.View
         /// <summary>
         /// Clears the console.
         /// </summary>
-        public void FlushScreen()
+        public void ClearScreen()
         {
             Console.Clear();
         }
@@ -207,7 +207,7 @@ namespace InventoryManagement.View
         /// <summary>
         /// Waits for a key press before clearing the console.
         /// </summary>
-        public void FlushScreenWithKey()
+        public void ClearScreenWithKey()
         {
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine("\nPress any key to continue...");

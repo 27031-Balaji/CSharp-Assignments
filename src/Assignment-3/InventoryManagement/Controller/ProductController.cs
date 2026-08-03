@@ -107,7 +107,7 @@ namespace InventoryManagement.Controller
 
             this._services.AddProduct(name, price, quantity);
             this._view.ShowMessage(ConsoleMessages.ProductAddedMessage, MessageType.Success);
-            this._view.FlushScreenWithKey();
+            this._view.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace InventoryManagement.Controller
                 }
             }
 
-            this._view.FlushScreenWithKey();
+            this._view.ClearScreenWithKey();
         }
 
         private void SearchProduct()
@@ -178,13 +178,14 @@ namespace InventoryManagement.Controller
                     break;
 
                 case "C":
-                    this._view.FlushScreen();
+                    this._view.ClearScreen();
                     return;
 
                 default:
                     this._view.ShowInvalidMessage("option");
                     if (!this._view.AskRetry())
                     {
+                        this._view.ClearScreen();
                         return;
                     }
 
@@ -204,7 +205,7 @@ namespace InventoryManagement.Controller
             }
 
             this._view.DisplaySingleProduct(product);
-            this._view.FlushScreenWithKey();
+            this._view.ClearScreenWithKey();
         }
 
         private void SearchProductByName()
@@ -221,7 +222,7 @@ namespace InventoryManagement.Controller
                 {
                     List<Product> products = this._services.SearchProductsByName(name);
                     this._view.DisplayProducts(products);
-                    this._view.FlushScreenWithKey();
+                    this._view.ClearScreenWithKey();
                     continueSearch = false;
                 }
                 catch (ProductNotFoundException ex)
@@ -230,7 +231,7 @@ namespace InventoryManagement.Controller
                     continueSearch = this._view.AskRetry();
                     if (!continueSearch)
                     {
-                        this._view.FlushScreen();
+                        this._view.ClearScreen();
                     }
                 }
             }
@@ -248,7 +249,7 @@ namespace InventoryManagement.Controller
 
             List<Product> products = this._services.GetAllProducts();
             this._view.DisplayProducts(products);
-            this._view.FlushScreenWithKey();
+            this._view.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -281,7 +282,7 @@ namespace InventoryManagement.Controller
                 }
             }
 
-            this._view.FlushScreenWithKey();
+            this._view.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -308,7 +309,7 @@ namespace InventoryManagement.Controller
 
             this._services.RestockProduct(product, quantity);
             this._view.ShowMessage(ConsoleMessages.StockRestockedMessage, MessageType.Success);
-            this._view.FlushScreenWithKey();
+            this._view.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -340,7 +341,7 @@ namespace InventoryManagement.Controller
                 {
                     this._services.ReduceStock(product, quantity);
                     this._view.ShowMessage(ConsoleMessages.StockReducedMessage, MessageType.Success);
-                    this._view.FlushScreenWithKey();
+                    this._view.ClearScreenWithKey();
                     shouldRetry = false;
                 }
                 catch (InsufficientStockException ex)
@@ -349,7 +350,7 @@ namespace InventoryManagement.Controller
                     shouldRetry = this._view.AskRetry();
                     if (!shouldRetry)
                     {
-                        this._view.FlushScreen();
+                        this._view.ClearScreen();
                         return;
                     }
                 }
@@ -376,7 +377,7 @@ namespace InventoryManagement.Controller
                 this._view.DisplayProducts(lowStockProducts);
             }
 
-            this._view.FlushScreenWithKey();
+            this._view.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -394,7 +395,7 @@ namespace InventoryManagement.Controller
             catch (EmptyInventoryException ex)
             {
                 this._view.ShowMessage(ex.Message, MessageType.Error);
-                this._view.FlushScreenWithKey();
+                this._view.ClearScreenWithKey();
 
                 return false;
             }
@@ -431,7 +432,7 @@ namespace InventoryManagement.Controller
                     shouldRetry = this._view.AskRetry();
                     if (!shouldRetry)
                     {
-                        this._view.FlushScreen();
+                        this._view.ClearScreen();
                         return null;
                     }
                 }
@@ -533,7 +534,7 @@ namespace InventoryManagement.Controller
             bool shouldRetry = this._view.AskRetry();
             if (!shouldRetry)
             {
-                this._view.FlushScreen();
+                this._view.ClearScreen();
             }
 
             return shouldRetry;
