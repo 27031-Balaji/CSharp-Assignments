@@ -36,7 +36,7 @@ namespace InventoryManagement.Controllers
         public void Run()
         {
             bool isRunning = true;
-            do
+            while (isRunning)
             {
                 string option = this._view.ShowMainMenu();
                 switch (option.Trim().ToUpper())
@@ -81,11 +81,9 @@ namespace InventoryManagement.Controllers
 
                     default:
                         this._view.ShowInvalidMessage("option");
-                        this._view.FlushScreenWithKey();
                         break;
                 }
             }
-            while (isRunning);
         }
 
         /// <summary>
@@ -93,20 +91,17 @@ namespace InventoryManagement.Controllers
         /// </summary>
         private void AddProduct()
         {
-            string name;
-            if (!this.GetValidProductName(out name))
+            if (!this.GetValidProductName(out string name))
             {
                 return;
             }
 
-            decimal price;
-            if (!this.GetValidPrice(out price))
+            if (!this.GetValidProductPrice(out decimal price))
             {
                 return;
             }
 
-            int quantity;
-            if (!this.GetValidQuantity(out quantity))
+            if (!this.GetValidProductQuantity(out int quantity))
             {
                 return;
             }
@@ -126,21 +121,20 @@ namespace InventoryManagement.Controllers
                 return;
             }
 
-            Product? product = this.GetValidProduct("edit");
+            Product? product = this.GetValidProductWithId("edit");
             if (product == null)
             {
                 return;
             }
 
             bool isRunning = true;
-            do
+            while (isRunning)
             {
                 string option = this._view.ShowEditMenu();
                 switch (option.Trim().ToUpper())
                 {
                     case "A":
-                        string name;
-                        if (!this.GetValidProductName(out name))
+                        if (!this.GetValidProductName(out string name))
                         {
                             break;
                         }
@@ -150,8 +144,7 @@ namespace InventoryManagement.Controllers
                         break;
 
                     case "B":
-                        decimal price;
-                        if (!this.GetValidPrice(out price))
+                        if (!this.GetValidProductPrice(out decimal price))
                         {
                             break;
                         }
@@ -166,7 +159,6 @@ namespace InventoryManagement.Controllers
                         break;
 
                     default:
-
                         this._view.ShowInvalidMessage("option");
                         if (!this._view.AskRetry())
                         {
@@ -176,7 +168,7 @@ namespace InventoryManagement.Controllers
                         break;
                 }
             }
-            while (isRunning);
+
             this._view.FlushScreenWithKey();
         }
 
@@ -190,7 +182,7 @@ namespace InventoryManagement.Controllers
                 return;
             }
 
-            Product? product = this.GetValidProduct("search");
+            Product? product = this.GetValidProductWithId("search");
             if (product == null)
             {
                 return;
@@ -225,7 +217,7 @@ namespace InventoryManagement.Controllers
                 return;
             }
 
-            Product? product = this.GetValidProduct("delete");
+            Product? product = this.GetValidProductWithId("delete");
             if (product == null)
             {
                 return;
@@ -258,16 +250,14 @@ namespace InventoryManagement.Controllers
                 return;
             }
 
-            Product? product = this.GetValidProduct("restock");
+            Product? product = this.GetValidProductWithId("restock");
             if (product == null)
             {
                 return;
             }
 
             this._view.DisplaySingleProduct(product);
-
-            int quantity;
-            if (!this.GetValidQuantity(out quantity))
+            if (!this.GetValidProductQuantity(out int quantity))
             {
                 return;
             }
@@ -287,17 +277,16 @@ namespace InventoryManagement.Controllers
                 return;
             }
 
-            Product? product = this.GetValidProduct("reduce stock");
+            Product? product = this.GetValidProductWithId("reduce stock");
             if (product == null)
             {
                 return;
             }
 
             this._view.DisplaySingleProduct(product);
-            do
+            while (true)
             {
-                int quantity;
-                if (!this.GetValidQuantity(out quantity))
+                if (!this.GetValidProductQuantity(out int quantity))
                 {
                     return;
                 }
@@ -321,7 +310,6 @@ namespace InventoryManagement.Controllers
                     }
                 }
             }
-            while (true);
         }
 
         /// <summary>
@@ -334,14 +322,14 @@ namespace InventoryManagement.Controllers
                 return;
             }
 
-            List<Product> products = this._services.GetLowStockProducts();
-            if (products.Count == 0)
+            List<Product> lowStockProducts = this._services.GetLowStockProducts();
+            if (lowStockProducts.Count == 0)
             {
                 this._view.ShowMessage(ConsoleMessages.NoLowStockProductsMessage, MessageType.Info);
             }
             else
             {
-                this._view.DisplayProducts(products);
+                this._view.DisplayProducts(lowStockProducts);
             }
 
             this._view.FlushScreenWithKey();
@@ -373,7 +361,7 @@ namespace InventoryManagement.Controllers
         /// </summary>
         /// <param name="operation">The operation being performed.</param>
         /// <returns>The matching proudct if found, otherwise null.</returns>
-        private Product? GetValidProduct(string operation)
+        private Product? GetValidProductWithId(string operation)
         {
             do
             {
@@ -441,7 +429,7 @@ namespace InventoryManagement.Controllers
         /// </summary>
         /// <param name="price">The validated product price.</param>
         /// <returns>True if the product price is valid, otherwise false.</returns>
-        private bool GetValidPrice(out decimal price)
+        private bool GetValidProductPrice(out decimal price)
         {
             do
             {
@@ -468,7 +456,7 @@ namespace InventoryManagement.Controllers
         /// </summary>
         /// <param name="quantity">The validated product quantity.</param>
         /// <returns>True if the product quantity is valid, otherwise false.</returns>
-        private bool GetValidQuantity(out int quantity)
+        private bool GetValidProductQuantity(out int quantity)
         {
             do
             {
