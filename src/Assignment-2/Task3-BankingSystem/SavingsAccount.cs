@@ -1,4 +1,4 @@
-﻿namespace BankingSystem.Models
+﻿namespace BankingSystem.Classes
 {
     /// <summary>
     /// Represents a savings account that requires a minimum balance to be maintained.

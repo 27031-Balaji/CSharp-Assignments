@@ -1,9 +1,9 @@
-﻿using BankingSystem.Models;
+﻿using BankingSystem.Classes;
 
 namespace BankingSystem
 {
     /// <summary>
-    /// The program class is the entry point of the application.
+    /// The Program class is the entry point of the application.
     /// </summary>
     internal class Program
     {
@@ -14,10 +14,19 @@ namespace BankingSystem
         private static readonly Random Random = new Random();
 
         /// <summary>
-        /// The main class starts the application.
+        /// Starts the Banking System application.
         /// </summary>
-        /// <param name="args">The command-line arguments.</param>
+        /// <param name="args">Command-line arguments.</param>
         public static void Main(string[] args)
+        {
+            Console.WriteLine("Welcome to Banking System.");
+            ShowMenu();
+        }
+
+        /// <summary>
+        /// Displays the main menu and handles user operations.
+        /// </summary>
+        private static void ShowMenu()
         {
             bool isRunning = true;
             while (isRunning)
@@ -29,8 +38,8 @@ namespace BankingSystem
                 Console.WriteLine("4. Withdraw");
                 Console.WriteLine("5. Exit");
                 Console.Write("Enter your choice: ");
-                string menuChoice = Console.ReadLine() ?? string.Empty;
 
+                string menuChoice = Console.ReadLine() ?? string.Empty;
                 switch (menuChoice)
                 {
                     case "1":
@@ -61,52 +70,54 @@ namespace BankingSystem
         }
 
         /// <summary>
-        /// Used to create a savings or checking account.
+        /// Creates a Savings or Checking account.
         /// </summary>
-        public static void CreateAccount()
+        private static void CreateAccount()
         {
-            Console.WriteLine("\n1. Savings Account");
+            Console.WriteLine();
+            Console.WriteLine("1. Savings Account");
             Console.WriteLine("2. Checking Account");
             Console.Write("Choose Account Type: ");
             string accountTypeChoice = Console.ReadLine() ?? string.Empty;
 
-            decimal amount;
-            if (!GetValidAmount("Enter Initial Deposit: ", out amount))
+            if (!GetValidAmount("Enter Initial Deposit: ", out decimal amount))
             {
                 return;
             }
 
             string accountNumber = GenerateAccountNumber();
-            if (accountTypeChoice == "1")
+            switch (accountTypeChoice)
             {
-                if (amount < MinimumBalance)
-                {
-                    Console.WriteLine($"Initial deposit must be at least Rs. {MinimumBalance}");
-                    return;
-                }
+                case "1":
+                    if (amount < MinimumBalance)
+                    {
+                        Console.WriteLine($"Initial deposit must be at least Rs. {MinimumBalance}");
+                        return;
+                    }
 
-                BankAccount account = new SavingsAccount(accountNumber, amount);
-                Accounts.Add(account);
-                Console.WriteLine("Savings Account Created Successfully.");
-                Console.WriteLine(account.PrintDetails());
-            }
-            else if (accountTypeChoice == "2")
-            {
-                BankAccount account = new CheckingAccount(accountNumber, amount);
-                Accounts.Add(account);
-                Console.WriteLine("Checking Account Created Successfully.");
-                Console.WriteLine(account.PrintDetails());
-            }
-            else
-            {
-                Console.WriteLine("Invalid account type.");
+                    BankAccount savingsAccount = new SavingsAccount(accountNumber, amount);
+                    Accounts.Add(savingsAccount);
+                    Console.WriteLine("Savings Account Created Successfully.");
+                    Console.WriteLine(savingsAccount.PrintDetails());
+                    break;
+
+                case "2":
+                    BankAccount checkingAccount = new CheckingAccount(accountNumber, amount);
+                    Accounts.Add(checkingAccount);
+                    Console.WriteLine("Checking Account Created Successfully.");
+                    Console.WriteLine(checkingAccount.PrintDetails());
+                    break;
+
+                default:
+                    Console.WriteLine("Invalid account type.");
+                    break;
             }
         }
 
         /// <summary>
-        /// Displays details for all available bank accounts.
+        /// Displays all available bank accounts.
         /// </summary>
-        public static void DisplayAccounts()
+        private static void DisplayAccounts()
         {
             if (Accounts.Count == 0)
             {
@@ -123,7 +134,7 @@ namespace BankingSystem
         /// <summary>
         /// Used to deposit amount in a specific account using Account Number.
         /// </summary>
-        public static void Deposit()
+        private static void Deposit()
         {
             if (Accounts.Count == 0)
             {
@@ -137,7 +148,6 @@ namespace BankingSystem
             }
 
             BankAccount? account = Accounts.Find(a => a.AccountNumber == accountNumber);
-
             if (account == null)
             {
                 Console.WriteLine("Account not found.");
@@ -157,7 +167,7 @@ namespace BankingSystem
         /// <summary>
         /// Withdraws specific amount from a specific account.
         /// </summary>
-        public static void Withdraw()
+        private static void Withdraw()
         {
             if (Accounts.Count == 0)
             {
@@ -199,10 +209,9 @@ namespace BankingSystem
         /// <param name="message">The message displayed when asking for amount.</param>
         /// <param name="amount">The amount entered by the user.</param>
         /// <returns>True if the right amount is entered by the user in maximum tries, else false.</returns>
-        public static bool GetValidAmount(string message, out decimal amount)
+        private static bool GetValidAmount(string message, out decimal amount)
         {
             amount = 0;
-
             for (int i = 1; i <= MaximumAttempts; i++)
             {
                 Console.Write(message);
@@ -224,14 +233,13 @@ namespace BankingSystem
         /// </summary>
         /// <param name="accountNumber">The account number entered by the user.</param>
         /// <returns>true if a valid account number is entered, otherwise false.</returns>
-        public static bool GetValidAccountNumber(out string accountNumber)
+        private static bool GetValidAccountNumber(out string accountNumber)
         {
             accountNumber = string.Empty;
             for (int i = 1; i <= MaximumAttempts; i++)
             {
                 Console.Write("Enter Account Number: ");
                 accountNumber = Console.ReadLine() ?? string.Empty;
-
                 if (accountNumber.Length == 10 && accountNumber.All(char.IsDigit))
                 {
                     return true;
@@ -249,7 +257,7 @@ namespace BankingSystem
         /// Generates a unique 10-digit account number.
         /// </summary>
         /// <returns>A string containing the generated account number.</returns>
-        public static string GenerateAccountNumber()
+        private static string GenerateAccountNumber()
         {
             string accountNumber;
             do

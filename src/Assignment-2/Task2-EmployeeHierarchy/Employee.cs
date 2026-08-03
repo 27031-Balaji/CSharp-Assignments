@@ -1,4 +1,4 @@
-﻿namespace Task2.Models
+﻿namespace EmployeeHierarchy.Models
 {
     /// <summary>
     /// Represents a generic employee with common properties and behavior for concrete roles.

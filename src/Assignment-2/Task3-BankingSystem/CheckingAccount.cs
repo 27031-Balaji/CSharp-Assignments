@@ -1,4 +1,4 @@
-﻿namespace BankingSystem.Models
+﻿namespace BankingSystem.Classes
 {
     /// <summary>
     /// Represents a checking account that allows withdrawals without maintaining a minimum balance.
