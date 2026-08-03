@@ -1,9 +1,9 @@
-﻿namespace InventoryManagement.Exceptions
+﻿namespace InventoryManagement.Exception
 {
     /// <summary>
     /// This is used to make a new exception when the product inventory is empty and the user tries to perform an operation that requires products in the inventory.
     /// </summary>
-    internal class EmptyInventoryException : Exception
+    internal class EmptyInventoryException : System.Exception
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EmptyInventoryException"/> class.

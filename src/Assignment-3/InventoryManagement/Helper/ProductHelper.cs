@@ -1,9 +1,9 @@
-﻿namespace InventoryManagement.Helpers
+﻿namespace InventoryManagement.Helper
 {
     /// <summary>
     /// Validates product information to check whether the input entered is right or not.
     /// </summary>
-    internal class ProductHelpers
+    internal class ProductHelper
     {
         /// <summary>
         /// Determines whether a product name is valid.

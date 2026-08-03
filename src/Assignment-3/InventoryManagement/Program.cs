@@ -1,7 +1,7 @@
-﻿using InventoryManagement.Controllers;
-using InventoryManagement.Helpers;
-using InventoryManagement.Persistence;
-using InventoryManagement.Services;
+﻿using InventoryManagement.Controller;
+using InventoryManagement.Helper;
+using InventoryManagement.Repository;
+using InventoryManagement.Service;
 using InventoryManagement.View;
 
 namespace Assignments
@@ -20,10 +20,10 @@ namespace Assignments
             try
             {
                 ProductRepository repository = new ProductRepository();
-                ProductServices services = new ProductServices(repository);
-                ProductHelpers helpers = new ProductHelpers();
-                ConsoleOperations view = new ConsoleOperations();
-                ProductControllers controller = new ProductControllers(services, helpers, view);
+                ProductService services = new ProductService(repository);
+                ProductHelper helpers = new ProductHelper();
+                ConsoleOperation view = new ConsoleOperation();
+                ProductController controller = new ProductController(services, helpers, view);
                 controller.Run();
             }
             catch (Exception ex)

@@ -1,4 +1,4 @@
-﻿namespace InventoryManagement.Models
+﻿namespace InventoryManagement.Model
 {
     /// <summary>
     /// Represents a product in the inventory.

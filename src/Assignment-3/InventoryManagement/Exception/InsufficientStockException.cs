@@ -1,9 +1,9 @@
-﻿namespace InventoryManagement.Exceptions
+﻿namespace InventoryManagement.Exception
 {
     /// <summary>
     /// This is used to make a new exception for reduce stock operation when the user reduces stock above the available stock.
     /// </summary>
-    internal class InsufficientStockException : Exception
+    internal class InsufficientStockException : System.Exception
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="InsufficientStockException"/> class.

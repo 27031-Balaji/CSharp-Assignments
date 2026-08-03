@@ -1,29 +1,28 @@
-﻿using InventoryManagement.Enums;
-using InventoryManagement.Exceptions;
-using InventoryManagement.Helpers;
-using InventoryManagement.Messages;
-using InventoryManagement.Models;
-using InventoryManagement.Services;
+﻿using InventoryManagement.Enum;
+using InventoryManagement.Exception;
+using InventoryManagement.Helper;
+using InventoryManagement.Model;
+using InventoryManagement.Service;
 using InventoryManagement.View;
 
-namespace InventoryManagement.Controllers
+namespace InventoryManagement.Controller
 {
     /// <summary>
     /// Coordinates user interactions and application flow for inventory management.
     /// </summary>
-    internal class ProductControllers
+    internal class ProductController
     {
-        private readonly ProductServices _services;
-        private readonly ProductHelpers _helper;
-        private readonly ConsoleOperations _view;
+        private readonly ProductService _services;
+        private readonly ProductHelper _helper;
+        private readonly ConsoleOperation _view;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProductControllers"/> class.
+        /// Initializes a new instance of the <see cref="ProductController"/> class.
         /// </summary>
         /// <param name="services">The product service.</param>
         /// <param name="helper">The product helper.</param>
         /// <param name="view">The console view.</param>
-        public ProductControllers(ProductServices services, ProductHelpers helper, ConsoleOperations view)
+        public ProductController(ProductService services, ProductHelper helper, ConsoleOperation view)
         {
             this._services = services;
             this._helper = helper;
@@ -91,7 +90,7 @@ namespace InventoryManagement.Controllers
         /// </summary>
         private void AddProduct()
         {
-            if (!this.GetValidProductName(out string name))
+            if (!this.GetValidProductName(out string name, "add"))
             {
                 return;
             }
@@ -130,27 +129,15 @@ namespace InventoryManagement.Controllers
             bool isRunning = true;
             while (isRunning)
             {
-                string option = this._view.ShowEditMenu();
-                switch (option.Trim().ToUpper())
+                string editChoice = this._view.ShowEditMenu();
+                switch (editChoice.Trim().ToUpper())
                 {
                     case "A":
-                        if (!this.GetValidProductName(out string name))
-                        {
-                            break;
-                        }
-
-                        this._services.EditName(product, name);
-                        this._view.ShowMessage(ConsoleMessages.NameUpdatedMessage, MessageType.Success);
+                        this.EditProductName(product);
                         break;
 
                     case "B":
-                        if (!this.GetValidProductPrice(out decimal price))
-                        {
-                            break;
-                        }
-
-                        this._services.EditPrice(product, price);
-                        this._view.ShowMessage(ConsoleMessages.PriceUpdatedMessage, MessageType.Success);
+                        this.EditProductPrice(product);
                         break;
 
                     case "C":
@@ -172,9 +159,6 @@ namespace InventoryManagement.Controllers
             this._view.FlushScreenWithKey();
         }
 
-        /// <summary>
-        /// Searches for a product by its ID.
-        /// </summary>
         private void SearchProduct()
         {
             if (!this.HasProducts())
@@ -182,6 +166,37 @@ namespace InventoryManagement.Controllers
                 return;
             }
 
+            string searchChoice = this._view.ShowSearchMenu();
+            switch (searchChoice.Trim().ToUpper())
+            {
+                case "A":
+                    this.SearchProductById();
+                    break;
+
+                case "B":
+                    this.SearchProductByName();
+                    break;
+
+                case "C":
+                    this._view.FlushScreen();
+                    return;
+
+                default:
+                    this._view.ShowInvalidMessage("option");
+                    if (!this._view.AskRetry())
+                    {
+                        return;
+                    }
+
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Searches for a product by its ID.
+        /// </summary>
+        private void SearchProductById()
+        {
             Product? product = this.GetValidProductWithId("search");
             if (product == null)
             {
@@ -190,6 +205,35 @@ namespace InventoryManagement.Controllers
 
             this._view.DisplaySingleProduct(product);
             this._view.FlushScreenWithKey();
+        }
+
+        private void SearchProductByName()
+        {
+            bool continueSearch = true;
+            while (continueSearch)
+            {
+                if (!this.GetValidProductName(out string name, "search"))
+                {
+                    return;
+                }
+
+                try
+                {
+                    List<Product> products = this._services.SearchProductsByName(name);
+                    this._view.DisplayProducts(products);
+                    this._view.FlushScreenWithKey();
+                    continueSearch = false;
+                }
+                catch (ProductNotFoundException ex)
+                {
+                    this._view.ShowMessage(ex.Message, MessageType.Error);
+                    continueSearch = this._view.AskRetry();
+                    if (!continueSearch)
+                    {
+                        this._view.FlushScreen();
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -284,7 +328,8 @@ namespace InventoryManagement.Controllers
             }
 
             this._view.DisplaySingleProduct(product);
-            while (true)
+            bool shouldRetry = true;
+            while (shouldRetry)
             {
                 if (!this.GetValidProductQuantity(out int quantity))
                 {
@@ -296,16 +341,15 @@ namespace InventoryManagement.Controllers
                     this._services.ReduceStock(product, quantity);
                     this._view.ShowMessage(ConsoleMessages.StockReducedMessage, MessageType.Success);
                     this._view.FlushScreenWithKey();
-
-                    return;
+                    shouldRetry = false;
                 }
                 catch (InsufficientStockException ex)
                 {
                     this._view.ShowMessage(ex.Message, MessageType.Error);
-                    if (!this._view.AskRetry())
+                    shouldRetry = this._view.AskRetry();
+                    if (!shouldRetry)
                     {
                         this._view.FlushScreen();
-
                         return;
                     }
                 }
@@ -363,15 +407,14 @@ namespace InventoryManagement.Controllers
         /// <returns>The matching proudct if found, otherwise null.</returns>
         private Product? GetValidProductWithId(string operation)
         {
-            do
+            bool shouldRetry = true;
+            while (shouldRetry)
             {
                 string productId = this._view.ReadProductId(operation);
                 if (!this._helper.IsValidProductId(productId))
                 {
-                    this._view.ShowInvalidMessage("product ID");
-                    if (!this._view.AskRetry())
+                    if (!this.CanRetry("Product ID"))
                     {
-                        this._view.FlushScreen();
                         return null;
                     }
 
@@ -380,19 +423,21 @@ namespace InventoryManagement.Controllers
 
                 try
                 {
-                    return this._services.SearchProduct(productId);
+                    return this._services.SearchProductById(productId);
                 }
                 catch (ProductNotFoundException ex)
                 {
                     this._view.ShowMessage(ex.Message, MessageType.Error);
-                    if (!this._view.AskRetry())
+                    shouldRetry = this._view.AskRetry();
+                    if (!shouldRetry)
                     {
                         this._view.FlushScreen();
                         return null;
                     }
                 }
             }
-            while (true);
+
+            return null;
         }
 
         /// <summary>
@@ -400,28 +445,27 @@ namespace InventoryManagement.Controllers
         /// </summary>
         /// <param name="name">The validated product name.</param>
         /// <returns>True if the product name is valid, otherwise false.</returns>
-        private bool GetValidProductName(out string name)
+        private bool GetValidProductName(out string name, string operation)
         {
-            do
+            name = string.Empty;
+            bool isNameValid = false;
+            while (!isNameValid)
             {
-                name = this._view.ReadProductName();
-                if (!this._helper.IsValidName(name))
+                name = this._view.ReadProductName(operation);
+                if (this._helper.IsValidName(name))
                 {
-                    this._view.ShowInvalidMessage("name");
-                    if (!this._view.AskRetry())
-                    {
-                        this._view.FlushScreen();
-                        return false;
-                    }
-
+                    name = name.Trim();
+                    isNameValid = true;
                     continue;
                 }
 
-                name = name.Trim();
-
-                return true;
+                if (!this.CanRetry("name"))
+                {
+                    return false;
+                }
             }
-            while (true);
+
+            return true;
         }
 
         /// <summary>
@@ -431,24 +475,24 @@ namespace InventoryManagement.Controllers
         /// <returns>True if the product price is valid, otherwise false.</returns>
         private bool GetValidProductPrice(out decimal price)
         {
-            do
+            price = 0;
+            bool isPriceValid = false;
+            while (!isPriceValid)
             {
                 string input = this._view.ReadProductPrice();
-                if (!this._helper.IsValidPrice(input, out price))
+                if (this._helper.IsValidPrice(input, out price))
                 {
-                    this._view.ShowInvalidMessage("price");
-                    if (!this._view.AskRetry())
-                    {
-                        this._view.FlushScreen();
-                        return false;
-                    }
-
+                    isPriceValid = true;
                     continue;
                 }
 
-                return true;
+                if (!this.CanRetry("price"))
+                {
+                    return false;
+                }
             }
-            while (true);
+
+            return true;
         }
 
         /// <summary>
@@ -458,24 +502,71 @@ namespace InventoryManagement.Controllers
         /// <returns>True if the product quantity is valid, otherwise false.</returns>
         private bool GetValidProductQuantity(out int quantity)
         {
-            do
+            quantity = 0;
+            bool isQuantityValid = false;
+            while (!isQuantityValid)
             {
                 string input = this._view.ReadProductQuantity();
-                if (!this._helper.IsValidQuantity(input, out quantity))
+                if (this._helper.IsValidQuantity(input, out quantity))
                 {
-                    this._view.ShowInvalidMessage("quantity");
-                    if (!this._view.AskRetry())
-                    {
-                        this._view.FlushScreen();
-                        return false;
-                    }
-
+                    isQuantityValid = true;
                     continue;
                 }
 
-                return true;
+                if (!this.CanRetry("quantity"))
+                {
+                    return false;
+                }
             }
-            while (true);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Displays an invalid input message for the specified field and prompts the user to decide whether to retry the operation.
+        /// </summary>
+        /// <param name="field">The name of the field that contains invalid input.</param>
+        /// <returns>True if the user chooses to retry, else false.</returns>
+        private bool CanRetry(string field)
+        {
+            this._view.ShowInvalidMessage(field);
+            bool shouldRetry = this._view.AskRetry();
+            if (!shouldRetry)
+            {
+                this._view.FlushScreen();
+            }
+
+            return shouldRetry;
+        }
+
+        /// <summary>
+        /// Edits the name of the product searched.
+        /// </summary>
+        /// <param name="product">The product where the name is to be edited.</param>
+        private void EditProductName(Product product)
+        {
+            if (!this.GetValidProductName(out string name, "edit"))
+            {
+                return;
+            }
+
+            this._services.EditName(product, name);
+            this._view.ShowMessage(ConsoleMessages.NameUpdatedMessage, MessageType.Success);
+        }
+
+        /// <summary>
+        /// Edits the price of the product searched.
+        /// </summary>
+        /// <param name="product">The product where the name is to be edited.</param>
+        private void EditProductPrice(Product product)
+        {
+            if (!this.GetValidProductPrice(out decimal price))
+            {
+                return;
+            }
+
+            this._services.EditPrice(product, price);
+            this._view.ShowMessage(ConsoleMessages.PriceUpdatedMessage, MessageType.Success);
         }
     }
 }

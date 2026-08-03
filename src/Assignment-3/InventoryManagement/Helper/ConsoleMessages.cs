@@ -1,4 +1,4 @@
-﻿namespace InventoryManagement.Messages
+﻿namespace InventoryManagement.Helper
 {
     /// <summary>
     /// Contains all console messages used throughout the Inventory Management application.

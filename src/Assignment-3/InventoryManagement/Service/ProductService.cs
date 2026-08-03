@@ -1,22 +1,22 @@
-﻿using InventoryManagement.Exceptions;
-using InventoryManagement.Models;
-using InventoryManagement.Persistence;
+﻿using InventoryManagement.Exception;
+using InventoryManagement.Model;
+using InventoryManagement.Repository;
 
-namespace InventoryManagement.Services
+namespace InventoryManagement.Service
 {
     /// <summary>
     /// Provides business logic for managing products.
     /// </summary>
-    internal class ProductServices
+    internal class ProductService
     {
         private const int LowStockThreshold = 5;
         private ProductRepository _repository;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProductServices"/> class.
+        /// Initializes a new instance of the <see cref="ProductService"/> class.
         /// </summary>
         /// <param name="repository">The product repository.</param>
-        public ProductServices(ProductRepository repository)
+        public ProductService(ProductRepository repository)
         {
             this._repository = repository;
         }
@@ -38,7 +38,7 @@ namespace InventoryManagement.Services
         /// </summary>
         /// <param name="productId">The product ID.</param>
         /// <returns>The matching product if found, otherwise null.</returns>
-        public Product SearchProduct(string productId)
+        public Product SearchProductById(string productId)
         {
             Product? product = this._repository.GetProductById(productId);
 
@@ -48,6 +48,24 @@ namespace InventoryManagement.Services
             }
 
             return product;
+        }
+
+        /// <summary>
+        /// Search for products by name. Throws an exception if no products are found.
+        /// </summary>
+        /// <param name="nameOfProduct">The name of the product to be searched.</param>
+        /// <returns>The list of products with the matching name.</returns>
+        public List<Product> SearchProductsByName(string nameOfProduct)
+        {
+            List<Product> products = this._repository.GetProductsByName(nameOfProduct);
+
+            if (products.Count == 0)
+            {
+                throw new ProductNotFoundException();
+            }
+
+            products.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase));
+            return products;
         }
 
         /// <summary>

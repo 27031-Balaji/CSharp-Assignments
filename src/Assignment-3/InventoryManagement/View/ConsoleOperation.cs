@@ -1,13 +1,13 @@
 ﻿using ConsoleTables;
-using InventoryManagement.Enums;
-using InventoryManagement.Models;
+using InventoryManagement.Enum;
+using InventoryManagement.Model;
 
 namespace InventoryManagement.View
 {
     /// <summary>
     /// Handles all console input and output operations.
     /// </summary>
-    internal class ConsoleOperations
+    internal class ConsoleOperation
     {
         /// <summary>
         /// Displays the main menu and reads the user's choice.
@@ -33,12 +33,28 @@ namespace InventoryManagement.View
         }
 
         /// <summary>
+        /// This method displays the search menu and reads the user's choice for searching products.
+        /// </summary>
+        /// <returns>The choice entered by the user.</returns>
+        public string ShowSearchMenu()
+        {
+            Console.WriteLine("\nSearch Product");
+            Console.WriteLine("[A] Search by Product ID");
+            Console.WriteLine("[B] Search by Product Name");
+            Console.WriteLine("[C] Back");
+            Console.Write("\nChoose an option: ");
+
+            return Console.ReadLine() ?? string.Empty;
+        }
+
+        /// <summary>
         /// Reads the product name.
         /// </summary>
+        /// <param name="operation">The operation being performed.</param>
         /// <returns>The product name entered by the user.</returns>
-        public string ReadProductName()
+        public string ReadProductName(string operation)
         {
-            Console.Write("Enter Product Name: ");
+            Console.Write($"Enter product name to {operation}: ");
 
             return Console.ReadLine() ?? string.Empty;
         }
@@ -103,6 +119,7 @@ namespace InventoryManagement.View
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"Enter a valid {fieldName}.");
+            Console.ResetColor();
         }
 
         /// <summary>

@@ -1,6 +1,6 @@
-﻿using InventoryManagement.Models;
+﻿using InventoryManagement.Model;
 
-namespace InventoryManagement.Persistence
+namespace InventoryManagement.Repository
 {
     /// <summary>
     /// Stores and manages product data in memory.
@@ -42,6 +42,27 @@ namespace InventoryManagement.Persistence
         public Product? GetProductById(string productId)
         {
             return this._products.Find(product => product.ProductId == productId);
+        }
+
+        /// <summary>
+        /// Retrieves a list of products that match the specified name (case-insensitive).
+        /// </summary>
+        /// <param name="nameOfProduct">The name of the product to be searched.</param>
+        /// <returns>The list of products with the matching name.</returns>
+        public List<Product> GetProductsByName(string nameOfProduct)
+        {
+            List<Product> products = new List<Product>();
+            string searchName = nameOfProduct.Replace(" ", string.Empty).Trim();
+            foreach (Product product in this._products)
+            {
+                string productName = product.Name.Replace(" ", string.Empty);
+                if (productName.Contains(searchName, StringComparison.OrdinalIgnoreCase))
+                {
+                    products.Add(product);
+                }
+            }
+
+            return products;
         }
 
         /// <summary>

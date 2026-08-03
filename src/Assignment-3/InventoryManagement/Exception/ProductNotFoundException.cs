@@ -1,9 +1,9 @@
-﻿namespace InventoryManagement.Exceptions
+﻿namespace InventoryManagement.Exception
 {
     /// <summary>
     /// This is used to make a new exception for when product is not found in the inventory.
     /// </summary>
-    internal class ProductNotFoundException : Exception
+    internal class ProductNotFoundException : System.Exception
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ProductNotFoundException"/> class.
