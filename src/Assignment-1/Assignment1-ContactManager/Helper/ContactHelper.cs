@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Assignment1.Helpers
+namespace ContactManager.Helper
 {
     /// <summary>
     /// Provides common validation and utility methods used throughout the application.

@@ -1,4 +1,4 @@
-﻿namespace Assignment1.Model
+﻿namespace ContactManager.Model
 {
     /// <summary>
     /// This class ContactInfo contains the base class to store the info of individual contacts.

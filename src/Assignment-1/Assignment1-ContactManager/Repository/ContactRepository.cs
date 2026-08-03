@@ -1,6 +1,6 @@
-﻿using Assignment1.Model;
+﻿using ContactManager.Model;
 
-namespace Assignment1.Repository
+namespace ContactManager.Repository
 {
     /// <summary>
     /// Provides an in-memory repository for contact CRUD operations.

@@ -1,6 +1,6 @@
-﻿using Assignment1.Model;
+﻿using ContactManager.Model;
 
-namespace Assignment1.View
+namespace ContactManager.View
 {
     /// <summary>
     /// Handles console input/output operations for the application.

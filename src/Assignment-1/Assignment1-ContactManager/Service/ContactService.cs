@@ -1,7 +1,7 @@
-﻿using Assignment1.Model;
-using Assignment1.Repository;
+﻿using ContactManager.Model;
+using ContactManager.Repository;
 
-namespace Assignment1.Service
+namespace ContactManager.Service
 {
     /// <summary>
     /// Contains all business logic related to contacts.

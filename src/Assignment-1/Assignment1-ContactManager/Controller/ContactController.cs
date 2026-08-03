@@ -1,9 +1,9 @@
-﻿using Assignment1.Helpers;
-using Assignment1.Model;
-using Assignment1.Service;
-using Assignment1.View;
+﻿using ContactManager.Helper;
+using ContactManager.Model;
+using ContactManager.Service;
+using ContactManager.View;
 
-namespace Assignment1.Controller
+namespace ContactManager.Controller
 {
     /// <summary>
     /// Coordinates user interactions and application flow for contact management.
@@ -72,17 +72,17 @@ namespace Assignment1.Controller
         /// </summary>
         private void AddContact()
         {
-            if (!this.GetName(out string name))
+            if (!this.GetContactName(out string name))
             {
                 return;
             }
 
-            if (!this.GetEmail(out string email))
+            if (!this.GetContactEmail(out string email))
             {
                 return;
             }
 
-            if (!this.GetPhoneNumber(out string phone))
+            if (!this.GetContactPhoneNumber(out string phone))
             {
                 return;
             }
@@ -121,7 +121,7 @@ namespace Assignment1.Controller
                 return;
             }
 
-            if (!this.GetRegisteredPhoneNumber(out string phone, "search"))
+            if (!this.GetRegisteredContactPhoneNumber(out string phone, "search"))
             {
                 return;
             }
@@ -142,7 +142,7 @@ namespace Assignment1.Controller
                 return;
             }
 
-            if (!this.GetRegisteredPhoneNumber(out string phone, "delete"))
+            if (!this.GetRegisteredContactPhoneNumber(out string phone, "delete"))
             {
                 return;
             }
@@ -166,7 +166,7 @@ namespace Assignment1.Controller
                 return;
             }
 
-            if (!this.GetRegisteredPhoneNumber(out string phone, "edit"))
+            if (!this.GetRegisteredContactPhoneNumber(out string phone, "edit"))
             {
                 return;
             }
@@ -178,15 +178,15 @@ namespace Assignment1.Controller
                 switch (menuChoice.Trim().ToUpper())
                 {
                     case "A":
-                        this.EditName(phone);
+                        this.EditContactName(phone);
                         break;
 
                     case "B":
-                        this.EditEmail(phone);
+                        this.EditContactEmail(phone);
                         break;
 
                     case "C":
-                        this.EditNotes(phone);
+                        this.EditContactNotes(phone);
                         break;
 
                     case "D":
@@ -203,7 +203,7 @@ namespace Assignment1.Controller
             this._view.ClearScreenWithKey();
         }
 
-        private bool GetName(out string name)
+        private bool GetContactName(out string name)
         {
             name = string.Empty;
             bool isNameValid = false;
@@ -225,7 +225,7 @@ namespace Assignment1.Controller
             return true;
         }
 
-        private bool GetEmail(out string email)
+        private bool GetContactEmail(out string email)
         {
             email = string.Empty;
             bool isEmailValid = false;
@@ -247,7 +247,7 @@ namespace Assignment1.Controller
             return true;
         }
 
-        private bool GetPhoneNumber(out string phone)
+        private bool GetContactPhoneNumber(out string phone)
         {
             phone = string.Empty;
             bool isPhoneValid = false;
@@ -280,7 +280,7 @@ namespace Assignment1.Controller
             return true;
         }
 
-        private bool GetRegisteredPhoneNumber(out string phone, string operation)
+        private bool GetRegisteredContactPhoneNumber(out string phone, string operation)
         {
             phone = string.Empty;
             bool isPhoneValid = false;
@@ -313,9 +313,9 @@ namespace Assignment1.Controller
             return true;
         }
 
-        private void EditName(string phone)
+        private void EditContactName(string phone)
         {
-            if (!this.GetName(out string name))
+            if (!this.GetContactName(out string name))
             {
                 return;
             }
@@ -327,9 +327,9 @@ namespace Assignment1.Controller
             this._view.ShowMessage(statusMessage);
         }
 
-        private void EditEmail(string phone)
+        private void EditContactEmail(string phone)
         {
-            if (!this.GetEmail(out string email))
+            if (!this.GetContactEmail(out string email))
             {
                 return;
             }
@@ -341,7 +341,7 @@ namespace Assignment1.Controller
             this._view.ShowMessage(statusMessage);
         }
 
-        private void EditNotes(string phone)
+        private void EditContactNotes(string phone)
         {
             string? notes = this._view.ReadNotes();
             bool isUpdated = this._contactService.EditNotes(phone, notes);
