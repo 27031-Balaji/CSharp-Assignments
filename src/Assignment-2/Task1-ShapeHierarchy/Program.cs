@@ -1,7 +1,7 @@
-﻿using Task1.Classes;
+﻿using ShapeHierarchy.Classes;
 using static System.Drawing.Color;
 
-namespace Task1
+namespace ShapeHierarchy
 {
     /// <summary>
     /// The Program class is the entry point of the application.
@@ -159,8 +159,6 @@ namespace Task1
                         break;
 
                     case 'C':
-                        Console.WriteLine("Press any key to exit...");
-                        Console.ReadKey();
                         isRunning = false;
                         break;
 

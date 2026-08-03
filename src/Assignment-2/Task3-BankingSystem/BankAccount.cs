@@ -1,4 +1,4 @@
-﻿namespace BankingSystem.Models
+﻿namespace BankingSystem.Classes
 {
     /// <summary>
     /// Represents the base class for all bank accounts.

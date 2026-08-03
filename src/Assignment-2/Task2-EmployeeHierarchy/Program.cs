@@ -1,21 +1,33 @@
-﻿using Task2.Models;
+﻿using EmployeeHierarchy.Models;
 
-namespace Task2
+namespace EmployeeHierarchy
 {
     /// <summary>
-    /// The program class is the entry point of the application.
+    /// The Program class is the entry point of the application.
+    /// It handles user interaction for selecting employees and performing operations.
     /// </summary>
     internal class Program
     {
         /// <summary>
-        /// The main method is the entry method that runs in the application.
+        /// Starts the Employee Bonus Calculator application.
         /// </summary>
         /// <param name="args">Command-line arguments.</param>
         public static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Employee Bonus Calculator.");
-            Employee employee;
-            while (true)
+            Employee employee = GetEmployee();
+            ShowOperations(employee);
+        }
+
+        /// <summary>
+        /// Prompts the user to select an employee type and creates the corresponding object.
+        /// </summary>
+        /// <returns>A Developer or Manager object.</returns>
+        private static Employee GetEmployee()
+        {
+            bool isEmployeeSelected = false;
+            Employee employee = null!;
+            while (!isEmployeeSelected)
             {
                 Console.WriteLine();
                 Console.WriteLine("Choose the designation:");
@@ -23,57 +35,105 @@ namespace Task2
                 Console.WriteLine("[B] Manager");
                 Console.Write("Enter your choice: ");
 
-                char menuChoice = char.ToUpper(Console.ReadKey().KeyChar);
+                char employeeChoice = char.ToUpper(Console.ReadKey().KeyChar);
                 Console.WriteLine();
 
-                if (menuChoice != 'A' && menuChoice != 'B')
+                switch (employeeChoice)
                 {
-                    Console.WriteLine("Enter a valid choice.");
-                    continue;
-                }
-
-                string name;
-
-                while (true)
-                {
-                    Console.Write("Enter Employee Name: ");
-                    name = Console.ReadLine() ?? string.Empty;
-
-                    if (!string.IsNullOrWhiteSpace(name))
-                    {
+                    case 'A':
+                        employee = CreateDeveloper();
+                        isEmployeeSelected = true;
                         break;
-                    }
 
-                    Console.WriteLine("Invalid name. Please try again.");
-                }
-
-                decimal salary;
-
-                while (true)
-                {
-                    Console.Write("Enter Employee Salary: ");
-
-                    if (decimal.TryParse(Console.ReadLine(), out salary) && salary > 0)
-                    {
+                    case 'B':
+                        employee = CreateManager();
+                        isEmployeeSelected = true;
                         break;
-                    }
 
-                    Console.WriteLine("Invalid salary. Please enter a positive number.");
+                    default:
+                        Console.WriteLine("Enter a valid choice.");
+                        break;
                 }
-
-                if (menuChoice == 'A')
-                {
-                    employee = new Developer(name, salary);
-                }
-                else
-                {
-                    employee = new Manager(name, salary);
-                }
-
-                break;
             }
 
-            while (true)
+            return employee;
+        }
+
+        /// <summary>
+        /// Creates a Developer object after collecting validated input.
+        /// </summary>
+        /// <returns>A Developer object.</returns>
+        private static Developer CreateDeveloper()
+        {
+            string name = GetEmployeeName();
+            decimal salary = GetSalary();
+
+            return new Developer(name, salary);
+        }
+
+        /// <summary>
+        /// Creates a Manager object after collecting validated input.
+        /// </summary>
+        /// <returns>A Manager object.</returns>
+        private static Manager CreateManager()
+        {
+            string name = GetEmployeeName();
+            decimal salary = GetSalary();
+
+            return new Manager(name, salary);
+        }
+
+        /// <summary>
+        /// Prompts the user until a valid employee name is entered.
+        /// </summary>
+        /// <returns>A validated employee name.</returns>
+        private static string GetEmployeeName()
+        {
+            bool isValidName = false;
+            string name = string.Empty;
+            while (!isValidName)
+            {
+                Console.Write("Enter Employee Name: ");
+                name = Console.ReadLine() ?? string.Empty;
+                isValidName = !string.IsNullOrWhiteSpace(name);
+                if (!isValidName)
+                {
+                    Console.WriteLine("Invalid name. Please enter a non-empty name.");
+                }
+            }
+
+            return name;
+        }
+
+        /// <summary>
+        /// Prompts the user until a valid positive salary is entered.
+        /// </summary>
+        /// <returns>A validated salary.</returns>
+        private static decimal GetSalary()
+        {
+            bool isValidSalary = false;
+            decimal salary = 0;
+            while (!isValidSalary)
+            {
+                Console.Write("Enter Employee Salary: ");
+                isValidSalary = decimal.TryParse(Console.ReadLine(), out salary) && salary > 0;
+                if (!isValidSalary)
+                {
+                    Console.WriteLine("Invalid salary. Please enter a positive number.");
+                }
+            }
+
+            return salary;
+        }
+
+        /// <summary>
+        /// Displays the operations menu until the user chooses to exit.
+        /// </summary>
+        /// <param name="employee">The selected employee.</param>
+        private static void ShowOperations(Employee employee)
+        {
+            bool isRunning = true;
+            while (isRunning)
             {
                 Console.WriteLine();
                 Console.WriteLine("Choose an Operation:");
@@ -96,12 +156,11 @@ namespace Task2
                         break;
 
                     case 'C':
-                        Console.WriteLine("Press any key to exit...");
-                        Console.ReadKey();
-                        return;
+                        isRunning = false;
+                        break;
 
                     default:
-                        Console.WriteLine("Invalid choice.");
+                        Console.WriteLine("Enter a valid choice.");
                         break;
                 }
             }

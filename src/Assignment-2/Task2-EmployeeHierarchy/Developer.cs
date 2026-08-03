@@ -1,11 +1,11 @@
-﻿namespace Task2.Models
+﻿namespace EmployeeHierarchy.Models
 {
     /// <summary>
     /// Represents a developer and provides developer-specific bonus calculation and details.
     /// </summary>
     internal class Developer : Employee
     {
-        private const decimal BonusPercentage = 0.1m; // Developers receive a 10% bonus
+        private const decimal BonusPercentage = 0.1m;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Developer"/> class.
