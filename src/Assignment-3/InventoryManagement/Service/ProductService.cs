@@ -64,7 +64,8 @@ namespace InventoryManagement.Service
                 throw new ProductNotFoundException();
             }
 
-            products.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase));
+            this.SortProductsByName(products);
+
             return products;
         }
 
@@ -95,7 +96,8 @@ namespace InventoryManagement.Service
         public List<Product> GetAllProducts()
         {
             List<Product> products = this._repository.GetAllProducts();
-            products.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase));
+            this.SortProductsByName(products);
+
             return products;
         }
 
@@ -154,7 +156,7 @@ namespace InventoryManagement.Service
                 }
             }
 
-            lowStockProducts.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase));
+            this.SortProductsByName(lowStockProducts);
 
             return lowStockProducts;
         }
@@ -184,6 +186,15 @@ namespace InventoryManagement.Service
             while (this._repository.ProductIdExists(productId));
 
             return productId;
+        }
+
+        /// <summary>
+        /// Sorts the product list by name in ascending order, ignoring case.
+        /// </summary>
+        /// <param name="products">The list of products to be sorted.</param>
+        private void SortProductsByName(List<Product> products)
+        {
+            products.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

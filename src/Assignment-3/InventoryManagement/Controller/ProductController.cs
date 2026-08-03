@@ -37,8 +37,8 @@ namespace InventoryManagement.Controller
             bool isRunning = true;
             while (isRunning)
             {
-                string option = this._view.ShowMainMenu();
-                switch (option.Trim().ToUpper())
+                string menuChoice = this._view.ShowMainMenu();
+                switch (menuChoice.Trim().ToUpper())
                 {
                     case "A":
                         this.AddProduct();

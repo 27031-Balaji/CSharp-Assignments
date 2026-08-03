@@ -9,13 +9,13 @@
         /// Initializes a new instance of the <see cref="Product"/> class.
         /// </summary>
         /// <param name="productId">The unique ID of the product.</param>
-        /// <param name="nameOfProd">The name of the product.</param>
+        /// <param name="nameOfProduct">The name of the product.</param>
         /// <param name="price">The price of the product.</param>
         /// <param name="quantity">The quantity of stock available for the product.</param>
-        public Product(string productId, string nameOfProd, decimal price, int quantity)
+        public Product(string productId, string nameOfProduct, decimal price, int quantity)
         {
             this.ProductId = productId;
-            this.Name = nameOfProd;
+            this.Name = nameOfProduct;
             this.Price = price;
             this.Quantity = quantity;
         }
