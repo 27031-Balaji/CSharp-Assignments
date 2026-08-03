@@ -203,14 +203,19 @@ namespace ContactManager.Controller
             this._view.ClearScreenWithKey();
         }
 
-        private bool GetContactName(out string name)
+        /// <summary>
+        /// Used to get the right contact name from the user and validate it. If the name is invalid, the user is prompted to retry or exit.
+        /// </summary>
+        /// <param name="contactName">The contact name to be received from the user.</param>
+        /// <returns>True if the user entered valid name, else false.</returns>
+        private bool GetContactName(out string contactName)
         {
-            name = string.Empty;
+            contactName = string.Empty;
             bool isNameValid = false;
             while (!isNameValid)
             {
-                name = this._view.ReadName();
-                if (this._helper.IsValidName(name))
+                contactName = this._view.ReadName();
+                if (this._helper.IsValidName(contactName))
                 {
                     isNameValid = true;
                     continue;
@@ -225,14 +230,19 @@ namespace ContactManager.Controller
             return true;
         }
 
-        private bool GetContactEmail(out string email)
+        /// <summary>
+        /// Used to get the right contact email from the user and validate it. If the email is invalid, the user is prompted to retry or exit.
+        /// </summary>
+        /// <param name="contactEmail">The contact email to be received from the user.</param>
+        /// <returns>True if the user entered valid email, else false.</returns>
+        private bool GetContactEmail(out string contactEmail)
         {
-            email = string.Empty;
+            contactEmail = string.Empty;
             bool isEmailValid = false;
             while (!isEmailValid)
             {
-                email = this._view.ReadEmail();
-                if (this._helper.IsValidEmail(email))
+                contactEmail = this._view.ReadEmail();
+                if (this._helper.IsValidEmail(contactEmail))
                 {
                     isEmailValid = true;
                     continue;
@@ -247,14 +257,19 @@ namespace ContactManager.Controller
             return true;
         }
 
-        private bool GetContactPhoneNumber(out string phone)
+        /// <summary>
+        /// Used to get the right contact phone from the user and validate it. If the phone is invalid or already registered, the user is prompted to retry or exit.
+        /// </summary>
+        /// <param name="contactPhoneNumber">The contact phone number to be received from the user.</param>
+        /// <returns>True if the user entered valid phone number, else false.</returns>
+        private bool GetContactPhoneNumber(out string contactPhoneNumber)
         {
-            phone = string.Empty;
+            contactPhoneNumber = string.Empty;
             bool isPhoneValid = false;
             while (!isPhoneValid)
             {
-                phone = this._view.ReadPhone("add");
-                if (!this._helper.IsValidPhone(phone))
+                contactPhoneNumber = this._view.ReadPhone("add");
+                if (!this._helper.IsValidPhone(contactPhoneNumber))
                 {
                     if (!this.CanRetry(ConsoleMessages.InvalidPhoneMessage))
                     {
@@ -264,7 +279,7 @@ namespace ContactManager.Controller
                     continue;
                 }
 
-                if (this._contactService.IsPhoneRegistered(phone))
+                if (this._contactService.IsPhoneRegistered(contactPhoneNumber))
                 {
                     if (!this.CanRetry(ConsoleMessages.PhoneExistsMessage))
                     {
@@ -280,14 +295,20 @@ namespace ContactManager.Controller
             return true;
         }
 
-        private bool GetRegisteredContactPhoneNumber(out string phone, string operation)
+        /// <summary>
+        /// Used to get the right phone number to search, delete or edit a contact. If the phone is invalid or not registered, the user is prompted to retry or exit.
+        /// </summary>
+        /// <param name="phoneNo">The contact phone number to be validated.</param>
+        /// <param name="operation">The operation to be done with the phone number (edit, delete, search).</param>
+        /// <returns>True if the phone number is valid, else false.</returns>
+        private bool GetRegisteredContactPhoneNumber(out string phoneNo, string operation)
         {
-            phone = string.Empty;
+            phoneNo = string.Empty;
             bool isPhoneValid = false;
             while (!isPhoneValid)
             {
-                phone = this._view.ReadPhone(operation);
-                if (!this._helper.IsValidPhone(phone))
+                phoneNo = this._view.ReadPhone(operation);
+                if (!this._helper.IsValidPhone(phoneNo))
                 {
                     if (!this.CanRetry(ConsoleMessages.InvalidPhoneMessage))
                     {
@@ -297,7 +318,7 @@ namespace ContactManager.Controller
                     continue;
                 }
 
-                if (!this._contactService.IsPhoneRegistered(phone))
+                if (!this._contactService.IsPhoneRegistered(phoneNo))
                 {
                     if (!this.CanRetry(ConsoleMessages.ContactNotFoundMessage))
                     {
@@ -313,44 +334,61 @@ namespace ContactManager.Controller
             return true;
         }
 
-        private void EditContactName(string phone)
+        /// <summary>
+        /// Used to edit the contact name for a given phone number. If the name is invalid, the user is prompted to retry or exit.
+        /// </summary>
+        /// <param name="phoneNo">The phone number of the contact to be edited.</param>
+        private void EditContactName(string phoneNo)
         {
             if (!this.GetContactName(out string name))
             {
                 return;
             }
 
-            bool isUpdated = this._contactService.EditName(phone, name);
+            bool isUpdated = this._contactService.EditName(phoneNo, name);
             string statusMessage = isUpdated
                        ? ConsoleMessages.NameUpdatedMessage
                        : ConsoleMessages.ContactNotFoundMessage;
             this._view.ShowMessage(statusMessage);
         }
 
-        private void EditContactEmail(string phone)
+        /// <summary>
+        /// Used to edit the contact email for a given phone number. If the email is invalid, the user is prompted to retry or exit.
+        /// </summary>
+        /// <param name="phoneNo">The phone number of the contact to be edited.</param>
+        private void EditContactEmail(string phoneNo)
         {
             if (!this.GetContactEmail(out string email))
             {
                 return;
             }
 
-            bool isUpdated = this._contactService.EditEmail(phone, email);
+            bool isUpdated = this._contactService.EditEmail(phoneNo, email);
             string statusMessage = isUpdated
                        ? ConsoleMessages.EmailUpdatedMessage
                        : ConsoleMessages.ContactNotFoundMessage;
             this._view.ShowMessage(statusMessage);
         }
 
-        private void EditContactNotes(string phone)
+        /// <summary>
+        /// Used to edit the contact notes for a given phone number.
+        /// </summary>
+        /// <param name="phoneNo">The phone number of the contact to be edited.</param>
+        private void EditContactNotes(string phoneNo)
         {
             string? notes = this._view.ReadNotes();
-            bool isUpdated = this._contactService.EditNotes(phone, notes);
+            bool isUpdated = this._contactService.EditNotes(phoneNo, notes);
             string statusMessage = isUpdated
                        ? ConsoleMessages.NotesUpdatedMessage
                        : ConsoleMessages.ContactNotFoundMessage;
             this._view.ShowMessage(statusMessage);
         }
 
+        /// <summary>
+        /// Displays an invalid input message for the specified field and prompts the user to decide whether to retry the operation.
+        /// </summary>
+        /// <param name="message">The message to be printed for invalid input.</param>
+        /// <returns>True if user chooses to retry, else false.</returns>
         private bool CanRetry(string message)
         {
             this._view.ShowMessage(message);
