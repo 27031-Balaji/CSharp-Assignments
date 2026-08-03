@@ -1,101 +1,143 @@
 ﻿using Task1.Classes;
-using static System.Drawing.Color; // Static Directive because using System.Drawing has another class named Rectangle, which conflicts with my Rectangle class.
+using static System.Drawing.Color;
 
 namespace Task1
 {
     /// <summary>
-    /// The program class is the entry point of the application.
+    /// The Program class is the entry point of the application.
+    /// It handles user interaction for selecting shapes and performing operations.
     /// </summary>
     internal class Program
     {
         /// <summary>
-        /// The main class is used as the entry method that runs the application.
+        /// Starts the Shape Calculator application.
         /// </summary>
         /// <param name="args">Command-line arguments.</param>
         public static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Shape Calculator.");
-            Shape shape;
-            while (true)
+            Shape shape = GetShape();
+            ShowOperations(shape);
+        }
+
+        /// <summary>
+        /// Prompts the user to select a shape and creates the corresponding object.
+        /// </summary>
+        /// <returns>A Rectangle or Circle object according to the user's choice.</returns>
+        private static Shape GetShape()
+        {
+            bool isShapeSelected = false;
+            Shape shape = null!;
+            while (!isShapeSelected)
             {
                 Console.WriteLine();
                 Console.WriteLine("Choose a Shape:");
                 Console.WriteLine("[A] Rectangle");
                 Console.WriteLine("[B] Circle");
                 Console.Write("Enter your choice: ");
-
-                char choice = char.ToUpper(Console.ReadKey().KeyChar);
+                char shapeChoice = char.ToUpper(Console.ReadKey().KeyChar);
                 Console.WriteLine();
 
-                if (choice != 'A' && choice != 'B')
+                switch (shapeChoice)
                 {
-                    Console.WriteLine("Enter a valid choice.");
-                    continue;
-                }
-
-                string color;
-
-                while (true)
-                {
-                    Console.Write("Enter Color: ");
-                    color = Console.ReadLine() ?? string.Empty;
-                    if (!string.IsNullOrWhiteSpace(color) && FromName(color).IsKnownColor)
-                    {
+                    case 'A':
+                        shape = CreateRectangle();
+                        isShapeSelected = true;
                         break;
-                    }
 
-                    Console.WriteLine("Enter a valid color.");
+                    case 'B':
+                        shape = CreateCircle();
+                        isShapeSelected = true;
+                        break;
+
+                    default:
+                        Console.WriteLine("Enter a valid choice.");
+                        break;
                 }
-
-                if (choice == 'A')
-                {
-                    double length;
-                    while (true)
-                    {
-                        Console.Write("Enter Length: ");
-                        if (double.TryParse(Console.ReadLine(), out length) && length > 0)
-                        {
-                            break;
-                        }
-
-                        Console.WriteLine("Length must be greater than zero.");
-                    }
-
-                    double breadth;
-                    while (true)
-                    {
-                        Console.Write("Enter Breadth: ");
-                        if (double.TryParse(Console.ReadLine(), out breadth) && breadth > 0)
-                        {
-                            break;
-                        }
-
-                        Console.WriteLine("Breadth must be greater than zero.");
-                    }
-
-                    shape = new Rectangle(color, length, breadth);
-                }
-                else
-                {
-                    double radius;
-                    while (true)
-                    {
-                        Console.Write("Enter Radius: ");
-                        if (double.TryParse(Console.ReadLine(), out radius) && radius > 0)
-                        {
-                            break;
-                        }
-
-                        Console.WriteLine("Radius must be greater than zero.");
-                    }
-
-                    shape = new Circle(color, radius);
-                }
-
-                break;
             }
 
-            while (true)
+            return shape;
+        }
+
+        /// <summary>
+        /// Creates a Rectangle object after collecting validated input.
+        /// </summary>
+        /// <returns>A Rectangle object.</returns>
+        private static Rectangle CreateRectangle()
+        {
+            string color = GetColor();
+            double length = GetPositiveNumber("Length");
+            double breadth = GetPositiveNumber("Breadth");
+
+            return new Rectangle(color, length, breadth);
+        }
+
+        /// <summary>
+        /// Creates a Circle object after collecting validated input.
+        /// </summary>
+        /// <returns>A Circle object.</returns>
+        private static Circle CreateCircle()
+        {
+            string color = GetColor();
+            double radius = GetPositiveNumber("Radius");
+
+            return new Circle(color, radius);
+        }
+
+        /// <summary>
+        /// Prompts the user until a valid known color is entered.
+        /// </summary>
+        /// <returns>The validated color name.</returns>
+        private static string GetColor()
+        {
+            bool isValidColor = false;
+            string color = string.Empty;
+
+            while (!isValidColor)
+            {
+                Console.Write("Enter Color: ");
+                color = Console.ReadLine() ?? string.Empty;
+                isValidColor = !string.IsNullOrWhiteSpace(color) && FromName(color).IsKnownColor;
+                if (!isValidColor)
+                {
+                    Console.WriteLine("Invalid color. Please enter the right color.");
+                }
+            }
+
+            return color;
+        }
+
+        /// <summary>
+        /// Prompts the user until a valid positive number is entered.
+        /// </summary>
+        /// <param name="fieldName">The field to be entered.</param>
+        /// <returns>A validated positive number.</returns>
+        private static double GetPositiveNumber(string fieldName)
+        {
+            bool isValidNumber = false;
+            double value = 0;
+
+            while (!isValidNumber)
+            {
+                Console.Write($"Enter {fieldName}: ");
+                isValidNumber = double.TryParse(Console.ReadLine(), out value) && value > 0;
+                if (!isValidNumber)
+                {
+                    Console.WriteLine($"Invalid {fieldName}. Please enter a positive number.");
+                }
+            }
+
+            return value;
+        }
+
+        /// <summary>
+        /// Displays the operations menu until the user chooses to exit.
+        /// </summary>
+        /// <param name="shape">The selected shape.</param>
+        private static void ShowOperations(Shape shape)
+        {
+            bool isRunning = true;
+            while (isRunning)
             {
                 Console.WriteLine();
                 Console.WriteLine("Choose an Operation:");
@@ -103,11 +145,10 @@ namespace Task1
                 Console.WriteLine("[B] Print Details");
                 Console.WriteLine("[C] Exit");
                 Console.Write("Enter your choice: ");
-
-                char operation = char.ToUpper(Console.ReadKey().KeyChar);
+                char operationChoice = char.ToUpper(Console.ReadKey().KeyChar);
                 Console.WriteLine();
 
-                switch (operation)
+                switch (operationChoice)
                 {
                     case 'A':
                         Console.WriteLine($"Area: {shape.CalculateArea():F2}");
@@ -120,10 +161,11 @@ namespace Task1
                     case 'C':
                         Console.WriteLine("Press any key to exit...");
                         Console.ReadKey();
-                        return;
+                        isRunning = false;
+                        break;
 
                     default:
-                        Console.WriteLine("Invalid choice.");
+                        Console.WriteLine("Enter a valid choice.");
                         break;
                 }
             }
