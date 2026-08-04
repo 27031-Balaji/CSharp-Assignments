@@ -215,7 +215,7 @@ namespace BankingSystem
             for (int i = 1; i <= MaximumAttempts; i++)
             {
                 Console.Write(message);
-                if (decimal.TryParse(Console.ReadLine(), out amount) && amount > 0)
+                if (decimal.TryParse(Console.ReadLine() !.Trim(), out amount) && amount > 0)
                 {
                     return true;
                 }

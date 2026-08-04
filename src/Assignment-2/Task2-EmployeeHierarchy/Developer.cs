@@ -32,7 +32,7 @@
         /// <returns>A string describing the developer, salary and bonus.</returns>
         public override string PrintDetails()
         {
-            return $"\nDeveloper: \nName: {this.Name}\nSalary: {this.Salary}\nBonus: {this.CalculateBonus():F2}\n";
+            return $"\nDeveloper: \nName: {this.Name}\nSalary: Rs. {this.Salary}\nBonus: Rs. {this.CalculateBonus():F2}\n";
         }
     }
 }

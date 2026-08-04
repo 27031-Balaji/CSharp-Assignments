@@ -37,7 +37,7 @@
         /// <returns>A string containing the circle details.</returns>
         public override string PrintDetails()
         {
-            return $"Circle: Color = {this.Color}, Radius = {this.Radius}, Area = {this.CalculateArea():F2}";
+            return $"Circle: Color = {this.Color}, Radius = {this.Radius} cm, Area = {this.CalculateArea():F2} cm^2";
         }
     }
 }

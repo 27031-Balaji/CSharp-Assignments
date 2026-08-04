@@ -94,7 +94,7 @@ namespace EmployeeHierarchy
             while (!isValidName)
             {
                 Console.Write("Enter Employee Name: ");
-                name = Console.ReadLine() ?? string.Empty;
+                name = (Console.ReadLine() ?? string.Empty).Trim();
                 isValidName = !string.IsNullOrWhiteSpace(name);
                 if (!isValidName)
                 {
@@ -116,7 +116,7 @@ namespace EmployeeHierarchy
             while (!isValidSalary)
             {
                 Console.Write("Enter Employee Salary: ");
-                isValidSalary = decimal.TryParse(Console.ReadLine(), out salary) && salary > 0;
+                isValidSalary = decimal.TryParse(Console.ReadLine() !.Trim(), out salary) && salary > 0;
                 if (!isValidSalary)
                 {
                     Console.WriteLine("Invalid salary. Please enter a positive number.");
@@ -148,7 +148,7 @@ namespace EmployeeHierarchy
                 switch (operationChoice)
                 {
                     case 'A':
-                        Console.WriteLine($"Bonus: {employee.CalculateBonus():F2}");
+                        Console.WriteLine($"Bonus: Rs. {employee.CalculateBonus():F2}");
                         break;
 
                     case 'B':
