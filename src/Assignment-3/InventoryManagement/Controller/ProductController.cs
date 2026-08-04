@@ -455,7 +455,6 @@ namespace InventoryManagement.Controller
                 name = this._view.ReadProductName(operation);
                 if (this._helper.IsValidName(name))
                 {
-                    name = name.Trim();
                     isNameValid = true;
                     continue;
                 }

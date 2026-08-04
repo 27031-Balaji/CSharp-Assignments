@@ -29,7 +29,7 @@ namespace InventoryManagement.View
             Console.WriteLine("[I] Exit");
             Console.Write("\nEnter your choice: ");
 
-            return Console.ReadLine() ?? string.Empty;
+            return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace InventoryManagement.View
             Console.WriteLine("[C] Back");
             Console.Write("\nChoose an option: ");
 
-            return Console.ReadLine() ?? string.Empty;
+            return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace InventoryManagement.View
         {
             Console.Write($"Enter product name to {operation}: ");
 
-            return Console.ReadLine() ?? string.Empty;
+            return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace InventoryManagement.View
         {
             Console.Write("Enter Product Price: ");
 
-            return Console.ReadLine() ?? string.Empty;
+            return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace InventoryManagement.View
         {
             Console.Write("Enter Product Quantity: ");
 
-            return Console.ReadLine() ?? string.Empty;
+            return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace InventoryManagement.View
         {
             Console.Write($"Enter Product ID to {operation}: ");
 
-            return Console.ReadLine() ?? string.Empty;
+            return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace InventoryManagement.View
             Console.WriteLine("[C] Exit");
             Console.Write("Choose an option: ");
 
-            return Console.ReadLine() ?? string.Empty;
+            return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
         /// <summary>
