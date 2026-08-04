@@ -39,13 +39,13 @@ namespace ContactManager.Repository
         /// <returns>A new list containing copies of stored contacts.</returns>
         public List<ContactInfo> GetAllContacts()
         {
-            List<ContactInfo> duplicate = new List<ContactInfo>();
+            List<ContactInfo> duplicateContacts = new List<ContactInfo>();
             foreach (ContactInfo contact in this._contacts)
             {
-                duplicate.Add(new ContactInfo(contact.Id, contact.Name, contact.Email, contact.Phone, contact.Notes));
+                duplicateContacts.Add(new ContactInfo(contact.Id, contact.Name, contact.Email, contact.Phone, contact.Notes));
             }
 
-            return duplicate;
+            return duplicateContacts;
         }
 
         /// <summary>
@@ -95,6 +95,16 @@ namespace ContactManager.Repository
         public void UpdateContactEmail(ContactInfo contact, string email)
         {
             contact.Email = email;
+        }
+
+        /// <summary>
+        /// Updates the contact's phone number in the contact list.
+        /// </summary>
+        /// <param name="contact">The contact entry to be updated.</param>
+        /// <param name="phone">The phone number used for updation.</param>
+        public void UpdateContactPhone(ContactInfo contact, string phone)
+        {
+            contact.Phone = phone;
         }
 
         /// <summary>

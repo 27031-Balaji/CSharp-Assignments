@@ -41,7 +41,7 @@ namespace ContactManager.Service
         /// </summary>
         /// <param name="phone">Phone number.</param>
         /// <returns>The contact if found; otherwise null.</returns>
-        public ContactInfo? SearchContact(string phone)
+        public ContactInfo? SearchContactByPhoneNumber(string phone)
         {
             return this._repository.GetContactByPhone(phone);
         }
@@ -70,7 +70,7 @@ namespace ContactManager.Service
         /// <param name="phone">The phone number of the contact.</param>
         /// <param name="name">The new name.</param>
         /// <returns>Status message.</returns>
-        public bool EditName(string phone, string name)
+        public bool EditContactNameByPhoneNumber(string phone, string name)
         {
             ContactInfo? contact = this._repository.GetContactByPhone(phone);
             if (contact == null)
@@ -89,7 +89,7 @@ namespace ContactManager.Service
         /// <param name="phone">The phone number of the contact.</param>
         /// <param name="email">The new email.</param>
         /// <returns>Status message.</returns>
-        public bool EditEmail(string phone, string email)
+        public bool EditContactEmailByPhoneNumber(string phone, string email)
         {
             ContactInfo? contact = this._repository.GetContactByPhone(phone);
             if (contact == null)
@@ -103,12 +103,31 @@ namespace ContactManager.Service
         }
 
         /// <summary>
+        /// Edits the phone number of a contact.
+        /// </summary>
+        /// <param name="phone">The phone number of the contact.</param>
+        /// <param name="phoneNumberToChange">The new phone number.</param>
+        /// <returns>Status message.</returns>
+        public bool EditContactPhoneByPhoneNumber(string phone, string phoneNumberToChange)
+        {
+            ContactInfo? contact = this._repository.GetContactByPhone(phone);
+            if (contact == null)
+            {
+                return false;
+            }
+
+            this._repository.UpdateContactPhone(contact, phoneNumberToChange);
+
+            return true;
+        }
+
+        /// <summary>
         /// Edits the notes of a contact.
         /// </summary>
         /// <param name="phone">The phone number of the contact.</param>
         /// <param name="notes">The new notes.</param>
         /// <returns>Status message.</returns>
-        public bool EditNotes(string phone, string? notes)
+        public bool EditContactNotesByPhoneNumber(string phone, string? notes)
         {
             ContactInfo? contact = this._repository.GetContactByPhone(phone);
             if (contact == null)

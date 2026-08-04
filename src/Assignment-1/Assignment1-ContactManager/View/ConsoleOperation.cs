@@ -80,8 +80,8 @@ namespace ContactManager.View
         {
             Console.WriteLine("\n[A] Edit Name");
             Console.WriteLine("[B] Edit Email");
-            Console.WriteLine("[C] Edit Notes");
-            Console.WriteLine("[D] Exit");
+            Console.WriteLine("[C] Edit Phone Number");
+            Console.WriteLine("[D] Edit Notes");
             Console.Write("Choose an option: ");
 
             return Console.ReadLine() ?? string.Empty;

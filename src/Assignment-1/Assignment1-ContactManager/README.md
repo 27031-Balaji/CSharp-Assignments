@@ -34,6 +34,7 @@ The Display Contacts feature shows all available contacts.
  
 1. Users can view the complete contact list.
 2. An appropriate message is displayed when the contact list is empty.
+3. The sorted version of the contact list is displayed.
  
 ---
  
@@ -67,10 +68,8 @@ The Edit Contact feature allows updating an existing contact.
  
 ### Functionalities
  
-1. Users can edit a contact's name, email or notes.
-2. Multiple edits can be performed until the user chooses to exit the edit menu.
+1. Users can edit a contact's name, email, phone number or notes.
 3. Updated values are validated before saving.
-4. The contact list is automatically sorted after updating a contact's name.
  
 ---
  

@@ -66,6 +66,11 @@
         public const string EmailUpdatedMessage = "Email updated successfully.";
 
         /// <summary>
+        /// Message displayed when a contact's phone number is updated successfully.
+        /// </summary>
+        public const string PhoneUpdatedMessage = "Phone number updated successfully.";
+
+        /// <summary>
         /// Message displayed when a contact's notes are updated successfully.
         /// </summary>
         public const string NotesUpdatedMessage = "Notes updated successfully.";

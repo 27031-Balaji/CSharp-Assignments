@@ -82,12 +82,12 @@ namespace ContactManager.Controller
                 return;
             }
 
-            if (!this.GetContactPhoneNumber(out string phone))
+            if (!this.GetContactPhoneNumber(out string phone, "add"))
             {
                 return;
             }
 
-            string? notes = this._view.ReadNotes();
+            string? notes = this._view.ReadNotes().Trim();
 
             this._contactService.AddContact(name.Trim(), email, phone, notes);
             this._view.ShowMessage(ConsoleMessages.ContactAddedMessage);
@@ -126,7 +126,7 @@ namespace ContactManager.Controller
                 return;
             }
 
-            ContactInfo? contact = this._contactService.SearchContact(phone);
+            ContactInfo? contact = this._contactService.SearchContactByPhoneNumber(phone);
             this._view.DisplayContact(contact!);
             this._view.ClearScreenWithKey();
         }
@@ -179,28 +179,34 @@ namespace ContactManager.Controller
                 {
                     case "A":
                         this.EditContactName(phone);
+                        isRunning = false;
                         break;
 
                     case "B":
                         this.EditContactEmail(phone);
+                        isRunning = false;
                         break;
 
                     case "C":
-                        this.EditContactNotes(phone);
+                        this.EditContactPhone(phone);
+                        isRunning = false;
                         break;
 
                     case "D":
+                        this.EditContactNotes(phone);
                         isRunning = false;
-                        this._view.ShowMessage(ConsoleMessages.EditCompletedMessage);
                         break;
 
                     default:
-                        this._view.ShowMessage(ConsoleMessages.InvalidOptionMessage);
+                        if (!this.CanRetry(ConsoleMessages.InvalidOptionMessage))
+                        {
+                            isRunning = false;
+                            this._view.ShowMessage(ConsoleMessages.EditCompletedMessage);
+                        }
+
                         break;
                 }
             }
-
-            this._view.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -214,7 +220,7 @@ namespace ContactManager.Controller
             bool isNameValid = false;
             while (!isNameValid)
             {
-                contactName = this._view.ReadName();
+                contactName = this._view.ReadName().Trim();
                 if (this._helper.IsValidName(contactName))
                 {
                     isNameValid = true;
@@ -241,7 +247,7 @@ namespace ContactManager.Controller
             bool isEmailValid = false;
             while (!isEmailValid)
             {
-                contactEmail = this._view.ReadEmail();
+                contactEmail = this._view.ReadEmail().Trim();
                 if (this._helper.IsValidEmail(contactEmail))
                 {
                     isEmailValid = true;
@@ -262,13 +268,13 @@ namespace ContactManager.Controller
         /// </summary>
         /// <param name="contactPhoneNumber">The contact phone number to be received from the user.</param>
         /// <returns>True if the user entered valid phone number, else false.</returns>
-        private bool GetContactPhoneNumber(out string contactPhoneNumber)
+        private bool GetContactPhoneNumber(out string contactPhoneNumber, string operation)
         {
             contactPhoneNumber = string.Empty;
             bool isPhoneValid = false;
             while (!isPhoneValid)
             {
-                contactPhoneNumber = this._view.ReadPhone("add");
+                contactPhoneNumber = this._view.ReadPhone(operation).Trim();
                 if (!this._helper.IsValidPhone(contactPhoneNumber))
                 {
                     if (!this.CanRetry(ConsoleMessages.InvalidPhoneMessage))
@@ -345,11 +351,12 @@ namespace ContactManager.Controller
                 return;
             }
 
-            bool isUpdated = this._contactService.EditName(phoneNo, name);
+            bool isUpdated = this._contactService.EditContactNameByPhoneNumber(phoneNo, name);
             string statusMessage = isUpdated
                        ? ConsoleMessages.NameUpdatedMessage
                        : ConsoleMessages.ContactNotFoundMessage;
             this._view.ShowMessage(statusMessage);
+            this._view.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -363,11 +370,31 @@ namespace ContactManager.Controller
                 return;
             }
 
-            bool isUpdated = this._contactService.EditEmail(phoneNo, email);
+            bool isUpdated = this._contactService.EditContactEmailByPhoneNumber(phoneNo, email);
             string statusMessage = isUpdated
                        ? ConsoleMessages.EmailUpdatedMessage
                        : ConsoleMessages.ContactNotFoundMessage;
             this._view.ShowMessage(statusMessage);
+            this._view.ClearScreenWithKey();
+        }
+
+        /// <summary>
+        /// Used to edit the contact email for a given phone number. If the email is invalid, the user is prompted to retry or exit.
+        /// </summary>
+        /// <param name="phoneNo">The phone number of the contact to be edited.</param>
+        private void EditContactPhone(string phoneNo)
+        {
+            if (!this.GetContactPhoneNumber(out string phone, string.Empty))
+            {
+                return;
+            }
+
+            bool isUpdated = this._contactService.EditContactPhoneByPhoneNumber(phoneNo, phone);
+            string statusMessage = isUpdated
+                       ? ConsoleMessages.PhoneUpdatedMessage
+                       : ConsoleMessages.ContactNotFoundMessage;
+            this._view.ShowMessage(statusMessage);
+            this._view.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -377,11 +404,12 @@ namespace ContactManager.Controller
         private void EditContactNotes(string phoneNo)
         {
             string? notes = this._view.ReadNotes();
-            bool isUpdated = this._contactService.EditNotes(phoneNo, notes);
+            bool isUpdated = this._contactService.EditContactNotesByPhoneNumber(phoneNo, notes);
             string statusMessage = isUpdated
                        ? ConsoleMessages.NotesUpdatedMessage
                        : ConsoleMessages.ContactNotFoundMessage;
             this._view.ShowMessage(statusMessage);
+            this._view.ClearScreenWithKey();
         }
 
         /// <summary>
