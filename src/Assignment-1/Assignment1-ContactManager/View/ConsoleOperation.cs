@@ -56,7 +56,11 @@ namespace ContactManager.View
         /// <returns>The entered phone number.</returns>
         public string ReadPhone(string operation)
         {
-            Console.Write($"Enter the phone number to {operation}: ");
+            string prompt = string.IsNullOrWhiteSpace(operation)
+                            ? "Enter the phone number: "
+                            : $"Enter the phone number to {operation}: ";
+
+            Console.Write(prompt);
 
             return Console.ReadLine() ?? string.Empty;
         }
