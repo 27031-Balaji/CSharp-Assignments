@@ -45,7 +45,7 @@
         /// <returns>A string containing the rectangle details.</returns>
         public override string PrintDetails()
         {
-            return $"Rectangle: Color = {this.Color}, Length = {this.Length}, Breadth = {this.Breadth}, Area = {this.CalculateArea():F2}";
+            return $"Rectangle: Color = {this.Color}, Length = {this.Length} cm, Breadth = {this.Breadth} cm, Area = {this.CalculateArea():F2} cm^2";
         }
     }
 }

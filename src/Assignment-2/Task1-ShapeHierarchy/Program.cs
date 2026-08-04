@@ -96,7 +96,7 @@ namespace ShapeHierarchy
             while (!isValidColor)
             {
                 Console.Write("Enter Color: ");
-                color = Console.ReadLine() ?? string.Empty;
+                color = (Console.ReadLine() ?? string.Empty).Trim();
                 isValidColor = !string.IsNullOrWhiteSpace(color) && FromName(color).IsKnownColor;
                 if (!isValidColor)
                 {
@@ -119,8 +119,8 @@ namespace ShapeHierarchy
 
             while (!isValidNumber)
             {
-                Console.Write($"Enter {fieldName}: ");
-                isValidNumber = double.TryParse(Console.ReadLine(), out value) && value > 0;
+                Console.Write($"Enter {fieldName} in cm: ");
+                isValidNumber = double.TryParse(Console.ReadLine() !.Trim(), out value) && value > 0;
                 if (!isValidNumber)
                 {
                     Console.WriteLine($"Invalid {fieldName}. Please enter a positive number.");
@@ -151,7 +151,7 @@ namespace ShapeHierarchy
                 switch (operationChoice)
                 {
                     case 'A':
-                        Console.WriteLine($"Area: {shape.CalculateArea():F2}");
+                        Console.WriteLine($"Area: {shape.CalculateArea():F2} cm^2");
                         break;
 
                     case 'B':
