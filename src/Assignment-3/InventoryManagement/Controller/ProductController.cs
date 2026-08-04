@@ -550,7 +550,7 @@ namespace InventoryManagement.Controller
                 return;
             }
 
-            this._services.EditName(product, name);
+            this._services.EditProductName(product, name);
             this._view.ShowMessage(ConsoleMessages.NameUpdatedMessage, MessageType.Success);
         }
 
@@ -565,7 +565,7 @@ namespace InventoryManagement.Controller
                 return;
             }
 
-            this._services.EditPrice(product, price);
+            this._services.EditProductPrice(product, price);
             this._view.ShowMessage(ConsoleMessages.PriceUpdatedMessage, MessageType.Success);
         }
     }

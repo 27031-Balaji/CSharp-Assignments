@@ -74,7 +74,7 @@ namespace InventoryManagement.Service
         /// </summary>
         /// <param name="product">The product entry to be updated.</param>
         /// <param name="name">The new product name.</param>
-        public void EditName(Product product, string name)
+        public void EditProductName(Product product, string name)
         {
             this._repository.UpdateName(product, name.Trim());
         }
@@ -84,7 +84,7 @@ namespace InventoryManagement.Service
         /// </summary>
         /// <param name="product">The product entry to be updated.</param>
         /// <param name="price">The new product price.</param>
-        public void EditPrice(Product product, decimal price)
+        public void EditProductPrice(Product product, decimal price)
         {
             this._repository.UpdatePrice(product, price);
         }
