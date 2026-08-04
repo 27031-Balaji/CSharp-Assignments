@@ -313,7 +313,7 @@ namespace ContactManager.Controller
             bool isPhoneValid = false;
             while (!isPhoneValid)
             {
-                phoneNo = this._view.ReadPhone(operation);
+                phoneNo = this._view.ReadPhone(operation).Trim();
                 if (!this._helper.IsValidPhone(phoneNo))
                 {
                     if (!this.CanRetry(ConsoleMessages.InvalidPhoneMessage))
