@@ -51,7 +51,7 @@ namespace ContactManager.Service
         /// </summary>
         /// <param name="phone">The phone number of the contact.</param>
         /// <returns>Status message.</returns>
-        public bool DeleteContact(string phone)
+        public bool DeleteContactByPhoneNumber(string phone)
         {
             ContactInfo? contact = this._repository.GetContactByPhone(phone);
             if (contact == null)

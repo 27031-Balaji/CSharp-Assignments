@@ -147,7 +147,7 @@ namespace ContactManager.Controller
                 return;
             }
 
-            bool isDeleted = this._contactService.DeleteContact(phone);
+            bool isDeleted = this._contactService.DeleteContactByPhoneNumber(phone);
             string statusMessage = isDeleted
                        ? ConsoleMessages.ContactDeletedMessage
                        : ConsoleMessages.DeleteFailedMessage;
