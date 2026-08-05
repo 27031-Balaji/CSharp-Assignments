@@ -8,7 +8,16 @@ namespace ContactManager.Service
     /// </summary>
     internal class ContactService
     {
-        private ContactRepository _repository = new ContactRepository();
+        private readonly ContactRepository _contactRepository;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContactService"/> class with the specified contact repository.
+        /// </summary>
+        /// <param name="contactRepository">The object of the contact repository.</param>
+        public ContactService(ContactRepository contactRepository)
+        {
+            this._contactRepository = contactRepository;
+        }
 
         /// <summary>
         /// Adds a contact to the repository.
@@ -21,7 +30,7 @@ namespace ContactManager.Service
         {
             Guid id = Guid.NewGuid();
             ContactInfo contact = new ContactInfo(id, name, email, phone, notes);
-            this._repository.AddContact(contact);
+            this._contactRepository.AddContact(contact);
         }
 
         /// <summary>
@@ -30,8 +39,8 @@ namespace ContactManager.Service
         /// <returns>All contacts or an error message.</returns>
         public List<ContactInfo> GetAllContacts()
         {
-            List<ContactInfo> contacts = this._repository.GetAllContacts();
-            contacts.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.Ordinal));
+            List<ContactInfo> contacts = this._contactRepository.GetAllContacts();
+            contacts.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.CurrentCultureIgnoreCase));
 
             return contacts;
         }
@@ -43,7 +52,7 @@ namespace ContactManager.Service
         /// <returns>The contact if found; otherwise null.</returns>
         public ContactInfo? SearchContactByPhoneNumber(string phone)
         {
-            return this._repository.GetContactByPhone(phone);
+            return this._contactRepository.GetContactByPhone(phone);
         }
 
         /// <summary>
@@ -53,13 +62,13 @@ namespace ContactManager.Service
         /// <returns>Status message.</returns>
         public bool DeleteContactByPhoneNumber(string phone)
         {
-            ContactInfo? contact = this._repository.GetContactByPhone(phone);
+            ContactInfo? contact = this._contactRepository.GetContactByPhone(phone);
             if (contact == null)
             {
                 return false;
             }
 
-            this._repository.DeleteContact(contact);
+            this._contactRepository.DeleteContact(contact);
 
             return true;
         }
@@ -72,13 +81,13 @@ namespace ContactManager.Service
         /// <returns>Status message.</returns>
         public bool EditContactNameByPhoneNumber(string phone, string name)
         {
-            ContactInfo? contact = this._repository.GetContactByPhone(phone);
+            ContactInfo? contact = this._contactRepository.GetContactByPhone(phone);
             if (contact == null)
             {
                 return false;
             }
 
-            this._repository.UpdateContactName(contact, name.Trim());
+            this._contactRepository.UpdateContactName(contact, name.Trim());
 
             return true;
         }
@@ -91,13 +100,13 @@ namespace ContactManager.Service
         /// <returns>Status message.</returns>
         public bool EditContactEmailByPhoneNumber(string phone, string email)
         {
-            ContactInfo? contact = this._repository.GetContactByPhone(phone);
+            ContactInfo? contact = this._contactRepository.GetContactByPhone(phone);
             if (contact == null)
             {
                 return false;
             }
 
-            this._repository.UpdateContactEmail(contact, email);
+            this._contactRepository.UpdateContactEmail(contact, email);
 
             return true;
         }
@@ -110,13 +119,13 @@ namespace ContactManager.Service
         /// <returns>Status message.</returns>
         public bool EditContactPhoneByPhoneNumber(string phone, string phoneNumberToChange)
         {
-            ContactInfo? contact = this._repository.GetContactByPhone(phone);
+            ContactInfo? contact = this._contactRepository.GetContactByPhone(phone);
             if (contact == null)
             {
                 return false;
             }
 
-            this._repository.UpdateContactPhone(contact, phoneNumberToChange);
+            this._contactRepository.UpdateContactPhone(contact, phoneNumberToChange);
 
             return true;
         }
@@ -129,13 +138,13 @@ namespace ContactManager.Service
         /// <returns>Status message.</returns>
         public bool EditContactNotesByPhoneNumber(string phone, string? notes)
         {
-            ContactInfo? contact = this._repository.GetContactByPhone(phone);
+            ContactInfo? contact = this._contactRepository.GetContactByPhone(phone);
             if (contact == null)
             {
                 return false;
             }
 
-            this._repository.UpdateContactNotes(contact, notes);
+            this._contactRepository.UpdateContactNotes(contact, notes);
 
             return true;
         }
@@ -146,7 +155,7 @@ namespace ContactManager.Service
         /// <returns>Return True or False based on the contact list emptiness.</returns>
         public bool IsContactEmpty()
         {
-            return this._repository.ContactCount == 0;
+            return this._contactRepository.ContactCount == 0;
         }
 
         /// <summary>
@@ -156,7 +165,7 @@ namespace ContactManager.Service
         /// <returns>True if the contact exists, otherwise false.</returns>
         public bool IsPhoneRegistered(string phone)
         {
-            return this._repository.IsContactExistsByPhoneNumber(phone);
+            return this._contactRepository.IsContactExistsByPhoneNumber(phone);
         }
     }
 }

@@ -10,9 +10,22 @@ namespace ContactManager.Controller
     /// </summary>
     internal class ContactController
     {
-        private readonly ContactService _contactService = new ContactService();
-        private readonly ContactHelper _helper = new ContactHelper();
-        private readonly ConsoleOperation _view = new ConsoleOperation();
+        private readonly ContactService _contactService;
+        private readonly ContactHelper _contactHelper;
+        private readonly ConsoleOperation _contactView;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContactController"/> class with the specified contact service, helper, and view.
+        /// </summary>
+        /// <param name="contactService">The object of the contact services layer.</param>
+        /// <param name="contactHelper">The object of the helper class.</param>
+        /// <param name="contactView">The object of the view class.</param>
+        public ContactController(ContactService contactService, ContactHelper contactHelper, ConsoleOperation contactView)
+        {
+            this._contactService = contactService;
+            this._contactHelper = contactHelper;
+            this._contactView = contactView;
+        }
 
         /// <summary>
         /// Starts and runs the main controller loop.
@@ -22,7 +35,7 @@ namespace ContactManager.Controller
             bool isRunning = true;
             while (isRunning)
             {
-                string? menuChoice = this._view.ShowMainMenu();
+                string? menuChoice = this._contactView.ShowMainMenu();
                 switch (menuChoice.Trim().ToUpper())
                 {
                     case "A":
@@ -46,13 +59,13 @@ namespace ContactManager.Controller
                         break;
 
                     case "F":
-                        this._view.ShowMessage(ConsoleMessages.ExitMessage);
+                        this._contactView.ShowMessage(ConsoleMessages.ExitMessage);
                         Thread.Sleep(1000);
                         isRunning = false;
                         break;
 
                     default:
-                        this._view.ShowMessage(ConsoleMessages.InvalidOptionMessage);
+                        this._contactView.ShowMessage(ConsoleMessages.InvalidOptionMessage);
                         break;
                 }
             }
@@ -64,7 +77,7 @@ namespace ContactManager.Controller
         /// <returns>True if the list is empty, otherwise false.</returns>
         private bool HasContacts()
         {
-            return this._contactService.IsContactEmpty() ? false : true;
+            return !this._contactService.IsContactEmpty();
         }
 
         /// <summary>
@@ -87,11 +100,11 @@ namespace ContactManager.Controller
                 return;
             }
 
-            string? notes = this._view.ReadNotes().Trim();
+            string? notes = this._contactView.ReadNotes().Trim();
 
             this._contactService.AddContact(name.Trim(), email, phone, notes);
-            this._view.ShowMessage(ConsoleMessages.ContactAddedMessage);
-            this._view.ClearScreenWithKey();
+            this._contactView.ShowMessage(ConsoleMessages.ContactAddedMessage);
+            this._contactView.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -101,13 +114,13 @@ namespace ContactManager.Controller
         {
             if (!this.HasContacts())
             {
-                this._view.ShowMessage(ConsoleMessages.ContactListEmptyMessage);
+                this._contactView.ShowMessage(ConsoleMessages.ContactListEmptyMessage);
                 return;
             }
 
             List<ContactInfo> contacts = this._contactService.GetAllContacts();
-            this._view.DisplayContacts(contacts);
-            this._view.ClearScreenWithKey();
+            this._contactView.DisplayContacts(contacts);
+            this._contactView.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -117,7 +130,7 @@ namespace ContactManager.Controller
         {
             if (!this.HasContacts())
             {
-                this._view.ShowMessage(ConsoleMessages.ContactListEmptyMessage);
+                this._contactView.ShowMessage(ConsoleMessages.ContactListEmptyMessage);
                 return;
             }
 
@@ -127,8 +140,8 @@ namespace ContactManager.Controller
             }
 
             ContactInfo? contact = this._contactService.SearchContactByPhoneNumber(phone);
-            this._view.DisplayContact(contact!);
-            this._view.ClearScreenWithKey();
+            this._contactView.DisplayContact(contact!);
+            this._contactView.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -138,7 +151,7 @@ namespace ContactManager.Controller
         {
             if (!this.HasContacts())
             {
-                this._view.ShowMessage(ConsoleMessages.ContactListEmptyMessage);
+                this._contactView.ShowMessage(ConsoleMessages.ContactListEmptyMessage);
                 return;
             }
 
@@ -151,8 +164,8 @@ namespace ContactManager.Controller
             string statusMessage = isDeleted
                        ? ConsoleMessages.ContactDeletedMessage
                        : ConsoleMessages.DeleteFailedMessage;
-            this._view.ShowMessage(statusMessage);
-            this._view.ClearScreenWithKey();
+            this._contactView.ShowMessage(statusMessage);
+            this._contactView.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -162,7 +175,7 @@ namespace ContactManager.Controller
         {
             if (!this.HasContacts())
             {
-                this._view.ShowMessage(ConsoleMessages.ContactListEmptyMessage);
+                this._contactView.ShowMessage(ConsoleMessages.ContactListEmptyMessage);
                 return;
             }
 
@@ -174,7 +187,7 @@ namespace ContactManager.Controller
             bool isRunning = true;
             while (isRunning)
             {
-                string? menuChoice = this._view.ShowEditMenu();
+                string? menuChoice = this._contactView.ShowEditMenu();
                 switch (menuChoice.Trim().ToUpper())
                 {
                     case "A":
@@ -201,7 +214,7 @@ namespace ContactManager.Controller
                         if (!this.CanRetry(ConsoleMessages.InvalidOptionMessage))
                         {
                             isRunning = false;
-                            this._view.ShowMessage(ConsoleMessages.EditCompletedMessage);
+                            this._contactView.ShowMessage(ConsoleMessages.EditCompletedMessage);
                         }
 
                         break;
@@ -220,11 +233,11 @@ namespace ContactManager.Controller
             bool isNameValid = false;
             while (!isNameValid)
             {
-                contactName = this._view.ReadName().Trim();
-                if (this._helper.IsValidName(contactName))
+                contactName = this._contactView.ReadName().Trim();
+                if (this._contactHelper.IsValidName(contactName))
                 {
                     isNameValid = true;
-                    continue;
+                    break;
                 }
 
                 if (!this.CanRetry(ConsoleMessages.InvalidNameMessage))
@@ -247,11 +260,11 @@ namespace ContactManager.Controller
             bool isEmailValid = false;
             while (!isEmailValid)
             {
-                contactEmail = this._view.ReadEmail().Trim();
-                if (this._helper.IsValidEmail(contactEmail))
+                contactEmail = this._contactView.ReadEmail().Trim();
+                if (this._contactHelper.IsValidEmail(contactEmail))
                 {
                     isEmailValid = true;
-                    continue;
+                    break;
                 }
 
                 if (!this.CanRetry(ConsoleMessages.InvalidEmailMessage))
@@ -272,22 +285,23 @@ namespace ContactManager.Controller
         {
             contactPhoneNumber = string.Empty;
             bool isPhoneValid = false;
+
             while (!isPhoneValid)
             {
-                contactPhoneNumber = this._view.ReadPhone(operation).Trim();
-                if (!this._helper.IsValidPhone(contactPhoneNumber))
+                contactPhoneNumber = this._contactView.ReadPhone(operation).Trim();
+                string errorMessage = string.Empty;
+                if (!this._contactHelper.IsValidPhone(contactPhoneNumber))
                 {
-                    if (!this.CanRetry(ConsoleMessages.InvalidPhoneMessage))
-                    {
-                        return false;
-                    }
-
-                    continue;
+                    errorMessage = ConsoleMessages.InvalidPhoneMessage;
+                }
+                else if (this._contactService.IsPhoneRegistered(contactPhoneNumber))
+                {
+                    errorMessage = ConsoleMessages.PhoneExistsMessage;
                 }
 
-                if (this._contactService.IsPhoneRegistered(contactPhoneNumber))
+                if (!string.IsNullOrEmpty(errorMessage))
                 {
-                    if (!this.CanRetry(ConsoleMessages.PhoneExistsMessage))
+                    if (!this.CanRetry(errorMessage))
                     {
                         return false;
                     }
@@ -304,29 +318,30 @@ namespace ContactManager.Controller
         /// <summary>
         /// Used to get the right phone number to search, delete or edit a contact. If the phone is invalid or not registered, the user is prompted to retry or exit.
         /// </summary>
-        /// <param name="phoneNo">The contact phone number to be validated.</param>
+        /// <param name="contactPhoneNumber">The contact phone number to be validated.</param>
         /// <param name="operation">The operation to be done with the phone number (edit, delete, search).</param>
         /// <returns>True if the phone number is valid, else false.</returns>
-        private bool GetRegisteredContactPhoneNumber(out string phoneNo, string operation)
+        private bool GetRegisteredContactPhoneNumber(out string contactPhoneNumber, string operation)
         {
-            phoneNo = string.Empty;
+            contactPhoneNumber = string.Empty;
             bool isPhoneValid = false;
+
             while (!isPhoneValid)
             {
-                phoneNo = this._view.ReadPhone(operation).Trim();
-                if (!this._helper.IsValidPhone(phoneNo))
+                contactPhoneNumber = this._contactView.ReadPhone(operation).Trim();
+                string errorMessage = string.Empty;
+                if (!this._contactHelper.IsValidPhone(contactPhoneNumber))
                 {
-                    if (!this.CanRetry(ConsoleMessages.InvalidPhoneMessage))
-                    {
-                        return false;
-                    }
-
-                    continue;
+                    errorMessage = ConsoleMessages.InvalidPhoneMessage;
+                }
+                else if (!this._contactService.IsPhoneRegistered(contactPhoneNumber))
+                {
+                    errorMessage = ConsoleMessages.ContactNotFoundMessage;
                 }
 
-                if (!this._contactService.IsPhoneRegistered(phoneNo))
+                if (!string.IsNullOrEmpty(errorMessage))
                 {
-                    if (!this.CanRetry(ConsoleMessages.ContactNotFoundMessage))
+                    if (!this.CanRetry(errorMessage))
                     {
                         return false;
                     }
@@ -355,8 +370,8 @@ namespace ContactManager.Controller
             string statusMessage = isUpdated
                        ? ConsoleMessages.NameUpdatedMessage
                        : ConsoleMessages.ContactNotFoundMessage;
-            this._view.ShowMessage(statusMessage);
-            this._view.ClearScreenWithKey();
+            this._contactView.ShowMessage(statusMessage);
+            this._contactView.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -374,8 +389,8 @@ namespace ContactManager.Controller
             string statusMessage = isUpdated
                        ? ConsoleMessages.EmailUpdatedMessage
                        : ConsoleMessages.ContactNotFoundMessage;
-            this._view.ShowMessage(statusMessage);
-            this._view.ClearScreenWithKey();
+            this._contactView.ShowMessage(statusMessage);
+            this._contactView.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -393,8 +408,8 @@ namespace ContactManager.Controller
             string statusMessage = isUpdated
                        ? ConsoleMessages.PhoneUpdatedMessage
                        : ConsoleMessages.ContactNotFoundMessage;
-            this._view.ShowMessage(statusMessage);
-            this._view.ClearScreenWithKey();
+            this._contactView.ShowMessage(statusMessage);
+            this._contactView.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -403,13 +418,13 @@ namespace ContactManager.Controller
         /// <param name="phoneNo">The phone number of the contact to be edited.</param>
         private void EditContactNotes(string phoneNo)
         {
-            string? notes = this._view.ReadNotes();
+            string? notes = this._contactView.ReadNotes();
             bool isUpdated = this._contactService.EditContactNotesByPhoneNumber(phoneNo, notes);
             string statusMessage = isUpdated
                        ? ConsoleMessages.NotesUpdatedMessage
                        : ConsoleMessages.ContactNotFoundMessage;
-            this._view.ShowMessage(statusMessage);
-            this._view.ClearScreenWithKey();
+            this._contactView.ShowMessage(statusMessage);
+            this._contactView.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -419,11 +434,11 @@ namespace ContactManager.Controller
         /// <returns>True if user chooses to retry, else false.</returns>
         private bool CanRetry(string message)
         {
-            this._view.ShowMessage(message);
-            bool shouldRetry = this._view.AskRetry();
+            this._contactView.ShowMessage(message);
+            bool shouldRetry = this._contactView.AskRetry();
             if (!shouldRetry)
             {
-                this._view.ClearScreen();
+                this._contactView.ClearScreen();
             }
 
             return shouldRetry;

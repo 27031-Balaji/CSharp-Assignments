@@ -1,4 +1,8 @@
 ﻿using ContactManager.Controller;
+using ContactManager.Helper;
+using ContactManager.Repository;
+using ContactManager.Service;
+using ContactManager.View;
 
 namespace ContactManager
 {
@@ -13,7 +17,11 @@ namespace ContactManager
         /// <param name="args">The command line arguments.</param>
         public static void Main(string[] args)
         {
-            ContactController controller = new ContactController();
+            ContactRepository repository = new ContactRepository();
+            ContactService service = new ContactService(repository);
+            ContactHelper helper = new ContactHelper();
+            ConsoleOperation view = new ConsoleOperation();
+            ContactController controller = new ContactController(service, helper, view);
             controller.Run();
         }
     }

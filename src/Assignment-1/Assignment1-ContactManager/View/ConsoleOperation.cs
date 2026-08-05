@@ -13,15 +13,15 @@ namespace ContactManager.View
         /// <returns>The user's selected option as a string.</returns>
         public string ShowMainMenu()
         {
-            Console.WriteLine("Welcome to Contact Manager");
-            Console.WriteLine("========================================================");
-            Console.WriteLine("\nSelect an option:");
-            Console.WriteLine("[A] Add Contact");
-            Console.WriteLine("[B] Display Contacts");
-            Console.WriteLine("[C] Search Contact");
-            Console.WriteLine("[D] Delete Contact");
-            Console.WriteLine("[E] Edit Contact");
-            Console.WriteLine("[F] Exit");
+            Console.Write("Welcome to Contact Manager\n");
+            Console.Write("========================================================\n");
+            Console.Write("\nSelect an option:\n");
+            Console.Write("[A] Add Contact\n");
+            Console.Write("[B] Display Contacts\n");
+            Console.Write("[C] Search Contact\n");
+            Console.Write("[D] Delete Contact\n");
+            Console.Write("[E] Edit Contact\n");
+            Console.Write("[F] Exit\n");
             Console.Write("\nEnter your choice: ");
 
             return Console.ReadLine() ?? string.Empty;
@@ -82,10 +82,10 @@ namespace ContactManager.View
         /// <returns>The user's selected edit option.</returns>
         public string ShowEditMenu()
         {
-            Console.WriteLine("\n[A] Edit Name");
-            Console.WriteLine("[B] Edit Email");
-            Console.WriteLine("[C] Edit Phone Number");
-            Console.WriteLine("[D] Edit Notes");
+            Console.Write("\n[A] Edit Name\n");
+            Console.Write("[B] Edit Email\n");
+            Console.Write("[C] Edit Phone Number\n");
+            Console.Write("[D] Edit Notes\n");
             Console.Write("Choose an option: ");
 
             return Console.ReadLine() ?? string.Empty;

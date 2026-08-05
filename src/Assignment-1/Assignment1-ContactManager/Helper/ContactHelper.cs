@@ -24,13 +24,8 @@ namespace ContactManager.Helper
         /// <returns>True if the email has a valid format, otherwise false.</returns>
         public bool IsValidEmail(string? email)
         {
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                return false;
-            }
-
             string pattern = @"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$";
-            return Regex.IsMatch(email, pattern);
+            return Regex.IsMatch(email ?? string.Empty, pattern);
         }
 
         /// <summary>
@@ -40,12 +35,7 @@ namespace ContactManager.Helper
         /// <returns>True if the phone number is valid, otherwise false.</returns>
         public bool IsValidPhone(string? phone)
         {
-            if (string.IsNullOrWhiteSpace(phone))
-            {
-                return false;
-            }
-
-            return phone.Length == 10 && long.TryParse(phone, out _);
+            return !string.IsNullOrWhiteSpace(phone) && phone.Length == 10 && long.TryParse(phone, out _);
         }
     }
 }
