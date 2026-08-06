@@ -1,4 +1,4 @@
-﻿using ExpenseTracker.Model;
+﻿using ExpenseTracker.Enums;
 
 namespace ExpenseTracker.Repository
 {
@@ -22,5 +22,55 @@ namespace ExpenseTracker.Repository
         /// </summary>
         /// <value>The net balance after the user's income and expenses.</value>
         public decimal Balance { get; set; }
+
+        public void AddRecord(FinancialRecord record)
+        {
+            this._records.Add(record);
+        }
+
+        public List<FinancialRecord> GetAllRecords()
+        {
+            List<FinancialRecord> duplicateRecords = new List<FinancialRecord>();
+
+            foreach (FinancialRecord record in this._records)
+            {
+                duplicateRecords.Add(record.Clone());
+            }
+
+            return duplicateRecords;
+        }
+
+        public List<FinancialRecord> GetAllIncomeRecords()
+        {
+            List<FinancialRecord> duplicateIncomeRecords = new List<FinancialRecord>();
+            foreach (FinancialRecord record in this._records)
+            {
+                if (record is Income)
+                {
+                    duplicateIncomeRecords.Add(record.Clone());
+                }
+            }
+
+            return duplicateIncomeRecords;
+        }
+
+        public List<FinancialRecord> GetAllExpenseRecords()
+        {
+            List<FinancialRecord> duplicateExpenseRecords = new List<FinancialRecord>();
+            foreach (FinancialRecord record in this._records)
+            {
+                if (record is Income)
+                {
+                    duplicateExpenseRecords.Add(record.Clone());
+                }
+            }
+
+            return duplicateExpenseRecords;
+        }
+
+        public bool RecordIdExists(string recordId)
+        {
+            return this._records.Any(record => record.Id == recordId);
+        }
     }
 }

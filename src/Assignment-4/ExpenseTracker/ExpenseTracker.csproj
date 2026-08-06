@@ -14,10 +14,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controller\" />
-    <Folder Include="View\" />
-    <Folder Include="Service\" />
-  </ItemGroup>
-
 </Project>
