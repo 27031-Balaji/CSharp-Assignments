@@ -1,18 +1,18 @@
-﻿using ExpenseTracker.Enums;
+﻿using ExpenseTracker.Model;
 
 namespace ExpenseTracker.Repository
 {
     /// <summary>
     /// Handles the in-memory storage and management of financial records, including income and expenses.
     /// </summary>
-    internal class InMemoryExpenseRepository
+    internal class ExpenseRepository
     {
         private readonly List<FinancialRecord> _records;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InMemoryExpenseRepository"/> class.
+        /// Initializes a new instance of the <see cref="ExpenseRepository"/> class.
         /// </summary>
-        public InMemoryExpenseRepository()
+        public ExpenseRepository()
         {
             this._records = new List<FinancialRecord>();
         }
@@ -22,6 +22,8 @@ namespace ExpenseTracker.Repository
         /// </summary>
         /// <value>The net balance after the user's income and expenses.</value>
         public decimal Balance { get; set; }
+
+        public int RecordCount { get => this._records.Count; }
 
         public void AddRecord(FinancialRecord record)
         {
@@ -59,7 +61,7 @@ namespace ExpenseTracker.Repository
             List<FinancialRecord> duplicateExpenseRecords = new List<FinancialRecord>();
             foreach (FinancialRecord record in this._records)
             {
-                if (record is Income)
+                if (record is Expense)
                 {
                     duplicateExpenseRecords.Add(record.Clone());
                 }

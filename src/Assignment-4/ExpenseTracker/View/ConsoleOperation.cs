@@ -1,4 +1,6 @@
-﻿using ExpenseTracker.Enums;
+﻿using ConsoleTables;
+using ExpenseTracker.Enums;
+using ExpenseTracker.Model;
 
 namespace ExpenseTracker.View
 {
@@ -31,6 +33,18 @@ namespace ExpenseTracker.View
             Console.Write("[A] Add Income\n");
             Console.Write("[B] Add Expense\n");
             Console.Write("[C] Back to Main Menu\n");
+            Console.Write("\nEnter your choice: ");
+
+            return (Console.ReadLine() ?? string.Empty).Trim();
+        }
+
+        public string ViewMenu()
+        {
+            Console.Write("\nSelect an option to view: \n");
+            Console.Write("[A] View All Records\n");
+            Console.Write("[B] View All Incomes\n");
+            Console.Write("[C] View All Expenses\n");
+            Console.Write("[D] Back to Main Menu\n");
             Console.Write("\nEnter your choice: ");
 
             return (Console.ReadLine() ?? string.Empty).Trim();
@@ -97,6 +111,17 @@ namespace ExpenseTracker.View
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"Enter a valid {fieldName}.");
             Console.ResetColor();
+        }
+
+        public void DisplayRecords(List<FinancialRecord> records)
+        {
+            var table = new ConsoleTable("Id", "Date", "Type", "Classification", "Amount", "Description");
+            foreach (FinancialRecord record in records)
+            {
+                table.AddRow(record.Id, record.Date, record.Type, record.Classification, record.Amount, record.Description);
+            }
+
+            table.Write(Format.MarkDown);
         }
 
         /// <summary>

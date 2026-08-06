@@ -1,6 +1,6 @@
 ﻿using ExpenseTracker.Enums;
 
-namespace ExpenseTracker.Enums
+namespace ExpenseTracker.Model
 {
     /// <summary>
     /// Represents the income record with an ID, date, amount, and source.
@@ -26,5 +26,14 @@ namespace ExpenseTracker.Enums
         /// </summary>
         /// <value>The source of the income.</value>
         public IncomeSource Source { get; set; }
+
+        public override string Type => "Income";
+
+        public override string Classification => this.Source.ToString();
+
+        public override FinancialRecord Clone()
+        {
+            return new Income(this.Id, this.Date, this.Amount, this.Description, this.Source);
+        }
     }
 }
