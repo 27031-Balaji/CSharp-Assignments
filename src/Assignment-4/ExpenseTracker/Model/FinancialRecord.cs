@@ -1,4 +1,4 @@
-﻿namespace ExpenseTracker.Enums
+﻿namespace ExpenseTracker.Model
 {
     /// <summary>
     /// Represents a financial record with an ID, date, and amount.
@@ -43,5 +43,11 @@
         /// </summary>
         /// <value>The description of the record.</value>
         public string? Description { get; set; }
+
+        public abstract string Type { get; }
+
+        public abstract string Classification { get; }
+
+        public abstract FinancialRecord Clone();
     }
 }

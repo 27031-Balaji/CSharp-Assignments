@@ -1,5 +1,6 @@
 ﻿using ExpenseTracker.Enums;
 using ExpenseTracker.Helper;
+using ExpenseTracker.Model;
 using ExpenseTracker.Service;
 using ExpenseTracker.View;
 
@@ -31,6 +32,7 @@ namespace ExpenseTracker.Controller
                         break;
 
                     case "B":
+                        this.ViewRecords();
                         break;
 
                     case "C":
@@ -58,7 +60,7 @@ namespace ExpenseTracker.Controller
             }
         }
 
-        public void AddRecord()
+        private void AddRecord()
         {
             bool isRunning = true;
             while (isRunning)
@@ -75,6 +77,37 @@ namespace ExpenseTracker.Controller
                         isRunning = false;
                         break;
                     case "C":
+                        isRunning = false;
+                        this._view.ClearScreen();
+                        break;
+                    default:
+                        this._view.ShowInvalidMessage("option");
+                        break;
+                }
+            }
+        }
+
+        private void ViewRecords()
+        {
+            bool isRunning = true;
+            while (isRunning)
+            {
+                string viewChoice = this._view.ViewMenu();
+                switch (viewChoice.Trim().ToUpper())
+                {
+                    case "A":
+                        this.DisplayAllRecords();
+                        isRunning = false;
+                        break;
+                    case "B":
+                        this.DisplayAllIncomes();
+                        isRunning = false;
+                        break;
+                    case "C":
+                        this.DisplayAllExpenses();
+                        isRunning = false;
+                        break;
+                    case "D":
                         isRunning = false;
                         this._view.ClearScreen();
                         break;
@@ -133,92 +166,113 @@ namespace ExpenseTracker.Controller
             this._view.ClearScreenWithKey();
         }
 
-        private bool GetValidDate(out DateOnly date, string action)
+        private void DisplayAllRecords()
         {
-            date = DateOnly.FromDateTime(DateTime.Now);
-            bool isDateValid = false;
-            while (!isDateValid)
+            if (!this.HasContacts())
             {
-                string input = this._view.ReadRecordDate(action);
-                if (this._helper.IsValidDate(input, out date))
-                {
-                    isDateValid = true;
-                    break;
-                }
-
-                if (!this.CanRetry("date"))
-                {
-                    return false;
-                }
+                return;
             }
 
-            return true;
+            List<FinancialRecord> records = this._service.GetAllRecords();
+            this._view.DisplayRecords(records);
+            this._view.ClearScreenWithKey();
+        }
+
+        private void DisplayAllIncomes()
+        {
+            if (!this.HasContacts())
+            {
+                return;
+            }
+
+            List<FinancialRecord> records = this._service.GetIncomeRecords();
+            this._view.DisplayRecords(records);
+            this._view.ClearScreenWithKey();
+        }
+
+        private void DisplayAllExpenses()
+        {
+            if (!this.HasContacts())
+            {
+                return;
+            }
+
+            List<FinancialRecord> records = this._service.GetExpenseRecords();
+            this._view.DisplayRecords(records);
+            this._view.ClearScreenWithKey();
+        }
+
+        private bool GetValidDate(out DateOnly date, string action)
+        {
+            date = default;
+            string input;
+            do
+            {
+                input = this._view.ReadRecordDate(action);
+                if (this._helper.IsValidDate(input, out date))
+                {
+                    return true;
+                }
+            }
+            while (this.CanRetry("date"));
+
+            return false;
         }
 
         private bool GetValidAmount(out decimal amount, string action)
         {
             amount = 0;
-            bool isAmountValid = false;
-            while (!isAmountValid)
+            string input;
+            do
             {
-                string input = this._view.ReadRecordAmount(action);
+                input = this._view.ReadRecordAmount(action);
                 if (this._helper.IsValidAmount(input, out amount))
                 {
-                    isAmountValid = true;
-                    break;
-                }
-
-                if (!this.CanRetry("amount"))
-                {
-                    return false;
+                    return true;
                 }
             }
+            while (this.CanRetry("amount"));
 
-            return true;
+            return false;
         }
 
         private bool GetValidSource(out IncomeSource source, string action)
         {
             source = IncomeSource.Other;
-            bool isSourceValid = false;
-            while (!isSourceValid)
+            string input;
+            do
             {
-                string input = this._view.ReadRecordSource(action);
+                input = this._view.ReadRecordSource(action);
                 if (this._helper.IsValidSource(input, out source))
                 {
-                    isSourceValid = true;
-                    break;
-                }
-
-                if (!this.CanRetry("source"))
-                {
-                    return false;
+                    return true;
                 }
             }
+            while (this.CanRetry("source"));
 
-            return true;
+            return false;
         }
 
         private bool GetValidCategory(out ExpenseCategory category, string action)
         {
             category = ExpenseCategory.Other;
-            bool isSourceValid = false;
-            while (!isSourceValid)
+            string input;
+            do
             {
-                string input = this._view.ReadRecordCategory(action);
+                input = this._view.ReadRecordCategory(action);
                 if (this._helper.IsValidCategory(input, out category))
                 {
-                    isSourceValid = true;
-                    break;
-                }
-
-                if (!this.CanRetry("category"))
-                {
-                    return false;
+                    return true;
                 }
             }
+            while (this.CanRetry("source"));
 
-            return true;
+            return false;
+        }
+
+        private bool HasContacts()
+        {
+            return !this._service.IsRecordListEmpty();
         }
 
         /// <summary>

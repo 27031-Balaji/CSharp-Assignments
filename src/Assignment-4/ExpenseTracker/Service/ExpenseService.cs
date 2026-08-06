@@ -1,14 +1,14 @@
 ﻿using ExpenseTracker.Enums;
-using ExpenseTracker.Enums;
+using ExpenseTracker.Model;
 using ExpenseTracker.Repository;
 
 namespace ExpenseTracker.Service
 {
     internal class ExpenseService
     {
-        private readonly InMemoryExpenseRepository _repository;
+        private readonly ExpenseRepository _repository;
 
-        public ExpenseService(InMemoryExpenseRepository repository)
+        public ExpenseService(ExpenseRepository repository)
         {
             this._repository = repository;
         }
@@ -42,6 +42,11 @@ namespace ExpenseTracker.Service
         public List<FinancialRecord> GetExpenseRecords()
         {
             return this._repository.GetAllExpenseRecords();
+        }
+
+        public bool IsRecordListEmpty()
+        {
+            return this._repository.RecordCount == 0;
         }
 
         private string GenerateUniqueId()

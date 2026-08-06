@@ -1,6 +1,6 @@
 ﻿using ExpenseTracker.Enums;
 
-namespace ExpenseTracker.Enums
+namespace ExpenseTracker.Model
 {
     /// <summary>
     /// Represents the expense record with an ID, date, amount, and category.
@@ -26,5 +26,14 @@ namespace ExpenseTracker.Enums
         /// </summary>
         /// <value>The category of the expense.</value>
         public ExpenseCategory Category { get; set; }
+
+        public override string Type => "Expense";
+
+        public override string Classification => this.Category.ToString();
+
+        public override FinancialRecord Clone()
+        {
+            return new Expense(this.Id, this.Date, this.Amount, this.Description, this.Category);
+        }
     }
 }
