@@ -2,7 +2,7 @@
 {
     public enum IncomeSource
     {
-        Salary = 1,
+        Salary,
         Bonus,
         Overtime,
         Freelance,

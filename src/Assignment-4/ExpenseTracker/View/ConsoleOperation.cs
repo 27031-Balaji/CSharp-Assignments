@@ -12,7 +12,8 @@ namespace ExpenseTracker.View
         /// <returns>The selected menu option.</returns>
         public string ShowMainMenu()
         {
-            Console.Write("Inventory Management System\n");
+            Console.Write("========================================================\n");
+            Console.Write("Expense Tracker Application\n");
             Console.Write("========================================================\n");
             Console.Write("\nSelect an option:\n");
             Console.Write("[A] Add Record\n");
@@ -81,6 +82,14 @@ namespace ExpenseTracker.View
         public string ReadRecordDescription(string action)
         {
             Console.Write($"Enter the description of the record to {action} (Optional): ");
+
+            return (Console.ReadLine() ?? string.Empty).Trim();
+        }
+
+        public string ReadSearchTerm()
+        {
+            Console.Write($"Enter the date or amount or source/category: ");
+
             return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
@@ -115,6 +124,7 @@ namespace ExpenseTracker.View
 
         public void DisplayRecords(List<FinancialRecord> records)
         {
+            Console.Write("\nRecord List: \n\n");
             var table = new ConsoleTable("Id", "Date", "Type", "Classification", "Amount", "Description");
             foreach (FinancialRecord record in records)
             {

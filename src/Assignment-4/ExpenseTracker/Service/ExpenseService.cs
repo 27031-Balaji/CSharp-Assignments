@@ -18,7 +18,6 @@ namespace ExpenseTracker.Service
             string recordId = this.GenerateUniqueId();
             Income income = new Income(recordId, date, amount, description, source);
             this._repository.AddRecord(income);
-            this._repository.Balance += amount;
         }
 
         public void AddExpense(DateOnly date, decimal amount, ExpenseCategory category, string? description)
@@ -26,7 +25,6 @@ namespace ExpenseTracker.Service
             string recordId = this.GenerateUniqueId();
             Expense expense = new Expense(recordId, date, amount, description, category);
             this._repository.AddRecord(expense);
-            this._repository.Balance -= amount;
         }
 
         public List<FinancialRecord> GetAllRecords()
@@ -42,6 +40,26 @@ namespace ExpenseTracker.Service
         public List<FinancialRecord> GetExpenseRecords()
         {
             return this._repository.GetAllExpenseRecords();
+        }
+
+        public List<FinancialRecord> SearchByDate(DateOnly date)
+        {
+            return this._repository.GetByDate(date);
+        }
+
+        public List<FinancialRecord> SearchByAmount(decimal amount)
+        {
+            return this._repository.GetByAmount(amount);
+        }
+
+        public List<FinancialRecord> SearchBySource(IncomeSource source)
+        {
+            return this._repository.GetBySource(source);
+        }
+
+        public List<FinancialRecord> SearchByCategory(ExpenseCategory category)
+        {
+            return this._repository.GetByCategory(category);
         }
 
         public bool IsRecordListEmpty()

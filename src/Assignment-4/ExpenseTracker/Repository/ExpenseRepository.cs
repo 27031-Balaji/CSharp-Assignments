@@ -1,4 +1,5 @@
-﻿using ExpenseTracker.Model;
+﻿using ExpenseTracker.Enums;
+using ExpenseTracker.Model; 
 
 namespace ExpenseTracker.Repository
 {
@@ -16,12 +17,6 @@ namespace ExpenseTracker.Repository
         {
             this._records = new List<FinancialRecord>();
         }
-
-        /// <summary>
-        /// Gets or sets the net balance of the financial records, calculated as the sum of income minus the sum of expenses.
-        /// </summary>
-        /// <value>The net balance after the user's income and expenses.</value>
-        public decimal Balance { get; set; }
 
         public int RecordCount { get => this._records.Count; }
 
@@ -68,6 +63,62 @@ namespace ExpenseTracker.Repository
             }
 
             return duplicateExpenseRecords;
+        }
+
+        public List<FinancialRecord> GetByDate(DateOnly date)
+        {
+            List<FinancialRecord> dateRecords = new List<FinancialRecord>();
+            foreach (FinancialRecord record in this._records)
+            {
+                if (record.Date == date)
+                {
+                    dateRecords.Add(record.Clone());
+                }
+            }
+
+            return dateRecords;
+        }
+
+        public List<FinancialRecord> GetByAmount(decimal amount)
+        {
+            List<FinancialRecord> amountRecords = new List<FinancialRecord>();
+            foreach (FinancialRecord record in this._records)
+            {
+                if (record.Amount == amount)
+                {
+                    amountRecords.Add(record.Clone());
+                }
+            }
+
+            return amountRecords;
+        }
+
+        public List<FinancialRecord> GetBySource(IncomeSource source)
+        {
+            List<FinancialRecord> sourceRecords = new List<FinancialRecord>();
+            foreach (FinancialRecord record in this._records)
+            {
+                if (record is Income income && income.Source == source)
+                {
+                    sourceRecords.Add(record.Clone());
+                }
+            }
+
+            return sourceRecords;
+        }
+
+        public List<FinancialRecord> GetByCategory(ExpenseCategory category)
+        {
+            List<FinancialRecord> categoryRecords = new List<FinancialRecord>();
+            foreach (FinancialRecord record in this._records)
+            {
+                if (record is Expense expense && expense.Category == category)
+                {
+                    categoryRecords.Add(record.Clone());
+                }
+            }
+
+            return categoryRecords;
         }
 
         public bool RecordIdExists(string recordId)

@@ -7,6 +7,8 @@
         /// </summary>
         public const string InvalidOptionMessage = "Enter a valid option.";
 
+        public const string NoRecordFoundMessage = "No records found.";
+
         /// <summary>
         /// Message displayed when the application is being closed.
         /// </summary>

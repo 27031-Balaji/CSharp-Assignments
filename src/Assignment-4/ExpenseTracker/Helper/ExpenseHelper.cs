@@ -23,5 +23,30 @@ namespace ExpenseTracker.Helper
         {
             return System.Enum.TryParse(input, ignoreCase: true, out category) && System.Enum.IsDefined(category);
         }
+
+        public SearchType ReturnSearchType(string? input)
+        {
+            if (this.IsValidDate(input, out _))
+            {
+                return SearchType.Date;
+            }
+
+            if (this.IsValidAmount(input, out _))
+            {
+                return SearchType.Amount;
+            }
+
+            if (this.IsValidSource(input, out _))
+            {
+                return SearchType.Source;
+            }
+
+            if (this.IsValidCategory(input, out _))
+            {
+                return SearchType.Category;
+            }
+
+            return SearchType.Invalid;
+        }
     }
 }
