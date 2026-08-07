@@ -131,6 +131,31 @@ namespace ExpenseTracker.Repository
             this._records.Remove(record);
         }
 
+        public void UpdateRecordDate(FinancialRecord record, DateOnly date)
+        {
+            record.Date = date;
+        }
+
+        public void UpdateRecordAmount(FinancialRecord record, decimal amount)
+        {
+            record.Amount = amount;
+        }
+
+        public void UpdateRecordSource(Income record, IncomeSource source)
+        {
+            record.Source = source;
+        }
+
+        public void UpdateRecordCategory(Expense record, ExpenseCategory category)
+        {
+            record.Category = category;
+        }
+
+        public void UpdateRecordDescription(FinancialRecord record, string? description)
+        {
+            record.Description = description;
+        }
+
         public bool RecordIdExists(string recordId)
         {
             return this._records.Any(record => record.Id == recordId);
