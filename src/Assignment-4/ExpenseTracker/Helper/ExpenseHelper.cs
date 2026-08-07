@@ -24,6 +24,11 @@ namespace ExpenseTracker.Helper
             return System.Enum.TryParse(input, ignoreCase: true, out category) && System.Enum.IsDefined(category);
         }
 
+        public bool IsValidRecordId(string? recordId)
+        {
+            return !string.IsNullOrWhiteSpace(recordId) && recordId.Length == 12 && recordId.All(char.IsLetterOrDigit);
+        }
+
         public SearchType ReturnSearchType(string? input)
         {
             if (this.IsValidDate(input, out _))

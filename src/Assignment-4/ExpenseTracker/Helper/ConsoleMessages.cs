@@ -9,6 +9,10 @@
 
         public const string NoRecordFoundMessage = "No records found.";
 
+        public const string DeleteOperationFailedMessage = "Delete operation failed.";
+
+        public const string DeleteOperationSuccessMessage = "Delete operation successful.";
+
         /// <summary>
         /// Message displayed when the application is being closed.
         /// </summary>
