@@ -36,7 +36,7 @@ namespace ExpenseTracker.View
             Console.Write("[C] Back to Main Menu\n");
             Console.Write("\nEnter your choice: ");
 
-            return (Console.ReadLine() ?? string.Empty).Trim();
+            return (Console.ReadLine() ?? string.Empty).Trim().ToUpper();
         }
 
         public string ViewMenu()
@@ -48,7 +48,20 @@ namespace ExpenseTracker.View
             Console.Write("[D] Back to Main Menu\n");
             Console.Write("\nEnter your choice: ");
 
-            return (Console.ReadLine() ?? string.Empty).Trim();
+            return (Console.ReadLine() ?? string.Empty).Trim().ToUpper();
+        }
+
+        public string ShowEditMenu()
+        {
+            Console.Write("\nSelect an option to edit data: \n");
+            Console.Write("[A] Edit Date\n");
+            Console.Write("[B] Edit Amount\n");
+            Console.Write("[C] Edit Classification\n");
+            Console.Write("[D] Edit Description\n");
+            Console.Write("[E] Back to Main Menu\n");
+            Console.Write("\nEnter your choice: ");
+
+            return (Console.ReadLine() ?? string.Empty).Trim().ToUpper();
         }
 
         public string ReadRecordDate()

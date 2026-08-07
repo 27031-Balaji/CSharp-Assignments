@@ -29,17 +29,20 @@ namespace ExpenseTracker.Service
 
         public List<FinancialRecord> GetAllRecords()
         {
-            return this._repository.GetAllRecords();
+            List<FinancialRecord> records = this._repository.GetAllRecords();
+            return records.OrderByDescending(record => record.Date).ToList();
         }
 
         public List<FinancialRecord> GetIncomeRecords()
         {
-            return this._repository.GetAllIncomeRecords();
+            List<FinancialRecord> incomeRecords = this._repository.GetAllIncomeRecords();
+            return incomeRecords.OrderByDescending(record => record.Date).ToList();
         }
 
         public List<FinancialRecord> GetExpenseRecords()
         {
-            return this._repository.GetAllExpenseRecords();
+            List<FinancialRecord> expenseRecords = this._repository.GetAllExpenseRecords();
+            return expenseRecords.OrderByDescending(record => record.Date).ToList();
         }
 
         public List<FinancialRecord> SearchByDate(DateOnly date)
@@ -70,6 +73,31 @@ namespace ExpenseTracker.Service
         public void DeleteRecord(FinancialRecord record)
         {
             this._repository.DeleteRecord(record);
+        }
+
+        public void EditRecordDate(FinancialRecord record, DateOnly date)
+        {
+            this._repository.UpdateRecordDate(record, date);
+        }
+
+        public void EditRecordAmount(FinancialRecord record, decimal amount)
+        {
+            this._repository.UpdateRecordAmount(record, amount);
+        }
+
+        public void EditRecordSource(Income record, IncomeSource source)
+        {
+            this._repository.UpdateRecordSource(record, source);
+        }
+
+        public void EditRecordCategory(Expense record, ExpenseCategory category)
+        {
+            this._repository.UpdateRecordCategory(record, category);
+        }
+
+        public void EditRecordDescription(FinancialRecord record, string? description)
+        {
+            this._repository.UpdateRecordDescription(record, description);
         }
 
         public bool IsRecordListEmpty()

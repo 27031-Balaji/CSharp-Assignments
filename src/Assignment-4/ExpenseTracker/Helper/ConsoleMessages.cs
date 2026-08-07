@@ -9,9 +9,11 @@
 
         public const string NoRecordFoundMessage = "No records found.";
 
-        public const string DeleteOperationFailedMessage = "Delete operation failed.";
+        public const string DeleteOperationAbortedMessage = "Delete operation aborted.";
 
         public const string DeleteOperationSuccessMessage = "Delete operation successful.";
+
+        public const string EditOperationSuccessMessage = "Edit operation successful.";
 
         /// <summary>
         /// Message displayed when the application is being closed.
@@ -27,5 +29,13 @@
         /// Message displayed when an expense record is added successfully.
         /// </summary>
         public const string ExpenseAddedMessage = "Expense record added successfully.";
+
+        public const string DateEditedSuccessMessage = "Date edited successfully.";
+
+        public const string AmountEditedSuccessMessage = "Amount edited successfully.";
+
+        public const string ClassificationEditedSuccessMessage = "Classification edited successfully.";
+
+        public const string DescriptionEditedSuccessMessage = "Description edited successfully.";
     }
 }
