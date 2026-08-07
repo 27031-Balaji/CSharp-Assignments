@@ -21,9 +21,9 @@ namespace ShapeHierarchy
         }
 
         /// <summary>
-        /// Prompts the user to select a shape and creates the corresponding object.
+        /// Prompts the user to select a <see cref="Shape"/> and creates the corresponding object.
         /// </summary>
-        /// <returns>A Rectangle or Circle object according to the user's choice.</returns>
+        /// <returns>A <see cref="Rectangle"/> or <see cref="Circle"/> object according to the user's choice.</returns>
         private static Shape GetShape()
         {
             bool isShapeSelected = false;
@@ -60,9 +60,9 @@ namespace ShapeHierarchy
         }
 
         /// <summary>
-        /// Creates a Rectangle object after collecting validated input.
+        /// Creates a <see cref="Rectangle"/> object after collecting validated input.
         /// </summary>
-        /// <returns>A Rectangle object.</returns>
+        /// <returns>A <see cref="Rectangle"/> object.</returns>
         private static Rectangle CreateRectangle()
         {
             string color = GetColor();
@@ -73,9 +73,9 @@ namespace ShapeHierarchy
         }
 
         /// <summary>
-        /// Creates a Circle object after collecting validated input.
+        /// Creates a <see cref="Circle"/> object after collecting validated input.
         /// </summary>
-        /// <returns>A Circle object.</returns>
+        /// <returns>A <see cref="Circle"/> object.</returns>
         private static Circle CreateCircle()
         {
             string color = GetColor();
@@ -133,7 +133,7 @@ namespace ShapeHierarchy
         /// <summary>
         /// Displays the operations menu until the user chooses to exit.
         /// </summary>
-        /// <param name="shape">The selected shape.</param>
+        /// <param name="shape">The selected <see cref="Shape"/>.</param>
         private static void ShowOperations(Shape shape)
         {
             bool isRunning = true;
