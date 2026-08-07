@@ -40,6 +40,7 @@ namespace ExpenseTracker.Controller
                         break;
 
                     case "D":
+                        this.DeleteRecord();
                         break;
 
                     case "E":
@@ -90,6 +91,12 @@ namespace ExpenseTracker.Controller
 
         private void ViewRecords()
         {
+            if (!this.HasRecords())
+            {
+                this._view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
+                return;
+            }
+
             bool isRunning = true;
             while (isRunning)
             {
@@ -131,10 +138,55 @@ namespace ExpenseTracker.Controller
             if (searchedRecords.Count == 0)
             {
                 this._view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Info);
+                this._view.ClearScreenWithKey();
                 return;
             }
 
             this._view.DisplayRecords(searchedRecords);
+            this._view.ClearScreenWithKey();
+        }
+
+        private void DeleteRecord()
+        {
+            if (!this.HasRecords())
+            {
+                this._view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
+                return;
+            }
+
+            List<FinancialRecord> searchedRecords = this.GetMatchingRecords();
+            if (searchedRecords.Count == 0)
+            {
+                this._view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Info);
+                return;
+            }
+
+            this._view.DisplayRecords(searchedRecords);
+
+            if (!this.GetValidRecordId(out string recordId, "delete"))
+            {
+                return;
+            }
+
+            if (!this.IsDisplayedRecord(recordId, searchedRecords))
+            {
+                this._view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
+                this._view.ClearScreenWithKey();
+                return;
+            }
+
+            FinancialRecord record = this._service.GetRecordById(recordId) !;
+            this._view.DisplaySingleRecord(record);
+
+            if (!this._view.ConfirmDelete())
+            {
+                this._view.ShowMessage(ConsoleMessages.DeleteOperationFailedMessage, MessageType.Error);
+                this._view.ClearScreenWithKey();
+                return;
+            }
+
+            this._service.DeleteRecord(record);
+            this._view.ShowMessage(ConsoleMessages.DeleteOperationSuccessMessage, MessageType.Success);
             this._view.ClearScreenWithKey();
         }
 
@@ -175,22 +227,22 @@ namespace ExpenseTracker.Controller
 
         private void AddIncome()
         {
-            if (!this.GetValidDate(out DateOnly date, "add"))
+            if (!this.GetValidDate(out DateOnly date))
             {
                 return;
             }
 
-            if (!this.GetValidAmount(out decimal amount, "add"))
+            if (!this.GetValidAmount(out decimal amount))
             {
                 return;
             }
 
-            if (!this.GetValidSource(out IncomeSource source, "add"))
+            if (!this.GetValidSource(out IncomeSource source))
             {
                 return;
             }
 
-            string? description = this._view.ReadRecordDescription("add").Trim();
+            string? description = this._view.ReadRecordDescription().Trim();
 
             this._service.AddIncome(date, amount, source, description);
             this._view.ShowMessage(ConsoleMessages.IncomeAddedMessage, MessageType.Success);
@@ -199,22 +251,22 @@ namespace ExpenseTracker.Controller
 
         private void AddExpense()
         {
-            if (!this.GetValidDate(out DateOnly date, "add"))
+            if (!this.GetValidDate(out DateOnly date))
             {
                 return;
             }
 
-            if (!this.GetValidAmount(out decimal amount, "add"))
+            if (!this.GetValidAmount(out decimal amount))
             {
                 return;
             }
 
-            if (!this.GetValidCategory(out ExpenseCategory category, "add"))
+            if (!this.GetValidCategory(out ExpenseCategory category))
             {
                 return;
             }
 
-            string? description = this._view.ReadRecordDescription("add").Trim();
+            string? description = this._view.ReadRecordDescription().Trim();
 
             this._service.AddExpense(date, amount, category, description);
             this._view.ShowMessage(ConsoleMessages.ExpenseAddedMessage, MessageType.Success);
@@ -223,12 +275,6 @@ namespace ExpenseTracker.Controller
 
         private void DisplayAllRecords()
         {
-            if (!this.HasRecords())
-            {
-                this._view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
-                return;
-            }
-
             List<FinancialRecord> records = this._service.GetAllRecords();
             this._view.DisplayRecords(records);
             this._view.ClearScreenWithKey();
@@ -236,12 +282,6 @@ namespace ExpenseTracker.Controller
 
         private void DisplayAllIncomes()
         {
-            if (!this.HasRecords())
-            {
-                this._view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
-                return;
-            }
-
             List<FinancialRecord> records = this._service.GetIncomeRecords();
             this._view.DisplayRecords(records);
             this._view.ClearScreenWithKey();
@@ -249,24 +289,31 @@ namespace ExpenseTracker.Controller
 
         private void DisplayAllExpenses()
         {
-            if (!this.HasRecords())
-            {
-                this._view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
-                return;
-            }
-
             List<FinancialRecord> records = this._service.GetExpenseRecords();
             this._view.DisplayRecords(records);
             this._view.ClearScreenWithKey();
         }
 
-        private bool GetValidDate(out DateOnly date, string action)
+        private bool IsDisplayedRecord(string recordId, List<FinancialRecord> records)
+        {
+            foreach (FinancialRecord record in records)
+            {
+                if (record.Id == recordId)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool GetValidDate(out DateOnly date)
         {
             date = default;
             string input;
             do
             {
-                input = this._view.ReadRecordDate(action);
+                input = this._view.ReadRecordDate();
                 if (this._helper.IsValidDate(input, out date))
                 {
                     return true;
@@ -277,13 +324,13 @@ namespace ExpenseTracker.Controller
             return false;
         }
 
-        private bool GetValidAmount(out decimal amount, string action)
+        private bool GetValidAmount(out decimal amount)
         {
             amount = 0;
             string input;
             do
             {
-                input = this._view.ReadRecordAmount(action);
+                input = this._view.ReadRecordAmount();
                 if (this._helper.IsValidAmount(input, out amount))
                 {
                     return true;
@@ -294,13 +341,13 @@ namespace ExpenseTracker.Controller
             return false;
         }
 
-        private bool GetValidSource(out IncomeSource source, string action)
+        private bool GetValidSource(out IncomeSource source)
         {
             source = IncomeSource.Other;
             string input;
             do
             {
-                input = this._view.ReadRecordSource(action);
+                input = this._view.ReadRecordSource();
                 if (this._helper.IsValidSource(input, out source))
                 {
                     return true;
@@ -311,19 +358,35 @@ namespace ExpenseTracker.Controller
             return false;
         }
 
-        private bool GetValidCategory(out ExpenseCategory category, string action)
+        private bool GetValidCategory(out ExpenseCategory category)
         {
             category = ExpenseCategory.Other;
             string input;
             do
             {
-                input = this._view.ReadRecordCategory(action);
+                input = this._view.ReadRecordCategory();
                 if (this._helper.IsValidCategory(input, out category))
                 {
                     return true;
                 }
             }
             while (this.CanRetry("source"));
+
+            return false;
+        }
+
+        private bool GetValidRecordId(out string recordId, string action)
+        {
+            recordId = string.Empty;
+            do
+            {
+                recordId = this._view.ReadRecordId(action);
+                if (this._helper.IsValidRecordId(recordId))
+                {
+                    return true;
+                }
+            }
+            while (this.CanRetry("id"));
 
             return false;
         }

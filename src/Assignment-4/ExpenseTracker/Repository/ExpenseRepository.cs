@@ -1,5 +1,5 @@
 ﻿using ExpenseTracker.Enums;
-using ExpenseTracker.Model; 
+using ExpenseTracker.Model;
 
 namespace ExpenseTracker.Repository
 {
@@ -119,6 +119,16 @@ namespace ExpenseTracker.Repository
             }
 
             return categoryRecords;
+        }
+
+        public FinancialRecord? GetById(string recordId)
+        {
+            return this._records.Find(record => record.Id.Equals(recordId, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public void DeleteRecord(FinancialRecord record)
+        {
+            this._records.Remove(record);
         }
 
         public bool RecordIdExists(string recordId)

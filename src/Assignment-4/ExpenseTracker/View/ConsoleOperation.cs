@@ -51,37 +51,44 @@ namespace ExpenseTracker.View
             return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
-        public string ReadRecordDate(string action)
+        public string ReadRecordDate()
         {
-            Console.Write($"Enter the date of the record in (DD/MM/YYYY) to {action}: ");
+            Console.Write($"Enter the date of the record in (DD/MM/YYYY): ");
 
             return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
-        public string ReadRecordAmount(string action)
+        public string ReadRecordAmount()
         {
-            Console.Write($"Enter the amount of the record to {action}: ");
+            Console.Write($"Enter the amount of the record: ");
 
             return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
-        public string ReadRecordSource(string action)
+        public string ReadRecordSource()
         {
-            Console.Write($"Enter the source of the income to {action}: ");
+            Console.Write($"Enter the source of the income: ");
 
             return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
-        public string ReadRecordCategory(string action)
+        public string ReadRecordCategory()
         {
-            Console.Write($"Enter the category of the expense to {action}: ");
+            Console.Write($"Enter the category of the expense: ");
 
             return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
-        public string ReadRecordDescription(string action)
+        public string ReadRecordId(string action)
         {
-            Console.Write($"Enter the description of the record to {action} (Optional): ");
+            Console.Write($"Enter the record ID to {action}: ");
+
+            return (Console.ReadLine() ?? string.Empty).Trim();
+        }
+
+        public string ReadRecordDescription()
+        {
+            Console.Write($"Enter the description of the record (Optional): ");
 
             return (Console.ReadLine() ?? string.Empty).Trim();
         }
@@ -134,6 +141,14 @@ namespace ExpenseTracker.View
             table.Write(Format.MarkDown);
         }
 
+        public void DisplaySingleRecord(FinancialRecord record)
+        {
+            Console.WriteLine();
+            var table = new ConsoleTable("Id", "Date", "Type", "Classification", "Amount", "Description");
+            table.AddRow(record.Id, record.Date, record.Type, record.Classification, record.Amount, record.Description);
+            table.Write(Format.MarkDown);
+        }
+
         /// <summary>
         /// Clears the console.
         /// </summary>
@@ -152,6 +167,27 @@ namespace ExpenseTracker.View
             Console.ReadKey();
             Console.Clear();
             Console.ResetColor();
+        }
+
+        public bool ConfirmDelete()
+        {
+            while (true)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("Are you sure you want to delete this record? (Y/N): ");
+                Console.ResetColor();
+                string choice = Console.ReadLine() ?? string.Empty;
+                switch (choice.Trim().ToUpper())
+                {
+                    case "Y":
+                        return true;
+                    case "N":
+                        return false;
+                    default:
+                        Console.WriteLine("Enter Y or N.");
+                        break;
+                }
+            }
         }
 
         /// <summary>

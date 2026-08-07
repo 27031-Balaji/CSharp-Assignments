@@ -62,6 +62,16 @@ namespace ExpenseTracker.Service
             return this._repository.GetByCategory(category);
         }
 
+        public FinancialRecord? GetRecordById(string recordId)
+        {
+            return this._repository.GetById(recordId);
+        }
+
+        public void DeleteRecord(FinancialRecord record)
+        {
+            this._repository.DeleteRecord(record);
+        }
+
         public bool IsRecordListEmpty()
         {
             return this._repository.RecordCount == 0;
