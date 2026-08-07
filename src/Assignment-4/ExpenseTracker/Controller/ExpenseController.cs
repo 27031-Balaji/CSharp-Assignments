@@ -36,6 +36,7 @@ namespace ExpenseTracker.Controller
                         break;
 
                     case "C":
+                        this.SearchRecords();
                         break;
 
                     case "D":
@@ -118,6 +119,60 @@ namespace ExpenseTracker.Controller
             }
         }
 
+        private void SearchRecords()
+        {
+            if (!this.HasRecords())
+            {
+                this._view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
+                return;
+            }
+
+            List<FinancialRecord> searchedRecords = this.GetMatchingRecords();
+            if (searchedRecords.Count == 0)
+            {
+                this._view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Info);
+                return;
+            }
+
+            this._view.DisplayRecords(searchedRecords);
+            this._view.ClearScreenWithKey();
+        }
+
+        private List<FinancialRecord> GetMatchingRecords()
+        {
+            string searchTerm = this._view.ReadSearchTerm();
+
+            if (this._helper.IsValidSource(searchTerm, out IncomeSource sameSource)
+                && this._helper.IsValidCategory(searchTerm, out ExpenseCategory sameCategory))
+            {
+                return this._service.SearchBySource(sameSource)
+                    .Concat(this._service.SearchByCategory(sameCategory))
+                    .ToList();
+            }
+
+            switch (this._helper.ReturnSearchType(searchTerm))
+            {
+                case SearchType.Date:
+                    this._helper.IsValidDate(searchTerm, out DateOnly date);
+                    return this._service.SearchByDate(date);
+
+                case SearchType.Amount:
+                    this._helper.IsValidAmount(searchTerm, out decimal amount);
+                    return this._service.SearchByAmount(amount);
+
+                case SearchType.Source:
+                    this._helper.IsValidSource(searchTerm, out IncomeSource source);
+                    return this._service.SearchBySource(source);
+
+                case SearchType.Category:
+                    this._helper.IsValidCategory(searchTerm, out ExpenseCategory category);
+                    return this._service.SearchByCategory(category);
+
+                default:
+                    return new List<FinancialRecord>();
+            }
+        }
+
         private void AddIncome()
         {
             if (!this.GetValidDate(out DateOnly date, "add"))
@@ -168,8 +223,9 @@ namespace ExpenseTracker.Controller
 
         private void DisplayAllRecords()
         {
-            if (!this.HasContacts())
+            if (!this.HasRecords())
             {
+                this._view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
                 return;
             }
 
@@ -180,8 +236,9 @@ namespace ExpenseTracker.Controller
 
         private void DisplayAllIncomes()
         {
-            if (!this.HasContacts())
+            if (!this.HasRecords())
             {
+                this._view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
                 return;
             }
 
@@ -192,8 +249,9 @@ namespace ExpenseTracker.Controller
 
         private void DisplayAllExpenses()
         {
-            if (!this.HasContacts())
+            if (!this.HasRecords())
             {
+                this._view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
                 return;
             }
 
@@ -270,7 +328,7 @@ namespace ExpenseTracker.Controller
             return false;
         }
 
-        private bool HasContacts()
+        private bool HasRecords()
         {
             return !this._service.IsRecordListEmpty();
         }

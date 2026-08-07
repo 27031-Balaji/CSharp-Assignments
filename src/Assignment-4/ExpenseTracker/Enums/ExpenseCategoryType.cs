@@ -2,7 +2,7 @@
 {
     public enum ExpenseCategory
     {
-        Housing = 1,
+        Housing,
         Utilities,
         Groceries,
         Dining,
