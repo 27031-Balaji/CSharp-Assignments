@@ -20,9 +20,9 @@ namespace EmployeeHierarchy
         }
 
         /// <summary>
-        /// Prompts the user to select an employee type and creates the corresponding object.
+        /// Prompts the user to select an <see cref="Employee"/> type and creates the corresponding object.
         /// </summary>
-        /// <returns>A Developer or Manager object.</returns>
+        /// <returns>A <see cref="Developer"/> or <see cref="Manager"/> object.</returns>
         private static Employee GetEmployee()
         {
             bool isEmployeeSelected = false;
@@ -60,9 +60,9 @@ namespace EmployeeHierarchy
         }
 
         /// <summary>
-        /// Creates a Developer object after collecting validated input.
+        /// Creates a <see cref="Developer"/> object after collecting validated input.
         /// </summary>
-        /// <returns>A Developer object.</returns>
+        /// <returns>A <see cref="Developer"/> object.</returns>
         private static Developer CreateDeveloper()
         {
             string name = GetEmployeeName();
@@ -72,9 +72,9 @@ namespace EmployeeHierarchy
         }
 
         /// <summary>
-        /// Creates a Manager object after collecting validated input.
+        /// Creates a <see cref="Manager"/> object after collecting validated input.
         /// </summary>
-        /// <returns>A Manager object.</returns>
+        /// <returns>A <see cref="Manager"/> object.</returns>
         private static Manager CreateManager()
         {
             string name = GetEmployeeName();
@@ -84,9 +84,9 @@ namespace EmployeeHierarchy
         }
 
         /// <summary>
-        /// Prompts the user until a valid employee name is entered.
+        /// Prompts the user until a valid <see cref="Employee"/> name is entered.
         /// </summary>
-        /// <returns>A validated employee name.</returns>
+        /// <returns>A validated <see cref="Employee"/> name.</returns>
         private static string GetEmployeeName()
         {
             bool isValidName = false;
@@ -129,7 +129,7 @@ namespace EmployeeHierarchy
         /// <summary>
         /// Displays the operations menu until the user chooses to exit.
         /// </summary>
-        /// <param name="employee">The selected employee.</param>
+        /// <param name="employee">The selected <see cref="Employee"/>.</param>
         private static void ShowOperations(Employee employee)
         {
             bool isRunning = true;

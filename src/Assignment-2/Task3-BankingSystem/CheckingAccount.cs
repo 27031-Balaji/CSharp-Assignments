@@ -8,17 +8,17 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="CheckingAccount"/> class.
         /// </summary>
-        /// <param name="accountNumber">The unique account number assigned to the checking account.</param>
-        /// <param name="initialBalance">The initial balance of the checking account.</param>
+        /// <param name="accountNumber">The unique account number assigned to the <see cref="BankAccount"/>.</param>
+        /// <param name="initialBalance">The initial balance of the <see cref="BankAccount"/>.</param>
         public CheckingAccount(string accountNumber, decimal initialBalance)
             : base(accountNumber, initialBalance)
         {
         }
 
         /// <summary>
-        /// Withdraws the specified amount from the checking account if sufficient amount is available.
+        /// Withdraws the specified amount from the <see cref="BankAccount"/> if sufficient amount is available.
         /// </summary>
-        /// <param name="amount">The amount to be withdrawn.</param>
+        /// <param name="amount">The amount to be withdrawn from the <see cref="BankAccount"/>.</param>
         /// <returns>True if the withdrawal is successful, otherwise false.</returns>
         public override bool Withdraw(decimal amount)
         {

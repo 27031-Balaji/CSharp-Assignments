@@ -8,8 +8,8 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="Employee"/> class.
         /// </summary>
-        /// <param name="name">The name of the employee.</param>
-        /// <param name="salary">The salary of the employee.</param>
+        /// <param name="name">The name of the <see cref="Employee"/>.</param>
+        /// <param name="salary">The salary of the <see cref="Employee"/>.</param>
         protected Employee(string name, decimal salary)
         {
             this.Name = name;
@@ -17,27 +17,27 @@
         }
 
         /// <summary>
-        /// Gets the employee's name.
+        /// Gets the name of the <see cref="Employee"/>.
         /// </summary>
-        /// <value>The employee's name.</value>
+        /// <value>The name of the <see cref="Employee"/>.</value>
         public string Name { get; }
 
         /// <summary>
-        /// Gets the employee's salary.
+        /// Gets the salary of the <see cref="Employee"/>.
         /// </summary>
-        /// <value>The employee's salary.</value>
+        /// <value>The salary of the <see cref="Employee"/>.</value>
         public decimal Salary { get; }
 
         /// <summary>
-        /// Calculates the employee's bonus amount.
+        /// Calculates the bonus amount of the <see cref="Employee"/>.
         /// </summary>
-        /// <returns>The calculated bonus as a decimal.</returns>
+        /// <returns>The calculated bonus of the <see cref="Employee"/>.</returns>
         public abstract decimal CalculateBonus();
 
         /// <summary>
-        /// Produces a string containing the employee's details.
+        /// Produces a string containing the details of the <see cref="Employee"/>.
         /// </summary>
-        /// <returns>A string describing the employee.</returns>
+        /// <returns>A string describing the <see cref="Employee"/>.</returns>
         public abstract string PrintDetails();
     }
 }
