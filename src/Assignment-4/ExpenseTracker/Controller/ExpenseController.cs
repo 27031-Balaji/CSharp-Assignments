@@ -24,39 +24,39 @@ namespace ExpenseTracker.Controller
             bool isRunning = true;
             while (isRunning)
             {
-                string menuChoice = this._view.ShowMainMenu();
-                switch (menuChoice.Trim().ToUpper())
+                MainMenuOption menuOption = this._view.ShowMainMenu();
+                switch (menuOption)
                 {
-                    case "A":
+                    case MainMenuOption.AddRecord:
                         this.AddRecord();
                         break;
 
-                    case "B":
+                    case MainMenuOption.ViewRecord:
                         this.ViewRecords();
                         break;
 
-                    case "C":
+                    case MainMenuOption.SearchRecord:
                         this.SearchRecords();
                         break;
 
-                    case "D":
+                    case MainMenuOption.DeleteRecord:
                         this.DeleteRecord();
                         break;
 
-                    case "E":
+                    case MainMenuOption.EditRecord:
                         this.EditRecord();
                         break;
 
-                    case "F":
+                    case MainMenuOption.FinancialSummary:
                         break;
 
-                    case "G":
+                    case MainMenuOption.Exit:
                         this._view.ShowMessage(ConsoleMessages.ExitMessage, MessageType.Info);
                         Thread.Sleep(1000);
                         isRunning = false;
                         break;
 
-                    default:
+                    case MainMenuOption.Invalid:
                         this._view.ShowInvalidMessage("option");
                         break;
                 }
@@ -68,22 +68,25 @@ namespace ExpenseTracker.Controller
             bool isRunning = true;
             while (isRunning)
             {
-                string addChoice = this._view.ShowAddMenu();
-                switch (addChoice.Trim().ToUpper())
+                AddMenuOption addOption = this._view.ShowAddMenu();
+                switch (addOption)
                 {
-                    case "A":
+                    case AddMenuOption.AddIncome:
                         this.AddIncome();
                         isRunning = false;
                         break;
-                    case "B":
+
+                    case AddMenuOption.AddExpense:
                         this.AddExpense();
                         isRunning = false;
                         break;
-                    case "C":
+
+                    case AddMenuOption.BackToMainMenu:
                         isRunning = false;
                         this._view.ClearScreen();
                         break;
-                    default:
+
+                    case AddMenuOption.Invalid:
                         this._view.ShowInvalidMessage("option");
                         break;
                 }
@@ -101,35 +104,34 @@ namespace ExpenseTracker.Controller
             bool isRunning = true;
             while (isRunning)
             {
-                string viewChoice = this._view.ShowViewMenu();
-                switch (viewChoice)
+                ViewMenuOption viewOption = this._view.ShowViewMenu();
+                switch (viewOption)
                 {
-                    case "A":
+                    case ViewMenuOption.ViewAll:
                         this.DisplayAllRecords();
                         isRunning = false;
                         break;
-                    case "B":
+
+                    case ViewMenuOption.ViewIncomes:
                         this.DisplayAllIncomes();
                         isRunning = false;
                         break;
-                    case "C":
+
+                    case ViewMenuOption.ViewExpenses:
                         this.DisplayAllExpenses();
                         isRunning = false;
                         break;
-                    case "D":
+
+                    case ViewMenuOption.BackToMainMenu:
                         isRunning = false;
                         this._view.ClearScreen();
                         break;
-                    default:
+
+                    case ViewMenuOption.Invalid:
                         this._view.ShowInvalidMessage("option");
                         break;
                 }
             }
-        }
-
-        private bool HasRecords()
-        {
-            return !this._service.IsRecordListEmpty();
         }
 
         private void SearchRecords()
@@ -216,35 +218,35 @@ namespace ExpenseTracker.Controller
             bool isRunning = true;
             while (isRunning)
             {
-                string? menuChoice = this._view.ShowEditMenu();
-                switch (menuChoice)
+                EditMenuOption editOption = this._view.ShowEditMenu();
+                switch (editOption)
                 {
-                    case "A":
+                    case EditMenuOption.Date:
                         this.EditDate(record);
                         this._view.ShowMessage(ConsoleMessages.DateEditedSuccessMessage, MessageType.Success);
                         break;
 
-                    case "B":
+                    case EditMenuOption.Amount:
                         this.EditAmount(record);
                         this._view.ShowMessage(ConsoleMessages.AmountEditedSuccessMessage, MessageType.Success);
                         break;
 
-                    case "C":
+                    case EditMenuOption.Classification:
                         this.EditClassification(record);
                         this._view.ShowMessage(ConsoleMessages.ClassificationEditedSuccessMessage, MessageType.Success);
                         break;
 
-                    case "D":
+                    case EditMenuOption.Description:
                         this.EditDescription(record);
                         this._view.ShowMessage(ConsoleMessages.DescriptionEditedSuccessMessage, MessageType.Success);
                         break;
 
-                    case "E":
+                    case EditMenuOption.SaveAndExit:
                         isRunning = false;
                         this._view.ShowMessage(ConsoleMessages.EditOperationSuccessMessage, MessageType.Success);
                         break;
 
-                    default:
+                    case EditMenuOption.Invalid:
                         this._view.ShowInvalidMessage("option");
                         if (!this._view.AskRetry())
                         {
@@ -256,6 +258,11 @@ namespace ExpenseTracker.Controller
             }
 
             this._view.ClearScreenWithKey();
+        }
+
+        private bool HasRecords()
+        {
+            return !this._service.IsRecordListEmpty();
         }
 
         private void AddIncome()
