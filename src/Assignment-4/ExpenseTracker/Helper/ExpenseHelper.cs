@@ -14,6 +14,11 @@ namespace ExpenseTracker.Helper
             return decimal.TryParse(input, out amount) && amount > 0;
         }
 
+        public bool IsValidClassificationChoice(string input, int maxChoice, out int choice)
+        {
+            return int.TryParse(input, out choice) && choice >= 1 && choice <= maxChoice;
+        }
+
         public bool IsValidSource(string? input, out IncomeSource source)
         {
             return System.Enum.TryParse(input, ignoreCase: true, out source) && System.Enum.IsDefined(source);

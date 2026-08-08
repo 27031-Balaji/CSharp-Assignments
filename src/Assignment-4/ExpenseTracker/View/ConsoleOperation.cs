@@ -10,36 +10,54 @@ namespace ExpenseTracker.View
         /// Displays the main menu and reads the user's choice.
         /// </summary>
         /// <returns>The selected menu option.</returns>
-        public string ShowMainMenu()
+        public MainMenuOption ShowMainMenu()
         {
-            Console.Write("========================================================\n");
-            Console.Write("Expense Tracker Application\n");
-            Console.Write("========================================================\n");
-            Console.Write("\nSelect an option:\n");
-            Console.Write("[A] Add Record\n");
-            Console.Write("[B] View Record\n");
-            Console.Write("[C] Search Record\n");
-            Console.Write("[D] Delete Record\n");
-            Console.Write("[E] Edit Record\n");
-            Console.Write("[F] Financial Summary\n");
-            Console.Write("[G] Exit\n");
+            Console.WriteLine("========================================================");
+            Console.WriteLine("Expense Tracker Application");
+            Console.WriteLine("Track Your Spending, Empower Your Savings!");
+            Console.WriteLine("========================================================");
+            Console.WriteLine("\nSelect an option:");
+            Console.WriteLine("[A] Add Record");
+            Console.WriteLine("[B] View Record");
+            Console.WriteLine("[C] Search Record");
+            Console.WriteLine("[D] Delete Record");
+            Console.WriteLine("[E] Edit Record");
+            Console.WriteLine("[F] Financial Summary");
+            Console.WriteLine("[G] Exit");
             Console.Write("\nEnter your choice: ");
 
-            return (Console.ReadLine() ?? string.Empty).Trim();
+            string input = (Console.ReadLine() ?? string.Empty).Trim().ToUpper();
+            return input switch
+            {
+                "A" => MainMenuOption.AddRecord,
+                "B" => MainMenuOption.ViewRecord,
+                "C" => MainMenuOption.SearchRecord,
+                "D" => MainMenuOption.DeleteRecord,
+                "E" => MainMenuOption.EditRecord,
+                "F" => MainMenuOption.FinancialSummary,
+                "G" => MainMenuOption.Exit,
+                _ => MainMenuOption.Invalid
+            };
         }
 
-        public string AddMenu()
+        public AddMenuOption ShowAddMenu()
         {
-            Console.Write("\nSelect an option to add income or expense: \n");
-            Console.Write("[A] Add Income\n");
-            Console.Write("[B] Add Expense\n");
-            Console.Write("[C] Back to Main Menu\n");
-            Console.Write("\nEnter your choice: ");
+            Console.WriteLine("\nSelect an option:");
+            Console.WriteLine("[A] Add Income");
+            Console.WriteLine("[B] Add Expense");
+            Console.WriteLine("[C] Back");
 
-            return (Console.ReadLine() ?? string.Empty).Trim().ToUpper();
+            string choice = (Console.ReadLine() ?? string.Empty).Trim().ToUpper();
+            return choice switch
+            {
+                "A" => AddMenuOption.AddIncome,
+                "B" => AddMenuOption.AddExpense,
+                "C" => AddMenuOption.BackToMainMenu,
+                _ => AddMenuOption.Invalid
+            };
         }
 
-        public string ViewMenu()
+        public ViewMenuOption ShowViewMenu()
         {
             Console.Write("\nSelect an option to view: \n");
             Console.Write("[A] View All Records\n");
@@ -48,10 +66,18 @@ namespace ExpenseTracker.View
             Console.Write("[D] Back to Main Menu\n");
             Console.Write("\nEnter your choice: ");
 
-            return (Console.ReadLine() ?? string.Empty).Trim().ToUpper();
+            string choice = (Console.ReadLine() ?? string.Empty).Trim().ToUpper();
+            return choice switch
+            {
+                "A" => ViewMenuOption.ViewAll,
+                "B" => ViewMenuOption.ViewIncomes,
+                "C" => ViewMenuOption.ViewExpenses,
+                "D" => ViewMenuOption.BackToMainMenu,
+                _ => ViewMenuOption.Invalid
+            };
         }
 
-        public string ShowEditMenu()
+        public EditMenuOption ShowEditMenu()
         {
             Console.Write("\nSelect an option to edit data: \n");
             Console.Write("[A] Edit Date\n");
@@ -61,7 +87,16 @@ namespace ExpenseTracker.View
             Console.Write("[E] Back to Main Menu\n");
             Console.Write("\nEnter your choice: ");
 
-            return (Console.ReadLine() ?? string.Empty).Trim().ToUpper();
+            string choice = (Console.ReadLine() ?? string.Empty).Trim().ToUpper();
+            return choice switch
+            {
+                "A" => EditMenuOption.Date,
+                "B" => EditMenuOption.Amount,
+                "C" => EditMenuOption.Classification,
+                "D" => EditMenuOption.Description,
+                "E" => EditMenuOption.SaveAndExit,
+                _ => EditMenuOption.Invalid
+            };
         }
 
         public string ReadRecordDate()
@@ -80,14 +115,28 @@ namespace ExpenseTracker.View
 
         public string ReadRecordSource()
         {
-            Console.Write($"Enter the source of the income: ");
+            Console.Write("Select Income Source:\n");
+            IncomeSource[] sources = Enum.GetValues<IncomeSource>();
+            for (int i = 0; i < sources.Length; i++)
+            {
+                Console.Write($"{i + 1}. {sources[i]}\n");
+            }
+
+            Console.Write("\nEnter choice: ");
 
             return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
         public string ReadRecordCategory()
         {
-            Console.Write($"Enter the category of the expense: ");
+            Console.Write("Select Expense Category:\n");
+            ExpenseCategory[] categories = Enum.GetValues<ExpenseCategory>();
+            for (int i = 0; i < categories.Length; i++)
+            {
+                Console.Write($"{i + 1}. {categories[i]}\n");
+            }
+
+            Console.Write("\nEnter choice: ");
 
             return (Console.ReadLine() ?? string.Empty).Trim();
         }
