@@ -68,7 +68,7 @@ namespace ExpenseTracker.Controller
             bool isRunning = true;
             while (isRunning)
             {
-                string addChoice = this._view.AddMenu();
+                string addChoice = this._view.ShowAddMenu();
                 switch (addChoice.Trim().ToUpper())
                 {
                     case "A":
@@ -101,7 +101,7 @@ namespace ExpenseTracker.Controller
             bool isRunning = true;
             while (isRunning)
             {
-                string viewChoice = this._view.ViewMenu();
+                string viewChoice = this._view.ShowViewMenu();
                 switch (viewChoice)
                 {
                     case "A":
@@ -450,14 +450,18 @@ namespace ExpenseTracker.Controller
         private bool GetValidSource(out IncomeSource source)
         {
             source = IncomeSource.Other;
+            IncomeSource[] sources = Enum.GetValues<IncomeSource>();
             string input;
             do
             {
                 input = this._view.ReadRecordSource();
-                if (this._helper.IsValidSource(input, out source))
+                if (this._helper.IsValidClassificationChoice(input, sources.Length, out int choice))
                 {
+                    source = sources[choice - 1];
                     return true;
                 }
+
+                this._view.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
             }
             while (this.CanRetry("source"));
 
@@ -467,16 +471,20 @@ namespace ExpenseTracker.Controller
         private bool GetValidCategory(out ExpenseCategory category)
         {
             category = ExpenseCategory.Other;
+            ExpenseCategory[] categories = Enum.GetValues<ExpenseCategory>();
             string input;
             do
             {
                 input = this._view.ReadRecordCategory();
-                if (this._helper.IsValidCategory(input, out category))
+                if (this._helper.IsValidClassificationChoice(input, categories.Length, out int choice))
                 {
+                    category = categories[choice - 1];
                     return true;
                 }
+
+                this._view.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
             }
-            while (this.CanRetry("source"));
+            while (this.CanRetry("category"));
 
             return false;
         }
