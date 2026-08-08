@@ -142,7 +142,7 @@ namespace ExpenseTracker.View
             Console.ResetColor();
         }
 
-        public void DisplayRecords(List<FinancialRecord> records)
+        public void DisplayRecords(IEnumerable<FinancialRecord> records)
         {
             Console.Write("\nRecord List: \n\n");
             var table = new ConsoleTable("Id", "Date", "Type", "Classification", "Amount", "Description");

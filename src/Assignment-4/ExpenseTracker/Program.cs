@@ -10,7 +10,7 @@ namespace ExpenseTracker
     {
         static void Main(string[] args)
         {
-            ExpenseRepository repository = new ExpenseRepository();
+            IExpenseRepository repository = new CsvExpenseRepository();
             ExpenseService expenseService = new ExpenseService(repository);
             ExpenseHelper expenseHelper = new ExpenseHelper();
             ConsoleOperation view = new ConsoleOperation();

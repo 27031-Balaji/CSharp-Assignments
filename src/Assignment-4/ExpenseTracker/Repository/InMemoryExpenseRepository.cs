@@ -6,14 +6,14 @@ namespace ExpenseTracker.Repository
     /// <summary>
     /// Handles the in-memory storage and management of financial records, including income and expenses.
     /// </summary>
-    internal class ExpenseRepository
+    internal class InMemoryExpenseRepository : IExpenseRepository
     {
         private readonly List<FinancialRecord> _records;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExpenseRepository"/> class.
+        /// Initializes a new instance of the <see cref="InMemoryExpenseRepository"/> class.
         /// </summary>
-        public ExpenseRepository()
+        public InMemoryExpenseRepository()
         {
             this._records = new List<FinancialRecord>();
         }
@@ -25,7 +25,7 @@ namespace ExpenseTracker.Repository
             this._records.Add(record);
         }
 
-        public List<FinancialRecord> GetAllRecords()
+        public IEnumerable<FinancialRecord> GetAllRecords()
         {
             List<FinancialRecord> duplicateRecords = new List<FinancialRecord>();
 
@@ -37,7 +37,7 @@ namespace ExpenseTracker.Repository
             return duplicateRecords;
         }
 
-        public List<FinancialRecord> GetAllIncomeRecords()
+        public IEnumerable<FinancialRecord> GetAllIncomeRecords()
         {
             List<FinancialRecord> duplicateIncomeRecords = new List<FinancialRecord>();
             foreach (FinancialRecord record in this._records)
@@ -51,7 +51,7 @@ namespace ExpenseTracker.Repository
             return duplicateIncomeRecords;
         }
 
-        public List<FinancialRecord> GetAllExpenseRecords()
+        public IEnumerable<FinancialRecord> GetAllExpenseRecords()
         {
             List<FinancialRecord> duplicateExpenseRecords = new List<FinancialRecord>();
             foreach (FinancialRecord record in this._records)
@@ -65,7 +65,7 @@ namespace ExpenseTracker.Repository
             return duplicateExpenseRecords;
         }
 
-        public List<FinancialRecord> GetByDate(DateOnly date)
+        public IEnumerable<FinancialRecord> GetByDate(DateOnly date)
         {
             List<FinancialRecord> dateRecords = new List<FinancialRecord>();
             foreach (FinancialRecord record in this._records)
@@ -79,7 +79,7 @@ namespace ExpenseTracker.Repository
             return dateRecords;
         }
 
-        public List<FinancialRecord> GetByAmount(decimal amount)
+        public IEnumerable<FinancialRecord> GetByAmount(decimal amount)
         {
             List<FinancialRecord> amountRecords = new List<FinancialRecord>();
             foreach (FinancialRecord record in this._records)
@@ -93,7 +93,7 @@ namespace ExpenseTracker.Repository
             return amountRecords;
         }
 
-        public List<FinancialRecord> GetBySource(IncomeSource source)
+        public IEnumerable<FinancialRecord> GetBySource(IncomeSource source)
         {
             List<FinancialRecord> sourceRecords = new List<FinancialRecord>();
             foreach (FinancialRecord record in this._records)
@@ -107,7 +107,7 @@ namespace ExpenseTracker.Repository
             return sourceRecords;
         }
 
-        public List<FinancialRecord> GetByCategory(ExpenseCategory category)
+        public IEnumerable<FinancialRecord> GetByCategory(ExpenseCategory category)
         {
             List<FinancialRecord> categoryRecords = new List<FinancialRecord>();
             foreach (FinancialRecord record in this._records)

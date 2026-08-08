@@ -140,8 +140,8 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            List<FinancialRecord> searchedRecords = this.GetMatchingRecords();
-            if (searchedRecords.Count == 0)
+            IEnumerable<FinancialRecord> searchedRecords = this.GetMatchingRecords();
+            if (searchedRecords.Count() == 0)
             {
                 this._view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Info);
                 this._view.ClearScreenWithKey();
@@ -160,8 +160,8 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            List<FinancialRecord> searchedRecords = this.GetMatchingRecords();
-            if (searchedRecords.Count == 0)
+            IEnumerable<FinancialRecord> searchedRecords = this.GetMatchingRecords();
+            if (searchedRecords.Count() == 0)
             {
                 this._view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Info);
                 return;
@@ -197,8 +197,8 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            List<FinancialRecord> searchedRecords = this.GetMatchingRecords();
-            if (searchedRecords.Count == 0)
+            IEnumerable<FinancialRecord> searchedRecords = this.GetMatchingRecords();
+            if (searchedRecords.Count() == 0)
             {
                 this._view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Info);
                 return;
@@ -308,26 +308,26 @@ namespace ExpenseTracker.Controller
 
         private void DisplayAllRecords()
         {
-            List<FinancialRecord> records = this._service.GetAllRecords();
+            IEnumerable<FinancialRecord> records = this._service.GetAllRecords();
             this._view.DisplayRecords(records);
             this._view.ClearScreenWithKey();
         }
 
         private void DisplayAllIncomes()
         {
-            List<FinancialRecord> records = this._service.GetIncomeRecords();
+            IEnumerable<FinancialRecord> records = this._service.GetIncomeRecords();
             this._view.DisplayRecords(records);
             this._view.ClearScreenWithKey();
         }
 
         private void DisplayAllExpenses()
         {
-            List<FinancialRecord> records = this._service.GetExpenseRecords();
+            IEnumerable<FinancialRecord> records = this._service.GetExpenseRecords();
             this._view.DisplayRecords(records);
             this._view.ClearScreenWithKey();
         }
 
-        private List<FinancialRecord> GetMatchingRecords()
+        private IEnumerable<FinancialRecord> GetMatchingRecords()
         {
             string searchTerm = this._view.ReadSearchTerm();
 
@@ -481,7 +481,7 @@ namespace ExpenseTracker.Controller
             return false;
         }
 
-        private bool GetValidRecordId(out string recordId, string action, List<FinancialRecord> searchedRecords)
+        private bool GetValidRecordId(out string recordId, string action, IEnumerable<FinancialRecord> searchedRecords)
         {
             recordId = string.Empty;
             do
@@ -506,7 +506,7 @@ namespace ExpenseTracker.Controller
             return false;
         }
 
-        private bool IsDisplayedRecord(string recordId, List<FinancialRecord> records)
+        private bool IsDisplayedRecord(string recordId, IEnumerable<FinancialRecord> records)
         {
             foreach (FinancialRecord record in records)
             {

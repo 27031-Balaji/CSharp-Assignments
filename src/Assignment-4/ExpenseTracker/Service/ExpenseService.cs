@@ -6,9 +6,9 @@ namespace ExpenseTracker.Service
 {
     internal class ExpenseService
     {
-        private readonly ExpenseRepository _repository;
+        private readonly IExpenseRepository _repository;
 
-        public ExpenseService(ExpenseRepository repository)
+        public ExpenseService(IExpenseRepository repository)
         {
             this._repository = repository;
         }
@@ -27,40 +27,40 @@ namespace ExpenseTracker.Service
             this._repository.AddRecord(expense);
         }
 
-        public List<FinancialRecord> GetAllRecords()
+        public IEnumerable<FinancialRecord> GetAllRecords()
         {
-            List<FinancialRecord> records = this._repository.GetAllRecords();
+            IEnumerable<FinancialRecord> records = this._repository.GetAllRecords();
             return records.OrderByDescending(record => record.Date).ToList();
         }
 
-        public List<FinancialRecord> GetIncomeRecords()
+        public IEnumerable<FinancialRecord> GetIncomeRecords()
         {
-            List<FinancialRecord> incomeRecords = this._repository.GetAllIncomeRecords();
+            IEnumerable<FinancialRecord> incomeRecords = this._repository.GetAllIncomeRecords();
             return incomeRecords.OrderByDescending(record => record.Date).ToList();
         }
 
-        public List<FinancialRecord> GetExpenseRecords()
+        public IEnumerable<FinancialRecord> GetExpenseRecords()
         {
-            List<FinancialRecord> expenseRecords = this._repository.GetAllExpenseRecords();
+            IEnumerable<FinancialRecord> expenseRecords = this._repository.GetAllExpenseRecords();
             return expenseRecords.OrderByDescending(record => record.Date).ToList();
         }
 
-        public List<FinancialRecord> SearchByDate(DateOnly date)
+        public IEnumerable<FinancialRecord> SearchByDate(DateOnly date)
         {
             return this._repository.GetByDate(date);
         }
 
-        public List<FinancialRecord> SearchByAmount(decimal amount)
+        public IEnumerable<FinancialRecord> SearchByAmount(decimal amount)
         {
             return this._repository.GetByAmount(amount);
         }
 
-        public List<FinancialRecord> SearchBySource(IncomeSource source)
+        public IEnumerable<FinancialRecord> SearchBySource(IncomeSource source)
         {
             return this._repository.GetBySource(source);
         }
 
-        public List<FinancialRecord> SearchByCategory(ExpenseCategory category)
+        public IEnumerable<FinancialRecord> SearchByCategory(ExpenseCategory category)
         {
             return this._repository.GetByCategory(category);
         }
