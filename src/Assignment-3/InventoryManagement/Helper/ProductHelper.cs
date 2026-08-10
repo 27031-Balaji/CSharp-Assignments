@@ -6,7 +6,7 @@
     internal class ProductHelper
     {
         /// <summary>
-        /// Determines whether a product name is valid.
+        /// Determines whether a <see cref="Model.Product"/> name is valid.
         /// </summary>
         /// <param name="name">The product name.</param>
         /// <returns>True if the product name is valid, otherwise false.</returns>
@@ -16,7 +16,7 @@
         }
 
         /// <summary>
-        /// Determines whether a product price is valid.
+        /// Determines whether a <see cref="Model.Product"/> price is valid.
         /// </summary>
         /// <param name="input">The price entered by the user.</param>
         /// <param name="price">The validated product price.</param>
@@ -27,7 +27,7 @@
         }
 
         /// <summary>
-        /// Determines whether a product quantity is valid.
+        /// Determines whether a <see cref="Model.Product"/> quantity is valid.
         /// </summary>
         /// <param name="input">The quantity entered by the user.</param>
         /// <param name="quantity">The validated product quantity.</param>
@@ -38,7 +38,7 @@
         }
 
         /// <summary>
-        /// Determines whether a product ID is valid.
+        /// Determines whether a <see cref="Model.Product"/> ID is valid.
         /// </summary>
         /// <param name="productId">The product ID.</param>
         /// <returns>True if the product ID is valid, otherwise false.</returns>
