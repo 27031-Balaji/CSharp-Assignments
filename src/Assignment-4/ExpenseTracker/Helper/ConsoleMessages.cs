@@ -1,24 +1,34 @@
 ﻿namespace ExpenseTracker.Helper
 {
-    internal class ConsoleMessages
+    /// <summary>
+    /// Used to store messages used for printing in the UI.
+    /// </summary>
+    internal static class ConsoleMessages
     {
         /// <summary>
         /// Message displayed when an invalid menu option is selected.
         /// </summary>
         public const string InvalidOptionMessage = "Enter a valid option.";
 
+        /// <summary>
+        /// Message displayed when no records are found.
+        /// </summary>
         public const string NoRecordFoundMessage = "No records found.";
 
+        /// <summary>
+        /// Message displayed when a delete operation is aborted by the user.
+        /// </summary>
         public const string DeleteOperationAbortedMessage = "Delete operation aborted.";
 
+        /// <summary>
+        /// Message displayed when a delete operation completes successfully.
+        /// </summary>
         public const string DeleteOperationSuccessMessage = "Delete operation successful.";
 
-        public const string EditOperationSuccessMessage = "Edit operation successful.";
-
         /// <summary>
-        /// Message displayed when the application is being closed.
+        /// Message displayed when an edit operation completes successfully.
         /// </summary>
-        public const string ExitMessage = "Exiting Application...";
+        public const string EditOperationSuccessMessage = "Edit operation successful.";
 
         /// <summary>
         /// Message displayed when an income record is added successfully.
@@ -30,12 +40,29 @@
         /// </summary>
         public const string ExpenseAddedMessage = "Expense record added successfully.";
 
+        /// <summary>
+        /// Message displayed when a record's date is edited successfully.
+        /// </summary>
         public const string DateEditedSuccessMessage = "Date edited successfully.";
 
+        /// <summary>
+        /// Message displayed when a record's amount is edited successfully.
+        /// </summary>
         public const string AmountEditedSuccessMessage = "Amount edited successfully.";
 
+        /// <summary>
+        /// Message displayed when a record's classification (source/category) is edited successfully.
+        /// </summary>
         public const string ClassificationEditedSuccessMessage = "Classification edited successfully.";
 
+        /// <summary>
+        /// Message displayed when a record's description is edited successfully.
+        /// </summary>
         public const string DescriptionEditedSuccessMessage = "Description edited successfully.";
+
+        /// <summary>
+        /// Message displayed when the application is exiting.
+        /// </summary>
+        public const string ExitMessage = "Exiting Application...";
     }
 }

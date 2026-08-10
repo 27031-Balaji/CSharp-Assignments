@@ -6,9 +6,16 @@ using ExpenseTracker.View;
 
 namespace ExpenseTracker
 {
-    internal class Program
+    /// <summary>
+    /// Application entry point for the expense tracker.
+    /// </summary>
+    internal static class Program
     {
-        static void Main(string[] args)
+        /// <summary>
+        /// The program entry point and creates the objects.
+        /// </summary>
+        /// <param name="args">Command-line arguments passed to the application.</param>
+        public static void Main(string[] args)
         {
             IExpenseRepository repository = new CsvExpenseRepository();
             ExpenseService expenseService = new ExpenseService(repository);

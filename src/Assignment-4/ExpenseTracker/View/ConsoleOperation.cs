@@ -4,12 +4,15 @@ using ExpenseTracker.Model;
 
 namespace ExpenseTracker.View
 {
+    /// <summary>
+    /// Handles console input and output for the application.
+    /// </summary>
     internal class ConsoleOperation
     {
         /// <summary>
-        /// Displays the main menu and reads the user's choice.
+        /// Displays the main menu and reads the user's selected option.
         /// </summary>
-        /// <returns>The selected menu option.</returns>
+        /// <returns>The selected <see cref="MainMenuOption"/>.</returns>
         public MainMenuOption ShowMainMenu()
         {
             Console.Write("========================================================\n");
@@ -40,6 +43,10 @@ namespace ExpenseTracker.View
             };
         }
 
+        /// <summary>
+        /// Displays the add menu and reads the user's choice.
+        /// </summary>
+        /// <returns>The selected <see cref="AddMenuOption"/>.</returns>
         public AddMenuOption ShowAddMenu()
         {
             Console.WriteLine("\nSelect an option:");
@@ -57,6 +64,10 @@ namespace ExpenseTracker.View
             };
         }
 
+        /// <summary>
+        /// Displays the view menu and reads the user's choice.
+        /// </summary>
+        /// <returns>The selected <see cref="ViewMenuOption"/>.</returns>
         public ViewMenuOption ShowViewMenu()
         {
             Console.Write("\nSelect an option to view: \n");
@@ -77,6 +88,10 @@ namespace ExpenseTracker.View
             };
         }
 
+        /// <summary>
+        /// Displays the edit menu and reads the user's choice.
+        /// </summary>
+        /// <returns>The selected <see cref="EditMenuOption"/>.</returns>
         public EditMenuOption ShowEditMenu()
         {
             Console.Write("\nSelect an option to edit data: \n");
@@ -99,6 +114,10 @@ namespace ExpenseTracker.View
             };
         }
 
+        /// <summary>
+        /// Prompts the user for a record date string.
+        /// </summary>
+        /// <returns>The entered date string.</returns>
         public string ReadRecordDate()
         {
             Console.Write($"Enter the date of the record in (DD/MM/YYYY): ");
@@ -106,6 +125,10 @@ namespace ExpenseTracker.View
             return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
+        /// <summary>
+        /// Prompts the user for a record amount string.
+        /// </summary>
+        /// <returns>The entered amount string.</returns>
         public string ReadRecordAmount()
         {
             Console.Write($"Enter the amount of the record: ");
@@ -113,6 +136,10 @@ namespace ExpenseTracker.View
             return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
+        /// <summary>
+        /// Prompts the user to select an income source and returns the user's input.
+        /// </summary>
+        /// <returns>The entered choice string for income source selection.</returns>
         public string ReadRecordSource()
         {
             Console.Write("Select Income Source:\n");
@@ -127,6 +154,10 @@ namespace ExpenseTracker.View
             return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
+        /// <summary>
+        /// Prompts the user to select an expense category and returns the user's input.
+        /// </summary>
+        /// <returns>The entered choice string for expense category selection.</returns>
         public string ReadRecordCategory()
         {
             Console.Write("Select Expense Category:\n");
@@ -141,6 +172,11 @@ namespace ExpenseTracker.View
             return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
+        /// <summary>
+        /// Prompts for a record identifier for the given action.
+        /// </summary>
+        /// <param name="action">The action being performed. (Eg: edit, delete)</param>
+        /// <returns>The entered record identifier string.</returns>
         public string ReadRecordId(string action)
         {
             Console.Write($"Enter the record ID to {action}: ");
@@ -148,6 +184,10 @@ namespace ExpenseTracker.View
             return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
+        /// <summary>
+        /// Prompts for an optional description for a record.
+        /// </summary>
+        /// <returns>The entered description string.</returns>
         public string ReadRecordDescription()
         {
             Console.Write($"Enter the description of the record (Optional): ");
@@ -155,6 +195,10 @@ namespace ExpenseTracker.View
             return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
+        /// <summary>
+        /// Prompts for a search term that may represent a date, amount, source or category.
+        /// </summary>
+        /// <returns>The entered search term string.</returns>
         public string ReadSearchTerm()
         {
             Console.Write($"Enter the date or amount or source/category: ");
@@ -162,6 +206,10 @@ namespace ExpenseTracker.View
             return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
+        /// <summary>
+        /// Prompts for a month and year string.
+        /// </summary>
+        /// <returns>The entered month and year string in MM/YYYY format.</returns>
         public string ReadMonthAndYear()
         {
             Console.Write($"Enter the month and year in (MM/YYYY): ");
@@ -170,10 +218,10 @@ namespace ExpenseTracker.View
         }
 
         /// <summary>
-        /// This method is used to show success message with Green color.
+        /// Writes a message to the console using color based on the <see cref="MessageType"/>.
         /// </summary>
-        /// <param name="message">The message to be printed.</param>
-        /// <param name="type">The message type (Success, Error or Info).</param>
+        /// <param name="message">The message to display.</param>
+        /// <param name="type">The <see cref="MessageType"/> that controls the color.</param>
         public void ShowMessage(string message, MessageType type)
         {
             Console.ForegroundColor = type switch
@@ -188,9 +236,9 @@ namespace ExpenseTracker.View
         }
 
         /// <summary>
-        /// Displays the invalid error message with different fields.
+        /// Displays an invalid input message for the specified field.
         /// </summary>
-        /// <param name="fieldName">The field name to be printed as an invalid message.</param>
+        /// <param name="fieldName">The field name to include in the invalid message.</param>
         public void ShowInvalidMessage(string fieldName)
         {
             Console.ForegroundColor = ConsoleColor.Red;
@@ -198,6 +246,10 @@ namespace ExpenseTracker.View
             Console.ResetColor();
         }
 
+        /// <summary>
+        /// Displays a collection of <see cref="FinancialRecord"/> in a table.
+        /// </summary>
+        /// <param name="records">The collection of <see cref="FinancialRecord"/> to display.</param>
         public void DisplayRecords(IEnumerable<FinancialRecord> records)
         {
             Console.Write("\nRecord List: \n\n");
@@ -210,6 +262,10 @@ namespace ExpenseTracker.View
             table.Write(Format.MarkDown);
         }
 
+        /// <summary>
+        /// Displays a single <see cref="FinancialRecord"/> in a table.
+        /// </summary>
+        /// <param name="record">The <see cref="FinancialRecord"/> to display.</param>
         public void DisplaySingleRecord(FinancialRecord record)
         {
             Console.WriteLine();
@@ -218,6 +274,16 @@ namespace ExpenseTracker.View
             table.Write(Format.MarkDown);
         }
 
+        /// <summary>
+        /// Shows a financial summary for the given month and year.
+        /// </summary>
+        /// <param name="month">The month being summarized.</param>
+        /// <param name="year">The year being summarized.</param>
+        /// <param name="netIncome">Total income for the period.</param>
+        /// <param name="netExpense">Total expense for the period.</param>
+        /// <param name="netBalance">Net balance for the period.</param>
+        /// <param name="netSavings">Savings rate percentage for the period.</param>
+        /// <param name="highestExpense">The highest <see cref="Expense"/> for the period, if any.</param>
         public void ShowFinancialSummary(int month, int year, decimal netIncome, decimal netExpense, decimal netBalance, decimal netSavings, Expense? highestExpense)
         {
             Console.Write("\n========================================================\n");
@@ -232,7 +298,7 @@ namespace ExpenseTracker.View
         }
 
         /// <summary>
-        /// Clears the console.
+        /// Clears the console display.
         /// </summary>
         public void ClearScreen()
         {
@@ -240,7 +306,7 @@ namespace ExpenseTracker.View
         }
 
         /// <summary>
-        /// Waits for a key press before clearing the console.
+        /// Waits for a key press and then clears the console.
         /// </summary>
         public void ClearScreenWithKey()
         {
@@ -251,6 +317,10 @@ namespace ExpenseTracker.View
             Console.ResetColor();
         }
 
+        /// <summary>
+        /// Prompts the user to confirm deletion of a record.
+        /// </summary>
+        /// <returns>True if the user confirms deletion, otherwise False.</returns>
         public bool ConfirmDelete()
         {
             while (true)
@@ -275,7 +345,7 @@ namespace ExpenseTracker.View
         /// <summary>
         /// Asks the user whether to retry the current operation.
         /// </summary>
-        /// <returns>True if the user wants to retry, otherwise false.</returns>
+        /// <returns>True if the user wants to retry, otherwise False.</returns>
         public bool AskRetry()
         {
             while (true)

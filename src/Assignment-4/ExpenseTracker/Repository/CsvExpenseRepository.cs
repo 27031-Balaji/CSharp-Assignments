@@ -5,26 +5,44 @@ using ExpenseTracker.Model;
 
 namespace ExpenseTracker.Repository
 {
+    /// <summary>
+    /// Provides a CSV based repository for storing and retrieving <see cref="FinancialRecord"/> instances.
+    /// </summary>
     internal class CsvExpenseRepository : IExpenseRepository
     {
         private const string FilePath = CsvConstant.FilePath;
         private const string CsvHeader = CsvConstant.CsvHeader;
         private readonly List<FinancialRecord> _records;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CsvExpenseRepository"/> class.
+        /// </summary>
         public CsvExpenseRepository()
         {
             this._records = new List<FinancialRecord>();
             this.LoadRecords();
         }
 
+        /// <summary>
+        /// Gets the total number of stored <see cref="FinancialRecord"/> instances.
+        /// </summary>
+        /// <value>The number of records currently stored.</value>
         public int RecordCount { get => this._records.Count; }
 
+        /// <summary>
+        /// Adds a <see cref="FinancialRecord"/> to the repository and saves changes to the CSV file.
+        /// </summary>
+        /// <param name="record">The <see cref="FinancialRecord"/> to add.</param>
         public void AddRecord(FinancialRecord record)
         {
             this._records.Add(record);
             this.SaveRecords();
         }
 
+        /// <summary>
+        /// Retrieves all stored <see cref="FinancialRecord"/> instances as a cloned list.
+        /// </summary>
+        /// <returns>A list of <see cref="FinancialRecord"/> containing cloned records.</returns>
         public IEnumerable<FinancialRecord> GetAllRecords()
         {
             List<FinancialRecord> duplicateRecords = this._records
@@ -34,6 +52,10 @@ namespace ExpenseTracker.Repository
             return duplicateRecords;
         }
 
+        /// <summary>
+        /// Retrieves all stored income records.
+        /// </summary>
+        /// <returns>A list of <see cref="FinancialRecord"/> representing income records.</returns>
         public IEnumerable<FinancialRecord> GetAllIncomeRecords()
         {
             List<FinancialRecord> duplicateIncomeRecords = this._records
@@ -44,6 +66,10 @@ namespace ExpenseTracker.Repository
             return duplicateIncomeRecords;
         }
 
+        /// <summary>
+        /// Retrieves all stored expense records.
+        /// </summary>
+        /// <returns>A list of <see cref="FinancialRecord"/> representing expense records.</returns>
         public IEnumerable<FinancialRecord> GetAllExpenseRecords()
         {
             List<FinancialRecord> duplicateExpenseRecords = this._records
@@ -54,6 +80,11 @@ namespace ExpenseTracker.Repository
             return duplicateExpenseRecords;
         }
 
+        /// <summary>
+        /// Retrieves records that match the specified date.
+        /// </summary>
+        /// <param name="date">The date value to filter records by.</param>
+        /// <returns>A list of <see cref="FinancialRecord"/> that occur on the specified date.</returns>
         public IEnumerable<FinancialRecord> GetByDate(DateOnly date)
         {
             List<FinancialRecord> dateRecords = this._records
@@ -64,6 +95,12 @@ namespace ExpenseTracker.Repository
             return dateRecords;
         }
 
+        /// <summary>
+        /// Retrieves records that match the specified month and year.
+        /// </summary>
+        /// <param name="month">The month to filter by.</param>
+        /// <param name="year">The year to filter by.</param>
+        /// <returns>A list of <see cref="FinancialRecord"/> that occur within the specified month and year.</returns>
         public IEnumerable<FinancialRecord> GetByMonthAndYear(int month, int year)
         {
             List<FinancialRecord> monthAndYearRecords = this._records
@@ -74,82 +111,139 @@ namespace ExpenseTracker.Repository
             return monthAndYearRecords;
         }
 
+        /// <summary>
+        /// Retrieves records that match the specified amount.
+        /// </summary>
+        /// <param name="amount">The amount to filter records by.</param>
+        /// <returns>A list of <see cref="FinancialRecord"/> with the specified amount.</returns>
         public IEnumerable<FinancialRecord> GetByAmount(decimal amount)
         {
             List<FinancialRecord> amountRecords = this._records
-                                                .Where(record => record.Amount == amount)
-                                                .Select(record => record.Clone())
-                                                .ToList();
+                                                    .Where(record => record.Amount == amount)
+                                                    .Select(record => record.Clone())
+                                                    .ToList();
 
             return amountRecords;
         }
 
+        /// <summary>
+        /// Retrieves income records that match the specified <see cref="IncomeSource"/>.
+        /// </summary>
+        /// <param name="source">The <see cref="IncomeSource"/> to filter by.</param>
+        /// <returns>A list of <see cref="FinancialRecord"/> representing incomes with the specified source.</returns>
         public IEnumerable<FinancialRecord> GetBySource(IncomeSource source)
         {
             List<FinancialRecord> sourceRecords = this._records
-                                                .Where(record => record is Income income && income.Source == source)
-                                                .Select(record => record.Clone())
-                                                .ToList();
+                                                    .Where(record => record is Income income && income.Source == source)
+                                                    .Select(record => record.Clone())
+                                                    .ToList();
 
             return sourceRecords;
         }
 
+        /// <summary>
+        /// Retrieves expense records that match the specified <see cref="ExpenseCategory"/>.
+        /// </summary>
+        /// <param name="category">The <see cref="ExpenseCategory"/> to filter by.</param>
+        /// <returns>A list of <see cref="FinancialRecord"/> representing expenses in the specified category.</returns>
         public IEnumerable<FinancialRecord> GetByCategory(ExpenseCategory category)
         {
             List<FinancialRecord> categoryRecords = this._records
-                                                .Where(record => record is Expense expense && expense.Category == category)
-                                                .Select(record => record.Clone())
-                                                .ToList();
+                                                    .Where(record => record is Expense expense && expense.Category == category)
+                                                    .Select(record => record.Clone())
+                                                    .ToList();
 
             return categoryRecords;
         }
 
+        /// <summary>
+        /// Retrieves a <see cref="FinancialRecord"/> by its identifier.
+        /// </summary>
+        /// <param name="recordId">The record identifier to search for.</param>
+        /// <returns>The matching <see cref="FinancialRecord"/> if found.</returns>
         public FinancialRecord? GetById(string recordId)
         {
             return this._records.Find(record => record.Id.Equals(recordId, StringComparison.OrdinalIgnoreCase));
         }
 
+        /// <summary>
+        /// Deletes the specified <see cref="FinancialRecord"/> from the repository and saves changes.
+        /// </summary>
+        /// <param name="record">The <see cref="FinancialRecord"/> to delete.</param>
         public void DeleteRecord(FinancialRecord record)
         {
             this._records.Remove(record);
             this.SaveRecords();
         }
 
+        /// <summary>
+        /// Updates the date of the specified <see cref="FinancialRecord"/> and saves changes.
+        /// </summary>
+        /// <param name="record">The <see cref="FinancialRecord"/> to update.</param>
+        /// <param name="date">The new date value.</param>
         public void UpdateRecordDate(FinancialRecord record, DateOnly date)
         {
             record.Date = date;
             this.SaveRecords();
         }
 
+        /// <summary>
+        /// Updates the amount of the specified <see cref="FinancialRecord"/> and saves changes.
+        /// </summary>
+        /// <param name="record">The <see cref="FinancialRecord"/> to update.</param>
+        /// <param name="amount">The new amount value.</param>
         public void UpdateRecordAmount(FinancialRecord record, decimal amount)
         {
             record.Amount = amount;
             this.SaveRecords();
         }
 
+        /// <summary>
+        /// Updates the source of the specified <see cref="Income"/> and saves changes.
+        /// </summary>
+        /// <param name="record">The <see cref="Income"/> record to update.</param>
+        /// <param name="source">The new <see cref="IncomeSource"/>.</param>
         public void UpdateRecordSource(Income record, IncomeSource source)
         {
             record.Source = source;
             this.SaveRecords();
         }
 
+        /// <summary>
+        /// Updates the category of the specified <see cref="Expense"/> and saves changes.
+        /// </summary>
+        /// <param name="record">The <see cref="Expense"/> record to update.</param>
+        /// <param name="category">The new <see cref="ExpenseCategory"/>.</param>
         public void UpdateRecordCategory(Expense record, ExpenseCategory category)
         {
             record.Category = category;
             this.SaveRecords();
         }
 
+        /// <summary>
+        /// Updates the description of the specified <see cref="FinancialRecord"/> and saves changes.
+        /// </summary>
+        /// <param name="record">The <see cref="FinancialRecord"/> to update.</param>
+        /// <param name="description">The new description value.</param>
         public void UpdateRecordDescription(FinancialRecord record, string? description)
         {
             record.Description = description;
             this.SaveRecords();
         }
 
+        /// <summary>
+        /// Determines whether a record identifier already exists in the repository.
+        /// </summary>
+        /// <param name="recordId">The record identifier to check.</param>
+        /// <returns>True if the record exists, otherwise false.</returns>
         public bool RecordIdExists(string recordId)
         {
             return this._records.Any(record => record.Id == recordId);
         }
 
+        /// <summary>
+        /// Loads records from the CSV file into the in-memory list.
+        /// </summary>
         private void LoadRecords()
         {
             if (!File.Exists(FilePath))
@@ -170,6 +264,9 @@ namespace ExpenseTracker.Repository
             }
         }
 
+        /// <summary>
+        /// Saves the in-memory records to the CSV file.
+        /// </summary>
         private void SaveRecords()
         {
             List<string> lines = new List<string> { CsvHeader };
@@ -181,6 +278,11 @@ namespace ExpenseTracker.Repository
             File.WriteAllLines(FilePath, lines);
         }
 
+        /// <summary>
+        /// Parses a CSV line into a <see cref="FinancialRecord"/>.
+        /// </summary>
+        /// <param name="line">The CSV line to parse.</param>
+        /// <returns>A <see cref="FinancialRecord"/> instance representing the parsed line.</returns>
         private FinancialRecord ParseToRecord(string line)
         {
             List<string> values = this.ParseCsvLine(line);
@@ -201,6 +303,11 @@ namespace ExpenseTracker.Repository
             }
         }
 
+        /// <summary>
+        /// Parses a CSV line into its constituent fields, handling commas and quotes.
+        /// </summary>
+        /// <param name="line">The CSV line to split.</param>
+        /// <returns>A list of field values extracted from the line.</returns>
         private List<string> ParseCsvLine(string line)
         {
             List<string> fields = new List<string>();
@@ -238,6 +345,11 @@ namespace ExpenseTracker.Repository
             return fields;
         }
 
+        /// <summary>
+        /// Converts a <see cref="FinancialRecord"/> into a CSV line.
+        /// </summary>
+        /// <param name="record">The <see cref="FinancialRecord"/> to convert.</param>
+        /// <returns>A CSV-converted string representing the record.</returns>
         private string ConvertToCsv(FinancialRecord record)
         {
             return string.Join(
@@ -250,6 +362,11 @@ namespace ExpenseTracker.Repository
                 this.CsvEscape(record.Description ?? string.Empty));
         }
 
+        /// <summary>
+        /// Escapes a value for CSV output by quoting and doubling embedded quotes when necessary.
+        /// </summary>
+        /// <param name="value">The field value to escape.</param>
+        /// <returns>The escaped field value suitable for CSV.</returns>
         private string CsvEscape(string value)
         {
             if (value.Contains(',') || value.Contains('"'))
