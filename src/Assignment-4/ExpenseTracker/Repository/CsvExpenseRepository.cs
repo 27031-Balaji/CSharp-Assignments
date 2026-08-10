@@ -1,5 +1,5 @@
-﻿using System.Reflection.Metadata.Ecma335;
-using System.Text;
+﻿using System.Text;
+using ExpenseTracker.Constant;
 using ExpenseTracker.Enums;
 using ExpenseTracker.Model;
 
@@ -7,10 +7,8 @@ namespace ExpenseTracker.Repository
 {
     internal class CsvExpenseRepository : IExpenseRepository
     {
-        private const string FilePath = "records.csv";
-
-        private const string CsvHeader = "Id,Date,Type,Classification,Amount,Description";
-
+        private const string FilePath = CsvConstant.FilePath;
+        private const string CsvHeader = CsvConstant.CsvHeader;
         private readonly List<FinancialRecord> _records;
 
         public CsvExpenseRepository()
@@ -29,96 +27,79 @@ namespace ExpenseTracker.Repository
 
         public IEnumerable<FinancialRecord> GetAllRecords()
         {
-            List<FinancialRecord> duplicateRecords = new List<FinancialRecord>();
-
-            foreach (FinancialRecord record in this._records)
-            {
-                duplicateRecords.Add(record.Clone());
-            }
+            List<FinancialRecord> duplicateRecords = this._records
+                                                        .Select(record => record.Clone())
+                                                        .ToList();
 
             return duplicateRecords;
         }
 
         public IEnumerable<FinancialRecord> GetAllIncomeRecords()
         {
-            List<FinancialRecord> duplicateIncomeRecords = new List<FinancialRecord>();
-            foreach (FinancialRecord record in this._records)
-            {
-                if (record is Income)
-                {
-                    duplicateIncomeRecords.Add(record.Clone());
-                }
-            }
+            List<FinancialRecord> duplicateIncomeRecords = this._records
+                                                    .Where(record => record is Income)
+                                                    .Select(record => record.Clone())
+                                                    .ToList();
 
             return duplicateIncomeRecords;
         }
 
         public IEnumerable<FinancialRecord> GetAllExpenseRecords()
         {
-            List<FinancialRecord> duplicateExpenseRecords = new List<FinancialRecord>();
-            foreach (FinancialRecord record in this._records)
-            {
-                if (record is Expense)
-                {
-                    duplicateExpenseRecords.Add(record.Clone());
-                }
-            }
+            List<FinancialRecord> duplicateExpenseRecords = this._records
+                                                            .Where(record => record is Expense)
+                                                            .Select(record => record.Clone())
+                                                            .ToList();
 
             return duplicateExpenseRecords;
         }
 
         public IEnumerable<FinancialRecord> GetByDate(DateOnly date)
         {
-            List<FinancialRecord> dateRecords = new List<FinancialRecord>();
-            foreach (FinancialRecord record in this._records)
-            {
-                if (record.Date == date)
-                {
-                    dateRecords.Add(record.Clone());
-                }
-            }
+            List<FinancialRecord> dateRecords = this._records
+                                                .Where(record => record.Date == date)
+                                                .Select(record => record.Clone())
+                                                .ToList();
 
             return dateRecords;
         }
 
+        public IEnumerable<FinancialRecord> GetByMonthAndYear(int month, int year)
+        {
+            List<FinancialRecord> monthAndYearRecords = this._records
+                                                .Where(record => record.Date.Month == month && record.Date.Year == year)
+                                                .Select(record => record.Clone())
+                                                .ToList();
+
+            return monthAndYearRecords;
+        }
+
         public IEnumerable<FinancialRecord> GetByAmount(decimal amount)
         {
-            List<FinancialRecord> amountRecords = new List<FinancialRecord>();
-            foreach (FinancialRecord record in this._records)
-            {
-                if (record.Amount == amount)
-                {
-                    amountRecords.Add(record.Clone());
-                }
-            }
+            List<FinancialRecord> amountRecords = this._records
+                                                .Where(record => record.Amount == amount)
+                                                .Select(record => record.Clone())
+                                                .ToList();
 
             return amountRecords;
         }
 
         public IEnumerable<FinancialRecord> GetBySource(IncomeSource source)
         {
-            List<FinancialRecord> sourceRecords = new List<FinancialRecord>();
-            foreach (FinancialRecord record in this._records)
-            {
-                if (record is Income income && income.Source == source)
-                {
-                    sourceRecords.Add(record.Clone());
-                }
-            }
+            List<FinancialRecord> sourceRecords = this._records
+                                                .Where(record => record is Income income && income.Source == source)
+                                                .Select(record => record.Clone())
+                                                .ToList();
 
             return sourceRecords;
         }
 
         public IEnumerable<FinancialRecord> GetByCategory(ExpenseCategory category)
         {
-            List<FinancialRecord> categoryRecords = new List<FinancialRecord>();
-            foreach (FinancialRecord record in this._records)
-            {
-                if (record is Expense expense && expense.Category == category)
-                {
-                    categoryRecords.Add(record.Clone());
-                }
-            }
+            List<FinancialRecord> categoryRecords = this._records
+                                                .Where(record => record is Expense expense && expense.Category == category)
+                                                .Select(record => record.Clone())
+                                                .ToList();
 
             return categoryRecords;
         }
@@ -208,7 +189,7 @@ namespace ExpenseTracker.Repository
             string type = values[2];
             string classification = values[3];
             decimal amount = decimal.Parse(values[4]);
-            string? description = string.IsNullOrWhiteSpace(values[5]) ? null : values[5];
+            string? description = string.IsNullOrWhiteSpace(values[5]) ? string.Empty : values[5];
 
             if (type.Equals("Income", StringComparison.OrdinalIgnoreCase))
             {

@@ -48,6 +48,7 @@ namespace ExpenseTracker.Controller
                         break;
 
                     case MainMenuOption.FinancialSummary:
+                        this.GetFinancialSummary();
                         break;
 
                     case MainMenuOption.Exit:
@@ -257,6 +258,23 @@ namespace ExpenseTracker.Controller
                 }
             }
 
+            this._view.ClearScreenWithKey();
+        }
+
+        private void GetFinancialSummary()
+        {
+            if (!this.HasRecords())
+            {
+                return;
+            }
+
+            if (!this.GetValidMonthAndYear(out int month, out int year))
+            {
+                return;
+            }
+
+            var summary = this._service.GetMonthlySummary(month, year);
+            this._view.ShowFinancialSummary(month, year, summary.NetIncome, summary.NetExpense, summary.NetBalance, summary.SavingsRate, summary.HighestExpense);
             this._view.ClearScreenWithKey();
         }
 
@@ -517,6 +535,23 @@ namespace ExpenseTracker.Controller
                 return true;
             }
             while (this.CanRetry("id"));
+
+            return false;
+        }
+
+        private bool GetValidMonthAndYear(out int month, out int year)
+        {
+            month = 0;
+            year = 0;
+            do
+            {
+                string? input = this._view.ReadMonthAndYear();
+                if (this._helper.IsValidMonthAndYear(input, out month, out year))
+                {
+                    return true;
+                }
+            }
+            while (this.CanRetry("month and year"));
 
             return false;
         }
