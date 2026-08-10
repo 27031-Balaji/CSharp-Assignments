@@ -86,7 +86,7 @@ namespace InventoryManagement.Controller
         }
 
         /// <summary>
-        /// Adds a new product to the inventory.
+        /// Adds a new <see cref="Product"/> to the inventory.
         /// </summary>
         private void AddProduct()
         {
@@ -111,7 +111,7 @@ namespace InventoryManagement.Controller
         }
 
         /// <summary>
-        /// Updates the details of an existing product by its ID.
+        /// Updates the details of an existing <see cref="Product"/> by its ID.
         /// </summary>
         private void EditProduct()
         {
@@ -159,6 +159,9 @@ namespace InventoryManagement.Controller
             this._view.ClearScreenWithKey();
         }
 
+        /// <summary>
+        /// Searches the details of an existing <see cref="Product"/> by its ID or name.
+        /// </summary>
         private void SearchProduct()
         {
             if (!this.HasProducts())
@@ -194,7 +197,7 @@ namespace InventoryManagement.Controller
         }
 
         /// <summary>
-        /// Searches for a product by its ID.
+        /// Searches for a <see cref="Product"/> by its ID.
         /// </summary>
         private void SearchProductById()
         {
@@ -208,6 +211,9 @@ namespace InventoryManagement.Controller
             this._view.ClearScreenWithKey();
         }
 
+        /// <summary>
+        /// Searches for a <see cref="Product"/> by its name.
+        /// </summary>
         private void SearchProductByName()
         {
             bool continueSearch = true;
@@ -238,7 +244,7 @@ namespace InventoryManagement.Controller
         }
 
         /// <summary>
-        /// Displays all products in the inventory.
+        /// Displays all <see cref="Product"/> in the inventory.
         /// </summary>
         private void ViewAllProducts()
         {
@@ -253,7 +259,7 @@ namespace InventoryManagement.Controller
         }
 
         /// <summary>
-        /// Deletes a product from the inventory by its ID.
+        /// Deletes a <see cref="Product"/> from the inventory by its ID.
         /// </summary>
         private void DeleteProduct()
         {
@@ -286,7 +292,7 @@ namespace InventoryManagement.Controller
         }
 
         /// <summary>
-        /// Increases the stock quantity of a product using ID as the input.
+        /// Increases the stock quantity of a <see cref="Product"/> using ID as the input.
         /// </summary>
         private void RestockProduct()
         {
@@ -313,7 +319,7 @@ namespace InventoryManagement.Controller
         }
 
         /// <summary>
-        /// Reduces the stock quantity of a product using ID as the input.
+        /// Reduces the stock quantity of a <see cref="Product"/> using ID as the input.
         /// </summary>
         private void ReduceStock()
         {
@@ -358,7 +364,7 @@ namespace InventoryManagement.Controller
         }
 
         /// <summary>
-        /// Displays all products that are low in stock.
+        /// Displays all <see cref="Product"/> that are low in stock.
         /// </summary>
         private void ViewLowStockProducts()
         {
@@ -381,9 +387,9 @@ namespace InventoryManagement.Controller
         }
 
         /// <summary>
-        /// Checks whether the inventory system has any products.
+        /// Checks whether the inventory system has any <see cref="Product"/>.
         /// </summary>
-        /// <returns>True if the inventory has any products, otherwise false.</returns>
+        /// <returns>True if the inventory has any <see cref="Product"/>, otherwise false.</returns>
         private bool HasProducts()
         {
             try
@@ -402,23 +408,17 @@ namespace InventoryManagement.Controller
         }
 
         /// <summary>
-        /// Reads and validates a product ID by searching it in the repository.
+        /// Reads and validates a <see cref="Product"/> ID by searching it in the repository.
         /// </summary>
         /// <param name="operation">The operation being performed.</param>
-        /// <returns>The matching proudct if found, otherwise null.</returns>
+        /// <returns>The matching <see cref="Product"/> if found, otherwise null.</returns>
         private Product? GetValidProductWithId(string operation)
         {
-            bool shouldRetry = true;
-            while (shouldRetry)
+            do
             {
                 string productId = this._view.ReadProductId(operation);
                 if (!this._helper.IsValidProductId(productId))
                 {
-                    if (!this.CanRetry("Product ID"))
-                    {
-                        return null;
-                    }
-
                     continue;
                 }
 
@@ -429,97 +429,76 @@ namespace InventoryManagement.Controller
                 catch (ProductNotFoundException ex)
                 {
                     this._view.ShowMessage(ex.Message, MessageType.Error);
-                    shouldRetry = this._view.AskRetry();
-                    if (!shouldRetry)
-                    {
-                        this._view.ClearScreen();
-                        return null;
-                    }
                 }
             }
+            while (this.CanRetry("Product ID"));
 
             return null;
         }
 
         /// <summary>
-        /// Reads and validates a product name.
+        /// Reads and validates a <see cref="Product"/> name.
         /// </summary>
-        /// <param name="name">The validated product name.</param>
-        /// <returns>True if the product name is valid, otherwise false.</returns>
+        /// <param name="name">The validated <see cref="Product"/> name.</param>
+        /// <returns>True if the <see cref="Product"/> name is valid, otherwise false.</returns>
         private bool GetValidProductName(out string name, string operation)
         {
             name = string.Empty;
-            bool isNameValid = false;
-            while (!isNameValid)
+            do
             {
                 name = this._view.ReadProductName(operation);
                 if (this._helper.IsValidName(name))
                 {
-                    isNameValid = true;
-                    continue;
-                }
-
-                if (!this.CanRetry("name"))
-                {
-                    return false;
+                    return true;
                 }
             }
+            while (this.CanRetry("name"));
 
-            return true;
+            return false;
         }
 
         /// <summary>
-        /// Reads and validates a product price.
+        /// Reads and validates a <see cref="Product"/> price.
         /// </summary>
-        /// <param name="price">The validated product price.</param>
-        /// <returns>True if the product price is valid, otherwise false.</returns>
+        /// <param name="price">The validated <see cref="Product"/> price.</param>
+        /// <returns>True if the <see cref="Product"/> price is valid, otherwise false.</returns>
         private bool GetValidProductPrice(out decimal price)
         {
             price = 0;
-            bool isPriceValid = false;
-            while (!isPriceValid)
+            string input;
+            do
             {
-                string input = this._view.ReadProductPrice();
+                input = this._view.ReadProductPrice();
                 if (this._helper.IsValidPrice(input, out price))
                 {
-                    isPriceValid = true;
-                    continue;
-                }
-
-                if (!this.CanRetry("price"))
-                {
-                    return false;
+                    return true;
                 }
             }
+            while (this.CanRetry("price"));
 
-            return true;
+            return false;
         }
 
         /// <summary>
-        /// Reads and validates a product quantity.
+        /// Reads and validates a <see cref="Product"/> quantity.
         /// </summary>
-        /// <param name="quantity">The validated product quantity.</param>
-        /// <returns>True if the product quantity is valid, otherwise false.</returns>
+        /// <param name="quantity">The validated <see cref="Product"/> quantity.</param>
+        /// <returns>True if the <see cref="Product"/> quantity is valid, otherwise false.</returns>
         private bool GetValidProductQuantity(out int quantity)
         {
+            string input;
             quantity = 0;
-            bool isQuantityValid = false;
-            while (!isQuantityValid)
+            do
             {
-                string input = this._view.ReadProductQuantity();
+                input = this._view.ReadProductQuantity();
                 if (this._helper.IsValidQuantity(input, out quantity))
                 {
-                    isQuantityValid = true;
-                    continue;
-                }
-
-                if (!this.CanRetry("quantity"))
-                {
-                    return false;
+                    return true;
                 }
             }
+            while (this.CanRetry("quantity"));
 
-            return true;
+            return false;
         }
 
         /// <summary>
@@ -540,9 +519,9 @@ namespace InventoryManagement.Controller
         }
 
         /// <summary>
-        /// Edits the name of the product searched.
+        /// Edits the name of the <see cref="Product"/> searched.
         /// </summary>
-        /// <param name="product">The product where the name is to be edited.</param>
+        /// <param name="product">The <see cref="Product"/> where the name is to be edited.</param>
         private void EditProductName(Product product)
         {
             if (!this.GetValidProductName(out string name, "edit"))
@@ -555,9 +534,9 @@ namespace InventoryManagement.Controller
         }
 
         /// <summary>
-        /// Edits the price of the product searched.
+        /// Edits the price of the <see cref="Product"/> searched.
         /// </summary>
-        /// <param name="product">The product where the name is to be edited.</param>
+        /// <param name="product">The <see cref="Product"/> where the name is to be edited.</param>
         private void EditProductPrice(Product product)
         {
             if (!this.GetValidProductPrice(out decimal price))

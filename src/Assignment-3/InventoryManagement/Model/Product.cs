@@ -8,10 +8,10 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="Product"/> class.
         /// </summary>
-        /// <param name="productId">The unique ID of the product.</param>
-        /// <param name="nameOfProduct">The name of the product.</param>
-        /// <param name="price">The price of the product.</param>
-        /// <param name="quantity">The quantity of stock available for the product.</param>
+        /// <param name="productId">The unique ID of the <see cref="Product"/>.</param>
+        /// <param name="nameOfProduct">The name of the <see cref="Product"/>.</param>
+        /// <param name="price">The price of the <see cref="Product"/>.</param>
+        /// <param name="quantity">The quantity of stock available for the <see cref="Product"/>.</param>
         public Product(string productId, string nameOfProduct, decimal price, int quantity)
         {
             this.ProductId = productId;
@@ -21,27 +21,27 @@
         }
 
         /// <summary>
-        /// Gets the unique product identifier.
+        /// Gets the unique <see cref="Product"/> identifier.
         /// </summary>
-        /// <value>The unique ID of the product.</value>
+        /// <value>The unique ID of the <see cref="Product"/>.</value>
         public string ProductId { get; }
 
         /// <summary>
-        /// Gets or sets the product name.
+        /// Gets or sets the <see cref="Product"/> name.
         /// </summary>
-        /// <value>The name of the product.</value>
+        /// <value>The name of the <see cref="Product"/>.</value>
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the product price.
+        /// Gets or sets the <see cref="Product"/> price.
         /// </summary>
-        /// <value>The price of the product.</value>
+        /// <value>The price of the <see cref="Product"/>.</value>
         public decimal Price { get; set; }
 
         /// <summary>
-        /// Gets or sets the available quantity.
+        /// Gets or sets the available quantity of the <see cref="Product"/>.
         /// </summary>
-        /// <value>The quantity of stock available.</value>
+        /// <value>The quantity of stock available for the <see cref="Product"/>.</value>
         public int Quantity { get; set; }
     }
 }

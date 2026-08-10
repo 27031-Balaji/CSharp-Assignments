@@ -33,7 +33,7 @@ namespace InventoryManagement.View
         }
 
         /// <summary>
-        /// This method displays the search menu and reads the user's choice for searching products.
+        /// This method displays the search menu and reads the user's choice for searching <see cref="Model.Product"/>.
         /// </summary>
         /// <returns>The choice entered by the user.</returns>
         public string ShowSearchMenu()
@@ -48,10 +48,10 @@ namespace InventoryManagement.View
         }
 
         /// <summary>
-        /// Reads the product name.
+        /// Reads the <see cref="Model.Product"/> name.
         /// </summary>
         /// <param name="operation">The operation being performed.</param>
-        /// <returns>The product name entered by the user.</returns>
+        /// <returns>The <see cref="Model.Product"/> name entered by the user.</returns>
         public string ReadProductName(string operation)
         {
             Console.Write($"Enter product name to {operation}: ");
@@ -60,9 +60,9 @@ namespace InventoryManagement.View
         }
 
         /// <summary>
-        /// Reads the product price.
+        /// Reads the <see cref="Model.Product"/> price.
         /// </summary>
-        /// <returns>The product price entered by the user.</returns>
+        /// <returns>The <see cref="Model.Product"/> price entered by the user.</returns>
         public string ReadProductPrice()
         {
             Console.Write("Enter Product Price: ");
@@ -71,9 +71,9 @@ namespace InventoryManagement.View
         }
 
         /// <summary>
-        /// Reads the product quantity.
+        /// Reads the <see cref="Model.Product"/> quantity.
         /// </summary>
-        /// <returns>The product quantity entered by the user.</returns>
+        /// <returns>The <see cref="Model.Product"/> quantity entered by the user.</returns>
         public string ReadProductQuantity()
         {
             Console.Write("Enter Product Quantity: ");
@@ -82,10 +82,10 @@ namespace InventoryManagement.View
         }
 
         /// <summary>
-        /// Reads the product ID.
+        /// Reads the <see cref="Model.Product"/> ID.
         /// </summary>
         /// <param name="operation">The operation being performed.</param>
-        /// <returns>The product ID entered by the user.</returns>
+        /// <returns>The <see cref="Model.Product"/> ID entered by the user.</returns>
         public string ReadProductId(string operation)
         {
             Console.Write($"Enter Product ID to {operation}: ");
@@ -123,9 +123,9 @@ namespace InventoryManagement.View
         }
 
         /// <summary>
-        /// Displays all products.
+        /// Displays all <see cref="Model.Product"/>.
         /// </summary>
-        /// <param name="products">The product list to display.</param>
+        /// <param name="products">The <see cref="Model.Product"/> list to display.</param>
         public void DisplayProducts(List<Product> products)
         {
             Console.ForegroundColor = ConsoleColor.Green;
@@ -141,9 +141,9 @@ namespace InventoryManagement.View
         }
 
         /// <summary>
-        /// Displays a single product.
+        /// Displays a single <see cref="Model.Product"/>.
         /// </summary>
-        /// <param name="product">The specific product to display.</param>
+        /// <param name="product">The specific <see cref="Model.Product"/> to display.</param>
         public void DisplaySingleProduct(Product product)
         {
             Console.ForegroundColor = ConsoleColor.Green;
@@ -170,9 +170,9 @@ namespace InventoryManagement.View
         }
 
         /// <summary>
-        /// Asks the user to confirm product deletion.
+        /// Asks the user to confirm <see cref="Model.Product"/> deletion.
         /// </summary>
-        /// <returns>True if the user confirms, otherwise false.</returns>
+        /// <returns>True if the user confirms the deletion, otherwise false.</returns>
         public bool ConfirmDelete()
         {
             while (true)

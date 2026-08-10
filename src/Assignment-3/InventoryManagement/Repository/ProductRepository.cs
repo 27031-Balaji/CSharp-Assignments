@@ -3,7 +3,7 @@
 namespace InventoryManagement.Repository
 {
     /// <summary>
-    /// Stores and manages product data in memory.
+    /// Stores and manages <see cref="Product"/> data in memory.
     /// </summary>
     internal class ProductRepository
     {
@@ -18,37 +18,37 @@ namespace InventoryManagement.Repository
         }
 
         /// <summary>
-        /// Gets the total number of products in the repository.
+        /// Gets the total number of <see cref="Product"/> in the repository.
         /// </summary>
         /// <value>
-        /// The number of products stored in the repository.
+        /// The number of <see cref="Product"/> stored in the repository.
         /// </value>
         public int ProductCount { get => this._products.Count; }
 
         /// <summary>
-        /// Adds a product to the repository.
+        /// Adds a <see cref="Product"/> to the repository.
         /// </summary>
-        /// <param name="product">The product to add.</param>
+        /// <param name="product">The <see cref="Product"/> to add.</param>
         public void AddProduct(Product product)
         {
             this._products.Add(product);
         }
 
         /// <summary>
-        /// Retrieves a product using its ID.
+        /// Retrieves a <see cref="Product"/> using its ID.
         /// </summary>
-        /// <param name="productId">The product ID.</param>
-        /// <returns>The matching product if found, otherwise null.</returns>
+        /// <param name="productId">The <see cref="Product"/> ID.</param>
+        /// <returns>The matching <see cref="Product"/> if found, otherwise null.</returns>
         public Product? GetProductById(string productId)
         {
             return this._products.Find(product => product.ProductId == productId);
         }
 
         /// <summary>
-        /// Retrieves a list of products that match the specified name (case-insensitive).
+        /// Retrieves a list of <see cref="Product"/> that match the specified name (case-insensitive).
         /// </summary>
-        /// <param name="nameOfProduct">The name of the product to be searched.</param>
-        /// <returns>The list of products with the matching name.</returns>
+        /// <param name="nameOfProduct">The name of the <see cref="Product"/> to be searched.</param>
+        /// <returns>The list of <see cref="Product"/> with the matching name.</returns>
         public List<Product> GetProductsByName(string nameOfProduct)
         {
             List<Product> products = new List<Product>();
@@ -66,29 +66,29 @@ namespace InventoryManagement.Repository
         }
 
         /// <summary>
-        /// Updates the name of a product.
+        /// Updates the name of a <see cref="Product"/>.
         /// </summary>
-        /// <param name="product">The product to update.</param>
-        /// <param name="name">The new product name.</param>
+        /// <param name="product">The <see cref="Product"/> to update.</param>
+        /// <param name="name">The new <see cref="Product"/> name.</param>
         public void UpdateName(Product product, string name)
         {
             product.Name = name;
         }
 
         /// <summary>
-        /// Updates the price of a product.
+        /// Updates the price of a <see cref="Product"/>.
         /// </summary>
-        /// <param name="product">The product to update.</param>
-        /// <param name="price">The new product price.</param>
+        /// <param name="product">The <see cref="Product"/> to update.</param>
+        /// <param name="price">The new <see cref="Product"/> price.</param>
         public void UpdatePrice(Product product, decimal price)
         {
             product.Price = price;
         }
 
         /// <summary>
-        /// Updates the quantity of a product.
+        /// Updates the quantity of a <see cref="Product"/>.
         /// </summary>
-        /// <param name="product">The product to update.</param>
+        /// <param name="product">The <see cref="Product"/> to update.</param>
         /// <param name="quantity">The new stock quantity.</param>
         public void UpdateQuantity(Product product, int quantity)
         {
@@ -96,19 +96,19 @@ namespace InventoryManagement.Repository
         }
 
         /// <summary>
-        /// Determines whether the specified product ID already exists.
+        /// Determines whether the specified <see cref="Product"/> ID already exists.
         /// </summary>
-        /// <param name="productId">The product ID to search for.</param>
-        /// <returns>True if the product ID exists, otherwise false.</returns>
+        /// <param name="productId">The <see cref="Product"/> ID to search for.</param>
+        /// <returns>True if the <see cref="Product"/> ID exists, otherwise false.</returns>
         public bool ProductIdExists(string productId)
         {
             return this._products.Any(product => product.ProductId == productId);
         }
 
         /// <summary>
-        /// Retrieves all products from the repository.
+        /// Retrieves all the <see cref="Product"/> from the repository.
         /// </summary>
-        /// <returns>A copy of all products in the repository.</returns>
+        /// <returns>A copy of all the <see cref="Product"/> in the repository.</returns>
         public List<Product> GetAllProducts()
         {
             List<Product> products = new List<Product>();
@@ -121,10 +121,10 @@ namespace InventoryManagement.Repository
         }
 
         /// <summary>
-        /// Removes a product from the repository.
+        /// Removes a <see cref="Product"/> from the repository.
         /// </summary>
-        /// <param name="product">The product to remove.</param>
-        /// <returns>True if the product was removed, otherwise false.</returns>
+        /// <param name="product">The <see cref="Product"/> to remove.</param>
+        /// <returns>True if the <see cref="Product"/> was removed, otherwise false.</returns>
         public bool DeleteProduct(Product product)
         {
             return this._products.Remove(product);

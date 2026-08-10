@@ -161,6 +161,82 @@ Provides reusable validation methods for product IDs, names, prices and quantiti
 - ConsoleTables is used to display products in a tabular format.
  
 ---
+
+# Project Structure
+
+```text
+InventoryManagement
+│
+├── Controller
+│   └── ProductController.cs
+│
+├── Exception
+│   └── EmptyInventoryException.cs
+│   └── InsufficientStockException.cs
+│   └── ProductNotFoundException.cs
+│
+├── Helper
+│   └── ConsoleMessages.cs
+│   └── ProductHelper.cs
+│
+├── Model
+│   └── Product.cs
+│
+├── Repository
+│   └── ProductRepository.cs
+│
+├── Service
+│   └── ProductService.cs
+│
+├── View
+│   └── ConsoleOperation.cs
+│
+├── Program.cs
+│
+└── README.md
+```
+
+## File Overview
+
+- **ProductController.cs**: Acts as an intermediate between the View and Service layers by validating user inputs and invoking the required business operations.
+- **EmptyInventoryException.cs**: Custom exception thrown when operations are performed on an empty inventory.
+- **InsufficientStockException.cs**: Custom exception thrown when stock reduction exceeds the available quantity.
+- **ProductNotFoundException.cs**: Custom exception thrown when a requested product cannot be found.
+- **ConsoleMessages.cs**: Stores reusable success, error, warning, and information messages displayed to the user.
+- **ProductHelper.cs**: Provides reusable validation methods for Product ID, Product Name, Product Price, and Product Quantity.
+- **Product.cs**: Represents the product model and stores Product ID, Name, Price, and Quantity details.
+- **ProductRepository.cs**: Repository class used to store and retrieve products from an in-memory collection and perform CRUD operations.
+- **ProductService.cs**: Communicates with the repository and contains business logic related to inventory management.
+- **ConsoleOperation.cs**: Handles all console UI operations such as displaying menus, reading user input, displaying messages, and presenting products in tabular format.
+- **Program.cs**: Creates object instances, injects dependencies, and starts the Inventory Management workflow.
+
+---
+
+# Recommended PR Review Order
+
+For the best understanding of the implementation, review the project files in the following order:
+
+```text
+Model
+↓
+Helper
+↓
+Exception
+↓
+Repository
+↓
+Service
+↓
+View
+↓
+Controller
+↓
+Program.cs
+```
+
+This order follows the dependency flow of the application and helps to understand how products are created, validated, stored, processed, displayed, and managed throughout the application. Backtracking between layers can also be done to understand the complete implementation of a particular feature.
+
+---
  
 # How to Run the Application
  
