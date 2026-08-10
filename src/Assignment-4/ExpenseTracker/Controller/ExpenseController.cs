@@ -11,9 +11,9 @@ namespace ExpenseTracker.Controller
     /// </summary>
     internal class ExpenseController
     {
-        private readonly ExpenseService _service;
-        private readonly ExpenseHelper _helper;
-        private readonly ConsoleOperation _view;
+        private readonly ExpenseService service;
+        private readonly ExpenseHelper helper;
+        private readonly ConsoleOperation view;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpenseController"/> class.
@@ -23,9 +23,9 @@ namespace ExpenseTracker.Controller
         /// <param name="view">The <see cref="ConsoleOperation"/> used for console input/output.</param>
         public ExpenseController(ExpenseService service, ExpenseHelper helper, ConsoleOperation view)
         {
-            this._service = service;
-            this._helper = helper;
-            this._view = view;
+            this.service = service;
+            this.helper = helper;
+            this.view = view;
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace ExpenseTracker.Controller
             bool isRunning = true;
             while (isRunning)
             {
-                MainMenuOption menuOption = this._view.ShowMainMenu();
+                MainMenuOption menuOption = this.view.ShowMainMenu();
                 switch (menuOption)
                 {
                     case MainMenuOption.AddRecord:
@@ -64,13 +64,13 @@ namespace ExpenseTracker.Controller
                         break;
 
                     case MainMenuOption.Exit:
-                        this._view.ShowMessage(ConsoleMessages.ExitMessage, MessageType.Info);
+                        this.view.ShowMessage(ConsoleMessages.ExitMessage, MessageType.Info);
                         Thread.Sleep(1000);
                         isRunning = false;
                         break;
 
                     case MainMenuOption.Invalid:
-                        this._view.ShowInvalidMessage("option");
+                        this.view.ShowInvalidMessage("option");
                         break;
                 }
             }
@@ -84,7 +84,7 @@ namespace ExpenseTracker.Controller
             bool isRunning = true;
             while (isRunning)
             {
-                AddMenuOption addOption = this._view.ShowAddMenu();
+                AddMenuOption addOption = this.view.ShowAddMenu();
                 switch (addOption)
                 {
                     case AddMenuOption.AddIncome:
@@ -99,11 +99,11 @@ namespace ExpenseTracker.Controller
 
                     case AddMenuOption.BackToMainMenu:
                         isRunning = false;
-                        this._view.ClearScreen();
+                        this.view.ClearScreen();
                         break;
 
                     case AddMenuOption.Invalid:
-                        this._view.ShowInvalidMessage("option");
+                        this.view.ShowInvalidMessage("option");
                         break;
                 }
             }
@@ -116,14 +116,14 @@ namespace ExpenseTracker.Controller
         {
             if (!this.HasRecords())
             {
-                this._view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
+                this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
                 return;
             }
 
             bool isRunning = true;
             while (isRunning)
             {
-                ViewMenuOption viewOption = this._view.ShowViewMenu();
+                ViewMenuOption viewOption = this.view.ShowViewMenu();
                 switch (viewOption)
                 {
                     case ViewMenuOption.ViewAll:
@@ -143,11 +143,11 @@ namespace ExpenseTracker.Controller
 
                     case ViewMenuOption.BackToMainMenu:
                         isRunning = false;
-                        this._view.ClearScreen();
+                        this.view.ClearScreen();
                         break;
 
                     case ViewMenuOption.Invalid:
-                        this._view.ShowInvalidMessage("option");
+                        this.view.ShowInvalidMessage("option");
                         break;
                 }
             }
@@ -160,20 +160,20 @@ namespace ExpenseTracker.Controller
         {
             if (!this.HasRecords())
             {
-                this._view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
+                this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
                 return;
             }
 
             IEnumerable<FinancialRecord> searchedRecords = this.GetMatchingRecords();
             if (searchedRecords.Count() == 0)
             {
-                this._view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Info);
-                this._view.ClearScreenWithKey();
+                this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Info);
+                this.view.ClearScreenWithKey();
                 return;
             }
 
-            this._view.DisplayRecords(searchedRecords);
-            this._view.ClearScreenWithKey();
+            this.view.DisplayRecords(searchedRecords);
+            this.view.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -183,37 +183,37 @@ namespace ExpenseTracker.Controller
         {
             if (!this.HasRecords())
             {
-                this._view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
+                this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
                 return;
             }
 
             IEnumerable<FinancialRecord> searchedRecords = this.GetMatchingRecords();
             if (searchedRecords.Count() == 0)
             {
-                this._view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Info);
+                this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Info);
                 return;
             }
 
-            this._view.DisplayRecords(searchedRecords);
+            this.view.DisplayRecords(searchedRecords);
 
             if (!this.GetValidRecordId(out string recordId, "delete", searchedRecords))
             {
                 return;
             }
 
-            FinancialRecord record = this._service.GetRecordById(recordId) !;
-            this._view.DisplaySingleRecord(record);
+            FinancialRecord record = this.service.GetRecordById(recordId) !;
+            this.view.DisplaySingleRecord(record);
 
-            if (!this._view.ConfirmDelete())
+            if (!this.view.ConfirmDelete())
             {
-                this._view.ShowMessage(ConsoleMessages.DeleteOperationAbortedMessage, MessageType.Error);
-                this._view.ClearScreenWithKey();
+                this.view.ShowMessage(ConsoleMessages.DeleteOperationAbortedMessage, MessageType.Error);
+                this.view.ClearScreenWithKey();
                 return;
             }
 
-            this._service.DeleteRecord(record);
-            this._view.ShowMessage(ConsoleMessages.DeleteOperationSuccessMessage, MessageType.Success);
-            this._view.ClearScreenWithKey();
+            this.service.DeleteRecord(record);
+            this.view.ShowMessage(ConsoleMessages.DeleteOperationSuccessMessage, MessageType.Success);
+            this.view.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -223,60 +223,60 @@ namespace ExpenseTracker.Controller
         {
             if (!this.HasRecords())
             {
-                this._view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
+                this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
                 return;
             }
 
             IEnumerable<FinancialRecord> searchedRecords = this.GetMatchingRecords();
             if (searchedRecords.Count() == 0)
             {
-                this._view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Info);
+                this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Info);
                 return;
             }
 
-            this._view.DisplayRecords(searchedRecords);
+            this.view.DisplayRecords(searchedRecords);
 
             if (!this.GetValidRecordId(out string recordId, "edit", searchedRecords))
             {
                 return;
             }
 
-            FinancialRecord record = this._service.GetRecordById(recordId) !;
+            FinancialRecord record = this.service.GetRecordById(recordId) !;
 
             bool isRunning = true;
             while (isRunning)
             {
-                EditMenuOption editOption = this._view.ShowEditMenu();
+                EditMenuOption editOption = this.view.ShowEditMenu();
                 switch (editOption)
                 {
                     case EditMenuOption.Date:
                         this.EditDate(record);
-                        this._view.ShowMessage(ConsoleMessages.DateEditedSuccessMessage, MessageType.Success);
+                        this.view.ShowMessage(ConsoleMessages.DateEditedSuccessMessage, MessageType.Success);
                         break;
 
                     case EditMenuOption.Amount:
                         this.EditAmount(record);
-                        this._view.ShowMessage(ConsoleMessages.AmountEditedSuccessMessage, MessageType.Success);
+                        this.view.ShowMessage(ConsoleMessages.AmountEditedSuccessMessage, MessageType.Success);
                         break;
 
                     case EditMenuOption.Classification:
                         this.EditClassification(record);
-                        this._view.ShowMessage(ConsoleMessages.ClassificationEditedSuccessMessage, MessageType.Success);
+                        this.view.ShowMessage(ConsoleMessages.ClassificationEditedSuccessMessage, MessageType.Success);
                         break;
 
                     case EditMenuOption.Description:
                         this.EditDescription(record);
-                        this._view.ShowMessage(ConsoleMessages.DescriptionEditedSuccessMessage, MessageType.Success);
+                        this.view.ShowMessage(ConsoleMessages.DescriptionEditedSuccessMessage, MessageType.Success);
                         break;
 
                     case EditMenuOption.SaveAndExit:
                         isRunning = false;
-                        this._view.ShowMessage(ConsoleMessages.EditOperationSuccessMessage, MessageType.Success);
+                        this.view.ShowMessage(ConsoleMessages.EditOperationSuccessMessage, MessageType.Success);
                         break;
 
                     case EditMenuOption.Invalid:
-                        this._view.ShowInvalidMessage("option");
-                        if (!this._view.AskRetry())
+                        this.view.ShowInvalidMessage("option");
+                        if (!this.view.AskRetry())
                         {
                             isRunning = false;
                         }
@@ -285,7 +285,7 @@ namespace ExpenseTracker.Controller
                 }
             }
 
-            this._view.ClearScreenWithKey();
+            this.view.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -303,9 +303,9 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            var summary = this._service.GetMonthlySummary(month, year);
-            this._view.ShowFinancialSummary(month, year, summary.NetIncome, summary.NetExpense, summary.NetBalance, summary.SavingsRate, summary.HighestExpense);
-            this._view.ClearScreenWithKey();
+            var summary = this.service.GetMonthlySummary(month, year);
+            this.view.ShowFinancialSummary(month, year, summary.NetIncome, summary.NetExpense, summary.NetBalance, summary.SavingsRate, summary.HighestExpense);
+            this.view.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -314,7 +314,7 @@ namespace ExpenseTracker.Controller
         /// <returns>True if there are no records, otherwise false.</returns>
         private bool HasRecords()
         {
-            return !this._service.IsRecordListEmpty();
+            return !this.service.IsRecordListEmpty();
         }
 
         /// <summary>
@@ -337,11 +337,11 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            string? description = this._view.ReadRecordDescription().Trim();
+            string? description = this.view.ReadRecordDescription().Trim();
 
-            this._service.AddIncome(date, amount, source, description);
-            this._view.ShowMessage(ConsoleMessages.IncomeAddedMessage, MessageType.Success);
-            this._view.ClearScreenWithKey();
+            this.service.AddIncome(date, amount, source, description);
+            this.view.ShowMessage(ConsoleMessages.IncomeAddedMessage, MessageType.Success);
+            this.view.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -364,11 +364,11 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            string? description = this._view.ReadRecordDescription().Trim();
+            string? description = this.view.ReadRecordDescription().Trim();
 
-            this._service.AddExpense(date, amount, category, description);
-            this._view.ShowMessage(ConsoleMessages.ExpenseAddedMessage, MessageType.Success);
-            this._view.ClearScreenWithKey();
+            this.service.AddExpense(date, amount, category, description);
+            this.view.ShowMessage(ConsoleMessages.ExpenseAddedMessage, MessageType.Success);
+            this.view.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -376,9 +376,9 @@ namespace ExpenseTracker.Controller
         /// </summary>
         private void DisplayAllRecords()
         {
-            IEnumerable<FinancialRecord> records = this._service.GetAllRecords();
-            this._view.DisplayRecords(records);
-            this._view.ClearScreenWithKey();
+            IEnumerable<FinancialRecord> records = this.service.GetAllRecords();
+            this.view.DisplayRecords(records);
+            this.view.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -386,9 +386,9 @@ namespace ExpenseTracker.Controller
         /// </summary>
         private void DisplayAllIncomes()
         {
-            IEnumerable<FinancialRecord> records = this._service.GetIncomeRecords();
-            this._view.DisplayRecords(records);
-            this._view.ClearScreenWithKey();
+            IEnumerable<FinancialRecord> records = this.service.GetIncomeRecords();
+            this.view.DisplayRecords(records);
+            this.view.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -396,9 +396,9 @@ namespace ExpenseTracker.Controller
         /// </summary>
         private void DisplayAllExpenses()
         {
-            IEnumerable<FinancialRecord> records = this._service.GetExpenseRecords();
-            this._view.DisplayRecords(records);
-            this._view.ClearScreenWithKey();
+            IEnumerable<FinancialRecord> records = this.service.GetExpenseRecords();
+            this.view.DisplayRecords(records);
+            this.view.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -407,33 +407,33 @@ namespace ExpenseTracker.Controller
         /// <returns>A collection of <see cref="FinancialRecord"/> that match the search input.</returns>
         private IEnumerable<FinancialRecord> GetMatchingRecords()
         {
-            string searchTerm = this._view.ReadSearchTerm();
+            string searchTerm = this.view.ReadSearchTerm();
 
-            if (this._helper.IsValidSource(searchTerm, out IncomeSource sameSource)
-                && this._helper.IsValidCategory(searchTerm, out ExpenseCategory sameCategory))
+            if (this.helper.IsValidSource(searchTerm, out IncomeSource sameSource)
+                && this.helper.IsValidCategory(searchTerm, out ExpenseCategory sameCategory))
             {
-                return this._service.SearchBySource(sameSource)
-                    .Concat(this._service.SearchByCategory(sameCategory))
+                return this.service.SearchBySource(sameSource)
+                    .Concat(this.service.SearchByCategory(sameCategory))
                     .ToList();
             }
 
-            switch (this._helper.ReturnSearchType(searchTerm))
+            switch (this.helper.ReturnSearchType(searchTerm))
             {
                 case SearchType.Date:
-                    this._helper.IsValidDate(searchTerm, out DateOnly date);
-                    return this._service.SearchByDate(date);
+                    this.helper.IsValidDate(searchTerm, out DateOnly date);
+                    return this.service.SearchByDate(date);
 
                 case SearchType.Amount:
-                    this._helper.IsValidAmount(searchTerm, out decimal amount);
-                    return this._service.SearchByAmount(amount);
+                    this.helper.IsValidAmount(searchTerm, out decimal amount);
+                    return this.service.SearchByAmount(amount);
 
                 case SearchType.Source:
-                    this._helper.IsValidSource(searchTerm, out IncomeSource source);
-                    return this._service.SearchBySource(source);
+                    this.helper.IsValidSource(searchTerm, out IncomeSource source);
+                    return this.service.SearchBySource(source);
 
                 case SearchType.Category:
-                    this._helper.IsValidCategory(searchTerm, out ExpenseCategory category);
-                    return this._service.SearchByCategory(category);
+                    this.helper.IsValidCategory(searchTerm, out ExpenseCategory category);
+                    return this.service.SearchByCategory(category);
 
                 default:
                     return new List<FinancialRecord>();
@@ -451,7 +451,7 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            this._service.EditRecordDate(record, date);
+            this.service.EditRecordDate(record, date);
         }
 
         /// <summary>
@@ -465,7 +465,7 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            this._service.EditRecordAmount(record, amount);
+            this.service.EditRecordAmount(record, amount);
         }
 
         /// <summary>
@@ -481,7 +481,7 @@ namespace ExpenseTracker.Controller
                     return;
                 }
 
-                this._service.EditRecordSource(income, source);
+                this.service.EditRecordSource(income, source);
                 return;
             }
             else if (record is Expense expense)
@@ -491,7 +491,7 @@ namespace ExpenseTracker.Controller
                     return;
                 }
 
-                this._service.EditRecordCategory(expense, category);
+                this.service.EditRecordCategory(expense, category);
                 return;
             }
         }
@@ -502,9 +502,9 @@ namespace ExpenseTracker.Controller
         /// <param name="record">The <see cref="FinancialRecord"/> to update.</param>
         private void EditDescription(FinancialRecord record)
         {
-            string? description = this._view.ReadRecordDescription();
+            string? description = this.view.ReadRecordDescription();
 
-            this._service.EditRecordDescription(record, description);
+            this.service.EditRecordDescription(record, description);
         }
 
         /// <summary>
@@ -518,8 +518,8 @@ namespace ExpenseTracker.Controller
             string input;
             do
             {
-                input = this._view.ReadRecordDate();
-                if (this._helper.IsValidDate(input, out date))
+                input = this.view.ReadRecordDate();
+                if (this.helper.IsValidDate(input, out date))
                 {
                     return true;
                 }
@@ -540,8 +540,8 @@ namespace ExpenseTracker.Controller
             string input;
             do
             {
-                input = this._view.ReadRecordAmount();
-                if (this._helper.IsValidAmount(input, out amount))
+                input = this.view.ReadRecordAmount();
+                if (this.helper.IsValidAmount(input, out amount))
                 {
                     return true;
                 }
@@ -563,14 +563,14 @@ namespace ExpenseTracker.Controller
             string input;
             do
             {
-                input = this._view.ReadRecordSource();
-                if (this._helper.IsValidClassificationChoice(input, sources.Length, out int choice))
+                input = this.view.ReadRecordSource();
+                if (this.helper.IsValidClassificationChoice(input, sources.Length, out int choice))
                 {
                     source = sources[choice - 1];
                     return true;
                 }
 
-                this._view.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
+                this.view.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
             }
             while (this.CanRetry("source"));
 
@@ -589,14 +589,14 @@ namespace ExpenseTracker.Controller
             string input;
             do
             {
-                input = this._view.ReadRecordCategory();
-                if (this._helper.IsValidClassificationChoice(input, categories.Length, out int choice))
+                input = this.view.ReadRecordCategory();
+                if (this.helper.IsValidClassificationChoice(input, categories.Length, out int choice))
                 {
                     category = categories[choice - 1];
                     return true;
                 }
 
-                this._view.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
+                this.view.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
             }
             while (this.CanRetry("category"));
 
@@ -615,16 +615,16 @@ namespace ExpenseTracker.Controller
             recordId = string.Empty;
             do
             {
-                recordId = this._view.ReadRecordId(action);
+                recordId = this.view.ReadRecordId(action);
 
-                if (!this._helper.IsValidRecordId(recordId))
+                if (!this.helper.IsValidRecordId(recordId))
                 {
                     continue;
                 }
 
                 if (!this.IsDisplayedRecord(recordId, searchedRecords))
                 {
-                    this._view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
+                    this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
                     continue;
                 }
 
@@ -647,8 +647,8 @@ namespace ExpenseTracker.Controller
             year = 0;
             do
             {
-                string? input = this._view.ReadMonthAndYear();
-                if (this._helper.IsValidMonthAndYear(input, out month, out year))
+                string? input = this.view.ReadMonthAndYear();
+                if (this.helper.IsValidMonthAndYear(input, out month, out year))
                 {
                     return true;
                 }
@@ -684,11 +684,11 @@ namespace ExpenseTracker.Controller
         /// <returns>True if the user chooses to retry, otherwise false.</returns>
         private bool CanRetry(string field)
         {
-            this._view.ShowInvalidMessage(field);
-            bool shouldRetry = this._view.AskRetry();
+            this.view.ShowInvalidMessage(field);
+            bool shouldRetry = this.view.AskRetry();
             if (!shouldRetry)
             {
-                this._view.ClearScreen();
+                this.view.ClearScreen();
             }
 
             return shouldRetry;

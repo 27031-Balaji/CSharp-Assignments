@@ -53,6 +53,7 @@ namespace ExpenseTracker.View
             Console.WriteLine("[A] Add Income");
             Console.WriteLine("[B] Add Expense");
             Console.WriteLine("[C] Back");
+            Console.Write("\nEnter your choice: ");
 
             string choice = (Console.ReadLine() ?? string.Empty).Trim().ToUpper();
             return choice switch
@@ -175,7 +176,7 @@ namespace ExpenseTracker.View
         /// <summary>
         /// Prompts for a record identifier for the given action.
         /// </summary>
-        /// <param name="action">The action being performed. (Eg: edit, delete)</param>
+        /// <param name="action">The action being performed. (Eg: edit, delete).</param>
         /// <returns>The entered record identifier string.</returns>
         public string ReadRecordId(string action)
         {
