@@ -17,6 +17,8 @@ namespace ExpenseTracker.Repository
 
         IEnumerable<FinancialRecord> GetByDate(DateOnly date);
 
+        IEnumerable<FinancialRecord> GetByMonthAndYear(int month, int year);
+
         IEnumerable<FinancialRecord> GetByAmount(decimal amount);
 
         IEnumerable<FinancialRecord> GetBySource(IncomeSource source);

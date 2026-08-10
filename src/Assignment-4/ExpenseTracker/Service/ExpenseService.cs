@@ -30,39 +30,43 @@ namespace ExpenseTracker.Service
         public IEnumerable<FinancialRecord> GetAllRecords()
         {
             IEnumerable<FinancialRecord> records = this._repository.GetAllRecords();
-            return records.OrderByDescending(record => record.Date).ToList();
+            return this.SortRecordsByDate(records);
         }
 
         public IEnumerable<FinancialRecord> GetIncomeRecords()
         {
             IEnumerable<FinancialRecord> incomeRecords = this._repository.GetAllIncomeRecords();
-            return incomeRecords.OrderByDescending(record => record.Date).ToList();
+            return this.SortRecordsByDate(incomeRecords);
         }
 
         public IEnumerable<FinancialRecord> GetExpenseRecords()
         {
             IEnumerable<FinancialRecord> expenseRecords = this._repository.GetAllExpenseRecords();
-            return expenseRecords.OrderByDescending(record => record.Date).ToList();
+            return this.SortRecordsByDate(expenseRecords);
         }
 
         public IEnumerable<FinancialRecord> SearchByDate(DateOnly date)
         {
-            return this._repository.GetByDate(date);
+            IEnumerable<FinancialRecord> dateRecords = this._repository.GetByDate(date);
+            return this.SortRecordsByDate(dateRecords);
         }
 
         public IEnumerable<FinancialRecord> SearchByAmount(decimal amount)
         {
-            return this._repository.GetByAmount(amount);
+            IEnumerable<FinancialRecord> amountRecords = this._repository.GetByAmount(amount);
+            return this.SortRecordsByDate(amountRecords);
         }
 
         public IEnumerable<FinancialRecord> SearchBySource(IncomeSource source)
         {
-            return this._repository.GetBySource(source);
+            IEnumerable<FinancialRecord> sourceRecords = this._repository.GetBySource(source);
+            return this.SortRecordsByDate(sourceRecords);
         }
 
         public IEnumerable<FinancialRecord> SearchByCategory(ExpenseCategory category)
         {
-            return this._repository.GetByCategory(category);
+            IEnumerable<FinancialRecord> categoryRecords = this._repository.GetByCategory(category);
+            return this.SortRecordsByDate(categoryRecords);
         }
 
         public FinancialRecord? GetRecordById(string recordId)
@@ -105,6 +109,27 @@ namespace ExpenseTracker.Service
             return this._repository.RecordCount == 0;
         }
 
+        public (
+            decimal NetIncome,
+            decimal NetExpense,
+            decimal NetBalance,
+            decimal SavingsRate,
+            Expense? HighestExpense)
+        GetMonthlySummary(int month, int year)
+        {
+            IEnumerable<FinancialRecord> records = this._repository.GetByMonthAndYear(month, year);
+            IEnumerable<Income> incomes = records.OfType<Income>();
+            IEnumerable<Expense> expenses = records.OfType<Expense>();
+
+            decimal totalIncome = incomes.Sum(income => income.Amount);
+            decimal totalExpense = expenses.Sum(expense => expense.Amount);
+            Expense? highestExpense = expenses.MaxBy(expense => expense.Amount);
+
+            decimal netBalance = totalIncome - totalExpense;
+            decimal savingsRate = totalIncome == 0 ? 0 : (netBalance / totalIncome) * 100;
+            return (totalIncome, totalExpense, netBalance, savingsRate, highestExpense);
+        }
+
         private string GenerateUniqueId()
         {
             string recordId;
@@ -115,6 +140,11 @@ namespace ExpenseTracker.Service
             while (this._repository.RecordIdExists(recordId));
 
             return recordId;
+        }
+
+        private IEnumerable<FinancialRecord> SortRecordsByDate(IEnumerable<FinancialRecord> records)
+        {
+            return records.OrderByDescending(record => record.Date).ToList();
         }
     }
 }

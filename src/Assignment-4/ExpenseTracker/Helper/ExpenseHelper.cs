@@ -29,6 +29,21 @@ namespace ExpenseTracker.Helper
             return System.Enum.TryParse(input, ignoreCase: true, out category) && System.Enum.IsDefined(category);
         }
 
+        public bool IsValidMonthAndYear(string? input, out int month, out int year)
+        {
+            month = 0;
+            year = 0;
+
+            if (DateOnly.TryParseExact(input, "MM/yyyy", out DateOnly date))
+            {
+                month = date.Month;
+                year = date.Year;
+                return true;
+            }
+
+            return false;
+        }
+
         public bool IsValidRecordId(string? recordId)
         {
             return !string.IsNullOrWhiteSpace(recordId) && recordId.Length == 12 && recordId.All(char.IsLetterOrDigit);

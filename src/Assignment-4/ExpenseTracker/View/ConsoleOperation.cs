@@ -12,18 +12,18 @@ namespace ExpenseTracker.View
         /// <returns>The selected menu option.</returns>
         public MainMenuOption ShowMainMenu()
         {
-            Console.WriteLine("========================================================");
-            Console.WriteLine("Expense Tracker Application");
-            Console.WriteLine("Track Your Spending, Empower Your Savings!");
-            Console.WriteLine("========================================================");
-            Console.WriteLine("\nSelect an option:");
-            Console.WriteLine("[A] Add Record");
-            Console.WriteLine("[B] View Record");
-            Console.WriteLine("[C] Search Record");
-            Console.WriteLine("[D] Delete Record");
-            Console.WriteLine("[E] Edit Record");
-            Console.WriteLine("[F] Financial Summary");
-            Console.WriteLine("[G] Exit");
+            Console.Write("========================================================\n");
+            Console.Write("Expense Tracker Application\n");
+            Console.Write("Track Your Spending, Empower Your Savings!\n");
+            Console.Write("========================================================\n");
+            Console.Write("\nSelect an option:\n");
+            Console.Write("[A] Add Record\n");
+            Console.Write("[B] View Record\n");
+            Console.Write("[C] Search Record\n");
+            Console.Write("[D] Delete Record\n");
+            Console.Write("[E] Edit Record\n");
+            Console.Write("[F] Financial Summary\n");
+            Console.Write("[G] Exit\n");
             Console.Write("\nEnter your choice: ");
 
             string input = (Console.ReadLine() ?? string.Empty).Trim().ToUpper();
@@ -162,6 +162,13 @@ namespace ExpenseTracker.View
             return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
+        public string ReadMonthAndYear()
+        {
+            Console.Write($"Enter the month and year in (MM/YYYY): ");
+
+            return (Console.ReadLine() ?? string.Empty).Trim();
+        }
+
         /// <summary>
         /// This method is used to show success message with Green color.
         /// </summary>
@@ -209,6 +216,19 @@ namespace ExpenseTracker.View
             var table = new ConsoleTable("Id", "Date", "Type", "Classification", "Amount", "Description");
             table.AddRow(record.Id, record.Date, record.Type, record.Classification, record.Amount, record.Description);
             table.Write(Format.MarkDown);
+        }
+
+        public void ShowFinancialSummary(int month, int year, decimal netIncome, decimal netExpense, decimal netBalance, decimal netSavings, Expense? highestExpense)
+        {
+            Console.Write("\n========================================================\n");
+            Console.Write($"Financial Summary for {month}/{year}\n");
+            Console.Write("========================================================\n");
+            Console.Write($"\nYour Net Income: INR {netIncome:F2}\n");
+            Console.Write($"Your Net Expense: INR {netExpense:F2}\n");
+            Console.Write($"Your Net Balance: INR {netBalance:F2}\n");
+            Console.Write($"Your Savings Rate: {netSavings:F2}%\n\n");
+            Console.WriteLine($"Highest Expense: {highestExpense?.Amount.ToString("F2") ?? "None"}");
+            Console.WriteLine($"Category: {highestExpense?.Classification ?? "None"}");
         }
 
         /// <summary>
