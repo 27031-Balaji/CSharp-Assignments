@@ -169,9 +169,7 @@ ExpenseTracker
 ## File Overview
 
 - **CsvConstant.cs**: Used to store the CSV file header and the file path.
-----
 - **ExpenseController.cs**: Acts as an intermediate between view and services by validating the input given by the user and passing to service layer.
-----
 - **MainMenuOption.cs**: Used for segregating the input choice given in the main menu.
 - **AddMenuOption.cs**: Used for segregating the input choice given for the add operation.
 - **EditMenuOption.cs**: Used for segregating the input choice given for the edit operation.
@@ -180,22 +178,16 @@ ExpenseTracker
 - **IncomeSource.cs**: Used to store the different sources of income.
 - **MessageType.cs**: Used to separate the different types of messages coming from the controller.
 - **SearchType.cs**: Used to find the search type of the user according to the user's input.
----
 - **ConsoleMessages.cs**: Used to store multiple console messages to be displayed to the user.
 - **ExpenseHelper.cs**: Helps to validate the inputs given by the user.
----
 - **Expense.cs**: A template of the user's expense record, inherited from the financial record class.
 - **FinancialRecord.cs**: A template of the user's record, serves as a base class.
 - **Income.cs**: A template of the user's income record, inherited from the financial record class.
----
 - **CsvExpenseRepository.cs**: Repository class mainly used to store and retrieve the records from a CSV file.
 - **IExpenseRepository.cs**: The base interface used as a contract for all the repository classes.
 - **InMemoryExpenseRepository.cs**: Repository class mainly used to store and retrieve from a in-memory list of records.
----
 - **ExpenseService.cs**: Communicates with the repository for storing and retrieving details.
----
 - **ConsoleOperation.cs**: Handles all the UI operations and interacts with the user.
----
 - **Program.cs**: Creates objects and passes on to the constructors and runs the controller.
 
 ---
@@ -223,6 +215,8 @@ Program.cs
 ```
 
 This order follows the dependency flow of the application and helps to understand how each functionality works. Backtracking between layers can also be done to see the full picture of the functionality of the code.
+
+---
  
 # How to Run the Application
  
@@ -252,5 +246,5 @@ This order follows the dependency flow of the application and helps to understan
 # Future Enhancements
  
 - Store records in a database instead of CSV.
-- Implement monthly and yearly financial reports.
+- Implement yearly financial reports.
 - Enhance the console UI.
