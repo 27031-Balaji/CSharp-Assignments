@@ -9,7 +9,7 @@ namespace ExpenseTracker.Service
     /// </summary>
     internal class ExpenseService
     {
-        private readonly IExpenseRepository _repository;
+        private readonly IExpenseRepository repository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpenseService"/> class.
@@ -17,7 +17,7 @@ namespace ExpenseTracker.Service
         /// <param name="repository">The <see cref="IExpenseRepository"/> used to save and query records.</param>
         public ExpenseService(IExpenseRepository repository)
         {
-            this._repository = repository;
+            this.repository = repository;
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace ExpenseTracker.Service
         {
             string recordId = this.GenerateUniqueId();
             Income income = new Income(recordId, date, amount, description, source);
-            this._repository.AddRecord(income);
+            this.repository.AddRecord(income);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace ExpenseTracker.Service
         {
             string recordId = this.GenerateUniqueId();
             Expense expense = new Expense(recordId, date, amount, description, category);
-            this._repository.AddRecord(expense);
+            this.repository.AddRecord(expense);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace ExpenseTracker.Service
         /// <returns>A list of <see cref="FinancialRecord"/> sorted by date.</returns>
         public IEnumerable<FinancialRecord> GetAllRecords()
         {
-            IEnumerable<FinancialRecord> records = this._repository.GetAllRecords();
+            IEnumerable<FinancialRecord> records = this.repository.GetAllRecords();
             return this.SortRecordsByDate(records);
         }
 
@@ -64,7 +64,7 @@ namespace ExpenseTracker.Service
         /// <returns>A list of <see cref="FinancialRecord"/> representing incomes sorted by date.</returns>
         public IEnumerable<FinancialRecord> GetIncomeRecords()
         {
-            IEnumerable<FinancialRecord> incomeRecords = this._repository.GetAllIncomeRecords();
+            IEnumerable<FinancialRecord> incomeRecords = this.repository.GetAllIncomeRecords();
             return this.SortRecordsByDate(incomeRecords);
         }
 
@@ -74,7 +74,7 @@ namespace ExpenseTracker.Service
         /// <returns>A list of <see cref="FinancialRecord"/> representing expenses sorted by date.</returns>
         public IEnumerable<FinancialRecord> GetExpenseRecords()
         {
-            IEnumerable<FinancialRecord> expenseRecords = this._repository.GetAllExpenseRecords();
+            IEnumerable<FinancialRecord> expenseRecords = this.repository.GetAllExpenseRecords();
             return this.SortRecordsByDate(expenseRecords);
         }
 
@@ -85,7 +85,7 @@ namespace ExpenseTracker.Service
         /// <returns>A list of <see cref="FinancialRecord"/> that occur on the specified date, sorted by date.</returns>
         public IEnumerable<FinancialRecord> SearchByDate(DateOnly date)
         {
-            IEnumerable<FinancialRecord> dateRecords = this._repository.GetByDate(date);
+            IEnumerable<FinancialRecord> dateRecords = this.repository.GetByDate(date);
             return this.SortRecordsByDate(dateRecords);
         }
 
@@ -96,7 +96,7 @@ namespace ExpenseTracker.Service
         /// <returns>A list of <see cref="FinancialRecord"/> with the specified amount, sorted by date.</returns>
         public IEnumerable<FinancialRecord> SearchByAmount(decimal amount)
         {
-            IEnumerable<FinancialRecord> amountRecords = this._repository.GetByAmount(amount);
+            IEnumerable<FinancialRecord> amountRecords = this.repository.GetByAmount(amount);
             return this.SortRecordsByDate(amountRecords);
         }
 
@@ -107,7 +107,7 @@ namespace ExpenseTracker.Service
         /// <returns>A list of <see cref="FinancialRecord"/> representing incomes with the specified source, sorted by date.</returns>
         public IEnumerable<FinancialRecord> SearchBySource(IncomeSource source)
         {
-            IEnumerable<FinancialRecord> sourceRecords = this._repository.GetBySource(source);
+            IEnumerable<FinancialRecord> sourceRecords = this.repository.GetBySource(source);
             return this.SortRecordsByDate(sourceRecords);
         }
 
@@ -118,7 +118,7 @@ namespace ExpenseTracker.Service
         /// <returns>A list of <see cref="FinancialRecord"/> representing expenses in the specified category, sorted by date.</returns>
         public IEnumerable<FinancialRecord> SearchByCategory(ExpenseCategory category)
         {
-            IEnumerable<FinancialRecord> categoryRecords = this._repository.GetByCategory(category);
+            IEnumerable<FinancialRecord> categoryRecords = this.repository.GetByCategory(category);
             return this.SortRecordsByDate(categoryRecords);
         }
 
@@ -129,7 +129,7 @@ namespace ExpenseTracker.Service
         /// <returns>The matching <see cref="FinancialRecord"/> if found.</returns>
         public FinancialRecord? GetRecordById(string recordId)
         {
-            return this._repository.GetById(recordId);
+            return this.repository.GetById(recordId);
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace ExpenseTracker.Service
         /// <param name="record">The <see cref="FinancialRecord"/> to delete.</param>
         public void DeleteRecord(FinancialRecord record)
         {
-            this._repository.DeleteRecord(record);
+            this.repository.DeleteRecord(record);
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace ExpenseTracker.Service
         /// <param name="date">The new date value.</param>
         public void EditRecordDate(FinancialRecord record, DateOnly date)
         {
-            this._repository.UpdateRecordDate(record, date);
+            this.repository.UpdateRecordDate(record, date);
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace ExpenseTracker.Service
         /// <param name="amount">The new amount value.</param>
         public void EditRecordAmount(FinancialRecord record, decimal amount)
         {
-            this._repository.UpdateRecordAmount(record, amount);
+            this.repository.UpdateRecordAmount(record, amount);
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace ExpenseTracker.Service
         /// <param name="source">The new <see cref="IncomeSource"/>.</param>
         public void EditRecordSource(Income record, IncomeSource source)
         {
-            this._repository.UpdateRecordSource(record, source);
+            this.repository.UpdateRecordSource(record, source);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace ExpenseTracker.Service
         /// <param name="category">The new <see cref="ExpenseCategory"/>.</param>
         public void EditRecordCategory(Expense record, ExpenseCategory category)
         {
-            this._repository.UpdateRecordCategory(record, category);
+            this.repository.UpdateRecordCategory(record, category);
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace ExpenseTracker.Service
         /// <param name="description">The new description value; may be empty.</param>
         public void EditRecordDescription(FinancialRecord record, string? description)
         {
-            this._repository.UpdateRecordDescription(record, description);
+            this.repository.UpdateRecordDescription(record, description);
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace ExpenseTracker.Service
         /// <returns>True if the record list is empty, otherwise False.</returns>
         public bool IsRecordListEmpty()
         {
-            return this._repository.RecordCount == 0;
+            return this.repository.RecordCount == 0;
         }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace ExpenseTracker.Service
             Expense? HighestExpense)
         GetMonthlySummary(int month, int year)
         {
-            IEnumerable<FinancialRecord> records = this._repository.GetByMonthAndYear(month, year);
+            IEnumerable<FinancialRecord> records = this.repository.GetByMonthAndYear(month, year);
             IEnumerable<Income> incomes = records.OfType<Income>();
             IEnumerable<Expense> expenses = records.OfType<Expense>();
 
@@ -244,7 +244,7 @@ namespace ExpenseTracker.Service
             {
                 recordId = Guid.NewGuid().ToString("N").Substring(0, 12).ToUpper();
             }
-            while (this._repository.RecordIdExists(recordId));
+            while (this.repository.RecordIdExists(recordId));
 
             return recordId;
         }

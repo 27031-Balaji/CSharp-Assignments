@@ -12,14 +12,14 @@ namespace ExpenseTracker.Repository
     {
         private const string FilePath = CsvConstant.FilePath;
         private const string CsvHeader = CsvConstant.CsvHeader;
-        private readonly List<FinancialRecord> _records;
+        private readonly List<FinancialRecord> records;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CsvExpenseRepository"/> class.
         /// </summary>
         public CsvExpenseRepository()
         {
-            this._records = new List<FinancialRecord>();
+            this.records = new List<FinancialRecord>();
             this.LoadRecords();
         }
 
@@ -27,7 +27,7 @@ namespace ExpenseTracker.Repository
         /// Gets the total number of stored <see cref="FinancialRecord"/> instances.
         /// </summary>
         /// <value>The number of records currently stored.</value>
-        public int RecordCount { get => this._records.Count; }
+        public int RecordCount { get => this.records.Count; }
 
         /// <summary>
         /// Adds a <see cref="FinancialRecord"/> to the repository and saves changes to the CSV file.
@@ -35,7 +35,7 @@ namespace ExpenseTracker.Repository
         /// <param name="record">The <see cref="FinancialRecord"/> to add.</param>
         public void AddRecord(FinancialRecord record)
         {
-            this._records.Add(record);
+            this.records.Add(record);
             this.SaveRecords();
         }
 
@@ -45,7 +45,7 @@ namespace ExpenseTracker.Repository
         /// <returns>A list of <see cref="FinancialRecord"/> containing cloned records.</returns>
         public IEnumerable<FinancialRecord> GetAllRecords()
         {
-            List<FinancialRecord> duplicateRecords = this._records
+            List<FinancialRecord> duplicateRecords = this.records
                                                         .Select(record => record.Clone())
                                                         .ToList();
 
@@ -58,7 +58,7 @@ namespace ExpenseTracker.Repository
         /// <returns>A list of <see cref="FinancialRecord"/> representing income records.</returns>
         public IEnumerable<FinancialRecord> GetAllIncomeRecords()
         {
-            List<FinancialRecord> duplicateIncomeRecords = this._records
+            List<FinancialRecord> duplicateIncomeRecords = this.records
                                                     .Where(record => record is Income)
                                                     .Select(record => record.Clone())
                                                     .ToList();
@@ -72,7 +72,7 @@ namespace ExpenseTracker.Repository
         /// <returns>A list of <see cref="FinancialRecord"/> representing expense records.</returns>
         public IEnumerable<FinancialRecord> GetAllExpenseRecords()
         {
-            List<FinancialRecord> duplicateExpenseRecords = this._records
+            List<FinancialRecord> duplicateExpenseRecords = this.records
                                                             .Where(record => record is Expense)
                                                             .Select(record => record.Clone())
                                                             .ToList();
@@ -87,7 +87,7 @@ namespace ExpenseTracker.Repository
         /// <returns>A list of <see cref="FinancialRecord"/> that occur on the specified date.</returns>
         public IEnumerable<FinancialRecord> GetByDate(DateOnly date)
         {
-            List<FinancialRecord> dateRecords = this._records
+            List<FinancialRecord> dateRecords = this.records
                                                 .Where(record => record.Date == date)
                                                 .Select(record => record.Clone())
                                                 .ToList();
@@ -103,7 +103,7 @@ namespace ExpenseTracker.Repository
         /// <returns>A list of <see cref="FinancialRecord"/> that occur within the specified month and year.</returns>
         public IEnumerable<FinancialRecord> GetByMonthAndYear(int month, int year)
         {
-            List<FinancialRecord> monthAndYearRecords = this._records
+            List<FinancialRecord> monthAndYearRecords = this.records
                                                 .Where(record => record.Date.Month == month && record.Date.Year == year)
                                                 .Select(record => record.Clone())
                                                 .ToList();
@@ -118,7 +118,7 @@ namespace ExpenseTracker.Repository
         /// <returns>A list of <see cref="FinancialRecord"/> with the specified amount.</returns>
         public IEnumerable<FinancialRecord> GetByAmount(decimal amount)
         {
-            List<FinancialRecord> amountRecords = this._records
+            List<FinancialRecord> amountRecords = this.records
                                                     .Where(record => record.Amount == amount)
                                                     .Select(record => record.Clone())
                                                     .ToList();
@@ -133,7 +133,7 @@ namespace ExpenseTracker.Repository
         /// <returns>A list of <see cref="FinancialRecord"/> representing incomes with the specified source.</returns>
         public IEnumerable<FinancialRecord> GetBySource(IncomeSource source)
         {
-            List<FinancialRecord> sourceRecords = this._records
+            List<FinancialRecord> sourceRecords = this.records
                                                     .Where(record => record is Income income && income.Source == source)
                                                     .Select(record => record.Clone())
                                                     .ToList();
@@ -148,7 +148,7 @@ namespace ExpenseTracker.Repository
         /// <returns>A list of <see cref="FinancialRecord"/> representing expenses in the specified category.</returns>
         public IEnumerable<FinancialRecord> GetByCategory(ExpenseCategory category)
         {
-            List<FinancialRecord> categoryRecords = this._records
+            List<FinancialRecord> categoryRecords = this.records
                                                     .Where(record => record is Expense expense && expense.Category == category)
                                                     .Select(record => record.Clone())
                                                     .ToList();
@@ -163,7 +163,7 @@ namespace ExpenseTracker.Repository
         /// <returns>The matching <see cref="FinancialRecord"/> if found.</returns>
         public FinancialRecord? GetById(string recordId)
         {
-            return this._records.Find(record => record.Id.Equals(recordId, StringComparison.OrdinalIgnoreCase));
+            return this.records.Find(record => record.Id.Equals(recordId, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace ExpenseTracker.Repository
         /// <param name="record">The <see cref="FinancialRecord"/> to delete.</param>
         public void DeleteRecord(FinancialRecord record)
         {
-            this._records.Remove(record);
+            this.records.Remove(record);
             this.SaveRecords();
         }
 
@@ -238,7 +238,7 @@ namespace ExpenseTracker.Repository
         /// <returns>True if the record exists, otherwise false.</returns>
         public bool RecordIdExists(string recordId)
         {
-            return this._records.Any(record => record.Id == recordId);
+            return this.records.Any(record => record.Id == recordId);
         }
 
         /// <summary>
@@ -260,7 +260,7 @@ namespace ExpenseTracker.Repository
                 }
 
                 FinancialRecord record = this.ParseToRecord(line);
-                this._records.Add(record);
+                this.records.Add(record);
             }
         }
 
@@ -270,7 +270,7 @@ namespace ExpenseTracker.Repository
         private void SaveRecords()
         {
             List<string> lines = new List<string> { CsvHeader };
-            foreach (FinancialRecord record in this._records)
+            foreach (FinancialRecord record in this.records)
             {
                 lines.Add(this.ConvertToCsv(record));
             }
