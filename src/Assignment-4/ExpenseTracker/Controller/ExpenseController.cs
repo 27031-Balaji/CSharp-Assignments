@@ -569,8 +569,6 @@ namespace ExpenseTracker.Controller
                     source = sources[choice - 1];
                     return true;
                 }
-
-                this.view.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
             }
             while (this.CanRetry("source"));
 
@@ -595,8 +593,6 @@ namespace ExpenseTracker.Controller
                     category = categories[choice - 1];
                     return true;
                 }
-
-                this.view.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
             }
             while (this.CanRetry("category"));
 
