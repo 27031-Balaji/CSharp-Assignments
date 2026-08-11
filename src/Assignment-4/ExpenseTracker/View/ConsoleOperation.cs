@@ -121,7 +121,7 @@ namespace ExpenseTracker.View
         /// <returns>The entered date string.</returns>
         public string ReadRecordDate()
         {
-            Console.Write($"Enter the date of the record in (DD/MM/YYYY): ");
+            Console.Write($"Enter the date of the record in (DD/MM/YYYY) or press Enter for today's date: ");
 
             return (Console.ReadLine() ?? string.Empty).Trim();
         }

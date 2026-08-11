@@ -514,7 +514,7 @@ namespace ExpenseTracker.Controller
         /// <returns>True if a valid date was provided, otherwise false.</returns>
         private bool GetValidDate(out DateOnly date)
         {
-            date = default;
+            date = DateOnly.FromDateTime(DateTime.Now);
             string input;
             do
             {
