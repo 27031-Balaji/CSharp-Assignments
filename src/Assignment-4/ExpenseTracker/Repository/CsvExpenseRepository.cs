@@ -35,8 +35,16 @@ namespace ExpenseTracker.Repository
         /// <param name="record">The <see cref="FinancialRecord"/> to add.</param>
         public void AddRecord(FinancialRecord record)
         {
+            bool fileExists = File.Exists(FilePath);
+            List<string> lines = new List<string>();
+            if (!fileExists)
+            {
+                lines.Add(CsvHeader);
+            }
+
+            lines.Add(this.ConvertToCsv(record));
+            File.AppendAllLines(FilePath, lines);
             this.records.Add(record);
-            this.SaveRecords();
         }
 
         /// <summary>
