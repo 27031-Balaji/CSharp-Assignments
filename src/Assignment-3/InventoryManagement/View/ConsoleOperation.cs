@@ -15,18 +15,18 @@ namespace InventoryManagement.View
         /// <returns>The selected menu option.</returns>
         public string ShowMainMenu()
         {
-            Console.WriteLine("Inventory Management System");
-            Console.WriteLine("========================================================");
-            Console.WriteLine("\nSelect an option:");
-            Console.WriteLine("[A] Add Product");
-            Console.WriteLine("[B] Edit Product");
-            Console.WriteLine("[C] Search Product");
-            Console.WriteLine("[D] View All Products");
-            Console.WriteLine("[E] Delete Product");
-            Console.WriteLine("[F] Restock Product");
-            Console.WriteLine("[G] Reduce Stock");
-            Console.WriteLine("[H] View Low Stock Products");
-            Console.WriteLine("[I] Exit");
+            Console.Write("Inventory Management System\n");
+            Console.Write("========================================================\n");
+            Console.Write("\nSelect an option:\n");
+            Console.Write("[A] Add Product\n");
+            Console.Write("[B] Edit Product\n");
+            Console.Write("[C] Search Product\n");
+            Console.Write("[D] View All Products\n");
+            Console.Write("[E] Delete Product\n");
+            Console.Write("[F] Restock Product\n");
+            Console.Write("[G] Reduce Stock\n");
+            Console.Write("[H] View Low Stock Products\n");
+            Console.Write("[I] Exit\n");
             Console.Write("\nEnter your choice: ");
 
             return (Console.ReadLine() ?? string.Empty).Trim();
@@ -38,10 +38,10 @@ namespace InventoryManagement.View
         /// <returns>The choice entered by the user.</returns>
         public string ShowSearchMenu()
         {
-            Console.WriteLine("\nSearch Product");
-            Console.WriteLine("[A] Search by Product ID");
-            Console.WriteLine("[B] Search by Product Name");
-            Console.WriteLine("[C] Back");
+            Console.Write("\nSearch Product\n");
+            Console.Write("[A] Search by Product ID\n");
+            Console.Write("[B] Search by Product Name\n");
+            Console.Write("[C] Back\n");
             Console.Write("\nChoose an option: ");
 
             return (Console.ReadLine() ?? string.Empty).Trim();
@@ -107,7 +107,7 @@ namespace InventoryManagement.View
                 MessageType.Info => ConsoleColor.Cyan,
                 _ => ConsoleColor.White
             };
-            Console.WriteLine(message);
+            Console.Write(message + "\n");
             Console.ResetColor();
         }
 
@@ -118,7 +118,7 @@ namespace InventoryManagement.View
         public void ShowInvalidMessage(string fieldName)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"Enter a valid {fieldName}.");
+            Console.Write($"Enter a valid {fieldName}.\n");
             Console.ResetColor();
         }
 
@@ -129,7 +129,7 @@ namespace InventoryManagement.View
         public void DisplayProducts(List<Product> products)
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("\nProduct List: \n");
+            Console.Write("\nProduct List: \n\n");
             Console.ResetColor();
             var table = new ConsoleTable("Serial Number", "Product Id", "Product Name", "Price", "Stock");
             for (int i = 0; i < products.Count; i++)
@@ -147,7 +147,7 @@ namespace InventoryManagement.View
         public void DisplaySingleProduct(Product product)
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("\nProduct Found!\n");
+            Console.Write("\nProduct Found!\n\n");
             Console.ResetColor();
             var table = new ConsoleTable("Product Id", "Product Name", "Price", "Stock");
             table.AddRow(product.ProductId, product.Name, product.Price, product.Quantity);
@@ -161,9 +161,9 @@ namespace InventoryManagement.View
         /// <returns>The selected menu option.</returns>
         public string ShowEditMenu()
         {
-            Console.WriteLine("\n[A] Edit Name");
-            Console.WriteLine("[B] Edit Price");
-            Console.WriteLine("[C] Exit");
+            Console.Write("\n[A] Edit Name\n");
+            Console.Write("[B] Edit Price\n");
+            Console.Write("[C] Exit\n");
             Console.Write("Choose an option: ");
 
             return (Console.ReadLine() ?? string.Empty).Trim();
@@ -190,7 +190,7 @@ namespace InventoryManagement.View
                         return false;
 
                     default:
-                        Console.WriteLine("Please enter Y or N.");
+                        Console.Write("Please enter Y or N.\n");
                         break;
                 }
             }
@@ -210,7 +210,7 @@ namespace InventoryManagement.View
         public void ClearScreenWithKey()
         {
             Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.WriteLine("\nPress any key to continue...");
+            Console.Write("\nPress any key to continue...\n");
             Console.ReadKey();
             Console.Clear();
             Console.ResetColor();
@@ -237,7 +237,7 @@ namespace InventoryManagement.View
                         return false;
 
                     default:
-                        Console.WriteLine("Please enter Y or N.");
+                        Console.Write("Please enter Y or N.\n");
                         break;
                 }
             }
