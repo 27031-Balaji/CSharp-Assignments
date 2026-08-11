@@ -8,21 +8,21 @@ namespace ExpenseTracker.Repository
     /// </summary>
     internal class InMemoryExpenseRepository : IExpenseRepository
     {
-        private readonly List<FinancialRecord> _records;
+        private readonly List<FinancialRecord> records;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryExpenseRepository"/> class.
         /// </summary>
         public InMemoryExpenseRepository()
         {
-            this._records = new List<FinancialRecord>();
+            this.records = new List<FinancialRecord>();
         }
 
         /// <summary>
         /// Gets the total number of stored <see cref="FinancialRecord"/> instances.
         /// </summary>
         /// <value>The number of records currently stored.</value>
-        public int RecordCount { get => this._records.Count; }
+        public int RecordCount { get => this.records.Count; }
 
         /// <summary>
         /// Adds a <see cref="FinancialRecord"/> to the repository.
@@ -30,18 +30,17 @@ namespace ExpenseTracker.Repository
         /// <param name="record">The <see cref="FinancialRecord"/> to add.</param>
         public void AddRecord(FinancialRecord record)
         {
-            this._records.Add(record);
+            this.records.Add(record);
         }
 
         /// <summary>
-        /// Retrieves all stored <see cref="FinancialRecord"/> instances as cloned records.
+        /// Retrieves all stored <see cref="FinancialRecord"/> instances as a cloned list.
         /// </summary>
         /// <returns>A list of <see cref="FinancialRecord"/> containing cloned records.</returns>
         public IEnumerable<FinancialRecord> GetAllRecords()
         {
-            List<FinancialRecord> duplicateRecords = this._records
-                                                        .Select(record => record.Clone())
-                                                        .ToList();
+            IEnumerable<FinancialRecord> duplicateRecords = this.records
+                                                        .Select(record => record.Clone());
 
             return duplicateRecords;
         }
@@ -52,10 +51,9 @@ namespace ExpenseTracker.Repository
         /// <returns>A list of <see cref="FinancialRecord"/> representing income records.</returns>
         public IEnumerable<FinancialRecord> GetAllIncomeRecords()
         {
-            List<FinancialRecord> duplicateIncomeRecords = this._records
-                                                            .Where(record => record is Income)
-                                                            .Select(record => record.Clone())
-                                                            .ToList();
+            IEnumerable<FinancialRecord> duplicateIncomeRecords = this.records
+                                                    .Where(record => record is Income)
+                                                    .Select(record => record.Clone());
 
             return duplicateIncomeRecords;
         }
@@ -66,10 +64,9 @@ namespace ExpenseTracker.Repository
         /// <returns>A list of <see cref="FinancialRecord"/> representing expense records.</returns>
         public IEnumerable<FinancialRecord> GetAllExpenseRecords()
         {
-            List<FinancialRecord> duplicateExpenseRecords = this._records
+            IEnumerable<FinancialRecord> duplicateExpenseRecords = this.records
                                                             .Where(record => record is Expense)
-                                                            .Select(record => record.Clone())
-                                                            .ToList();
+                                                            .Select(record => record.Clone());
 
             return duplicateExpenseRecords;
         }
@@ -77,14 +74,13 @@ namespace ExpenseTracker.Repository
         /// <summary>
         /// Retrieves records that match the specified date.
         /// </summary>
-        /// <param name="date">The date to filter records by.</param>
+        /// <param name="date">The date value to filter records by.</param>
         /// <returns>A list of <see cref="FinancialRecord"/> that occur on the specified date.</returns>
         public IEnumerable<FinancialRecord> GetByDate(DateOnly date)
         {
-            List<FinancialRecord> dateRecords = this._records
+            IEnumerable<FinancialRecord> dateRecords = this.records
                                                 .Where(record => record.Date == date)
-                                                .Select(record => record.Clone())
-                                                .ToList();
+                                                .Select(record => record.Clone());
 
             return dateRecords;
         }
@@ -97,10 +93,9 @@ namespace ExpenseTracker.Repository
         /// <returns>A list of <see cref="FinancialRecord"/> that occur within the specified month and year.</returns>
         public IEnumerable<FinancialRecord> GetByMonthAndYear(int month, int year)
         {
-            List<FinancialRecord> monthAndYearRecords = this._records
-                                                        .Where(record => record.Date.Month == month && record.Date.Year == year)
-                                                        .Select(record => record.Clone())
-                                                        .ToList();
+            IEnumerable<FinancialRecord> monthAndYearRecords = this.records
+                                                .Where(record => record.Date.Month == month && record.Date.Year == year)
+                                                .Select(record => record.Clone());
 
             return monthAndYearRecords;
         }
@@ -112,10 +107,9 @@ namespace ExpenseTracker.Repository
         /// <returns>A list of <see cref="FinancialRecord"/> with the specified amount.</returns>
         public IEnumerable<FinancialRecord> GetByAmount(decimal amount)
         {
-            List<FinancialRecord> amountRecords = this._records
+            IEnumerable<FinancialRecord> amountRecords = this.records
                                                     .Where(record => record.Amount == amount)
-                                                    .Select(record => record.Clone())
-                                                    .ToList();
+                                                    .Select(record => record.Clone());
 
             return amountRecords;
         }
@@ -127,10 +121,9 @@ namespace ExpenseTracker.Repository
         /// <returns>A list of <see cref="FinancialRecord"/> representing incomes with the specified source.</returns>
         public IEnumerable<FinancialRecord> GetBySource(IncomeSource source)
         {
-            List<FinancialRecord> sourceRecords = this._records
+            IEnumerable<FinancialRecord> sourceRecords = this.records
                                                     .Where(record => record is Income income && income.Source == source)
-                                                    .Select(record => record.Clone())
-                                                    .ToList();
+                                                    .Select(record => record.Clone());
 
             return sourceRecords;
         }
@@ -142,10 +135,9 @@ namespace ExpenseTracker.Repository
         /// <returns>A list of <see cref="FinancialRecord"/> representing expenses in the specified category.</returns>
         public IEnumerable<FinancialRecord> GetByCategory(ExpenseCategory category)
         {
-            List<FinancialRecord> categoryRecords = this._records
+            IEnumerable<FinancialRecord> categoryRecords = this.records
                                                     .Where(record => record is Expense expense && expense.Category == category)
-                                                    .Select(record => record.Clone())
-                                                    .ToList();
+                                                    .Select(record => record.Clone());
 
             return categoryRecords;
         }
@@ -157,7 +149,7 @@ namespace ExpenseTracker.Repository
         /// <returns>The matching <see cref="FinancialRecord"/> if found.</returns>
         public FinancialRecord? GetById(string recordId)
         {
-            return this._records.Find(record => record.Id.Equals(recordId, StringComparison.OrdinalIgnoreCase));
+            return this.records.Find(record => record.Id.Equals(recordId, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -166,7 +158,7 @@ namespace ExpenseTracker.Repository
         /// <param name="record">The <see cref="FinancialRecord"/> to delete.</param>
         public void DeleteRecord(FinancialRecord record)
         {
-            this._records.Remove(record);
+            this.records.Remove(record);
         }
 
         /// <summary>
@@ -226,7 +218,7 @@ namespace ExpenseTracker.Repository
         /// <returns>True if the record exists, otherwise false.</returns>
         public bool RecordIdExists(string recordId)
         {
-            return this._records.Any(record => record.Id == recordId);
+            return this.records.Any(record => record.Id == recordId);
         }
     }
 }
