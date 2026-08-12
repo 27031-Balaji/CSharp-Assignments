@@ -15,7 +15,7 @@ namespace ShapeHierarchy
         /// <param name="args">Command-line arguments.</param>
         public static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to Shape Calculator.");
+            Console.WriteLine("Welcome to shape calculator.");
             Shape shape = GetShape();
             ShowOperations(shape);
         }
@@ -31,7 +31,7 @@ namespace ShapeHierarchy
             while (!isShapeSelected)
             {
                 Console.WriteLine();
-                Console.WriteLine("Choose a Shape:");
+                Console.WriteLine("Choose a shape:");
                 Console.WriteLine("[A] Rectangle");
                 Console.WriteLine("[B] Circle");
                 Console.Write("Enter your choice: ");
@@ -66,8 +66,8 @@ namespace ShapeHierarchy
         private static Rectangle CreateRectangle()
         {
             string color = GetColor();
-            double length = GetPositiveNumber("Length");
-            double breadth = GetPositiveNumber("Breadth");
+            double length = GetPositiveNumber("length");
+            double breadth = GetPositiveNumber("breadth");
 
             return new Rectangle(color, length, breadth);
         }
@@ -79,7 +79,7 @@ namespace ShapeHierarchy
         private static Circle CreateCircle()
         {
             string color = GetColor();
-            double radius = GetPositiveNumber("Radius");
+            double radius = GetPositiveNumber("radius");
 
             return new Circle(color, radius);
         }
@@ -95,7 +95,7 @@ namespace ShapeHierarchy
 
             while (!isValidColor)
             {
-                Console.Write("Enter Color: ");
+                Console.Write("Enter color: ");
                 color = (Console.ReadLine() ?? string.Empty).Trim();
                 isValidColor = !string.IsNullOrWhiteSpace(color) && FromName(color).IsKnownColor;
                 if (!isValidColor)
@@ -140,9 +140,9 @@ namespace ShapeHierarchy
             while (isRunning)
             {
                 Console.WriteLine();
-                Console.WriteLine("Choose an Operation:");
-                Console.WriteLine("[A] Calculate Area");
-                Console.WriteLine("[B] Print Details");
+                Console.WriteLine("Choose an operation:");
+                Console.WriteLine("[A] Calculate area");
+                Console.WriteLine("[B] Print details");
                 Console.WriteLine("[C] Exit");
                 Console.Write("Enter your choice: ");
                 char operationChoice = char.ToUpper(Console.ReadKey().KeyChar);
