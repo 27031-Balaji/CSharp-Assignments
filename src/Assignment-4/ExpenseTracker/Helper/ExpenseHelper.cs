@@ -17,7 +17,6 @@ namespace ExpenseTracker.Helper
         {
             if (input == string.Empty)
             {
-                date = DateOnly.FromDateTime(DateTime.Now);
                 return true;
             }
 
