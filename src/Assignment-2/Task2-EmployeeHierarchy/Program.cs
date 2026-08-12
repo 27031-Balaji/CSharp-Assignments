@@ -14,7 +14,7 @@ namespace EmployeeHierarchy
         /// <param name="args">Command-line arguments.</param>
         public static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to Employee Bonus Calculator.");
+            Console.WriteLine("Welcome to employee bonus calculator.");
             Employee employee = GetEmployee();
             ShowOperations(employee);
         }
@@ -93,7 +93,7 @@ namespace EmployeeHierarchy
             string name = string.Empty;
             while (!isValidName)
             {
-                Console.Write("Enter Employee Name: ");
+                Console.Write("Enter employee name: ");
                 name = (Console.ReadLine() ?? string.Empty).Trim();
                 isValidName = !string.IsNullOrWhiteSpace(name);
                 if (!isValidName)
@@ -115,7 +115,7 @@ namespace EmployeeHierarchy
             decimal salary = 0;
             while (!isValidSalary)
             {
-                Console.Write("Enter Employee Salary: ");
+                Console.Write("Enter employee salary: ");
                 isValidSalary = decimal.TryParse(Console.ReadLine() !.Trim(), out salary) && salary > 0;
                 if (!isValidSalary)
                 {
@@ -136,9 +136,9 @@ namespace EmployeeHierarchy
             while (isRunning)
             {
                 Console.WriteLine();
-                Console.WriteLine("Choose an Operation:");
-                Console.WriteLine("[A] Calculate Bonus");
-                Console.WriteLine("[B] Print Details");
+                Console.WriteLine("Choose an operation:");
+                Console.WriteLine("[A] Calculate bonus");
+                Console.WriteLine("[B] Print details");
                 Console.WriteLine("[C] Exit");
                 Console.Write("Enter your choice: ");
 

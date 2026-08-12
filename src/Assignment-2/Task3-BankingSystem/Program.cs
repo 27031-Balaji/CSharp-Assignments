@@ -19,7 +19,7 @@ namespace BankingSystem
         /// <param name="args">Command-line arguments.</param>
         public static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to Banking System.");
+            Console.WriteLine("Welcome to banking system.");
             ShowMenu();
         }
 
@@ -32,8 +32,8 @@ namespace BankingSystem
             while (isRunning)
             {
                 Console.WriteLine("\n===== Banking System =====");
-                Console.WriteLine("1. Create Account");
-                Console.WriteLine("2. Display Accounts");
+                Console.WriteLine("1. Create account");
+                Console.WriteLine("2. Display accounts");
                 Console.WriteLine("3. Deposit");
                 Console.WriteLine("4. Withdraw");
                 Console.WriteLine("5. Exit");
@@ -75,12 +75,12 @@ namespace BankingSystem
         private static void CreateAccount()
         {
             Console.WriteLine();
-            Console.WriteLine("1. Savings Account");
-            Console.WriteLine("2. Checking Account");
-            Console.Write("Choose Account Type: ");
+            Console.WriteLine("1. Savings account");
+            Console.WriteLine("2. Checking account");
+            Console.Write("Choose account type: ");
             string accountTypeChoice = Console.ReadLine() ?? string.Empty;
 
-            if (!GetValidAmount("Enter Initial Deposit: ", out decimal amount))
+            if (!GetValidAmount("Enter initial deposit: ", out decimal amount))
             {
                 return;
             }
@@ -97,14 +97,14 @@ namespace BankingSystem
 
                     BankAccount savingsAccount = new SavingsAccount(accountNumber, amount);
                     Accounts.Add(savingsAccount);
-                    Console.WriteLine("Savings Account Created Successfully.");
+                    Console.WriteLine("Savings account created successfully.");
                     Console.WriteLine(savingsAccount.PrintDetails());
                     break;
 
                 case "2":
                     BankAccount checkingAccount = new CheckingAccount(accountNumber, amount);
                     Accounts.Add(checkingAccount);
-                    Console.WriteLine("Checking Account Created Successfully.");
+                    Console.WriteLine("Checking account created successfully.");
                     Console.WriteLine(checkingAccount.PrintDetails());
                     break;
 
@@ -121,7 +121,7 @@ namespace BankingSystem
         {
             if (Accounts.Count == 0)
             {
-                Console.WriteLine("No Accounts available.");
+                Console.WriteLine("No accounts available.");
                 return;
             }
 
@@ -138,7 +138,7 @@ namespace BankingSystem
         {
             if (Accounts.Count == 0)
             {
-                Console.WriteLine("No Accounts available.");
+                Console.WriteLine("No accounts available.");
                 return;
             }
 
@@ -154,14 +154,14 @@ namespace BankingSystem
                 return;
             }
 
-            if (!GetValidAmount("Enter Amount: ", out decimal amount))
+            if (!GetValidAmount("Enter amount: ", out decimal amount))
             {
                 return;
             }
 
             account.Deposit(amount);
             Console.WriteLine("Deposit successful.");
-            Console.WriteLine($"Current Balance: Rs. {account.Balance}");
+            Console.WriteLine($"Current balance: Rs. {account.Balance}");
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace BankingSystem
         {
             if (Accounts.Count == 0)
             {
-                Console.WriteLine("No Accounts available.");
+                Console.WriteLine("No accounts available.");
                 return;
             }
 
@@ -187,7 +187,7 @@ namespace BankingSystem
                 return;
             }
 
-            if (!GetValidAmount("Enter Amount: ", out decimal amount))
+            if (!GetValidAmount("Enter amount: ", out decimal amount))
             {
                 return;
             }
@@ -195,11 +195,11 @@ namespace BankingSystem
             if (account.Withdraw(amount))
             {
                 Console.WriteLine("Withdrawal successful.");
-                Console.WriteLine($"Current Balance: Rs. {account.Balance}");
+                Console.WriteLine($"Current balance: Rs. {account.Balance}");
             }
             else
             {
-                Console.WriteLine("Withdrawal failed because of low balance.");
+                Console.WriteLine("Withdrawal failed because of low balance. Savings account should have a minimum amount of Rs. 1000.");
             }
         }
 
@@ -238,7 +238,7 @@ namespace BankingSystem
             accountNumber = string.Empty;
             for (int i = 1; i <= MaximumAttempts; i++)
             {
-                Console.Write("Enter Account Number: ");
+                Console.Write("Enter account number: ");
                 accountNumber = Console.ReadLine() ?? string.Empty;
                 if (accountNumber.Length == 10 && accountNumber.All(char.IsDigit))
                 {
