@@ -40,16 +40,5 @@ namespace ExpenseTracker.Model
         /// The classification string derived from the <see cref="ExpenseCategory"/> of this <see cref="Expense"/>.
         /// </value>
         public override string Classification => this.Category.ToString();
-
-        /// <summary>
-        /// Creates a copy of the current <see cref="Expense"/>.
-        /// </summary>
-        /// <returns>
-        /// A cloned instance of the current <see cref="FinancialRecord"/> (specifically an <see cref="Expense"/>).
-        /// </returns>
-        public override FinancialRecord Clone()
-        {
-            return new Expense(this.Id, this.Date, this.Amount, this.Description, this.Category);
-        }
     }
 }

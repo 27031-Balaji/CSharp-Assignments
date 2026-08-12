@@ -40,16 +40,5 @@ namespace ExpenseTracker.Model
         /// The classification string derived from the <see cref="IncomeSource"/> of this <see cref="Income"/>.
         /// </value>
         public override string Classification => this.Source.ToString();
-
-        /// <summary>
-        /// Creates a copy of the current <see cref="Income"/>.
-        /// </summary>
-        /// <returns>
-        /// A cloned instance of the current <see cref="FinancialRecord"/> (specifically an <see cref="Income"/>).
-        /// </returns>
-        public override FinancialRecord Clone()
-        {
-            return new Income(this.Id, this.Date, this.Amount, this.Description, this.Source);
-        }
     }
 }
