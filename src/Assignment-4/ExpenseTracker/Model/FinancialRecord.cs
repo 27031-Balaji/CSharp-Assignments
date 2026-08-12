@@ -59,13 +59,5 @@
         /// The classification of the <see cref="FinancialRecord"/>.
         /// </value>
         public abstract string Classification { get; }
-
-        /// <summary>
-        /// Creates a copy of the current <see cref="FinancialRecord"/>.
-        /// </summary>
-        /// <returns>
-        /// A cloned instance of the current <see cref="FinancialRecord"/>.
-        /// </returns>
-        public abstract FinancialRecord Clone();
     }
 }
