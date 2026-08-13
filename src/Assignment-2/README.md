@@ -186,14 +186,132 @@ The Withdraw feature allows users to withdraw money from an account.
 ---
 
 # Understanding of OOP Concepts
-
-This assignment demonstrates the practical application of core Object-Oriented Programming (OOP) principles.
-
-- **Abstraction** is implemented using abstract base classes such as `Shape`, `Employee`, and `BankAccount`. These classes define common properties and behaviors while allowing derived classes to provide specific implementations.
-- **Inheritance** is used to create specialized classes from common base classes. Classes such as `Rectangle`, `Circle`, `Developer`, `Manager`, `SavingsAccount`, and `CheckingAccount` inherit and extend the functionality of their respective parent classes.
-- **Polymorphism** is achieved through method overriding. Methods such as `CalculateArea()`, `CalculateBonus()`, and `Withdraw()` execute different logic based on the object type while being accessed through a common base class reference.
-
-These concepts promote code reusability, maintainability, scalability, and a clear separation of responsibilities across the application.
+ 
+Through this assignment, I got a better understanding of how **Abstraction, Inheritance, and Polymorphism** actually work in C# and how they are connected to each other.
+ 
+## Abstraction
+ 
+An **abstract class** is used when we have a common base class, but we don't want to create an object of that class directly.
+ 
+An abstract class can have both **normal methods** and **abstract methods**.
+ 
+An **abstract method** only defines what the method should be, but does not contain the actual implementation. The derived classes are responsible for implementing it using override keyword.
+ 
+For example, in the Banking System, BankAccount can have an abstract Withdraw() method because the withdrawal rules are different for SavingsAccount and CheckingAccount. At the same time, common functionality like Deposit() can be implemented directly in BankAccount.
+ 
+## Inheritance
+ 
+**Inheritance** allows a derived class to use the members of a base class and add its own functionality on top of it.
+ 
+The different types of inheritance I learned are:
+ 
+- **Single inheritance** – one derived class inherits from one base class.
+- **Multilevel inheritance** – a class inherits from another derived class, creating a chain of inheritance.
+- **Hierarchical inheritance** – multiple classes inherit from the same base class.
+- **Multiple inheritance** – a class inherits from multiple classes. C# does not support this for classes.
+ 
+For example, in the Banking System, SavingsAccount and CheckingAccount both inherit from BankAccount. They get the common functionality from BankAccount while implementing their own account-specific behavior.
+ 
+## virtual, override, and new
+ 
+I learned that these keywords are related to how inherited methods behave, but they are not the same.
+ 
+- **virtual** allows a base class to provide a default implementation while giving derived classes the option to change it.
+- **override** is used when a derived class wants to provide its own implementation of a virtual or abstract method.
+- **`new`** is used to hide a member from the base class instead of overriding it. Because of this, new does not provide the same runtime polymorphic behavior as override.
+ 
+The main difference I understood is:
+ 
+```text
+virtual
+    ↓
+Base class provides an implementation
+    ↓
+Derived class may override it
+ 
+abstract
+    ↓
+Base class does not provide an implementation
+    ↓
+Derived class must override it
+ 
+new
+    ↓
+Hides the base class member
+    ↓
+Does not behave like an override
+```
+ 
+## Base Class Reference and Derived Class Object
+ 
+I also learned why we can do something like this:
+ 
+```text
+BankAccount account = new SavingsAccount();
+```
+ 
+Here, BankAccount is the **reference type**, while SavingsAccount is the **actual object type**.
+ 
+The reference type decides which members I can access through the reference. However, when the method is overridden using virtual/override or abstract/override, the actual object type decides which implementation is executed at runtime.
+ 
+This helped me understand how runtime polymorphism actually works.
+ 
+## Polymorphism
+ 
+**Polymorphism** means that the same method or operation can behave differently depending on the situation.
+ 
+### Compile-time Polymorphism
+ 
+Compile-time polymorphism is commonly achieved through **method overloading**.
+ 
+For example, we can have multiple methods with the same name but different parameters:
+ 
+```text
+Add(int a, int b)
+Add(int a, int b, int c)
+Add(double a, double b)
+```
+ 
+The compiler can determine which method to call based on the arguments passed to the method.
+ 
+### Runtime Polymorphism
+ 
+Runtime polymorphism is achieved through **method overriding** using `virtual`/`override` or `abstract`/`override`.
+ 
+For example:
+ 
+```text
+BankAccount account = new SavingsAccount();
+account.Withdraw(500);
+ 
+account = new CheckingAccount();
+account.Withdraw(500);
+```
+ 
+The method call is the same. But the implementation that runs can be different depending on the actual object.
+ 
+This helped me understand why a base class reference can point to different derived class objects and still execute the correct implementation at runtime.
+ 
+## Overall Understanding
+ 
+The main thing I understood from these concepts is how they all connect:
+ 
+```text
+Abstraction
+    ↓
+Create a common base and define what is required
+ 
+Inheritance
+    ↓
+Reuse the common functionality in derived classes
+ 
+Polymorphism
+    ↓
+Allow derived classes to behave differently
+while using the same base class reference
+```
+ 
+Working on the Shape, Employee, and Banking System tasks helped me understand these concepts practically instead of just learning their definitions.
 
 ---
 
