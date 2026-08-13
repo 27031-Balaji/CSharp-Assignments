@@ -162,9 +162,9 @@ namespace InventoryManagement.Service
         }
 
         /// <summary>
-        /// Validates that the inventory is not empty. Throws an exception if it is empty.
+        /// Checks whether the inventory is empty or not. Throws an exception if it is empty.
         /// </summary>
-        public void ValidateInventory()
+        public void CheckInventory()
         {
             if (this._repository.ProductCount == 0)
             {
