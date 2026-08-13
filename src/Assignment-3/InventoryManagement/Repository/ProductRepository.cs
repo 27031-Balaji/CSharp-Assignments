@@ -41,7 +41,8 @@ namespace InventoryManagement.Repository
         /// <returns>The matching <see cref="Product"/> if found, otherwise null.</returns>
         public Product? GetProductById(string productId)
         {
-            return this._products.Find(product => product.ProductId == productId);
+            Product? product = this._products.Find(product => product.ProductId == productId);
+            return this.Clone(product!);
         }
 
         /// <summary>
@@ -52,13 +53,13 @@ namespace InventoryManagement.Repository
         public List<Product> GetProductsByName(string nameOfProduct)
         {
             List<Product> products = new List<Product>();
-            string searchName = nameOfProduct.Replace(" ", string.Empty).Trim();
+            string searchName = nameOfProduct.Replace(" ", string.Empty);
             foreach (Product product in this._products)
             {
                 string productName = product.Name.Replace(" ", string.Empty);
                 if (productName.Contains(searchName, StringComparison.OrdinalIgnoreCase))
                 {
-                    products.Add(product);
+                    products.Add(this.Clone(product));
                 }
             }
 
@@ -72,7 +73,8 @@ namespace InventoryManagement.Repository
         /// <param name="name">The new <see cref="Product"/> name.</param>
         public void UpdateName(Product product, string name)
         {
-            product.Name = name;
+            Product originalProduct = this.FindOriginalProduct(product.ProductId);
+            originalProduct.Name = name;
         }
 
         /// <summary>
@@ -82,7 +84,8 @@ namespace InventoryManagement.Repository
         /// <param name="price">The new <see cref="Product"/> price.</param>
         public void UpdatePrice(Product product, decimal price)
         {
-            product.Price = price;
+            Product originalProduct = this.FindOriginalProduct(product.ProductId);
+            originalProduct.Price = price;
         }
 
         /// <summary>
@@ -92,7 +95,8 @@ namespace InventoryManagement.Repository
         /// <param name="quantity">The new stock quantity.</param>
         public void UpdateQuantity(Product product, int quantity)
         {
-            product.Quantity = quantity;
+            Product originalProduct = this.FindOriginalProduct(product.ProductId);
+            originalProduct.Quantity = quantity;
         }
 
         /// <summary>
@@ -114,7 +118,7 @@ namespace InventoryManagement.Repository
             List<Product> products = new List<Product>();
             foreach (Product product in this._products)
             {
-                products.Add(new Product(product.ProductId, product.Name, product.Price, product.Quantity));
+                products.Add(this.Clone(product));
             }
 
             return products;
@@ -127,7 +131,18 @@ namespace InventoryManagement.Repository
         /// <returns>True if the <see cref="Product"/> was removed, otherwise false.</returns>
         public bool DeleteProduct(Product product)
         {
+            Product originalProduct = this.FindOriginalProduct(product.ProductId);
             return this._products.Remove(product);
+        }
+
+        private Product FindOriginalProduct(string productId)
+        {
+            return this._products.Find(product => product.ProductId == productId) !;
+        }
+
+        private Product Clone(Product product)
+        {
+            return new Product(product.ProductId, product.Name, product.Price, product.Quantity);
         }
     }
 }
