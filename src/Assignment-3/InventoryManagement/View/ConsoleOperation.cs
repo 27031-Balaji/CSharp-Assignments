@@ -180,8 +180,8 @@ namespace InventoryManagement.View
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write("\nDelete this product? (Y/N): ");
                 Console.ResetColor();
-                string choice = Console.ReadLine() ?? string.Empty;
-                switch (choice.Trim().ToUpper())
+                string choice = (Console.ReadLine() ?? string.Empty).Trim();
+                switch (choice.ToUpper())
                 {
                     case "Y":
                         return true;

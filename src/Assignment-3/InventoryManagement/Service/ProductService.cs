@@ -76,7 +76,7 @@ namespace InventoryManagement.Service
         /// <param name="name">The new <see cref="Product"/> name.</param>
         public void EditProductName(Product product, string name)
         {
-            this._repository.UpdateName(product, name.Trim());
+            this._repository.UpdateName(product, name);
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace InventoryManagement.Service
             {
                 productId = Guid.NewGuid().ToString("N").Substring(0, 12).ToUpper();
             }
-            while (this._repository.ProductIdExists(productId));
+            while (this._repository.IsProductExists(productId));
 
             return productId;
         }

@@ -38,7 +38,7 @@ namespace InventoryManagement.Controller
             while (isRunning)
             {
                 string menuChoice = this._view.ShowMainMenu();
-                switch (menuChoice.Trim().ToUpper())
+                switch (menuChoice.ToUpper())
                 {
                     case "A":
                         this.AddProduct();
@@ -130,7 +130,7 @@ namespace InventoryManagement.Controller
             while (isRunning)
             {
                 string editChoice = this._view.ShowEditMenu();
-                switch (editChoice.Trim().ToUpper())
+                switch (editChoice.ToUpper())
                 {
                     case "A":
                         this.EditProductName(product);
@@ -170,7 +170,7 @@ namespace InventoryManagement.Controller
             }
 
             string searchChoice = this._view.ShowSearchMenu();
-            switch (searchChoice.Trim().ToUpper())
+            switch (searchChoice.ToUpper())
             {
                 case "A":
                     this.SearchProductById();

@@ -104,7 +104,7 @@ namespace InventoryManagement.Repository
         /// </summary>
         /// <param name="productId">The <see cref="Product"/> ID to search for.</param>
         /// <returns>True if the <see cref="Product"/> ID exists, otherwise false.</returns>
-        public bool ProductIdExists(string productId)
+        public bool IsProductExists(string productId)
         {
             return this._products.Any(product => product.ProductId == productId);
         }
