@@ -217,7 +217,7 @@ namespace ExpenseTracker.Repository
 
             FinancialRecord record;
 
-            if (type.Equals("Income", StringComparison.OrdinalIgnoreCase))
+            if (type == RecordType.Income.ToString())
             {
                 record = new Income(id, date, amount, description, RecordType.Income, Enum.Parse<IncomeSource>(classification));
             }
