@@ -17,11 +17,11 @@ namespace ExpenseTracker
         /// <param name="args">Command-line arguments passed to the application.</param>
         public static void Main(string[] args)
         {
-            IExpenseRepository repository = new CsvExpenseRepository();
-            ExpenseService expenseService = new ExpenseService(repository);
-            ExpenseHelper expenseHelper = new ExpenseHelper();
+            IRepository repository = new CsvFinanceRepository();
+            FinanceService expenseService = new FinanceService(repository);
+            FinanceHelper expenseHelper = new FinanceHelper();
             ConsoleOperation view = new ConsoleOperation();
-            ExpenseController controller = new ExpenseController(expenseService, expenseHelper, view);
+            FinanceController controller = new FinanceController(expenseService, expenseHelper, view);
             controller.Run();
         }
     }

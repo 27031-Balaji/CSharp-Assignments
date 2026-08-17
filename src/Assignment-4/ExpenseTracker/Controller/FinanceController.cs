@@ -9,19 +9,19 @@ namespace ExpenseTracker.Controller
     /// <summary>
     /// Coordinates user interactions and application flow.
     /// </summary>
-    internal class ExpenseController
+    internal class FinanceController
     {
-        private readonly ExpenseService service;
-        private readonly ExpenseHelper helper;
+        private readonly FinanceService service;
+        private readonly FinanceHelper helper;
         private readonly ConsoleOperation view;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExpenseController"/> class.
+        /// Initializes a new instance of the <see cref="FinanceController"/> class.
         /// </summary>
-        /// <param name="service">The <see cref="ExpenseService"/> used for business operations.</param>
-        /// <param name="helper">The <see cref="ExpenseHelper"/> used for validation and parsing.</param>
+        /// <param name="service">The <see cref="FinanceService"/> used for business operations.</param>
+        /// <param name="helper">The <see cref="FinanceHelper"/> used for validation and parsing.</param>
         /// <param name="view">The <see cref="ConsoleOperation"/> used for console input/output.</param>
-        public ExpenseController(ExpenseService service, ExpenseHelper helper, ConsoleOperation view)
+        public FinanceController(FinanceService service, FinanceHelper helper, ConsoleOperation view)
         {
             this.service = service;
             this.helper = helper;
@@ -65,7 +65,6 @@ namespace ExpenseTracker.Controller
 
                     case MainMenuOption.Exit:
                         this.view.ShowMessage(ConsoleMessages.ExitMessage, MessageType.Info);
-                        Thread.Sleep(1000);
                         isRunning = false;
                         break;
 

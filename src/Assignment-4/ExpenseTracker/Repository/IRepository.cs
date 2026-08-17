@@ -6,7 +6,7 @@ namespace ExpenseTracker.Repository
     /// <summary>
     /// Defines repository operations for storing and querying <see cref="FinancialRecord"/> instances.
     /// </summary>
-    internal interface IExpenseRepository
+    internal interface IRepository
     {
         /// <summary>
         /// Gets the total number of stored <see cref="FinancialRecord"/> instances.
@@ -21,74 +21,11 @@ namespace ExpenseTracker.Repository
         void AddRecord(FinancialRecord record);
 
         /// <summary>
-        /// Retrieves all stored <see cref="FinancialRecord"/> instances.
+        /// Retrieves all stored records with the specific filter.
         /// </summary>
-        /// <returns>
-        /// A list of <see cref="FinancialRecord"/> containing all records.
-        /// </returns>
-        IEnumerable<FinancialRecord> GetAllRecords();
-
-        /// <summary>
-        /// Retrieves all stored income records.
-        /// </summary>
-        /// <returns>
-        /// A list of <see cref="FinancialRecord"/> representing incomes.
-        /// </returns>
-        IEnumerable<FinancialRecord> GetAllIncomeRecords();
-
-        /// <summary>
-        /// Retrieves all stored expense records.
-        /// </summary>
-        /// <returns>
-        /// A list of <see cref="FinancialRecord"/> representing expenses.
-        /// </returns>
-        IEnumerable<FinancialRecord> GetAllExpenseRecords();
-
-        /// <summary>
-        /// Retrieves records that match the specified date.
-        /// </summary>
-        /// <param name="date">The date to filter records by.</param>
-        /// <returns>
-        /// A list of <see cref="FinancialRecord"/> that occur on the specified date.
-        /// </returns>
-        IEnumerable<FinancialRecord> GetByDate(DateOnly date);
-
-        /// <summary>
-        /// Retrieves records that match the specified month and year.
-        /// </summary>
-        /// <param name="month">The month to filter by.</param>
-        /// <param name="year">The year to filter by.</param>
-        /// <returns>
-        /// A list of <see cref="FinancialRecord"/> that occur within the specified month and year.
-        /// </returns>
-        IEnumerable<FinancialRecord> GetByMonthAndYear(int month, int year);
-
-        /// <summary>
-        /// Retrieves records that match the specified amount.
-        /// </summary>
-        /// <param name="amount">The amount to filter records by.</param>
-        /// <returns>
-        /// A list of <see cref="FinancialRecord"/> with the specified amount.
-        /// </returns>
-        IEnumerable<FinancialRecord> GetByAmount(decimal amount);
-
-        /// <summary>
-        /// Retrieves income records that match the specified <see cref="IncomeSource"/>.
-        /// </summary>
-        /// <param name="source">The <see cref="IncomeSource"/> to filter by.</param>
-        /// <returns>
-        /// A list of <see cref="FinancialRecord"/> representing incomes with the specified source.
-        /// </returns>
-        IEnumerable<FinancialRecord> GetBySource(IncomeSource source);
-
-        /// <summary>
-        /// Retrieves expense records that match the specified <see cref="ExpenseCategory"/>.
-        /// </summary>
-        /// <param name="category">The <see cref="ExpenseCategory"/> to filter by.</param>
-        /// <returns>
-        /// A list of <see cref="FinancialRecord"/> representing expenses in the specified category.
-        /// </returns>
-        IEnumerable<FinancialRecord> GetByCategory(ExpenseCategory category);
+        /// <param name="filter">The filter to search for.</param>
+        /// <returns>A list of <see cref="FinancialRecord"/> representing the filtered records.</returns>
+        public IEnumerable<FinancialRecord> GetRecords(Func<FinancialRecord, bool>? filter = null);
 
         /// <summary>
         /// Retrieves a <see cref="FinancialRecord"/> by its identifier.
