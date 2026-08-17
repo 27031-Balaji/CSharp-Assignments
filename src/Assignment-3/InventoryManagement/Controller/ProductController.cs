@@ -394,7 +394,7 @@ namespace InventoryManagement.Controller
         {
             try
             {
-                this._services.ValidateInventory();
+                this._services.CheckInventory();
 
                 return true;
             }
@@ -414,11 +414,13 @@ namespace InventoryManagement.Controller
         /// <returns>The matching <see cref="Product"/> if found, otherwise null.</returns>
         private Product? GetValidProductWithId(string operation)
         {
-            do
+            bool shouldContinue = true;
+            while (shouldContinue)
             {
                 string productId = this._view.ReadProductId(operation);
                 if (!this._helper.IsValidProductId(productId))
                 {
+                    shouldContinue = this.CanRetry("Product ID");
                     continue;
                 }
 
@@ -429,9 +431,9 @@ namespace InventoryManagement.Controller
                 catch (ProductNotFoundException ex)
                 {
                     this._view.ShowMessage(ex.Message, MessageType.Error);
+                    shouldContinue = this.CanRetry("Product ID");
                 }
             }
-            while (this.CanRetry("Product ID"));
 
             return null;
         }
@@ -444,15 +446,17 @@ namespace InventoryManagement.Controller
         private bool GetValidProductName(out string name, string operation)
         {
             name = string.Empty;
-            do
+            bool shouldContinue = true;
+            while (shouldContinue)
             {
                 name = this._view.ReadProductName(operation);
                 if (this._helper.IsValidName(name))
                 {
                     return true;
                 }
+
+                shouldContinue = this.CanRetry("name");
             }
-            while (this.CanRetry("name"));
 
             return false;
         }
@@ -466,15 +470,17 @@ namespace InventoryManagement.Controller
         {
             price = 0;
             string input;
-            do
+            bool shouldContinue = true;
+            while (shouldContinue)
             {
                 input = this._view.ReadProductPrice();
                 if (this._helper.IsValidPrice(input, out price))
                 {
                     return true;
                 }
+
+                shouldContinue = this.CanRetry("price");
             }
-            while (this.CanRetry("price"));
 
             return false;
         }
@@ -488,15 +494,17 @@ namespace InventoryManagement.Controller
         {
             string input;
             quantity = 0;
-            do
+            bool shouldContinue = true;
+            while (shouldContinue)
             {
                 input = this._view.ReadProductQuantity();
                 if (this._helper.IsValidQuantity(input, out quantity))
                 {
                     return true;
                 }
+
+                shouldContinue = this.CanRetry("quantity");
             }
-            while (this.CanRetry("quantity"));
 
             return false;
         }

@@ -42,7 +42,7 @@ namespace InventoryManagement.Repository
         public Product? GetProductById(string productId)
         {
             Product? product = this._products.Find(product => product.ProductId == productId);
-            return this.Clone(product!);
+            return product == null ? null : this.Clone(product!);
         }
 
         /// <summary>
