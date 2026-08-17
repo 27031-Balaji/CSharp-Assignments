@@ -1,5 +1,6 @@
 ﻿using ErrorHandling.Task1;
 using ErrorHandling.Task2;
+using ErrorHandling.Task3;
 
 namespace Assignments
 {
@@ -33,6 +34,8 @@ namespace Assignments
                         break;
 
                     case "C":
+                        Task3 task3 = new Task3();
+                        task3.Run();
                         break;
 
                     case "D":

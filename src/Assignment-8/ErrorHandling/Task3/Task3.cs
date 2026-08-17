@@ -1,10 +1,10 @@
-﻿namespace ErrorHandling.Task2
+﻿namespace ErrorHandling.Task3
 {
-    internal class Task2
+    internal class Task3
     {
         public void Run()
         {
-            Console.Write("\nTask 2 - Array access operation\n\n");
+            Console.Write("\nTask 3 - Array access operation with custom exception\n\n");
             Console.Write("Enter the array length: ");
             int lengthOfArray = this.GetValidNumber();
 
@@ -19,12 +19,17 @@
             {
                 Console.Write("Enter the index of the element you want to access: ");
                 int indexToAccess = this.GetValidNumber();
+                if (indexToAccess < 0 || indexToAccess >= arr.Length)
+                {
+                    throw new InvalidUserInputException("Can't access the element out of the array range.\n");
+                }
+
                 int elementInArray = arr[indexToAccess];
                 Console.WriteLine($"The array element found in {indexToAccess} is {elementInArray}");
             }
-            catch (IndexOutOfRangeException)
+            catch (InvalidUserInputException ex)
             {
-                Console.WriteLine("The index is out of bounds!\n");
+                Console.WriteLine(ex.Message);
             }
             catch (SystemException)
             {

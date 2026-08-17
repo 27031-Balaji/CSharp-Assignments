@@ -28,7 +28,7 @@
             }
             catch (Exception)
             {
-                Console.WriteLine("Execution error.\n");
+                Console.WriteLine("Base execution error.\n");
             }
             finally
             {
@@ -42,14 +42,15 @@
             bool isValidNumber = false;
             while (!isValidNumber)
             {
-                string input = (Console.ReadLine() ?? string.Empty).Trim().ToUpper();
+                string input = (Console.ReadLine() ?? string.Empty).Trim();
                 if (int.TryParse(input, out number))
                 {
                     isValidNumber = true;
                 }
                 else
                 {
-                    Console.WriteLine("Invalid number. Enter again below.");
+                    Console.WriteLine("Input must be a valid integer.");
+                    Console.WriteLine("Enter again below.");
                 }
             }
 
