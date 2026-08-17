@@ -1,4 +1,5 @@
-﻿using ExpenseTracker.Enums;
+﻿using ExpenseTracker.ConstantLiteral;
+using ExpenseTracker.Enums;
 
 namespace ExpenseTracker.Helper
 {
@@ -97,7 +98,7 @@ namespace ExpenseTracker.Helper
         /// <returns>True if <paramref name="recordId"/> is a 12-character alphanumeric string; otherwise, false.</returns>
         public bool IsValidRecordId(string? recordId)
         {
-            return !string.IsNullOrWhiteSpace(recordId) && recordId.Length == 12 && recordId.All(char.IsLetterOrDigit);
+            return !string.IsNullOrWhiteSpace(recordId) && recordId.Length == Constant.MaxLengthOfId && recordId.All(char.IsLetterOrDigit);
         }
 
         /// <summary>

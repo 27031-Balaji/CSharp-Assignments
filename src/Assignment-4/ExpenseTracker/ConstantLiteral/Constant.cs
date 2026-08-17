@@ -1,10 +1,15 @@
-﻿namespace ExpenseTracker.Constant
+﻿namespace ExpenseTracker.ConstantLiteral
 {
     /// <summary>
-    /// Provides CSV-related constants used across the application.
+    /// Provides constants used across the application.
     /// </summary>
-    internal static class CsvConstant
+    internal class Constant
     {
+        /// <summary>
+        /// Provides the maximum length of the transaction id.
+        /// </summary>
+        internal const int MaxLengthOfId = 8;
+
         /// <summary>
         /// The file path where records are persisted.
         /// </summary>

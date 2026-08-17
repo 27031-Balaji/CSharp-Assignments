@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using ExpenseTracker.Constant;
+using ExpenseTracker.ConstantLiteral;
 using ExpenseTracker.Enums;
 using ExpenseTracker.Model;
 
@@ -10,8 +10,8 @@ namespace ExpenseTracker.Repository
     /// </summary>
     internal class CsvExpenseRepository : IExpenseRepository
     {
-        private const string FilePath = CsvConstant.FilePath;
-        private const string CsvHeader = CsvConstant.CsvHeader;
+        private const string FilePath = Constant.FilePath;
+        private const string CsvHeader = Constant.CsvHeader;
         private readonly List<FinancialRecord> records;
 
         /// <summary>
