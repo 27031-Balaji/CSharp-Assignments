@@ -516,15 +516,17 @@ namespace ExpenseTracker.Controller
         {
             date = DateOnly.FromDateTime(DateTime.Now);
             string input;
-            do
+            bool shouldContinue = true;
+            while (shouldContinue)
             {
                 input = this.view.ReadRecordDate();
                 if (this.helper.IsValidDate(input, out date))
                 {
                     return true;
                 }
+
+                shouldContinue = this.CanRetry("date");
             }
-            while (this.CanRetry("date"));
 
             return false;
         }
@@ -538,15 +540,17 @@ namespace ExpenseTracker.Controller
         {
             amount = 0;
             string input;
-            do
+            bool shouldContinue = true;
+            while (shouldContinue)
             {
                 input = this.view.ReadRecordAmount();
                 if (this.helper.IsValidAmount(input, out amount))
                 {
                     return true;
                 }
+
+                shouldContinue = this.CanRetry("amount");
             }
-            while (this.CanRetry("amount"));
 
             return false;
         }
@@ -561,7 +565,8 @@ namespace ExpenseTracker.Controller
             source = IncomeSource.Other;
             IncomeSource[] sources = Enum.GetValues<IncomeSource>();
             string input;
-            do
+            bool shouldContinue = true;
+            while (shouldContinue)
             {
                 input = this.view.ReadRecordSource();
                 if (this.helper.IsValidClassificationChoice(input, sources.Length, out int choice))
@@ -569,8 +574,9 @@ namespace ExpenseTracker.Controller
                     source = sources[choice - 1];
                     return true;
                 }
+
+                shouldContinue = this.CanRetry("source");
             }
-            while (this.CanRetry("source"));
 
             return false;
         }
@@ -585,7 +591,8 @@ namespace ExpenseTracker.Controller
             category = ExpenseCategory.Other;
             ExpenseCategory[] categories = Enum.GetValues<ExpenseCategory>();
             string input;
-            do
+            bool shouldContinue = true;
+            while (shouldContinue)
             {
                 input = this.view.ReadRecordCategory();
                 if (this.helper.IsValidClassificationChoice(input, categories.Length, out int choice))
@@ -593,8 +600,9 @@ namespace ExpenseTracker.Controller
                     category = categories[choice - 1];
                     return true;
                 }
+
+                shouldContinue = this.CanRetry("category");
             }
-            while (this.CanRetry("category"));
 
             return false;
         }
@@ -609,24 +617,24 @@ namespace ExpenseTracker.Controller
         private bool GetValidRecordId(out string recordId, string action, IEnumerable<FinancialRecord> searchedRecords)
         {
             recordId = string.Empty;
-            do
+            bool shouldContinue = true;
+            while (shouldContinue)
             {
                 recordId = this.view.ReadRecordId(action);
-
                 if (!this.helper.IsValidRecordId(recordId))
                 {
+                    shouldContinue = this.CanRetry("id");
                     continue;
                 }
 
-                if (!this.IsDisplayedRecord(recordId, searchedRecords))
+                if (this.IsDisplayedRecord(recordId, searchedRecords))
                 {
-                    this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
-                    continue;
+                    return true;
                 }
 
-                return true;
+                this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
+                shouldContinue = this.CanRetry("id");
             }
-            while (this.CanRetry("id"));
 
             return false;
         }
@@ -641,15 +649,17 @@ namespace ExpenseTracker.Controller
         {
             month = 0;
             year = 0;
-            do
+            bool shouldContinue = true;
+            while (shouldContinue)
             {
                 string? input = this.view.ReadMonthAndYear();
                 if (this.helper.IsValidMonthAndYear(input, out month, out year))
                 {
                     return true;
                 }
+
+                shouldContinue = this.CanRetry("month and year");
             }
-            while (this.CanRetry("month and year"));
 
             return false;
         }

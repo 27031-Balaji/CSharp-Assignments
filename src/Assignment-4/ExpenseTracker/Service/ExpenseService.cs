@@ -1,4 +1,5 @@
-﻿using ExpenseTracker.Enums;
+﻿using ExpenseTracker.ConstantLiteral;
+using ExpenseTracker.Enums;
 using ExpenseTracker.Model;
 using ExpenseTracker.Repository;
 
@@ -242,7 +243,7 @@ namespace ExpenseTracker.Service
             string recordId;
             do
             {
-                recordId = Guid.NewGuid().ToString("N").Substring(0, 12).ToUpper();
+                recordId = Guid.NewGuid().ToString("N").Substring(0, Constant.MaxLengthOfId).ToUpper();
             }
             while (this.repository.RecordIdExists(recordId));
 
