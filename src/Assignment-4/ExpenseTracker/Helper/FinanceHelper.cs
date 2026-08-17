@@ -6,7 +6,7 @@ namespace ExpenseTracker.Helper
     /// <summary>
     /// Provides input validation and classification helpers used by controller.
     /// </summary>
-    internal class ExpenseHelper
+    internal class FinanceHelper
     {
         /// <summary>
         /// Determines whether the provided input can be parsed as a date using the format "dd/MM/yyyy".
