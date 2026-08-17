@@ -1,26 +1,30 @@
-﻿namespace ErrorHandling.Task1
+﻿namespace ErrorHandling.Task2
 {
-    internal class Task1
+    internal class Task2
     {
         public void Run()
         {
-            Console.Write("\nTask 1 - Division operation\n\n");
-            Console.Write("Enter the first number: ");
-            int firstNumber = this.GetValidNumber();
-            Console.Write("Enter the second number: ");
-            int secondNumber = this.GetValidNumber();
+            Console.Write("\nTask 2 - Array access operation\n\n");
+            Console.Write("Enter the array length: ");
+            int lengthOfArray = this.GetValidNumber();
+
+            int[] arr = new int[lengthOfArray];
+            for (int i = 0; i < lengthOfArray; i++)
+            {
+                Console.Write($"Enter number {i + 1} for the array: ");
+                arr[i] = this.GetValidNumber();
+            }
+
             try
             {
-                int result = firstNumber / secondNumber;
-                Console.WriteLine($"The result is {result}");
+                Console.Write("Enter the index of the element you want to access: ");
+                int indexToAccess = this.GetValidNumber();
+                int elementInArray = arr[indexToAccess];
+                Console.WriteLine($"The array element found in {indexToAccess} is {elementInArray}");
             }
-            catch (DivideByZeroException)
+            catch (IndexOutOfRangeException)
             {
-                Console.WriteLine("Division operation is impossible with the second number being zero!\n");
-            }
-            catch (ArithmeticException)
-            {
-                Console.WriteLine("Invalid arithmetic operation.\n");
+                Console.WriteLine("The index is out of bounds!\n");
             }
             catch (SystemException)
             {
@@ -32,7 +36,7 @@
             }
             finally
             {
-                Console.WriteLine("Division operation ended successfully.\n");
+                Console.WriteLine("Array access operation ended successfully.\n");
             }
         }
 
