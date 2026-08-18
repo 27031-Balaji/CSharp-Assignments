@@ -6,11 +6,12 @@ namespace ErrorHandling
     {
         public static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(UniversalHandler);
             try
             {
                 try
                 {
-                    Console.Write("\nTask 3 - Array access operation with division (Custom invalid input exception)\n\n");
+                    Console.Write("\nTask 4 - Array access operation with division (Custom invalid input exception with global handler)\n\n");
                     Console.Write("Enter the array length: ");
                     int lengthOfArray = GetValidNumber();
 
@@ -47,13 +48,9 @@ namespace ErrorHandling
                     Console.WriteLine("Division operation is impossible with the second number being zero!\n");
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
             finally
             {
-                Console.WriteLine("Array access operation with custom exception ended.\n");
+                Console.WriteLine("Array access with custom exception and global handler completed.\n");
                 Console.ReadKey();
             }
         }
@@ -68,6 +65,16 @@ namespace ErrorHandling
             }
 
             return number;
+        }
+
+        private static void UniversalHandler(object sender, UnhandledExceptionEventArgs args)
+        {
+            Exception e = (Exception)args.ExceptionObject;
+            Console.WriteLine("Unhandled exception found.");
+            Console.WriteLine($"Type: {e.GetType().Name}");
+            Console.WriteLine("Universal handler caught with message: " + e.Message);
+            Console.WriteLine("Exception Stack Trace: " + e.StackTrace);
+            Console.WriteLine("Runtime terminating: {0}", args.IsTerminating);
         }
     }
 }

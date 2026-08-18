@@ -17,42 +17,35 @@
 
             try
             {
-                Console.Write("Enter the position of the element to be the dividend: ");
-                int dividendIndex = GetValidNumber();
-                int elementInDividendIndex = arr[dividendIndex - 1];
-                Console.WriteLine($"The array element found in position {dividendIndex} is {elementInDividendIndex}");
+                try
+                {
+                    Console.Write("Enter the position of the element to be the dividend: ");
+                    int dividendIndex = GetValidNumber();
+                    int elementInDividendIndex = arr[dividendIndex - 1];
 
-                Console.Write("Enter the position of the element to be the divisor: ");
-                int divisorIndex = GetValidNumber();
-                int elementInDivisorIndex = arr[divisorIndex - 1];
-                Console.WriteLine($"The array element found in position {divisorIndex} is {elementInDivisorIndex}");
+                    Console.Write("Enter the position of the element to be the divisor: ");
+                    int divisorIndex = GetValidNumber();
+                    int elementInDivisorIndex = arr[divisorIndex - 1];
 
-                int result = elementInDividendIndex / elementInDivisorIndex;
-                Console.WriteLine($"The division of {elementInDividendIndex} and {elementInDivisorIndex} is {result}\n");
+                    int result = elementInDividendIndex / elementInDivisorIndex;
+                    Console.WriteLine($"The division of {elementInDividendIndex} and {elementInDivisorIndex} is {result}");
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    throw new IndexOutOfRangeException("Cannot access the element outside the array bounds.\n");
+                }
+                catch (DivideByZeroException)
+                {
+                    Console.WriteLine("Division operation is impossible with the second number being zero!\n");
+                }
             }
-            catch (IndexOutOfRangeException)
+            catch (Exception ex)
             {
-                Console.WriteLine("The index is out of bounds!\n");
-            }
-            catch (DivideByZeroException)
-            {
-                Console.WriteLine("Division operation is impossible with the second number being zero!\n");
-            }
-            catch (ArithmeticException)
-            {
-                Console.WriteLine("Invalid arithmetic operation.\n");
-            }
-            catch (SystemException)
-            {
-                Console.WriteLine("Invalid system operation.\n");
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Base execution error.\n");
+                Console.WriteLine(ex.Message);
             }
             finally
             {
-                Console.WriteLine("Array access operation ended successfully.\n");
+                Console.WriteLine("Array access operation ended successfully.");
                 Console.ReadKey();
             }
         }

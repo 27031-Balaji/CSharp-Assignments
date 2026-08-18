@@ -18,14 +18,6 @@
             {
                 Console.WriteLine("Division operation is impossible with the second number being zero!\n");
             }
-            catch (ArithmeticException)
-            {
-                Console.WriteLine("Invalid arithmetic operation.\n");
-            }
-            catch (SystemException)
-            {
-                Console.WriteLine("Invalid system operation.\n");
-            }
             catch (Exception)
             {
                 Console.WriteLine("Base execution error.\n");
