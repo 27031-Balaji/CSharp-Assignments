@@ -1,4 +1,4 @@
-﻿namespace ErrorHandling.Task3
+﻿namespace ErrorHandling
 {
     internal class InvalidUserInputException : Exception
     {

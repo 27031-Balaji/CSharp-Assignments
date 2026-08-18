@@ -1,14 +1,14 @@
-﻿namespace ErrorHandling.Task1
+﻿namespace ErrorHandling
 {
-    internal class Task1
+    internal class Program
     {
-        public void Run()
+        public static void Main(string[] args)
         {
             Console.Write("\nTask 1 - Division operation\n\n");
             Console.Write("Enter the first number: ");
-            int firstNumber = this.GetValidNumber();
+            int firstNumber = GetValidNumber();
             Console.Write("Enter the second number: ");
-            int secondNumber = this.GetValidNumber();
+            int secondNumber = GetValidNumber();
             try
             {
                 int result = firstNumber / secondNumber;
@@ -33,10 +33,11 @@
             finally
             {
                 Console.WriteLine("Division operation ended successfully.\n");
+                Console.ReadKey();
             }
         }
 
-        public int GetValidNumber()
+        public static int GetValidNumber()
         {
             int number = 0;
             bool isValidNumber = false;
