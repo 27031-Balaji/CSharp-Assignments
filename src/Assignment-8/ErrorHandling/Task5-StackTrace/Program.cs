@@ -1,10 +1,80 @@
-﻿namespace Assignments
+﻿using ErrorHandling.CustomException;
+
+namespace ErrorHandling
 {
     internal class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(UniversalHandler);
+            try
+            {
+                try
+                {
+                    Console.Write("\nTask 4 - Array access operation with division (Custom invalid input exception with global handler)\n\n");
+                    Console.Write("Enter the array length: ");
+                    int lengthOfArray = GetValidNumber();
+
+                    int[] arr = new int[lengthOfArray];
+                    for (int i = 0; i < lengthOfArray; i++)
+                    {
+                        Console.Write($"Enter number {i + 1} for the array: ");
+                        arr[i] = GetValidNumber();
+                    }
+
+                    Console.Write("Enter the position of the element to be the dividend: ");
+                    int dividendIndex = GetValidNumber();
+                    int elementInDividendIndex = arr[dividendIndex - 1];
+                    Console.WriteLine($"The array element found in position {dividendIndex} is {elementInDividendIndex}");
+
+                    Console.Write("Enter the position of the element to be the divisor: ");
+                    int divisorIndex = GetValidNumber();
+                    int elementInDivisorIndex = arr[divisorIndex - 1];
+                    Console.WriteLine($"The array element found in position {divisorIndex} is {elementInDivisorIndex}");
+
+                    int result = elementInDividendIndex / elementInDivisorIndex;
+                    Console.WriteLine($"The division of {elementInDividendIndex} and {elementInDivisorIndex} is {result}\n");
+                }
+                catch (InvalidUserInputException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    throw new IndexOutOfRangeException("Cannot access the element outside the array bounds.\n");
+                }
+                catch (DivideByZeroException)
+                {
+                    Console.WriteLine("Division operation is impossible with the second number being zero!\n");
+                }
+            }
+            finally
+            {
+                Console.WriteLine("Array access with custom exception and global handler completed.\n");
+                Console.ReadKey();
+            }
+        }
+
+        public static int GetValidNumber()
+        {
+            int number = 0;
+            string input = (Console.ReadLine() ?? string.Empty).Trim();
+            if (!int.TryParse(input, out number))
+            {
+                throw new InvalidUserInputException("Enter a valid number.\n");
+            }
+
+            return number;
+        }
+
+        private static void UniversalHandler(object sender, UnhandledExceptionEventArgs args)
+        {
+            Exception e = (Exception)args.ExceptionObject;
+            Console.WriteLine("Unhandled exception found.");
+            Console.WriteLine($"Type: {e.GetType().Name}");
+            Console.WriteLine("Universal handler caught with message: " + e.Message);
+            Console.WriteLine("Exception Stack Trace: " + e.StackTrace);
+            Console.WriteLine("Runtime terminating: {0}", args.IsTerminating);
         }
     }
 }

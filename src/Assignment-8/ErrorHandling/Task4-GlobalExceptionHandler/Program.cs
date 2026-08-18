@@ -73,7 +73,6 @@ namespace ErrorHandling
             Console.WriteLine("Unhandled exception found.");
             Console.WriteLine($"Type: {e.GetType().Name}");
             Console.WriteLine("Universal handler caught with message: " + e.Message);
-            Console.WriteLine("Exception Stack Trace: " + e.StackTrace);
             Console.WriteLine("Runtime terminating: {0}", args.IsTerminating);
         }
     }
