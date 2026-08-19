@@ -39,9 +39,9 @@ namespace ErrorHandling
                 {
                     Console.WriteLine(ex.Message);
                 }
-                catch (IndexOutOfRangeException)
+                catch (IndexOutOfRangeException ex)
                 {
-                    throw new IndexOutOfRangeException("Cannot access the element outside the array bounds.\n");
+                    throw new SystemException("Cannot access the element outside the array bounds.", ex);
                 }
                 catch (DivideByZeroException)
                 {

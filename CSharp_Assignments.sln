@@ -19,9 +19,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task3-BankingSystem", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assignment1-ContactManager", "src\Assignment-1\Assignment1-ContactManager\Assignment1-ContactManager.csproj", "{203DB866-848A-4490-A21B-7F97F1DBDC3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task1-DivisionOperation", "src\Assignment-8\ErrorHandling\Task1-DivisionOperation\Task1-DivisionOperation.csproj", "{A5B43068-70C7-461F-A1DA-6ABA271CAD17}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task1", "src\Assignment-8\ErrorHandling\Task1-DivisionOperation\Task1.csproj", "{A5B43068-70C7-461F-A1DA-6ABA271CAD17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task2-ArrayAccess", "src\Assignment-8\ErrorHandling\Task2-ArrayAccess\Task2-ArrayAccess.csproj", "{658C4BC4-1B97-4A11-AC4A-37C1DD249F42}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task2", "src\Assignment-8\ErrorHandling\Task2-ArrayAccess\Task2.csproj", "{658C4BC4-1B97-4A11-AC4A-37C1DD249F42}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assignment-8", "Assignment-8", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
@@ -29,11 +29,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assignment-1", "Assignment-
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assignment-2", "Assignment-2", "{B2D363B4-239D-41B0-BCC4-406F82CB65FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task3-CustomException", "src\Assignment-8\ErrorHandling\Task3-CustomException\Task3-CustomException.csproj", "{82296EC9-AA1D-425B-8CFD-B46E135A9A19}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task3", "src\Assignment-8\ErrorHandling\Task3-CustomException\Task3.csproj", "{82296EC9-AA1D-425B-8CFD-B46E135A9A19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task4-GlobalExceptionHandler", "src\Assignment-8\ErrorHandling\Task4-GlobalExceptionHandler\Task4-GlobalExceptionHandler.csproj", "{48D6014A-09F6-44A3-AFEA-159685FE9958}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task4", "src\Assignment-8\ErrorHandling\Task4-GlobalExceptionHandler\Task4.csproj", "{48D6014A-09F6-44A3-AFEA-159685FE9958}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task5-StackTrace", "src\Assignment-8\ErrorHandling\Task5-StackTrace\Task5-StackTrace.csproj", "{6AD24CA7-94BE-4CE5-AFEF-4234F46A4389}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task5", "src\Assignment-8\ErrorHandling\Task5-StackTrace\Task5.csproj", "{6AD24CA7-94BE-4CE5-AFEF-4234F46A4389}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
