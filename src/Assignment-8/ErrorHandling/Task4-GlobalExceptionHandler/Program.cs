@@ -70,7 +70,7 @@ namespace ErrorHandling
         private static void UniversalHandler(object sender, UnhandledExceptionEventArgs args)
         {
             Exception e = (Exception)args.ExceptionObject;
-            Console.WriteLine("Unhandled exception found.");
+            Console.WriteLine("An unhandled exception occurred.");
             Console.WriteLine($"Type: {e.GetType().Name}");
             Console.WriteLine("Universal handler caught with message: " + e.Message);
             Console.WriteLine("Runtime terminating: {0}", args.IsTerminating);

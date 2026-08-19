@@ -11,7 +11,7 @@ namespace ErrorHandling
             {
                 try
                 {
-                    Console.Write("\nTask 4 - Array access operation with division (Custom invalid input exception with global handler)\n\n");
+                    Console.Write("\nTask 5 - Array access operation with division (Custom invalid input exception with global handler and stack trace)\n\n");
                     Console.Write("Enter the array length: ");
                     int lengthOfArray = GetValidNumber();
 
@@ -70,7 +70,7 @@ namespace ErrorHandling
         private static void UniversalHandler(object sender, UnhandledExceptionEventArgs args)
         {
             Exception e = (Exception)args.ExceptionObject;
-            Console.WriteLine("Unhandled exception found.");
+            Console.WriteLine("An unhandled exception occurred.");
             Console.WriteLine($"Type: {e.GetType().Name}");
             Console.WriteLine("Universal handler caught with message: " + e.Message);
             Console.WriteLine("Exception Stack Trace: " + e.StackTrace);
