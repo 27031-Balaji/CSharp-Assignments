@@ -59,10 +59,5 @@
         /// Message displayed when a record's description is edited successfully.
         /// </summary>
         public const string DescriptionEditedSuccessMessage = "Description edited successfully.";
-
-        /// <summary>
-        /// Message displayed when the application is exiting.
-        /// </summary>
-        public const string ExitMessage = "Exiting Application...";
     }
 }

@@ -64,7 +64,6 @@ namespace ExpenseTracker.Controller
                         break;
 
                     case MainMenuOption.Exit:
-                        this.view.ShowMessage(ConsoleMessages.ExitMessage, MessageType.Info);
                         isRunning = false;
                         break;
 
