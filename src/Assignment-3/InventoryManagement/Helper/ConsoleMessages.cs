@@ -44,10 +44,5 @@
         /// Message displayed when no <see cref="Model.Product"/> are found with low stock levels.
         /// </summary>
         public const string NoLowStockProductsMessage = "No products are low in stock.";
-
-        /// <summary>
-        /// Message displayed when the application is exiting.
-        /// </summary>
-        public const string ExitMessage = "Exiting Application...";
     }
 }
