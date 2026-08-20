@@ -302,8 +302,12 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            var summary = this.service.GetMonthlySummary(month, year);
-            this.view.ShowFinancialSummary(month, year, summary.NetIncome, summary.NetExpense, summary.NetBalance, summary.SavingsRate, summary.HighestExpense);
+            (decimal netIncome,
+             decimal netExpense,
+             decimal netBalance,
+             decimal savingsRate,
+             Expense? highestExpense) = this.service.GetMonthlySummary(month, year);
+            this.view.ShowFinancialSummary(month, year, netIncome, netExpense, netBalance, savingsRate, highestExpense);
             this.view.ClearScreenWithKey();
         }
 
