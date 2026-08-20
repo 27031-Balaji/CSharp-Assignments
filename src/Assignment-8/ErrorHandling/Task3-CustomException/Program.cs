@@ -2,8 +2,15 @@
 
 namespace ErrorHandling
 {
+    /// <summary>
+    /// The Program class is the entry point of the application.
+    /// </summary>
     internal class Program
     {
+        /// <summary>
+        /// The main method that runs when the application is built.
+        /// </summary>
+        /// <param name="args">The command-line arguments.</param>
         public static void Main(string[] args)
         {
             try
@@ -58,6 +65,11 @@ namespace ErrorHandling
             }
         }
 
+        /// <summary>
+        /// Prompts the user to enter a valid number as the input.
+        /// </summary>
+        /// <returns>The valid number if they enter properly.</returns>
+        /// <exception cref="InvalidUserInputException">Custom exception thrown when the user enters invalid number.</exception>
         public static int GetValidNumber()
         {
             int number = 0;

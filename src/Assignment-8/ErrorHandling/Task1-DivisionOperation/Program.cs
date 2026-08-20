@@ -1,7 +1,14 @@
 ﻿namespace ErrorHandling
 {
+    /// <summary>
+    /// The Program class is the entry point of the application.
+    /// </summary>
     internal class Program
     {
+        /// <summary>
+        /// The main method that runs when the application is built.
+        /// </summary>
+        /// <param name="args">The command-line arguments.</param>
         public static void Main(string[] args)
         {
             Console.Write("\nTask 1 - Division operation\n\n");
@@ -29,6 +36,10 @@
             }
         }
 
+        /// <summary>
+        /// Prompts the user until they enter the right valid number.
+        /// </summary>
+        /// <returns>The number in the right format.</returns>
         public static int GetValidNumber()
         {
             int number = 0;

@@ -2,8 +2,15 @@
 
 namespace ErrorHandling
 {
+    /// <summary>
+    /// The Program class is the entry point of the application.
+    /// </summary>
     internal class Program
     {
+        /// <summary>
+        /// The main method that runs when the application is built.
+        /// </summary>
+        /// <param name="args">The command-line arguments.</param>
         public static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(UniversalHandler);
@@ -55,6 +62,11 @@ namespace ErrorHandling
             }
         }
 
+        /// <summary>
+        /// Prompts the user to enter a valid number as the input.
+        /// </summary>
+        /// <returns>The valid number if they enter properly.</returns>
+        /// <exception cref="InvalidUserInputException">Custom exception thrown when the user enters invalid number.</exception>
         public static int GetValidNumber()
         {
             int number = 0;
@@ -67,6 +79,11 @@ namespace ErrorHandling
             return number;
         }
 
+        /// <summary>
+        /// The UniversalHandler method is used to handle the event raised when the exception is not handled in the application domain.
+        /// </summary>
+        /// <param name="sender">The source of the unhandled exception event.</param>
+        /// <param name="args">The arguments which contains the event data.</param>
         private static void UniversalHandler(object sender, UnhandledExceptionEventArgs args)
         {
             Exception e = (Exception)args.ExceptionObject;
