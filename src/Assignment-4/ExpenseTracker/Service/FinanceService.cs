@@ -149,7 +149,8 @@ namespace ExpenseTracker.Service
         /// <param name="date">The new date value.</param>
         public void EditRecordDate(FinancialRecord record, DateOnly date)
         {
-            this.repository.UpdateRecordDate(record, date);
+            record.Date = date;
+            this.repository.UpdateRecord(record);
         }
 
         /// <summary>
@@ -159,7 +160,8 @@ namespace ExpenseTracker.Service
         /// <param name="amount">The new amount value.</param>
         public void EditRecordAmount(FinancialRecord record, decimal amount)
         {
-            this.repository.UpdateRecordAmount(record, amount);
+            record.Amount = amount;
+            this.repository.UpdateRecord(record);
         }
 
         /// <summary>
@@ -169,7 +171,8 @@ namespace ExpenseTracker.Service
         /// <param name="source">The new <see cref="IncomeSource"/>.</param>
         public void EditRecordSource(Income record, IncomeSource source)
         {
-            this.repository.UpdateRecordSource(record, source);
+            record.Source = source;
+            this.repository.UpdateRecord(record);
         }
 
         /// <summary>
@@ -179,7 +182,8 @@ namespace ExpenseTracker.Service
         /// <param name="category">The new <see cref="ExpenseCategory"/>.</param>
         public void EditRecordCategory(Expense record, ExpenseCategory category)
         {
-            this.repository.UpdateRecordCategory(record, category);
+            record.Category = category;
+            this.repository.UpdateRecord(record);
         }
 
         /// <summary>
@@ -189,7 +193,8 @@ namespace ExpenseTracker.Service
         /// <param name="description">The new description value; may be empty.</param>
         public void EditRecordDescription(FinancialRecord record, string? description)
         {
-            this.repository.UpdateRecordDescription(record, description);
+            record.Description = description;
+            this.repository.UpdateRecord(record);
         }
 
         /// <summary>

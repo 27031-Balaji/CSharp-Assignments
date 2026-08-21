@@ -83,62 +83,26 @@ namespace ExpenseTracker.Repository
         }
 
         /// <summary>
-        /// Updates the date of the specified <see cref="FinancialRecord"/> and saves changes.
+        /// Updates the data of the specified <see cref="FinancialRecord"/> and saves the changes.
         /// </summary>
-        /// <param name="record">The <see cref="FinancialRecord"/> to update.</param>
-        /// <param name="date">The new date value.</param>
-        public void UpdateRecordDate(FinancialRecord record, DateOnly date)
+        /// <param name="record">The record to be updated.</param>
+        public void UpdateRecord(FinancialRecord record)
         {
             FinancialRecord originalRecord = this.FindOriginalRecord(record.Id);
-            originalRecord.Date = date;
-            this.SaveRecordsToFile();
-        }
+            originalRecord.Date = record.Date;
+            originalRecord.Amount = record.Amount;
+            originalRecord.Description = record.Description;
 
-        /// <summary>
-        /// Updates the amount of the specified <see cref="FinancialRecord"/> and saves changes.
-        /// </summary>
-        /// <param name="record">The <see cref="FinancialRecord"/> to update.</param>
-        /// <param name="amount">The new amount value.</param>
-        public void UpdateRecordAmount(FinancialRecord record, decimal amount)
-        {
-            FinancialRecord originalRecord = this.FindOriginalRecord(record.Id);
-            originalRecord.Amount = amount;
-            this.SaveRecordsToFile();
-        }
+            if (originalRecord is Income originalIncome && record is Income updatedIncome)
+            {
+                originalIncome.Source = updatedIncome.Source;
+            }
 
-        /// <summary>
-        /// Updates the source of the specified <see cref="Income"/> and saves changes.
-        /// </summary>
-        /// <param name="record">The <see cref="Income"/> record to update.</param>
-        /// <param name="source">The new <see cref="IncomeSource"/>.</param>
-        public void UpdateRecordSource(Income record, IncomeSource source)
-        {
-            Income originalRecord = (Income)this.FindOriginalRecord(record.Id);
-            originalRecord.Source = source;
-            this.SaveRecordsToFile();
-        }
+            if (originalRecord is Expense originalExpense && record is Expense updatedExpense)
+            {
+                originalExpense.Category = updatedExpense.Category;
+            }
 
-        /// <summary>
-        /// Updates the category of the specified <see cref="Expense"/> and saves changes.
-        /// </summary>
-        /// <param name="record">The <see cref="Expense"/> record to update.</param>
-        /// <param name="category">The new <see cref="ExpenseCategory"/>.</param>
-        public void UpdateRecordCategory(Expense record, ExpenseCategory category)
-        {
-            Expense originalRecord = (Expense)this.FindOriginalRecord(record.Id);
-            originalRecord.Category = category;
-            this.SaveRecordsToFile();
-        }
-
-        /// <summary>
-        /// Updates the description of the specified <see cref="FinancialRecord"/> and saves changes.
-        /// </summary>
-        /// <param name="record">The <see cref="FinancialRecord"/> to update.</param>
-        /// <param name="description">The new description value.</param>
-        public void UpdateRecordDescription(FinancialRecord record, string? description)
-        {
-            FinancialRecord originalRecord = this.FindOriginalRecord(record.Id);
-            originalRecord.Description = description;
             this.SaveRecordsToFile();
         }
 
