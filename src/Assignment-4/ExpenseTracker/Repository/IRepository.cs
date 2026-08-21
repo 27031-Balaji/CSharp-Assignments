@@ -43,39 +43,10 @@ namespace ExpenseTracker.Repository
         void DeleteRecord(FinancialRecord record);
 
         /// <summary>
-        /// Updates the date of the specified <see cref="FinancialRecord"/>.
+        /// Updates the data of the specified <see cref="FinancialRecord"/>.
         /// </summary>
         /// <param name="record">The <see cref="FinancialRecord"/> to update.</param>
-        /// <param name="date">The new date.</param>
-        void UpdateRecordDate(FinancialRecord record, DateOnly date);
-
-        /// <summary>
-        /// Updates the amount of the specified <see cref="FinancialRecord"/>.
-        /// </summary>
-        /// <param name="record">The <see cref="FinancialRecord"/> to update.</param>
-        /// <param name="amount">The new amount value.</param>
-        void UpdateRecordAmount(FinancialRecord record, decimal amount);
-
-        /// <summary>
-        /// Updates the source of the specified <see cref="Income"/>.
-        /// </summary>
-        /// <param name="record">The <see cref="Income"/> record to update.</param>
-        /// <param name="source">The new <see cref="IncomeSource"/>.</param>
-        void UpdateRecordSource(Income record, IncomeSource source);
-
-        /// <summary>
-        /// Updates the category of the specified <see cref="Expense"/>.
-        /// </summary>
-        /// <param name="record">The <see cref="Expense"/> record to update.</param>
-        /// <param name="category">The new <see cref="ExpenseCategory"/>.</param>
-        void UpdateRecordCategory(Expense record, ExpenseCategory category);
-
-        /// <summary>
-        /// Updates the description of the specified <see cref="FinancialRecord"/>.
-        /// </summary>
-        /// <param name="record">The <see cref="FinancialRecord"/> to update.</param>
-        /// <param name="description">The new description value.</param>
-        void UpdateRecordDescription(FinancialRecord record, string? description);
+        void UpdateRecord(FinancialRecord record);
 
         /// <summary>
         /// Determines whether a record identifier already exists in the repository.
