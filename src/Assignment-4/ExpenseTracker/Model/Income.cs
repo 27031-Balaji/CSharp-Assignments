@@ -11,13 +11,14 @@ namespace ExpenseTracker.Model
         /// Initializes a new instance of the <see cref="Income"/> class.
         /// </summary>
         /// <param name="id">The unique ID of the <see cref="Income"/> record.</param>
+        /// <param name="userId">The user ID mapped to the <see cref="Income"/> record.</param>
         /// <param name="date">The date in which the <see cref="Income"/> record is taken.</param>
         /// <param name="amount">The amount associated with the <see cref="Income"/> record.</param>
         /// <param name="type">The type of the record (<see cref="Income"/>).</param>
         /// <param name="description">The description of the <see cref="Income"/> record.</param>
         /// <param name="source">The <see cref="IncomeSource"/> of income.</param>
-        public Income(string id, DateOnly date, decimal amount, string? description, RecordType type, IncomeSource source)
-            : base(id, date, amount, RecordType.Income, description)
+        public Income(string id, Guid userId, DateOnly date, decimal amount, string? description, RecordType type, IncomeSource source)
+            : base(id, userId, date, amount, RecordType.Income, description)
         {
             this.Source = source;
         }

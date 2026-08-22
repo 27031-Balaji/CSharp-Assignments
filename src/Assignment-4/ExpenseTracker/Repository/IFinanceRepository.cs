@@ -6,7 +6,7 @@ namespace ExpenseTracker.Repository
     /// <summary>
     /// Defines repository operations for storing and querying <see cref="FinancialRecord"/> instances.
     /// </summary>
-    internal interface IRepository
+    internal interface IFinanceRepository
     {
         /// <summary>
         /// Gets the total number of stored <see cref="FinancialRecord"/> instances.

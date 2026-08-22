@@ -1,5 +1,5 @@
-﻿using System.Text;
-using ExpenseTracker.ConstantLiteral;
+﻿using ExpenseTracker.ConstantLiteral;
+using ExpenseTracker.CsvUtils;
 using ExpenseTracker.Enums;
 using ExpenseTracker.Model;
 
@@ -8,11 +8,12 @@ namespace ExpenseTracker.Repository
     /// <summary>
     /// Provides a CSV based repository for storing and retrieving <see cref="FinancialRecord"/> instances.
     /// </summary>
-    internal class CsvFinanceRepository : IRepository
+    internal class CsvFinanceRepository : IFinanceRepository
     {
-        private const string FilePath = Constant.FilePath;
-        private const string CsvHeader = Constant.CsvHeader;
+        private const string FilePath = Constant.FinanceFilePath;
+        private const string CsvHeader = Constant.FinanceCsvHeader;
         private readonly List<FinancialRecord> records;
+        private readonly CsvHandler csvHandler;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CsvFinanceRepository"/> class.
@@ -20,6 +21,7 @@ namespace ExpenseTracker.Repository
         public CsvFinanceRepository()
         {
             this.records = new List<FinancialRecord>();
+            this.csvHandler = new CsvHandler(FilePath);
             this.ReadRecordsFromFile();
         }
 
@@ -35,15 +37,14 @@ namespace ExpenseTracker.Repository
         /// <param name="record">The <see cref="FinancialRecord"/> to add.</param>
         public void AddRecord(FinancialRecord record)
         {
-            bool fileExists = File.Exists(FilePath);
             List<string> lines = new List<string>();
-            if (!fileExists)
+            if (!this.csvHandler.Exists())
             {
                 lines.Add(CsvHeader);
             }
 
             lines.Add(this.ConvertToCsv(record));
-            File.AppendAllLines(FilePath, lines);
+            this.csvHandler.Append(lines);
             this.records.Add(record);
         }
 
@@ -54,10 +55,9 @@ namespace ExpenseTracker.Repository
         /// <returns>A list of <see cref="FinancialRecord"/> representing the filtered records.</returns>
         public IEnumerable<FinancialRecord> GetRecords(Func<FinancialRecord, bool>? filter = null)
         {
-            return ((filter == null)
+            return (filter == null)
                 ? this.records
-                : this.records.Where(filter))
-                .Select(this.CloneRecord);
+                : this.records.Where(filter);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace ExpenseTracker.Repository
         public FinancialRecord? GetById(string recordId)
         {
             FinancialRecord? record = this.FindOriginalRecord(recordId);
-            return record is null ? null : this.CloneRecord(record);
+            return record is null ? null : record;
         }
 
         /// <summary>
@@ -77,9 +77,12 @@ namespace ExpenseTracker.Repository
         /// <param name="record">The <see cref="FinancialRecord"/> to delete.</param>
         public void DeleteRecord(FinancialRecord record)
         {
-            FinancialRecord originalRecord = this.FindOriginalRecord(record.Id);
-            this.records.Remove(originalRecord);
+            this.records.Remove(record);
             this.SaveRecordsToFile();
+        }
+
+        public void DeleteRecordsByUserId(Guid userId) {
+
         }
 
         /// <summary>
@@ -132,12 +135,7 @@ namespace ExpenseTracker.Repository
         /// </summary>
         private void ReadRecordsFromFile()
         {
-            if (!File.Exists(FilePath))
-            {
-                return;
-            }
-
-            string[] lines = File.ReadAllLines(FilePath);
+            List<string> lines = this.csvHandler.Read();
             foreach (string line in lines.Skip(1))
             {
                 if (string.IsNullOrWhiteSpace(line))
@@ -145,8 +143,7 @@ namespace ExpenseTracker.Repository
                     continue;
                 }
 
-                FinancialRecord record = this.ParseToRecord(line);
-                this.records.Add(record);
+                this.records.Add(this.ParseToRecord(line));
             }
         }
 
@@ -161,7 +158,7 @@ namespace ExpenseTracker.Repository
                 lines.Add(this.ConvertToCsv(record));
             }
 
-            File.WriteAllLines(FilePath, lines);
+            this.csvHandler.Write(lines);
         }
 
         /// <summary>
@@ -171,68 +168,27 @@ namespace ExpenseTracker.Repository
         /// <returns>A <see cref="FinancialRecord"/> instance representing the parsed line.</returns>
         private FinancialRecord ParseToRecord(string line)
         {
-            List<string> values = this.ParseCsvLine(line);
+            List<string> values = this.csvHandler.ParseCsvLine(line);
             string id = values[0];
-            DateOnly date = DateOnly.Parse(values[1]);
-            string type = values[2];
-            string classification = values[3];
-            decimal amount = decimal.Parse(values[4]);
-            string? description = string.IsNullOrWhiteSpace(values[5]) ? string.Empty : values[5];
+            Guid userId = Guid.Parse(values[1]);
+            DateOnly date = DateOnly.Parse(values[2]);
+            string type = values[3];
+            string classification = values[4];
+            decimal amount = decimal.Parse(values[5]);
+            string? description = string.IsNullOrWhiteSpace(values[6]) ? string.Empty : values[5];
 
             FinancialRecord record;
 
             if (type == RecordType.Income.ToString())
             {
-                record = new Income(id, date, amount, description, RecordType.Income, Enum.Parse<IncomeSource>(classification));
+                record = new Income(id, userId, date, amount, description, RecordType.Income, Enum.Parse<IncomeSource>(classification));
             }
             else
             {
-                record = new Expense(id, date, amount, description, RecordType.Expense, Enum.Parse<ExpenseCategory>(classification));
+                record = new Expense(id, userId, date, amount, description, RecordType.Expense, Enum.Parse<ExpenseCategory>(classification));
             }
 
             return record;
-        }
-
-        /// <summary>
-        /// Parses a CSV line into its constituent fields, handling commas and quotes.
-        /// </summary>
-        /// <param name="line">The CSV line to split.</param>
-        /// <returns>A list of field values extracted from the line.</returns>
-        private List<string> ParseCsvLine(string line)
-        {
-            List<string> fields = new List<string>();
-            StringBuilder field = new StringBuilder();
-            bool insideQuotes = false;
-
-            for (int i = 0; i < line.Length; i++)
-            {
-                char ch = line[i];
-                if (ch == '"')
-                {
-                    if (insideQuotes && i + 1 < line.Length && line[i + 1] == '"')
-                    {
-                        field.Append('"');
-                        i++;
-                    }
-                    else
-                    {
-                        insideQuotes = !insideQuotes;
-                    }
-                }
-                else if (ch == ',' && !insideQuotes)
-                {
-                    fields.Add(field.ToString());
-                    field.Clear();
-                }
-                else
-                {
-                    field.Append(ch);
-                }
-            }
-
-            fields.Add(field.ToString());
-
-            return fields;
         }
 
         /// <summary>
@@ -244,44 +200,12 @@ namespace ExpenseTracker.Repository
         {
             return string.Join(
                 ",",
-                this.CsvEscape(record.Id),
-                this.CsvEscape(record.Date.ToString("dd/MM/yyyy")),
-                this.CsvEscape(record.Type.ToString()),
-                this.CsvEscape(record.Classification),
+                this.csvHandler.CsvEscape(record.Id),
+                this.csvHandler.CsvEscape(record.Date.ToString("dd/MM/yyyy")),
+                this.csvHandler.CsvEscape(record.Type.ToString()),
+                this.csvHandler.CsvEscape(record.Classification),
                 record.Amount.ToString(),
-                this.CsvEscape(record.Description ?? string.Empty));
-        }
-
-        /// <summary>
-        /// Escapes a value for CSV output by quoting and doubling embedded quotes when necessary.
-        /// </summary>
-        /// <param name="value">The field value to escape.</param>
-        /// <returns>The escaped field value suitable for CSV.</returns>
-        private string CsvEscape(string value)
-        {
-            if (value.Contains(',') || value.Contains('"'))
-            {
-                value = value.Replace("\"", "\"\"");
-                return $"\"{value}\"";
-            }
-
-            return value;
-        }
-
-        /// <summary>
-        /// Creates a copy of the specified financial record.
-        /// </summary>
-        /// <param name="record">The financial record to copy.</param>
-        /// <returns>A new instance of the same type as the provided record.</returns>
-        /// <exception cref="InvalidOperationException">Thrown when the record type is unknown.</exception>
-        private FinancialRecord CloneRecord(FinancialRecord record)
-        {
-            return record switch
-            {
-                Income income => new Income(income.Id, income.Date, income.Amount, income.Description, income.Type, income.Source),
-                Expense expense => new Expense(expense.Id, expense.Date, expense.Amount, expense.Description, expense.Type, expense.Category),
-                _ => throw new InvalidOperationException("Unknown record type.")
-            };
+                this.csvHandler.CsvEscape(record.Description ?? string.Empty));
         }
     }
 }

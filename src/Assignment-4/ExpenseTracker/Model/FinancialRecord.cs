@@ -11,13 +11,15 @@ namespace ExpenseTracker.Model
         /// Initializes a new instance of the <see cref="FinancialRecord"/> class.
         /// </summary>
         /// <param name="id">The unique ID of the <see cref="FinancialRecord"/>.</param>
+        /// <param name="userId">The user ID mapped to the <see cref="FinancialRecord"/>.</param>
         /// <param name="date">The date in which the <see cref="FinancialRecord"/> is taken.</param>
         /// <param name="amount">The amount associated with the <see cref="FinancialRecord"/>.</param>
         /// <param name="type">The type associated with the <see cref="FinancialRecord"/>.</param>
         /// <param name="description">The description of the <see cref="FinancialRecord"/>.</param>
-        protected FinancialRecord(string id, DateOnly date, decimal amount, RecordType type, string? description)
+        protected FinancialRecord(string id, Guid userId, DateOnly date, decimal amount, RecordType type, string? description)
         {
             this.Id = id;
+            this.UserId = userId;
             this.Date = date;
             this.Amount = amount;
             this.Type = type;
@@ -29,6 +31,12 @@ namespace ExpenseTracker.Model
         /// </summary>
         /// <value>The unique ID of the <see cref="FinancialRecord"/>.</value>
         public string Id { get; }
+
+        /// <summary>
+        /// Gets the unique user ID of the <see cref="FinancialRecord"/>.
+        /// </summary>
+        /// <value>The unique user ID of the <see cref="FinancialRecord"/>.</value>
+        public Guid UserId { get; }
 
         /// <summary>
         /// Gets or sets the date of the <see cref="FinancialRecord"/>.

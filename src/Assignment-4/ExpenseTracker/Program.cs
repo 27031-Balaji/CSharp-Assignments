@@ -17,7 +17,7 @@ namespace ExpenseTracker
         /// <param name="args">Command-line arguments passed to the application.</param>
         public static void Main(string[] args)
         {
-            IRepository repository = new CsvFinanceRepository();
+            IFinanceRepository repository = new CsvFinanceRepository();
             FinanceService expenseService = new FinanceService(repository);
             FinanceHelper expenseHelper = new FinanceHelper();
             ConsoleOperation view = new ConsoleOperation();

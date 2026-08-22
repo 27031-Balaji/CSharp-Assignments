@@ -13,11 +13,15 @@
         /// <summary>
         /// The file path where records are persisted.
         /// </summary>
-        internal const string FilePath = "records.csv";
+        internal const string FinanceFilePath = "records.csv";
+
+        internal const string UserFilePath = "users.csv";
 
         /// <summary>
         /// The CSV header line used when creating the records file.
         /// </summary>
-        internal const string CsvHeader = "Id,Date,Type,Classification,Amount,Description";
+        internal const string FinanceCsvHeader = "Id,Date,Type,Classification,Amount,Description";
+
+        internal const string UserCsvHeader = "Id,Username,Password";
     }
 }

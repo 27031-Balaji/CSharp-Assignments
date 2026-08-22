@@ -10,13 +10,13 @@ namespace ExpenseTracker.Service
     /// </summary>
     internal class FinanceService
     {
-        private readonly IRepository repository;
+        private readonly IFinanceRepository repository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FinanceService"/> class.
         /// </summary>
-        /// <param name="repository">The <see cref="IRepository"/> used to save and query records.</param>
-        public FinanceService(IRepository repository)
+        /// <param name="repository">The <see cref="IFinanceRepository"/> used to save and query records.</param>
+        public FinanceService(IFinanceRepository repository)
         {
             this.repository = repository;
         }
