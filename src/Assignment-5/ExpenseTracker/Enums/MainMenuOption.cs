@@ -41,8 +41,13 @@
         FinancialSummary,
 
         /// <summary>
-        /// Selects the option to exit the application.
+        /// Selects the option to delete the account.
         /// </summary>
-        Exit,
+        DeleteAccount,
+
+        /// <summary>
+        /// Selects the option to logout.
+        /// </summary>
+        Logout,
     }
 }

@@ -1,5 +1,4 @@
-﻿using ExpenseTracker.Enums;
-using ExpenseTracker.Model;
+﻿using ExpenseTracker.Model;
 
 namespace ExpenseTracker.Repository
 {
@@ -8,12 +7,6 @@ namespace ExpenseTracker.Repository
     /// </summary>
     internal interface IFinanceRepository
     {
-        /// <summary>
-        /// Gets the total number of stored <see cref="FinancialRecord"/> instances.
-        /// </summary>
-        /// <value>The number of records in the repository.</value>
-        int RecordCount { get; }
-
         /// <summary>
         /// Adds a <see cref="FinancialRecord"/> to the repository.
         /// </summary>
@@ -41,6 +34,12 @@ namespace ExpenseTracker.Repository
         /// </summary>
         /// <param name="record">The <see cref="FinancialRecord"/> to delete.</param>
         void DeleteRecord(FinancialRecord record);
+
+        /// <summary>
+        /// Deletes the <see cref="FinancialRecord"/> mapped with the user's id.
+        /// </summary>
+        /// <param name="userId">The user id of the records to be deleted.</param>
+        void DeleteRecordsByUserId(Guid userId);
 
         /// <summary>
         /// Updates the data of the specified <see cref="FinancialRecord"/>.

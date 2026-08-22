@@ -5,6 +5,18 @@
     /// </summary>
     internal static class ConsoleMessages
     {
+        public const string LoginSuccessMessage = "Login successful.";
+
+        public const string InvalidLoginMessage = "Invalid username or password.";
+
+        public const string UsernameExistsMessage = "Username already exists.";
+
+        public const string AccountCreatedMessage = "Account created successfully.";
+
+        public const string AccountDeletedMessage = "Account deleted successfully.";
+
+        public const string LogoutSuccessMessage = "Account logged out successfully.";
+
         /// <summary>
         /// Message displayed when an invalid menu option is selected.
         /// </summary>

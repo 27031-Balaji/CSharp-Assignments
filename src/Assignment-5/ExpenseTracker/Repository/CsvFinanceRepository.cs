@@ -26,12 +26,6 @@ namespace ExpenseTracker.Repository
         }
 
         /// <summary>
-        /// Gets the total number of stored <see cref="FinancialRecord"/> instances.
-        /// </summary>
-        /// <value>The number of records currently stored.</value>
-        public int RecordCount { get => this.records.Count; }
-
-        /// <summary>
         /// Adds a <see cref="FinancialRecord"/> to the repository and saves changes to the CSV file.
         /// </summary>
         /// <param name="record">The <see cref="FinancialRecord"/> to add.</param>
@@ -81,8 +75,14 @@ namespace ExpenseTracker.Repository
             this.SaveRecordsToFile();
         }
 
-        public void DeleteRecordsByUserId(Guid userId) {
-
+        /// <summary>
+        /// Deletes all records associated with the specified user identifier and saves changes.
+        /// </summary>
+        /// <param name="userId">The unique identifier of the user whose records are to be deleted.</param>
+        public void DeleteRecordsByUserId(Guid userId)
+        {
+            this.records.RemoveAll(record => record.UserId == userId);
+            this.SaveRecordsToFile();
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace ExpenseTracker.Repository
             string type = values[3];
             string classification = values[4];
             decimal amount = decimal.Parse(values[5]);
-            string? description = string.IsNullOrWhiteSpace(values[6]) ? string.Empty : values[5];
+            string? description = string.IsNullOrWhiteSpace(values[6]) ? string.Empty : values[6];
 
             FinancialRecord record;
 
@@ -201,6 +201,7 @@ namespace ExpenseTracker.Repository
             return string.Join(
                 ",",
                 this.csvHandler.CsvEscape(record.Id),
+                this.csvHandler.CsvEscape(record.UserId.ToString()),
                 this.csvHandler.CsvEscape(record.Date.ToString("dd/MM/yyyy")),
                 this.csvHandler.CsvEscape(record.Type.ToString()),
                 this.csvHandler.CsvEscape(record.Classification),

@@ -7,18 +7,25 @@ namespace ExpenseTracker.View
     /// <summary>
     /// Handles console input and output for the application.
     /// </summary>
-    internal class ConsoleOperation
+    internal class ApplicationView
     {
+        /// <summary>
+        /// Shows the welcome message for the specific user.
+        /// </summary>
+        /// <param name="userName">The username to be shown for greetings.</param>
+        public void ShowWelcome(string userName)
+        {
+            Console.Write("========================================================\n");
+            Console.Write($"Welcome, {userName}!\n");
+            Console.Write("========================================================\n");
+        }
+
         /// <summary>
         /// Displays the main menu and reads the user's selected option.
         /// </summary>
         /// <returns>The selected <see cref="MainMenuOption"/>.</returns>
         public MainMenuOption ShowMainMenu()
         {
-            Console.Write("========================================================\n");
-            Console.Write("Expense Tracker Application\n");
-            Console.Write("Track Your Spending, Empower Your Savings!\n");
-            Console.Write("========================================================\n");
             Console.Write("\nSelect an option:\n");
             Console.Write("[A] Add Record\n");
             Console.Write("[B] View Record\n");
@@ -26,7 +33,8 @@ namespace ExpenseTracker.View
             Console.Write("[D] Delete Record\n");
             Console.Write("[E] Edit Record\n");
             Console.Write("[F] Financial Summary\n");
-            Console.Write("[G] Exit\n");
+            Console.Write("[G] Delete Account\n");
+            Console.Write("[H] Logout\n");
             Console.Write("\nEnter your choice: ");
 
             string input = (Console.ReadLine() ?? string.Empty).Trim().ToUpper();
@@ -38,7 +46,8 @@ namespace ExpenseTracker.View
                 "D" => MainMenuOption.DeleteRecord,
                 "E" => MainMenuOption.EditRecord,
                 "F" => MainMenuOption.FinancialSummary,
-                "G" => MainMenuOption.Exit,
+                "G" => MainMenuOption.DeleteAccount,
+                "H" => MainMenuOption.Logout,
                 _ => MainMenuOption.Invalid
             };
         }
@@ -202,7 +211,7 @@ namespace ExpenseTracker.View
         /// <returns>The entered search term string.</returns>
         public string ReadSearchTerm()
         {
-            Console.Write($"Enter the date or amount or source/category: ");
+            Console.Write($"Enter the date (DD/MM/YYYY) or amount or source/category: ");
 
             return (Console.ReadLine() ?? string.Empty).Trim();
         }
@@ -319,52 +328,30 @@ namespace ExpenseTracker.View
         }
 
         /// <summary>
-        /// Prompts the user to confirm deletion of a record.
+        /// Prompts the user to confirm any action from the user.
         /// </summary>
+        /// <param name="action">The action to be asked to perform.</param>
         /// <returns>True if the user confirms deletion, otherwise False.</returns>
-        public bool ConfirmDelete()
+        public bool ConfirmAction(string action = "retry")
         {
             while (true)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write("Are you sure you want to delete this record? (Y/N): ");
+                Console.Write($"Are you sure you want to {action}? (Y/N): ");
                 Console.ResetColor();
+
                 string choice = Console.ReadLine() ?? string.Empty;
+
                 switch (choice.Trim().ToUpper())
                 {
                     case "Y":
                         return true;
+
                     case "N":
                         return false;
+
                     default:
                         Console.WriteLine("Enter Y or N.");
-                        break;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Asks the user whether to retry the current operation.
-        /// </summary>
-        /// <returns>True if the user wants to retry, otherwise False.</returns>
-        public bool AskRetry()
-        {
-            while (true)
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write("\nTry again? (Y/N): ");
-                Console.ResetColor();
-                string choice = Console.ReadLine() ?? string.Empty;
-                switch (choice.Trim().ToUpper())
-                {
-                    case "Y":
-                        return true;
-
-                    case "N":
-                        return false;
-
-                    default:
-                        Console.WriteLine("Please enter Y or N.");
                         break;
                 }
             }

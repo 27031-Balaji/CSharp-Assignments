@@ -4,13 +4,19 @@ using ExpenseTracker.Model;
 
 namespace ExpenseTracker.Repository
 {
-    internal class CsvUserRepository
+    /// <summary>
+    /// CSV implementation of <see cref="IUserRepository"/> that persists <see cref="User"/> records to a CSV file.
+    /// </summary>
+    internal class CsvUserRepository : IUserRepository
     {
         private const string FilePath = Constant.UserFilePath;
         private const string CsvHeader = Constant.UserCsvHeader;
         private readonly List<User> users;
         private readonly CsvHandler csvHandler;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CsvUserRepository"/> class and loads existing users.
+        /// </summary>
         public CsvUserRepository()
         {
             this.users = new List<User>();
@@ -18,12 +24,19 @@ namespace ExpenseTracker.Repository
             this.ReadUsersFromFile();
         }
 
+        /// <summary>
+        /// Gets the number of users currently loaded in memory.
+        /// </summary>
         public int UserCount { get => this.users.Count; }
 
+        /// <summary>
+        /// Adds the specified <paramref name="user"/> to the repository and appends it to the CSV file.
+        /// </summary>
+        /// <param name="user">The <see cref="User"/> to add.</param>
         public void AddUser(User user)
         {
             List<string> lines = new List<string>();
-            if (this.csvHandler.Exists())
+            if (!this.csvHandler.Exists())
             {
                 lines.Add(CsvHeader);
             }
@@ -33,27 +46,49 @@ namespace ExpenseTracker.Repository
             this.users.Add(user);
         }
 
+        /// <summary>
+        /// Retrieves the <see cref="User"/> with the specified user ID.
+        /// </summary>
+        /// <param name="userId">The identifier of the user to retrieve.</param>
+        /// <returns>The matching <see cref="User"/>.</returns>
         public User GetById(Guid userId)
         {
             return this.users.First(user => user.Id == userId);
         }
 
-        public User GetByUsername(string userName)
+        /// <summary>
+        /// Retrieves the <see cref="User"/> with the specified username, if any.
+        /// </summary>
+        /// <param name="userName">The user name to search for.</param>
+        /// <returns>The matching <see cref="User"/> if found.</returns>
+        public User? GetByUserName(string userName)
         {
-            return this.users.First(user => user.UserName.Equals(userName, StringComparison.OrdinalIgnoreCase));
+            return this.users.FirstOrDefault(user => user.UserName.Equals(userName, StringComparison.Ordinal));
         }
 
+        /// <summary>
+        /// Determines whether a user with the specified username exists in the repository.
+        /// </summary>
+        /// <param name="userName">The user name to check.</param>
+        /// <returns>True if a matching user exists, otherwise false.</returns>
         public bool UserNameExists(string userName)
         {
             return this.users.Any(user => user.UserName.Equals(userName, StringComparison.OrdinalIgnoreCase));
         }
 
+        /// <summary>
+        /// Deletes the specified <see cref="User"/> from the repository and saves the change to the CSV file.
+        /// </summary>
+        /// <param name="user">The <see cref="User"/> to delete.</param>
         public void DeleteUser(User user)
         {
             this.users.Remove(user);
             this.SaveUsersToFile();
         }
 
+        /// <summary>
+        /// Reads users from the CSV file.
+        /// </summary>
         private void ReadUsersFromFile()
         {
             List<string> lines = this.csvHandler.Read();
@@ -68,6 +103,9 @@ namespace ExpenseTracker.Repository
             }
         }
 
+        /// <summary>
+        /// Writes all in-memory users to the CSV file.
+        /// </summary>
         private void SaveUsersToFile()
         {
             List<string> lines = new List<string> { CsvHeader };
@@ -79,6 +117,11 @@ namespace ExpenseTracker.Repository
             this.csvHandler.Write(lines);
         }
 
+        /// <summary>
+        /// Converts a <see cref="User"/> into a CSV line.
+        /// </summary>
+        /// <param name="user">The <see cref="User"/> to convert.</param>
+        /// <returns>A CSV-escaped string representing the user data.</returns>
         private string ConvertToCsv(User user)
         {
             return string.Join(
@@ -88,6 +131,11 @@ namespace ExpenseTracker.Repository
                 this.csvHandler.CsvEscape(user.Password));
         }
 
+        /// <summary>
+        /// Parses a CSV line into a <see cref="User"/> record.
+        /// </summary>
+        /// <param name="line">The CSV line to parse.</param>
+        /// <returns>A <see cref="User"/> instance created from the parsed CSV values.</returns>
         private User ParseToRecord(string line)
         {
             List<string> values = this.csvHandler.ParseCsvLine(line);

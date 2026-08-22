@@ -81,7 +81,7 @@ namespace ExpenseTracker.Helper
             month = 0;
             year = 0;
 
-            if (DateOnly.TryParseExact(input, "MM/yyyy", out DateOnly date))
+            if (DateOnly.TryParseExact(input, "MM/yyyy", out DateOnly date) && date.Month <= DateTime.Now.Month && date.Year <= DateTime.Now.Year)
             {
                 month = date.Month;
                 year = date.Year;
