@@ -27,6 +27,7 @@ namespace ExpenseTracker
             AuthenticationHelper authenticationHelper = new AuthenticationHelper();
             FinanceHelper financeHelper = new FinanceHelper();
             ApplicationView applicationView = new ApplicationView();
+
             ApplicationController applicationController = new ApplicationController(financeService, authenticationService, financeHelper, applicationView);
             AuthenticationController authenticationController = new AuthenticationController(authenticationService, authenticationView, authenticationHelper, applicationController);
             authenticationController.Run();

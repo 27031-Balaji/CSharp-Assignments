@@ -5,16 +5,34 @@
     /// </summary>
     internal static class ConsoleMessages
     {
+        /// <summary>
+        /// Message displayed when login operation is successful.
+        /// </summary>
         public const string LoginSuccessMessage = "Login successful.";
 
+        /// <summary>
+        /// Message displayed when the user enters the wrong credentials.
+        /// </summary>
         public const string InvalidLoginMessage = "Invalid username or password.";
 
+        /// <summary>
+        /// Message displayed when the username already exists in the repository.
+        /// </summary>
         public const string UsernameExistsMessage = "Username already exists.";
 
+        /// <summary>
+        /// Message displayed when the account is created successfully.
+        /// </summary>
         public const string AccountCreatedMessage = "Account created successfully.";
 
+        /// <summary>
+        /// Message displayed when the account is deleted successfully.
+        /// </summary>
         public const string AccountDeletedMessage = "Account deleted successfully.";
 
+        /// <summary>
+        /// Message displayed when the logout operation is done successfully.
+        /// </summary>
         public const string LogoutSuccessMessage = "Account logged out successfully.";
 
         /// <summary>
