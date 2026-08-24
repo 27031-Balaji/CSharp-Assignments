@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents the choices available in the view menu.
     /// </summary>
-    public enum ViewMenuOption
+    internal enum ViewMenuOption
     {
         /// <summary>
         /// Indicates an invalid menu selection.

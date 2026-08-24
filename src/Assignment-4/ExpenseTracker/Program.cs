@@ -17,12 +17,40 @@ namespace ExpenseTracker
         /// <param name="args">Command-line arguments passed to the application.</param>
         public static void Main(string[] args)
         {
-            IRepository repository = new CsvFinanceRepository();
-            FinanceService expenseService = new FinanceService(repository);
-            FinanceHelper expenseHelper = new FinanceHelper();
-            ConsoleOperation view = new ConsoleOperation();
-            FinanceController controller = new FinanceController(expenseService, expenseHelper, view);
-            controller.Run();
+            try
+            {
+                IRepository repository = new CsvFinanceRepository();
+                FinanceHelper financeHelper = new FinanceHelper();
+                FinanceService financeService = new FinanceService(repository, financeHelper);
+                ConsoleOperation view = new ConsoleOperation();
+                FinanceController controller = new FinanceController(financeService, financeHelper, view);
+                controller.Run();
+            }
+            catch (Exception ex)
+            {
+                switch (ex)
+                {
+                    case FormatException:
+                        Console.WriteLine(ConsoleMessages.InvalidFormatMessage);
+                        break;
+
+                    case InvalidDataException:
+                        Console.WriteLine(ConsoleMessages.InvalidFormatMessage);
+                        break;
+
+                    case FileNotFoundException:
+                        Console.WriteLine(ConsoleMessages.FileNotFoundMessage);
+                        break;
+
+                    case InvalidOperationException:
+                        Console.WriteLine(ConsoleMessages.InvalidRecordTypeMessage);
+                        break;
+
+                    default:
+                        Console.WriteLine($"Unknown Exception: {ex.Message}");
+                        break;
+                }
+            }
         }
     }
 }

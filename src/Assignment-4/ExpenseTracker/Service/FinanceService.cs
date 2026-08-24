@@ -1,5 +1,6 @@
 ﻿using ExpenseTracker.ConstantLiteral;
 using ExpenseTracker.Enums;
+using ExpenseTracker.Helper;
 using ExpenseTracker.Model;
 using ExpenseTracker.Repository;
 
@@ -11,14 +12,17 @@ namespace ExpenseTracker.Service
     internal class FinanceService
     {
         private readonly IRepository repository;
+        private readonly FinanceHelper helper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FinanceService"/> class.
         /// </summary>
         /// <param name="repository">The <see cref="IRepository"/> used to save and query records.</param>
-        public FinanceService(IRepository repository)
+        /// <param name="helper">The helper class used to validate the input.</param>
+        public FinanceService(IRepository repository, FinanceHelper helper)
         {
             this.repository = repository;
+            this.helper = helper;
         }
 
         /// <summary>
@@ -31,7 +35,7 @@ namespace ExpenseTracker.Service
         public void AddIncome(DateOnly date, decimal amount, IncomeSource source, string? description)
         {
             string recordId = this.GenerateUniqueId();
-            Income income = new Income(recordId, date, amount, description, RecordType.Income, source);
+            Income income = new Income(recordId, date, amount, description, source);
             this.repository.AddRecord(income);
         }
 
@@ -45,7 +49,7 @@ namespace ExpenseTracker.Service
         public void AddExpense(DateOnly date, decimal amount, ExpenseCategory category, string? description)
         {
             string recordId = this.GenerateUniqueId();
-            Expense expense = new Expense(recordId, date, amount, description, RecordType.Expense, category);
+            Expense expense = new Expense(recordId, date, amount, description, category);
             this.repository.AddRecord(expense);
         }
 
@@ -131,6 +135,44 @@ namespace ExpenseTracker.Service
         public FinancialRecord? GetRecordById(string recordId)
         {
             return this.repository.GetById(recordId);
+        }
+
+        /// <summary>
+        /// Searches the records according to the specific input term given by the user.
+        /// </summary>
+        /// <param name="searchTerm">The search input given by the user.</param>
+        /// <returns>The records according to the search input.</returns>
+        public IEnumerable<FinancialRecord> Search(string searchTerm)
+        {
+            if (this.helper.IsValidSource(searchTerm, out IncomeSource sameSource)
+                && this.helper.IsValidCategory(searchTerm, out ExpenseCategory sameCategory))
+            {
+                return this.SearchBySource(sameSource)
+                    .Concat(this.SearchByCategory(sameCategory))
+                    .ToList();
+            }
+
+            switch (this.helper.ReturnSearchType(searchTerm))
+            {
+                case SearchType.Date:
+                    this.helper.IsValidDate(searchTerm, out DateOnly date);
+                    return this.SearchByDate(date);
+
+                case SearchType.Amount:
+                    this.helper.IsValidAmount(searchTerm, out decimal amount);
+                    return this.SearchByAmount(amount);
+
+                case SearchType.Source:
+                    this.helper.IsValidSource(searchTerm, out IncomeSource source);
+                    return this.SearchBySource(source);
+
+                case SearchType.Category:
+                    this.helper.IsValidCategory(searchTerm, out ExpenseCategory category);
+                    return this.SearchByCategory(category);
+
+                default:
+                    return new List<FinancialRecord>();
+            }
         }
 
         /// <summary>

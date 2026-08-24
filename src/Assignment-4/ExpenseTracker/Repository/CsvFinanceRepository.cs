@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using ExpenseTracker.ConstantLiteral;
 using ExpenseTracker.Enums;
+using ExpenseTracker.Helper;
 using ExpenseTracker.Model;
 
 namespace ExpenseTracker.Repository
@@ -10,8 +11,6 @@ namespace ExpenseTracker.Repository
     /// </summary>
     internal class CsvFinanceRepository : IRepository
     {
-        private const string FilePath = Constant.FilePath;
-        private const string CsvHeader = Constant.CsvHeader;
         private readonly List<FinancialRecord> records;
 
         /// <summary>
@@ -35,15 +34,15 @@ namespace ExpenseTracker.Repository
         /// <param name="record">The <see cref="FinancialRecord"/> to add.</param>
         public void AddRecord(FinancialRecord record)
         {
-            bool fileExists = File.Exists(FilePath);
+            bool fileExists = File.Exists(Constant.FilePath);
             List<string> lines = new List<string>();
             if (!fileExists)
             {
-                lines.Add(CsvHeader);
+                lines.Add(Constant.CsvHeader);
             }
 
             lines.Add(this.ConvertToCsv(record));
-            File.AppendAllLines(FilePath, lines);
+            File.AppendAllLines(Constant.FilePath, lines);
             this.records.Add(record);
         }
 
@@ -132,12 +131,12 @@ namespace ExpenseTracker.Repository
         /// </summary>
         private void ReadRecordsFromFile()
         {
-            if (!File.Exists(FilePath))
+            if (!File.Exists(Constant.FilePath))
             {
                 return;
             }
 
-            string[] lines = File.ReadAllLines(FilePath);
+            string[] lines = File.ReadAllLines(Constant.FilePath);
             foreach (string line in lines.Skip(1))
             {
                 if (string.IsNullOrWhiteSpace(line))
@@ -155,39 +154,46 @@ namespace ExpenseTracker.Repository
         /// </summary>
         private void SaveRecordsToFile()
         {
-            List<string> lines = new List<string> { CsvHeader };
+            List<string> lines = new List<string> { Constant.CsvHeader };
             foreach (FinancialRecord record in this.records)
             {
                 lines.Add(this.ConvertToCsv(record));
             }
 
-            File.WriteAllLines(FilePath, lines);
+            File.WriteAllLines(Constant.FilePath, lines);
         }
 
         /// <summary>
         /// Parses a CSV line into a <see cref="FinancialRecord"/>.
         /// </summary>
-        /// <param name="line">The CSV line to parse. The parsing doesn't raise any exceptions because the inputs are already validated.</param>
+        /// <param name="line">The CSV line to parse.</param>
         /// <returns>A <see cref="FinancialRecord"/> instance representing the parsed line.</returns>
+        /// <exception cref="FormatException">Throws a format exception when parsing fails.</exception>
+        /// <exception cref="InvalidDataException">Throws invalid data exception when the record type mismatches.</exception>
         private FinancialRecord ParseToRecord(string line)
         {
             List<string> values = this.ParseCsvLine(line);
             string id = values[0];
             DateOnly date = DateOnly.Parse(values[1]);
-            string type = values[2];
+            RecordType recordType = Enum.Parse<RecordType>(values[2]);
             string classification = values[3];
             decimal amount = decimal.Parse(values[4]);
             string? description = string.IsNullOrWhiteSpace(values[5]) ? string.Empty : values[5];
 
             FinancialRecord record;
 
-            if (type == RecordType.Income.ToString())
+            switch (recordType)
             {
-                record = new Income(id, date, amount, description, RecordType.Income, Enum.Parse<IncomeSource>(classification));
-            }
-            else
-            {
-                record = new Expense(id, date, amount, description, RecordType.Expense, Enum.Parse<ExpenseCategory>(classification));
+                case RecordType.Income:
+                    record = new Income(id, date, amount, description, Enum.Parse<IncomeSource>(classification));
+                    break;
+
+                case RecordType.Expense:
+                    record = new Expense(id, date, amount, description, Enum.Parse<ExpenseCategory>(classification));
+                    break;
+
+                default:
+                    throw new InvalidDataException();
             }
 
             return record;
@@ -278,9 +284,9 @@ namespace ExpenseTracker.Repository
         {
             return record switch
             {
-                Income income => new Income(income.Id, income.Date, income.Amount, income.Description, income.Type, income.Source),
-                Expense expense => new Expense(expense.Id, expense.Date, expense.Amount, expense.Description, expense.Type, expense.Category),
-                _ => throw new InvalidOperationException("Unknown record type.")
+                Income income => new Income(income.Id, income.Date, income.Amount, income.Description, income.Source),
+                Expense expense => new Expense(expense.Id, expense.Date, expense.Amount, expense.Description, expense.Category),
+                _ => throw new InvalidOperationException()
             };
         }
     }

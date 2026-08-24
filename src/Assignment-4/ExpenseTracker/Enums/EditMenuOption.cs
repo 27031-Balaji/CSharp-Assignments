@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents the choices available in the edit menu.
     /// </summary>
-    public enum EditMenuOption
+    internal enum EditMenuOption
     {
         /// <summary>
         /// Indicates an invalid menu selection.

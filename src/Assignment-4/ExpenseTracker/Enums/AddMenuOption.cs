@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents the choices available in the add menu.
     /// </summary>
-    public enum AddMenuOption
+    internal enum AddMenuOption
     {
         /// <summary>
         /// Indicates an invalid menu selection.

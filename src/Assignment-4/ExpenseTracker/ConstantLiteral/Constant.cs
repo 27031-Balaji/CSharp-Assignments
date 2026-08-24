@@ -3,7 +3,7 @@
     /// <summary>
     /// Provides constants used across the application.
     /// </summary>
-    internal class Constant
+    internal static class Constant
     {
         /// <summary>
         /// Provides the maximum length of the transaction id.

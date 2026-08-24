@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents available sources of income for a <see cref="Model.Income"/>.
     /// </summary>
-    public enum IncomeSource
+    internal enum IncomeSource
     {
         /// <summary>
         /// Income received as a regular salary.

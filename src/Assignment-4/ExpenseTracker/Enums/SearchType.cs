@@ -3,7 +3,7 @@
     /// <summary>
     /// Classifies user input for search operations performed against <see cref="Model.FinancialRecord"/>.
     /// </summary>
-    public enum SearchType
+    internal enum SearchType
     {
         /// <summary>
         /// The input could not be classified as a valid search type.

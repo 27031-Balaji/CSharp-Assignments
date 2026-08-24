@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents available categories for an <see cref="Model.Expense"/>.
     /// </summary>
-    public enum ExpenseCategory
+    internal enum ExpenseCategory
     {
         /// <summary>
         /// Housing-related expenses such as rent or mortgage.
