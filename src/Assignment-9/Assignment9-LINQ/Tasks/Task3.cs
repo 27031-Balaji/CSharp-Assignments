@@ -12,7 +12,7 @@
         {
             Console.WriteLine("\n========== TASK 3 ==========\n");
 
-            int[] numbers = { 10, 20, 30, 40, 50, 10, 30, 20, 50, 10, 40 };
+            int[] numbers = { 10, 15, 20, 30, 40, 50, 10, 30, 20, 50, 10, 40 };
             Console.WriteLine("Numbers:");
             for (int i = 0; i < numbers.Length - 1; i++)
             {
@@ -21,13 +21,15 @@
 
             Console.WriteLine(numbers[numbers.Length - 1]);
 
-            IEnumerable<int> distinctNumbers = numbers
-                .Distinct()
-                .OrderByDescending(number => number);
+            IEnumerable<int> distinctNumbers = numbers.Distinct();
 
             if (distinctNumbers.Count() >= 2)
             {
-                Console.WriteLine($"\nSecond Highest Number: {distinctNumbers.Skip(1).First()}");
+                int secondHighestNumber = distinctNumbers
+                                            .OrderByDescending(number => number)
+                                            .Skip(1)
+                                            .First();
+                Console.WriteLine($"\nSecond Highest Number: {secondHighestNumber}");
             }
             else
             {
@@ -37,10 +39,10 @@
             int target = 60;
             IEnumerable<(int FirstNumber, int SecondNumber)> pairs = numbers
                 .SelectMany(
-                    (number, index) => numbers
+                    (firstNumber, index) => numbers
                         .Skip(index + 1)
-                        .Where(otherNumber => number + otherNumber == target)
-                        .Select(otherNumber => (number, otherNumber)))
+                        .Where(secondNumber => firstNumber + secondNumber == target)
+                        .Select(secondNumber => (firstNumber, secondNumber)))
                 .Distinct();
 
             Console.WriteLine($"\nPairs That Add Up To {target}:\n");

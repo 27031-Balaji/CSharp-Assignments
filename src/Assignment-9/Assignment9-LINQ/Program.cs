@@ -57,6 +57,7 @@ namespace Assignment9
                         break;
 
                     case "5":
+                        Task5.Run(context);
                         ClearScreenWithKey();
                         break;
 
