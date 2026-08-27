@@ -29,7 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assignment-4", "Assignment-
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assignment-9", "Assignment-9", "{B2B1FB0E-4000-4DB4-B9C4-B9CDC4541639}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assignment9-LINQ", "src\Assignment-9\Task1-BasicLINQ\Assignment9-LINQ.csproj", "{04419448-6274-4627-B3F8-96DF3268B6BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assignment9-LINQ", "src\Assignment-9\Assignment9-LINQ\Assignment9-LINQ.csproj", "{04419448-6274-4627-B3F8-96DF3268B6BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
