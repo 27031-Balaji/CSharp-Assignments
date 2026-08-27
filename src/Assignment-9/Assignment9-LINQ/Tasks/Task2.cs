@@ -1,4 +1,5 @@
 ﻿using Assignment9.Data;
+using ConsoleTables;
 
 namespace Assignment9.Tasks
 {
@@ -13,25 +14,22 @@ namespace Assignment9.Tasks
         /// <param name="context">The database context to be used for LINQ operations.</param>
         public static void Run(SampleDatabaseContext context)
         {
-            Console.WriteLine();
-            Console.WriteLine("========== TASK 2 ==========");
-            Console.WriteLine();
+            Console.WriteLine("\n========== TASK 2 ==========\n");
 
             var groupedProducts = context.Products.GroupBy(product => product.Category);
-            Console.WriteLine("Products Grouped By Category:");
-            Console.WriteLine();
+            Console.WriteLine("Products Grouped By Category:\n");
 
+            ConsoleTable categoryTable = new ConsoleTable("Category", "Product Count", "Most Expensive Product", "Price");
             foreach (var group in groupedProducts)
             {
-                Console.WriteLine($"Category: {group.Key}");
-                Console.WriteLine($"Number of Products: {group.Count()}");
                 var mostExpensiveProduct = group
                     .OrderByDescending(product => product.Price)
                     .First();
 
-                Console.WriteLine($"Most Expensive Product: {mostExpensiveProduct.ProductName}, " + $"Price: ${mostExpensiveProduct.Price}");
-                Console.WriteLine();
+                categoryTable.AddRow(group.Key, group.Count(), mostExpensiveProduct.ProductName, mostExpensiveProduct.Price);
             }
+
+            categoryTable.Write(Format.MarkDown);
 
             var productSuppliers = context.Products
                 .Join(
@@ -48,17 +46,15 @@ namespace Assignment9.Tasks
                         supplier.SupplierName,
                     });
 
-            Console.WriteLine("Products and Their Suppliers:");
-            Console.WriteLine();
+            Console.WriteLine("Products and Their Suppliers:\n");
 
+            ConsoleTable productSuppliersTable = new ConsoleTable("Product ID", "Product Name", "Category", "Price", "Supplier ID", "Supplier Name");
             foreach (var item in productSuppliers)
             {
-                Console.WriteLine($"Product: {item.ProductName} " + $"(ID: {item.ProductId})");
-                Console.WriteLine($"Price: ${item.Price}");
-                Console.WriteLine($"Category: {item.Category}");
-                Console.WriteLine($"Supplier: {item.SupplierName} " + $"(Supplier ID: {item.SupplierId})");
-                Console.WriteLine();
+                productSuppliersTable.AddRow(item.ProductId, item.ProductName, item.Category, item.Price, item.SupplierId, item.SupplierName);
             }
+
+            productSuppliersTable.Write(Format.MarkDown);
         }
     }
 }

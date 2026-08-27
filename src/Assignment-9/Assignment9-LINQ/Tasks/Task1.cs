@@ -1,4 +1,5 @@
 ﻿using Assignment9.Data;
+using ConsoleTables;
 
 namespace Assignment9.Tasks
 {
@@ -13,9 +14,7 @@ namespace Assignment9.Tasks
         /// <param name="context">The database context to be used for LINQ operations.</param>
         public static void Run(SampleDatabaseContext context)
         {
-            Console.WriteLine();
-            Console.WriteLine("========== TASK 1 ==========");
-            Console.WriteLine();
+            Console.WriteLine("\n========== TASK 1 ==========\n");
 
             var filteredProducts = context.Products
                 .Where(product => product.Category == "Electronics" && product.Price > 500)
@@ -25,30 +24,33 @@ namespace Assignment9.Tasks
                     product.Price,
                 });
 
-            Console.WriteLine("Electronics Products Above $500:");
-            Console.WriteLine();
+            Console.WriteLine("Electronics Products Above $500:\n");
 
+            ConsoleTable filteredProductsTable = new ConsoleTable("Product Name", "Price");
             foreach (var product in filteredProducts)
             {
-                Console.WriteLine($"Product: {product.ProductName}, Price: ${product.Price}");
+                filteredProductsTable.AddRow(product.ProductName, product.Price);
             }
+
+            filteredProductsTable.Write(Format.MarkDown);
 
             var sortedProducts = filteredProducts
                 .OrderByDescending(product => product.Price);
 
-            Console.WriteLine("\nElectronics Products Above $500 in sorted order by price (Descending):");
-            Console.WriteLine();
+            Console.WriteLine("\nElectronics Products Above $500 in sorted order by price (Descending):\n");
 
+            ConsoleTable sortedFilteredProductsTable = new ConsoleTable("Product Name", "Price");
             foreach (var product in sortedProducts)
             {
-                Console.WriteLine($"Product: {product.ProductName}, Price: ${product.Price}");
+                sortedFilteredProductsTable.AddRow(product.ProductName, product.Price);
             }
+
+            sortedFilteredProductsTable.Write(Format.MarkDown);
 
             decimal averagePrice = filteredProducts
                 .Average(product => product.Price);
 
-            Console.WriteLine();
-            Console.WriteLine($"Average Price of Electronics Products Above $500: ${averagePrice}");
+            Console.WriteLine($"\nAverage Price of Electronics Products Above $500: ${averagePrice}");
         }
     }
 }
