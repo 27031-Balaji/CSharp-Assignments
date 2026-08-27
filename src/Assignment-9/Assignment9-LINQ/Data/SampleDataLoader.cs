@@ -1,14 +1,21 @@
 ﻿using Assignment9.Model;
 
-namespace Assignment9.Data;
-
-public static class SampleDataLoader
+namespace Assignment9.Data
 {
-    public static SampleDatabaseContext Load()
+    /// <summary>
+    /// The SampleDataLoader is used to load the list of products, suppliers and orders for LINQ operations.
+    /// </summary>
+    public static class SampleDataLoader
     {
-        SampleDatabaseContext context = new SampleDatabaseContext();
+        /// <summary>
+        /// The Load method loads the sample data to the lists.
+        /// </summary>
+        /// <returns>The list context to access all the lists.</returns>
+        public static SampleDatabaseContext Load()
+        {
+            SampleDatabaseContext context = new SampleDatabaseContext();
 
-        context.Products.AddRange(new List<Product>
+            context.Products.AddRange(new List<Product>
         {
             new Product { ProductId = 1, ProductName = "Laptop", Price = 1200, Category = "Electronics" },
             new Product { ProductId = 2, ProductName = "Smartphone", Price = 900, Category = "Electronics" },
@@ -22,7 +29,7 @@ public static class SampleDataLoader
             new Product { ProductId = 10, ProductName = "Coffee Maker", Price = 400, Category = "Appliances" },
         });
 
-        context.Suppliers.AddRange(new List<Supplier>
+            context.Suppliers.AddRange(new List<Supplier>
         {
             new Supplier { SupplierId = 1, SupplierName = "Tech World", ProductId = 1 },
             new Supplier { SupplierId = 2, SupplierName = "Digital Supplies", ProductId = 1 },
@@ -41,7 +48,7 @@ public static class SampleDataLoader
             new Supplier { SupplierId = 15, SupplierName = "Kitchen Supplies Ltd", ProductId = 10 },
         });
 
-        context.Orders.AddRange(new List<Order>
+            context.Orders.AddRange(new List<Order>
         {
             new Order { OrderId = 1, OrderDate = new DateTime(2026, 1, 5), OrderStatus = "Completed" },
             new Order { OrderId = 2, OrderDate = new DateTime(2026, 1, 12), OrderStatus = "Pending" },
@@ -57,6 +64,7 @@ public static class SampleDataLoader
             new Order { OrderId = 12, OrderDate = new DateTime(2026, 6, 28), OrderStatus = "Pending" },
         });
 
-        return context;
+            return context;
+        }
     }
 }
