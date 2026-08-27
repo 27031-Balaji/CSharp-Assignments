@@ -1,16 +1,312 @@
-# 🎯 How to use C# Starter Repo for C# assignments 
- 1. While creating new repo add the “CSharp_Starter_Repo” template repository
-![Using Template repo](https://github.com/solitontech/CSharp_Starter_Repo/blob/main/docs/assets/Images/HowToUseStarterRepo_Images/HowToUseStarterRepo.jpg) 
- 2. Make your account as the owner of the repository and include all the branches.
- 3. Add description to your repository if needed.
- 4. Select private/public repository based on the needs.
- 5. Now click create repository and your repository will be created.
- 6. Add git hooks scripts - [How to add git hooks](https://github.com/solitontech/CSharp_Starter_Repo/blob/main/docs/GitHooks.md)
- 7. Ensure that your branch names and commit messages follow this syntax: [GuideLines](https://github.com/solitontech/CSharp_Starter_Repo/blob/313030ea36043f4d2a6eb4258c68b31737cacc26/docs/Guidelines%20for%20GIT.md)
- 8. Add VSIX template -  [How to add VSIX template](https://github.com/solitontech/CSharp_Starter_Repo/blob/main/docs/VSIX%20template%20Manual.md)
- 9. Open the solution file in the root directory.
- 10. While adding new project select the CSharpStarterTemplate and select the appropriate folder location.
-     (src - for assignments and tests/unit - for unit tests)
- 11. For every assignments create a new branch from main and add your project to the solution.
- 12. When build is susccessful and the project runs perfectly give PR to main branch.
- 13. After merging to main, create new branch and add new project for next assignment.
+# Assignment 9 - LINQ
+
+This assignment consists of five different tasks that help understand the core concepts of LINQ in C#. 
+The assignment demonstrates querying collections using LINQ operators, working with projections, grouping, joining data, analyzing query performance, and implementing a Fluent API Query Builder.
+
+The five different tasks are as follows.
+
+---
+
+# Task 1 – Basic LINQ Queries
+
+This task introduces fundamental LINQ operations such as filtering, projection, sorting, and aggregation.
+The program filters products belonging to the **Electronics** category with a price greater than **$500**, projects the required fields, sorts the filtered results in descending order of price, and calculates the average price of the selected products.
+
+## Understanding from the task
+
+- Filtering using `Where`
+- Projection using `Select`
+- Sorting using `OrderByDescending`
+- Aggregation using `Average`
+- Working with tuples
+
+---
+
+# Task 2 – Complex LINQ Queries
+
+This task demonstrates more advanced LINQ operations including grouping and joining data from multiple collections.
+The program groups products by category and identifies the most expensive product within each category. It also joins products and suppliers using a common key and displays the combined information.
+
+## Understanding from the task
+
+- Grouping using `GroupBy`
+- Aggregations within groups
+- Joining collections using `Join`
+- Selecting related data from multiple collections
+- Working with grouped data
+
+---
+
+# Task 3 – LINQ to Objects
+
+This task focuses on applying LINQ operations to in-memory collections.
+The program works with an integer array to determine the second highest distinct number and find all pairs of numbers whose sum equals a specified target value.
+
+## Understanding from the task
+
+- LINQ to Objects
+- Removing duplicates using `Distinct`
+- Ordering data using `OrderByDescending`
+- Skipping elements using `Skip`
+- Generating combinations using `SelectMany`
+- Finding custom conditions using LINQ
+
+---
+
+# Task 4 – LINQ Performance Analysis
+
+This task demonstrates how query structure affects performance.
+Two similar queries are executed:
+
+1. Sorting all products first and then filtering books.
+2. Filtering books first and then sorting the smaller result set.
+
+Execution times are measured using a `Stopwatch` to compare the approaches.
+
+## Understanding from the task
+
+- Deferred execution
+- Query optimization
+- Filtering before sorting
+- Measuring performance using `Stopwatch`
+- Efficient LINQ query design
+
+---
+
+# Task 5 – Fluent API Query Builder
+
+This task implements a custom Fluent API Query Builder that enables dynamic query composition on collections.
+The QueryBuilder utility supports:
+
+- Filtering
+- Sorting
+- Joining collections
+- Query execution
+
+The utility allows methods to be chained together fluently, making query construction more readable and maintainable.
+
+Example:
+
+```csharp
+List<Product> products = new QueryBuilder<Product>(context.Products)
+    .Filter(product => product.Price > 200)
+    .SortBy(product => product.Price)
+    .Execute();
+```
+
+The task also demonstrates:
+
+1. QueryBuilder with filtering, sorting, and execution.
+2. QueryBuilder with filtering, sorting, joining, and execution.
+
+## Understanding from the task
+
+- Fluent API Pattern
+- Method Chaining
+- Generic Classes
+- LINQ Query Composition
+- Custom Utility Design
+- Reusability and Extensibility
+
+---
+
+# QueryBuilder Design
+
+The `QueryBuilder<T>` class provides a fluent interface for constructing LINQ queries.
+
+### Supported Methods
+
+#### Filter
+
+Filters the collection based on a specified condition.
+
+```csharp
+.Filter(product => product.Price > 200)
+```
+
+#### SortBy
+
+Sorts the collection based on a specified property.
+
+```csharp
+.SortBy(product => product.Price)
+```
+
+#### Join
+
+Joins two collections using matching keys.
+
+```csharp
+.Join(
+    context.Suppliers,
+    product => product.ProductId,
+    supplier => supplier.ProductId,
+    (product, supplier) => new
+    {
+        product.ProductName,
+        supplier.SupplierName
+    })
+```
+
+#### Execute
+
+Materializes the query and returns the result as a list.
+
+```csharp
+.Execute();
+```
+
+---
+
+# Project Structure
+
+```text
+Assignment9-LINQ
+│
+├── Data
+│   ├── SampleDatabaseContext.cs
+│   └── SampleDataLoader.cs
+│
+├── Model
+│   ├── Order.cs
+│   ├── Product.cs
+│   └── Supplier.cs
+│
+├── Tasks
+│   ├── Task1.cs
+│   ├── Task2.cs
+│   ├── Task3.cs
+│   ├── Task4.cs
+│   └── Task5.cs
+│
+├── Utils
+│   └── QueryBuilder.cs
+│
+├── Program.cs
+│
+└── README.md
+```
+
+---
+
+# File Overview
+
+## Data
+
+### SampleDatabaseContext.cs
+Contains the collections used throughout all tasks.
+
+### SampleDataLoader.cs
+Loads sample data into the database context.
+
+---
+
+## Model
+
+### Product.cs
+Represents a product entity.
+
+### Supplier.cs
+Represents a supplier entity.
+
+### Order.cs
+Represents an order entity.
+
+---
+
+## Tasks
+
+### Task1.cs
+Demonstrates basic LINQ queries involving filtering, sorting, projection, and aggregation.
+
+### Task2.cs
+Demonstrates grouping and joining operations using LINQ.
+
+### Task3.cs
+Demonstrates LINQ to Objects using arrays and numerical operations.
+
+### Task4.cs
+Analyzes and compares the performance of different LINQ query structures.
+
+### Task5.cs
+Demonstrates the implementation and usage of the custom Fluent API QueryBuilder.
+
+---
+
+## Utils
+
+### QueryBuilder.cs
+Defines the custom generic QueryBuilder class used for fluent query construction.
+
+---
+
+## Program.cs
+Provides a menu-driven interface for executing each task individually.
+
+---
+
+# Recommended PR Review Order
+
+For the best understanding of the implementation, review the project in the following order:
+
+## 1. Task 1 – Basic LINQ Queries
+
+Focus on:
+- Where
+- Select
+- OrderByDescending
+- Average
+- Tuple projections
+
+---
+
+## 2. Task 2 – Complex LINQ Queries
+
+Focus on:
+- GroupBy
+- Join
+- Aggregations
+- Group processing
+
+---
+
+## 3. Task 3 – LINQ to Objects
+
+Focus on:
+- Distinct
+- Skip
+- SelectMany
+- In-memory querying
+
+---
+
+## 4. Task 4 – LINQ Performance Analysis
+
+Focus on:
+- Deferred execution
+- Query optimization
+- Stopwatch
+- Filtering before sorting
+- Performance comparison
+
+---
+
+## 5. Task 5 – Fluent API Query Builder
+
+Focus on:
+- Fluent API pattern
+- Method chaining
+- Generic classes
+- Filter, SortBy, Join, and Execute methods
+- Custom query construction
+
+---
+
+# Challenges Faced
+
+- Understanding how deferred execution works in LINQ.
+- Working with grouping and joining operations.
+- Finding efficient ways to query and transform collections.
+- Comparing query performance using Stopwatch.
+- Designing a reusable QueryBuilder using the Fluent API pattern.
+- Implementing generic methods that support filtering, sorting, and joining operations.
