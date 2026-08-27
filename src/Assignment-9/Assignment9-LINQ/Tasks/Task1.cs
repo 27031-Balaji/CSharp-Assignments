@@ -16,33 +16,29 @@ namespace Assignment9.Tasks
         {
             Console.WriteLine("\n========== TASK 1 ==========\n");
 
-            var filteredProducts = context.Products
+            IEnumerable<(string ProductName, decimal Price)> filteredProducts = context.Products
                 .Where(product => product.Category == "Electronics" && product.Price > 500)
-                .Select(product => new
-                {
-                    product.ProductName,
-                    product.Price,
-                });
+                .Select(product => (product.ProductName, product.Price));
 
             Console.WriteLine("Electronics Products Above $500:\n");
 
             ConsoleTable filteredProductsTable = new ConsoleTable("Product Name", "Price");
-            foreach (var product in filteredProducts)
+            foreach ((string productName, decimal price) in filteredProducts)
             {
-                filteredProductsTable.AddRow(product.ProductName, product.Price);
+                filteredProductsTable.AddRow(productName, price);
             }
 
             filteredProductsTable.Write(Format.MarkDown);
 
-            var sortedProducts = filteredProducts
+            IEnumerable<(string ProductName, decimal Price)> sortedProducts = filteredProducts
                 .OrderByDescending(product => product.Price);
 
             Console.WriteLine("\nElectronics Products Above $500 in sorted order by price (Descending):\n");
 
             ConsoleTable sortedFilteredProductsTable = new ConsoleTable("Product Name", "Price");
-            foreach (var product in sortedProducts)
+            foreach ((string productName, decimal price) in sortedProducts)
             {
-                sortedFilteredProductsTable.AddRow(product.ProductName, product.Price);
+                sortedFilteredProductsTable.AddRow(productName, price);
             }
 
             sortedFilteredProductsTable.Write(Format.MarkDown);

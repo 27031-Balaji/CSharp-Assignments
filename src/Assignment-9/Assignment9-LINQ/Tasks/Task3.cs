@@ -21,14 +21,13 @@
 
             Console.WriteLine(numbers[numbers.Length - 1]);
 
-            var distinctNumbers = numbers
+            IEnumerable<int> distinctNumbers = numbers
                 .Distinct()
-                .OrderByDescending(number => number)
-                .ToArray();
+                .OrderByDescending(number => number);
 
-            if (distinctNumbers.Length >= 2)
+            if (distinctNumbers.Count() >= 2)
             {
-                Console.WriteLine($"\nSecond Highest Number: {distinctNumbers[1]}");
+                Console.WriteLine($"\nSecond Highest Number: {distinctNumbers.Skip(1).First()}");
             }
             else
             {
@@ -36,26 +35,21 @@
             }
 
             int target = 60;
-            var pairs = numbers
+            IEnumerable<(int FirstNumber, int SecondNumber)> pairs = numbers
                 .SelectMany(
                     (number, index) => numbers
                         .Skip(index + 1)
                         .Where(otherNumber => number + otherNumber == target)
-                        .Select(otherNumber => new
-                        {
-                            Number1 = number,
-                            Number2 = otherNumber,
-                        }))
-                .Distinct()
-                .ToList();
+                        .Select(otherNumber => (number, otherNumber)))
+                .Distinct();
 
             Console.WriteLine($"\nPairs That Add Up To {target}:\n");
 
             if (pairs.Any())
             {
-                foreach (var pair in pairs)
+                foreach ((int firstNumber, int secondNumber) in pairs)
                 {
-                    Console.WriteLine($"{pair.Number1} + {pair.Number2} = {target}");
+                    Console.WriteLine($"{firstNumber} + {secondNumber} = {target}");
                 }
             }
             else
