@@ -1,60 +1,75 @@
-﻿using Assignment9.Model;
+﻿using Assignment9.Data;
 
-public static class Program
+namespace Assignment9;
+
+public class Program
 {
-    private const decimal _minimalPrice = 500;
-
     public static void Main()
     {
-        SampleDatabaseContext context = new SampleDatabaseContext();
-        context.Products = new List<Product>
+        SampleDatabaseContext context = SampleDataLoader.Load();
+        bool isRunning = true;
+        while (isRunning)
         {
-            new Product { ProductId = 1, ProductName = "Laptop", Price = 1200, Category = "Electronics" },
-            new Product { ProductId = 2, ProductName = "Smartphone", Price = 800, Category = "Electronics" },
-            new Product { ProductId = 3, ProductName = "Wireless Headphones", Price = 250, Category = "Electronics" },
-            new Product { ProductId = 4, ProductName = "Gaming Console", Price = 600, Category = "Electronics" },
-            new Product { ProductId = 10, ProductName = "4K TV", Price = 1500, Category = "Electronics" },
-            new Product { ProductId = 5, ProductName = "Smart Watch", Price = 550, Category = "Electronics" },
-            new Product { ProductId = 6, ProductName = "Office Chair", Price = 300, Category = "Furniture" },
-            new Product { ProductId = 7, ProductName = "Dining Table", Price = 700, Category = "Furniture" },
-            new Product { ProductId = 8, ProductName = "Refrigerator", Price = 950, Category = "Appliances" },
-            new Product { ProductId = 9, ProductName = "Microwave Oven", Price = 200, Category = "Appliances" },
-            new Product { ProductId = 11, ProductName = "Clean Code", Price = 45, Category = "Books" },
-            new Product { ProductId = 12, ProductName = "Design Patterns", Price = 60, Category = "Books" },
-            new Product { ProductId = 13, ProductName = "C# in Depth", Price = 55, Category = "Books" },
-            new Product { ProductId = 14, ProductName = "The Pragmatic Programmer", Price = 50, Category = "Books" },
-            new Product { ProductId = 15, ProductName = "Refactoring", Price = 65, Category = "Books" },
-        };
+            Console.WriteLine();
+            Console.WriteLine("=================================");
+            Console.WriteLine("        LINQ ASSIGNMENT");
+            Console.WriteLine("=================================");
+            Console.WriteLine();
 
-        var electronicsAboveLimit = context.Products
-                                .Where(product => product.Category == "Electronics" && product.Price > _minimalPrice)
-                                .Select(product => new
-                                {
-                                    product.ProductName,
-                                    product.Price,
-                                })
-                                .ToList();
+            Console.WriteLine("1. Task 1 - Basic LINQ Queries");
+            Console.WriteLine("2. Task 2 - Complex LINQ Queries");
+            Console.WriteLine("3. Task 3 - LINQ to Objects");
+            Console.WriteLine("4. Task 4 - Performance Analysis");
+            Console.WriteLine("5. Task 5 - Fluent API Query Builder");
+            Console.WriteLine("6. Exit");
 
-        var sortedElectronicsAboveLimitByPrice = electronicsAboveLimit
-                                        .OrderByDescending(product => product.Price);
+            Console.WriteLine();
+            Console.Write("Choose a task: ");
 
-        decimal averagePriceOfElectronicsAboveLimit = sortedElectronicsAboveLimitByPrice
-                                                        .Average(product => product.Price);
+            string? choice = Console.ReadLine();
 
-        Console.Write($"Electronics products above ${_minimalPrice}\n\n");
-        foreach (var product in electronicsAboveLimit)
-        {
-            Console.Write($"Product Name: {product.ProductName}, Price: {product.Price}\n");
+            Console.Clear();
+
+            switch (choice)
+            {
+                case "1":
+                    ClearScreenWithKey();
+                    break;
+
+                case "2":
+                    ClearScreenWithKey();
+                    break;
+
+                case "3":
+                    ClearScreenWithKey();
+                    break;
+
+                case "4":
+                    ClearScreenWithKey();
+                    break;
+
+                case "5":
+                    ClearScreenWithKey();
+                    break;
+
+                case "6":
+                    isRunning = false;
+                    Console.WriteLine("Exiting application...");
+                    break;
+
+                default:
+                    Console.WriteLine("Invalid choice. Please try again.");
+                    ClearScreenWithKey();
+                    break;
+            }
         }
+    }
 
-        Console.Write($"\nElectronics products above ${_minimalPrice} in descending order of price\n\n");
-        foreach (var product in sortedElectronicsAboveLimitByPrice)
-        {
-            Console.Write($"Product Name: {product.ProductName}, Price: {product.Price}\n");
-        }
-
-        Console.WriteLine($"\nAverage price of electronics products above ${_minimalPrice}: ${averagePriceOfElectronicsAboveLimit}");
-
+    private static void ClearScreenWithKey()
+    {
+        Console.WriteLine();
+        Console.WriteLine("Press any key to return to the menu...");
         Console.ReadKey();
+        Console.Clear();
     }
 }
