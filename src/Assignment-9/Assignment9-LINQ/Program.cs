@@ -42,6 +42,7 @@ namespace Assignment9
                         break;
 
                     case "2":
+                        Task2.Run(context);
                         ClearScreenWithKey();
                         break;
 
