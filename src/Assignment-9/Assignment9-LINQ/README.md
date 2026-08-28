@@ -78,20 +78,42 @@ Execution times are measured using a `Stopwatch` to compare the approaches.
 This task implements a custom Fluent API Query Builder that enables dynamic query composition on collections.
 The QueryBuilder utility supports:
 
-- Filtering
+- Dynamic filtering using Expression Trees
+- Multiple filter conditions
 - Sorting
 - Joining collections
 - Query execution
 
 The utility allows methods to be chained together fluently, making query construction more readable and maintainable.
+Expression Trees are used to dynamically generate LINQ filter expressions at runtime based on the property name, filter value, and selected filter condition. 
+This allows the QueryBuilder to support flexible filtering without requiring hardcoded predicates.
 
-Example:
+##### Filter Condition Examples
+
+Contains:
 
 ```csharp
-List<Product> products = new QueryBuilder<Product>(context.Products)
-    .Filter(product => product.Price > 200)
-    .SortBy(product => product.Price)
-    .Execute();
+.Filter("ProductName", "Phone", FilterCondition.Contains)
+```
+
+Starts With:
+```csharp
+.Filter("ProductName", "S", FilterCondition.StartsWith)
+```
+
+Ends With:
+```csharp
+.Filter("ProductName", "r", FilterCondition.EndsWith)
+```
+
+Greater Than Or Equal To:
+```csharp
+.Filter("Price", 200, FilterCondition.GreaterThanOrEqualTo)
+```
+
+Less Than Or Equal To:
+```csharp
+.Filter("Price", 200, FilterCondition.LessThanOrEqualTo)
 ```
 
 The task also demonstrates:
@@ -103,7 +125,6 @@ The task also demonstrates:
 
 - Fluent API Pattern
 - Method Chaining
-- Generic Classes
 - LINQ Query Composition
 - Custom Utility Design
 - Reusability and Extensibility
@@ -118,10 +139,16 @@ The `QueryBuilder<T>` class provides a fluent interface for constructing LINQ qu
 
 #### Filter
 
-Filters the collection based on a specified condition.
+Filters the collection dynamically using a property name, filter value, and filter condition. 
+Supported filter conditions: 
+- Contains
+- StartsWith 
+- EndsWith
+- GreaterThanOrEqualTo
+- LessThanOrEqualTo
 
 ```csharp
-.Filter(product => product.Price > 200)
+.Filter("Price", 200, FilterCondition.GreaterThanOrEqualTo)
 ```
 
 #### SortBy
@@ -181,6 +208,7 @@ Assignment9-LINQ
 │
 ├── Utils
 │   └── QueryBuilder.cs
+│   └── FilterCondition.cs
 │
 ├── Program.cs
 │
@@ -236,7 +264,10 @@ Demonstrates the implementation and usage of the custom Fluent API QueryBuilder.
 ## Utils
 
 ### QueryBuilder.cs
-Defines the custom generic QueryBuilder class used for fluent query construction.
+Defines the custom generic QueryBuilder class used for fluent query construction, dynamic filtering using Expression Trees, sorting, joining, and query execution.
+
+### FilterCondition.cs
+Defines the enum for the different filter conditions given by the user.
 
 ---
 
@@ -294,11 +325,11 @@ Focus on:
 ## 5. Task 5 – Fluent API Query Builder
 
 Focus on:
-- Fluent API pattern
-- Method chaining
-- Generic classes
-- Filter, SortBy, Join, and Execute methods
-- Custom query construction
+- Fluent API Pattern
+- Method Chaining
+- Expression Trees
+- Dynamic Query Generation
+- Multiple Filter Conditions
 
 ---
 
@@ -307,6 +338,9 @@ Focus on:
 - Understanding how deferred execution works in LINQ.
 - Working with grouping and joining operations.
 - Finding efficient ways to query and transform collections.
-- Comparing query performance using Stopwatch.
+- Using right measurements for query performance using Stopwatch.
 - Designing a reusable QueryBuilder using the Fluent API pattern.
 - Implementing generic methods that support filtering, sorting, and joining operations.
+- Understanding and implementing Expression Trees.
+- Dynamically generating LINQ expressions at runtime.
+- Handling invalid property names and unsupported filter operations.
