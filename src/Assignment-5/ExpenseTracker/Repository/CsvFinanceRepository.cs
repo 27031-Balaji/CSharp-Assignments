@@ -10,10 +10,8 @@ namespace ExpenseTracker.Repository
     /// </summary>
     internal class CsvFinanceRepository : IFinanceRepository
     {
-        private const string FilePath = Constant.FinanceFilePath;
-        private const string CsvHeader = Constant.FinanceCsvHeader;
         private readonly List<FinancialRecord> records;
-        private readonly CsvHandler csvHandler;
+        private CsvHandler csvHandler;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CsvFinanceRepository"/> class.
@@ -21,7 +19,19 @@ namespace ExpenseTracker.Repository
         public CsvFinanceRepository()
         {
             this.records = new List<FinancialRecord>();
-            this.csvHandler = new CsvHandler(FilePath);
+            Directory.CreateDirectory(Constant.TransactionFolderPath);
+            this.csvHandler = new CsvHandler(string.Empty);
+        }
+
+        /// <summary>
+        /// Loads the records from the file to the in-memory list for the specific user.
+        /// </summary>
+        /// <param name="userId">The ID of the user, for which the file contents should load.</param>
+        public void LoadRecords(Guid userId)
+        {
+            this.records.Clear();
+            string filePath = Path.Combine(Constant.TransactionFolderPath, $"{userId}.csv");
+            this.csvHandler = new CsvHandler(filePath);
             this.ReadRecordsFromFile();
         }
 
@@ -34,7 +44,7 @@ namespace ExpenseTracker.Repository
             List<string> lines = new List<string>();
             if (!this.csvHandler.Exists())
             {
-                lines.Add(CsvHeader);
+                lines.Add(Constant.FinanceCsvHeader);
             }
 
             lines.Add(this.ConvertToCsv(record));
@@ -126,8 +136,7 @@ namespace ExpenseTracker.Repository
         /// <returns>The original stored record.</returns>
         private FinancialRecord FindOriginalRecord(string recordId)
         {
-            return this.records.First(record =>
-                record.Id.Equals(recordId, StringComparison.OrdinalIgnoreCase));
+            return this.records.First(record => record.Id.Equals(recordId, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -152,7 +161,7 @@ namespace ExpenseTracker.Repository
         /// </summary>
         private void SaveRecordsToFile()
         {
-            List<string> lines = new List<string> { CsvHeader };
+            List<string> lines = new List<string> { Constant.FinanceCsvHeader };
             foreach (FinancialRecord record in this.records)
             {
                 lines.Add(this.ConvertToCsv(record));
@@ -172,20 +181,25 @@ namespace ExpenseTracker.Repository
             string id = values[0];
             Guid userId = Guid.Parse(values[1]);
             DateOnly date = DateOnly.Parse(values[2]);
-            string type = values[3];
+            RecordType recordType = Enum.Parse<RecordType>(values[3]);
             string classification = values[4];
             decimal amount = decimal.Parse(values[5]);
             string? description = string.IsNullOrWhiteSpace(values[6]) ? string.Empty : values[6];
 
             FinancialRecord record;
 
-            if (type == RecordType.Income.ToString())
+            switch (recordType)
             {
-                record = new Income(id, userId, date, amount, description, RecordType.Income, Enum.Parse<IncomeSource>(classification));
-            }
-            else
-            {
-                record = new Expense(id, userId, date, amount, description, RecordType.Expense, Enum.Parse<ExpenseCategory>(classification));
+                case RecordType.Income:
+                    record = new Income(id, userId, date, amount, description, Enum.Parse<IncomeSource>(classification));
+                    break;
+
+                case RecordType.Expense:
+                    record = new Expense(id, userId, date, amount, description, Enum.Parse<ExpenseCategory>(classification));
+                    break;
+
+                default:
+                    throw new FormatException();
             }
 
             return record;

@@ -89,5 +89,20 @@
         /// Message displayed when a record's description is edited successfully.
         /// </summary>
         public const string DescriptionEditedSuccessMessage = "Description edited successfully.";
+
+        /// <summary>
+        /// Message displayed when the record is of an invalid type.
+        /// </summary>
+        public const string InvalidRecordTypeMessage = "Unknown record type.";
+
+        /// <summary>
+        /// Message displayed when the record is in an invalid format.
+        /// </summary>
+        public const string InvalidFormatMessage = "The records file contains data in an invalid format.";
+
+        /// <summary>
+        /// Message displayed when the record file does not exist.
+        /// </summary>
+        public const string FileNotFoundMessage = "The records file could not be found.";
     }
 }

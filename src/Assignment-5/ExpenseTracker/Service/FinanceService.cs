@@ -1,5 +1,6 @@
 ﻿using ExpenseTracker.ConstantLiteral;
 using ExpenseTracker.Enums;
+using ExpenseTracker.Helper;
 using ExpenseTracker.Model;
 using ExpenseTracker.Repository;
 
@@ -11,14 +12,17 @@ namespace ExpenseTracker.Service
     internal class FinanceService
     {
         private readonly IFinanceRepository financeRepository;
+        private readonly FinanceHelper financeHelper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FinanceService"/> class.
         /// </summary>
         /// <param name="repository">The <see cref="IFinanceRepository"/> used to save and query records.</param>
-        public FinanceService(IFinanceRepository repository)
+        /// <param name="financeHelper">The <see cref="FinanceHelper"/> used to validate input.</param>
+        public FinanceService(IFinanceRepository repository, FinanceHelper financeHelper)
         {
             this.financeRepository = repository;
+            this.financeHelper = financeHelper;
         }
 
         /// <summary>
@@ -42,7 +46,7 @@ namespace ExpenseTracker.Service
         public void AddIncome(Guid userId, DateOnly date, decimal amount, IncomeSource source, string? description)
         {
             string recordId = this.GenerateUniqueId();
-            Income income = new Income(recordId, userId, date, amount, description, RecordType.Income, source);
+            Income income = new Income(recordId, userId, date, amount, description, source);
             this.financeRepository.AddRecord(income);
         }
 
@@ -57,7 +61,7 @@ namespace ExpenseTracker.Service
         public void AddExpense(Guid userId, DateOnly date, decimal amount, ExpenseCategory category, string? description)
         {
             string recordId = this.GenerateUniqueId();
-            Expense expense = new Expense(recordId, userId, date, amount, description, RecordType.Expense, category);
+            Expense expense = new Expense(recordId, userId, date, amount, description, category);
             this.financeRepository.AddRecord(expense);
         }
 
@@ -160,6 +164,45 @@ namespace ExpenseTracker.Service
                                                               && record is Expense expense
                                                               && expense.Category == category);
             return this.SortRecordsByDate(categoryRecords);
+        }
+
+        /// <summary>
+        /// Searches the records according to the specific input term given by the user.
+        /// </summary>
+        /// <param name="userId">The user ID of the user.</param>
+        /// <param name="searchTerm">The search input given by the user.</param>
+        /// <returns>The records according to the search input.</returns>
+        public IEnumerable<FinancialRecord> Search(Guid userId, string searchTerm)
+        {
+            if (this.financeHelper.IsValidSource(searchTerm, out IncomeSource sameSource)
+                && this.financeHelper.IsValidCategory(searchTerm, out ExpenseCategory sameCategory))
+            {
+                return this.SearchBySource(userId, sameSource)
+                    .Concat(this.SearchByCategory(userId, sameCategory))
+                    .ToList();
+            }
+
+            switch (this.financeHelper.ReturnSearchType(searchTerm))
+            {
+                case SearchType.Date:
+                    this.financeHelper.IsValidDate(searchTerm, out DateOnly date);
+                    return this.SearchByDate(userId, date);
+
+                case SearchType.Amount:
+                    this.financeHelper.IsValidAmount(searchTerm, out decimal amount);
+                    return this.SearchByAmount(userId, amount);
+
+                case SearchType.Source:
+                    this.financeHelper.IsValidSource(searchTerm, out IncomeSource source);
+                    return this.SearchBySource(userId, source);
+
+                case SearchType.Category:
+                    this.financeHelper.IsValidCategory(searchTerm, out ExpenseCategory category);
+                    return this.SearchByCategory(userId, category);
+
+                default:
+                    return new List<FinancialRecord>();
+            }
         }
 
         /// <summary>
@@ -295,6 +338,15 @@ namespace ExpenseTracker.Service
             decimal netBalance = totalIncome - totalExpense;
             decimal savingsRate = totalIncome == 0 ? 0 : (netBalance / totalIncome) * 100;
             return (totalIncome, totalExpense, netBalance, savingsRate, highestExpense);
+        }
+
+        /// <summary>
+        /// Loads the records in the repository for CRUD operations.
+        /// </summary>
+        /// <param name="userId">The ID of the user.</param>
+        public void LoadRecords(Guid userId)
+        {
+            this.financeRepository.LoadRecords(userId);
         }
 
         /// <summary>

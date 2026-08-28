@@ -3,7 +3,7 @@
     /// <summary>
     /// Provides constants used across the application.
     /// </summary>
-    internal class Constant
+    internal static class Constant
     {
         /// <summary>
         /// Provides the maximum length of the transaction id.
@@ -19,17 +19,17 @@
         /// <summary>
         /// The file path where records are persisted.
         /// </summary>
-        internal const string FinanceFilePath = "records.csv";
+        internal const string TransactionFolderPath = "Data/Transactions";
 
         /// <summary>
         /// The file path where the users are persisted.
         /// </summary>
-        internal const string UserFilePath = "users.csv";
+        internal const string UserFilePath = "Data/users.csv";
 
         /// <summary>
         /// The CSV header line used when creating the records file.
         /// </summary>
-        internal const string FinanceCsvHeader = "Id,UserId,Date,Type,Classification,Amount,Description";
+        internal const string FinanceCsvHeader = "Id,Date,Type,Classification,Amount,Description";
 
         /// <summary>
         /// The CSV header line used when creating the users file.

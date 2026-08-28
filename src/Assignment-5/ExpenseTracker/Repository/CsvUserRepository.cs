@@ -9,8 +9,6 @@ namespace ExpenseTracker.Repository
     /// </summary>
     internal class CsvUserRepository : IUserRepository
     {
-        private const string FilePath = Constant.UserFilePath;
-        private const string CsvHeader = Constant.UserCsvHeader;
         private readonly List<User> users;
         private readonly CsvHandler csvHandler;
 
@@ -20,7 +18,7 @@ namespace ExpenseTracker.Repository
         public CsvUserRepository()
         {
             this.users = new List<User>();
-            this.csvHandler = new CsvHandler(FilePath);
+            this.csvHandler = new CsvHandler(Constant.UserFilePath);
             this.ReadUsersFromFile();
         }
 
@@ -38,7 +36,7 @@ namespace ExpenseTracker.Repository
             List<string> lines = new List<string>();
             if (!this.csvHandler.Exists())
             {
-                lines.Add(CsvHeader);
+                lines.Add(Constant.UserCsvHeader);
             }
 
             lines.Add(this.ConvertToCsv(user));
@@ -108,7 +106,7 @@ namespace ExpenseTracker.Repository
         /// </summary>
         private void SaveUsersToFile()
         {
-            List<string> lines = new List<string> { CsvHeader };
+            List<string> lines = new List<string> { Constant.UserCsvHeader };
             foreach (User user in this.users)
             {
                 lines.Add(this.ConvertToCsv(user));

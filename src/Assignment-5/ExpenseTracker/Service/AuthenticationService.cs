@@ -8,15 +8,17 @@ namespace ExpenseTracker.Service
     internal class AuthenticationService
     {
         private readonly UserService userService;
+        private readonly FinanceService financeService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticationService"/> class.
         /// </summary>
         /// <param name="userService">The <see cref="UserService"/> used to manage user data.</param>
-        public AuthenticationService(UserService userService)
+        /// <param name="financeService">The <see cref="FinanceService"/> used to load the records.</param>
+        public AuthenticationService(UserService userService, FinanceService financeService)
         {
             this.userService = userService;
-            this.LoggedInUser = null!;
+            this.financeService = financeService;
         }
 
         /// <summary>
@@ -57,6 +59,7 @@ namespace ExpenseTracker.Service
         public void Login(string userName, string password)
         {
             this.LoggedInUser = this.userService.Authenticate(userName, password);
+            this.financeService.LoadRecords(this.LoggedInUser.Id);
         }
 
         /// <summary>

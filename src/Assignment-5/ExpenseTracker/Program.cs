@@ -17,20 +17,46 @@ namespace ExpenseTracker
         /// <param name="args">Command-line arguments passed to the application.</param>
         public static void Main(string[] args)
         {
-            IUserRepository userRepository = new CsvUserRepository();
-            IFinanceRepository financeRepository = new CsvFinanceRepository();
-            UserService userService = new UserService(userRepository);
-            AuthenticationService authenticationService = new AuthenticationService(userService);
-            FinanceService financeService = new FinanceService(financeRepository);
+            try
+            {
+                IUserRepository userRepository = new CsvUserRepository();
+                IFinanceRepository financeRepository = new CsvFinanceRepository();
 
-            AuthenticationView authenticationView = new AuthenticationView();
-            AuthenticationHelper authenticationHelper = new AuthenticationHelper();
-            FinanceHelper financeHelper = new FinanceHelper();
-            ApplicationView applicationView = new ApplicationView();
+                AuthenticationHelper authenticationHelper = new AuthenticationHelper();
+                FinanceHelper financeHelper = new FinanceHelper();
 
-            ApplicationController applicationController = new ApplicationController(financeService, authenticationService, financeHelper, applicationView);
-            AuthenticationController authenticationController = new AuthenticationController(authenticationService, authenticationView, authenticationHelper, applicationController);
-            authenticationController.Run();
+                UserService userService = new UserService(userRepository);
+                FinanceService financeService = new FinanceService(financeRepository, financeHelper);
+                AuthenticationService authenticationService = new AuthenticationService(userService, financeService);
+
+                AuthenticationView authenticationView = new AuthenticationView();
+                ApplicationView applicationView = new ApplicationView();
+
+                ApplicationController applicationController = new ApplicationController(financeService, authenticationService, financeHelper, applicationView);
+                AuthenticationController authenticationController = new AuthenticationController(authenticationService, authenticationView, authenticationHelper, applicationController);
+                authenticationController.Run();
+            }
+            catch (Exception ex)
+            {
+                switch (ex)
+                {
+                    case FormatException:
+                        Console.WriteLine(ConsoleMessages.InvalidFormatMessage);
+                        break;
+
+                    case FileNotFoundException:
+                        Console.WriteLine(ConsoleMessages.FileNotFoundMessage);
+                        break;
+
+                    case InvalidOperationException:
+                        Console.WriteLine(ConsoleMessages.InvalidRecordTypeMessage);
+                        break;
+
+                    default:
+                        Console.WriteLine($"Unknown Exception: {ex.Message}");
+                        break;
+                }
+            }
         }
     }
 }

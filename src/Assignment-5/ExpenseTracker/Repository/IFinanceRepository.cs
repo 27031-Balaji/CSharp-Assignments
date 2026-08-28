@@ -8,6 +8,12 @@ namespace ExpenseTracker.Repository
     internal interface IFinanceRepository
     {
         /// <summary>
+        /// Loads the records from the file to in-memory.
+        /// </summary>
+        /// <param name="userId">The ID of the user.</param>
+        void LoadRecords(Guid userId);
+
+        /// <summary>
         /// Adds a <see cref="FinancialRecord"/> to the repository.
         /// </summary>
         /// <param name="record">The <see cref="FinancialRecord"/> to add.</param>

@@ -14,15 +14,13 @@ namespace ExpenseTracker.Model
         /// <param name="userId">The user ID mapped to the <see cref="FinancialRecord"/>.</param>
         /// <param name="date">The date in which the <see cref="FinancialRecord"/> is taken.</param>
         /// <param name="amount">The amount associated with the <see cref="FinancialRecord"/>.</param>
-        /// <param name="type">The type associated with the <see cref="FinancialRecord"/>.</param>
         /// <param name="description">The description of the <see cref="FinancialRecord"/>.</param>
-        protected FinancialRecord(string id, Guid userId, DateOnly date, decimal amount, RecordType type, string? description)
+        protected FinancialRecord(string id, Guid userId, DateOnly date, decimal amount, string? description)
         {
             this.Id = id;
             this.UserId = userId;
             this.Date = date;
             this.Amount = amount;
-            this.Type = type;
             this.Description = description;
         }
 
@@ -62,7 +60,7 @@ namespace ExpenseTracker.Model
         /// <value>
         /// The type of the <see cref="FinancialRecord"/>.
         /// </value>
-        public RecordType Type { get; }
+        public abstract RecordType Type { get; }
 
         /// <summary>
         /// Gets the classification of the <see cref="FinancialRecord"/>.

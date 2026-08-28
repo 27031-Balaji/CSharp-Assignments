@@ -450,36 +450,7 @@ namespace ExpenseTracker.Controller
         private IEnumerable<FinancialRecord> GetMatchingRecords(Guid userId)
         {
             string searchTerm = this.view.ReadSearchTerm();
-
-            if (this.helper.IsValidSource(searchTerm, out IncomeSource sameSource)
-                && this.helper.IsValidCategory(searchTerm, out ExpenseCategory sameCategory))
-            {
-                return this.financeService.SearchBySource(userId, sameSource)
-                    .Concat(this.financeService.SearchByCategory(userId, sameCategory))
-                    .ToList();
-            }
-
-            switch (this.helper.ReturnSearchType(searchTerm))
-            {
-                case SearchType.Date:
-                    this.helper.IsValidDate(searchTerm, out DateOnly date);
-                    return this.financeService.SearchByDate(userId, date);
-
-                case SearchType.Amount:
-                    this.helper.IsValidAmount(searchTerm, out decimal amount);
-                    return this.financeService.SearchByAmount(userId, amount);
-
-                case SearchType.Source:
-                    this.helper.IsValidSource(searchTerm, out IncomeSource source);
-                    return this.financeService.SearchBySource(userId, source);
-
-                case SearchType.Category:
-                    this.helper.IsValidCategory(searchTerm, out ExpenseCategory category);
-                    return this.financeService.SearchByCategory(userId, category);
-
-                default:
-                    return new List<FinancialRecord>();
-            }
+            return this.financeService.Search(userId, searchTerm);
         }
 
         /// <summary>
