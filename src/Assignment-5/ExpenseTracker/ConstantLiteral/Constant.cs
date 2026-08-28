@@ -13,7 +13,6 @@
         /// <summary>
         /// Provides the maxiumum length for the username and password.
         /// </summary>
-
         internal const int MaxLengthOfNameAndPassword = 20;
 
         /// <summary>
