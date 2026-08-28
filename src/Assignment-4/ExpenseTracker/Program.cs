@@ -34,10 +34,6 @@ namespace ExpenseTracker
                         Console.WriteLine(ConsoleMessages.InvalidFormatMessage);
                         break;
 
-                    case InvalidDataException:
-                        Console.WriteLine(ConsoleMessages.InvalidFormatMessage);
-                        break;
-
                     case FileNotFoundException:
                         Console.WriteLine(ConsoleMessages.FileNotFoundMessage);
                         break;

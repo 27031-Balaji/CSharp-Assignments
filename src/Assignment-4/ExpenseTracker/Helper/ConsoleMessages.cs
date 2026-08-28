@@ -74,5 +74,10 @@
         /// Message displayed when the record file does not exist.
         /// </summary>
         public const string FileNotFoundMessage = "The records file could not be found.";
+
+        /// <summary>
+        /// Message displayed when there is unclosed comma when parsing back from CSV.
+        /// </summary>
+        public const string UnclosedQuoteErrorMessage = "Unclosed quotes.";
     }
 }

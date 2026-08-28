@@ -169,7 +169,6 @@ namespace ExpenseTracker.Repository
         /// <param name="line">The CSV line to parse.</param>
         /// <returns>A <see cref="FinancialRecord"/> instance representing the parsed line.</returns>
         /// <exception cref="FormatException">Throws a format exception when parsing fails.</exception>
-        /// <exception cref="InvalidDataException">Throws invalid data exception when the record type mismatches.</exception>
         private FinancialRecord ParseToRecord(string line)
         {
             List<string> values = this.ParseCsvLine(line);
@@ -193,7 +192,7 @@ namespace ExpenseTracker.Repository
                     break;
 
                 default:
-                    throw new InvalidDataException();
+                    throw new FormatException();
             }
 
             return record;
@@ -213,20 +212,31 @@ namespace ExpenseTracker.Repository
             for (int i = 0; i < line.Length; i++)
             {
                 char ch = line[i];
+                /**
+                     * If currently inside quotes and double quotes are found, add to part and skip the next character.
+                     * If currently inside quotes, but not a double quote, then it is the closing quote.
+                     * If not inside quotes, then it must be an opening quote.
+                */
                 if (ch == '"')
                 {
                     if (insideQuotes && i + 1 < line.Length && line[i + 1] == '"')
                     {
                         field.Append('"');
-                        i++;
+                        i++; // Skip double quote
                     }
                     else
                     {
                         insideQuotes = !insideQuotes;
                     }
                 }
+
+                /**
+                     * If currently inside quotes, then add comma to part.
+                     * Otherwise, treat it as a delimiter.
+                */
                 else if (ch == ',' && !insideQuotes)
                 {
+                    // Add part to list of parts, and clear the string builder
                     fields.Add(field.ToString());
                     field.Clear();
                 }
@@ -237,6 +247,11 @@ namespace ExpenseTracker.Repository
             }
 
             fields.Add(field.ToString());
+
+            if (insideQuotes)
+            {
+                throw new FormatException();
+            }
 
             return fields;
         }
