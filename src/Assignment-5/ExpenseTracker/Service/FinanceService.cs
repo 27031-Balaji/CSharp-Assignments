@@ -76,27 +76,17 @@ namespace ExpenseTracker.Service
         }
 
         /// <summary>
-        /// Retrieves all stored income records sorted by date (most recent first).
+        /// Retrieves all records of the specified type sorted by date (most recent first).
         /// </summary>
-        /// <returns>A list of <see cref="FinancialRecord"/> representing incomes sorted by date.</returns>
-        public IEnumerable<FinancialRecord> GetIncomeRecords()
+        /// <typeparam name="T">The type of financial record to retrieve.</typeparam>
+        /// <returns>A list of records of type <typeparamref name="T"/> sorted by date.</returns>
+        public IEnumerable<FinancialRecord> GetSpecificTypeRecords<T>()
+            where T : FinancialRecord
         {
-            IEnumerable<FinancialRecord> incomeRecords = this.financeRepository
-                                        .GetRecords(record => record is Income);
+            IEnumerable<FinancialRecord> records = this.financeRepository
+                .GetRecords(record => record is T);
 
-            return this.SortRecordsByDate(incomeRecords);
-        }
-
-        /// <summary>
-        /// Retrieves all stored expense records sorted by date (most recent first).
-        /// </summary>
-        /// <returns>A list of <see cref="FinancialRecord"/> representing expenses sorted by date.</returns>
-        public IEnumerable<FinancialRecord> GetExpenseRecords()
-        {
-            IEnumerable<FinancialRecord> expenseRecords = this.financeRepository
-                                        .GetRecords(record => record is Expense);
-
-            return this.SortRecordsByDate(expenseRecords);
+            return this.SortRecordsByDate(records);
         }
 
         /// <summary>

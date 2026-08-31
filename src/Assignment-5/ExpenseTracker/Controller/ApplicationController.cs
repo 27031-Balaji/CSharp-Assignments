@@ -428,7 +428,7 @@ namespace ExpenseTracker.Controller
         /// </summary>
         private void DisplayAllIncomes()
         {
-            IEnumerable<FinancialRecord> records = this.financeService.GetIncomeRecords();
+            IEnumerable<FinancialRecord> records = this.financeService.GetSpecificTypeRecords<Income>();
             this.view.DisplayRecords(records);
             this.view.ClearScreenWithKey();
         }
@@ -438,7 +438,7 @@ namespace ExpenseTracker.Controller
         /// </summary>
         private void DisplayAllExpenses()
         {
-            IEnumerable<FinancialRecord> records = this.financeService.GetExpenseRecords();
+            IEnumerable<FinancialRecord> records = this.financeService.GetSpecificTypeRecords<Expense>();
             this.view.DisplayRecords(records);
             this.view.ClearScreenWithKey();
         }
