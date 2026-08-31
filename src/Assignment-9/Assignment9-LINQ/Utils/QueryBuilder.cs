@@ -1,4 +1,6 @@
-﻿namespace Assignment9.Utils
+﻿using System.Linq.Expressions;
+
+namespace Assignment9.Utils
 {
     /// <summary>
     /// Provides a fluent interface for filtering, sorting, joining, and executing queries on a collection.
@@ -18,13 +20,94 @@
         }
 
         /// <summary>
-        /// Filters the elements of the query based on a specified predicate.
+        /// Filters the elements of the query using a dynamically generated expression based on the specified property, value, and filter condition.
         /// </summary>
-        /// <param name="predicate">A function to test each element for a condition.</param>
-        /// <returns>The current QueryBuilder instance with the applied filter.</returns>
-        public QueryBuilder<T> Filter(Func<T, bool> predicate)
+        /// <param name="propertyName">The name of the property to apply the filter on.</param>
+        /// <param name="filterValue">The value used for comparison.</param>
+        /// <param name="condition">The <see cref="FilterCondition"/> to be applied.</param>
+        /// <returns>The current <see cref="QueryBuilder{T}"/> instance with the applied filter.</returns>
+        /// <exception cref="ArgumentException">Thrown when an unsupported filter condition is specified.</exception>
+        public QueryBuilder<T> Filter(string propertyName, object filterValue, FilterCondition condition)
         {
-            this._query = this._query.Where(predicate);
+            ParameterExpression parameter = Expression.Parameter(typeof(T), "item");
+            MemberExpression property;
+
+            try
+            {
+                property = Expression.Property(parameter, propertyName);
+            }
+            catch (ArgumentException)
+            {
+                throw new ArgumentException($"Property '{propertyName}' does not exist in {typeof(T).Name}.");
+            }
+
+            object convertedValue;
+            try
+            {
+                convertedValue = Convert.ChangeType(filterValue, property.Type);
+            }
+            catch
+            {
+                throw new ArgumentException($"Value '{filterValue}' cannot be converted to type '{property.Type.Name}'.");
+            }
+
+            ConstantExpression value = Expression.Constant(convertedValue, property.Type);
+            Expression filterExpression;
+            switch (condition)
+            {
+                case FilterCondition.Contains:
+                    if (property.Type != typeof(string))
+                    {
+                        throw new ArgumentException("Contains can only be applied to string properties.");
+                    }
+
+                    filterExpression = Expression.Call(property, typeof(string).GetMethod(nameof(string.Contains), new[] { typeof(string) })!, value);
+                    break;
+
+                case FilterCondition.StartsWith:
+
+                    if (property.Type != typeof(string))
+                    {
+                        throw new ArgumentException("StartsWith can only be applied to string properties.");
+                    }
+
+                    filterExpression = Expression.Call(property, typeof(string).GetMethod(nameof(string.StartsWith), new[] { typeof(string) })!, value);
+                    break;
+
+                case FilterCondition.EndsWith:
+                    if (property.Type != typeof(string))
+                    {
+                        throw new ArgumentException("EndsWith can only be applied to string properties.");
+                    }
+
+                    filterExpression = Expression.Call(property, typeof(string).GetMethod(nameof(string.EndsWith), new[] { typeof(string) })!, value);
+                    break;
+
+                case FilterCondition.GreaterThanOrEqualTo:
+                    if (property.Type == typeof(string))
+                    {
+                        throw new ArgumentException("GreaterThanOrEqualTo cannot be applied to string properties.");
+                    }
+
+                    filterExpression = Expression.GreaterThanOrEqual(property, value);
+                    break;
+
+                case FilterCondition.LessThanOrEqualTo:
+
+                    if (property.Type == typeof(string))
+                    {
+                        throw new ArgumentException("LessThanOrEqualTo cannot be applied to string properties.");
+                    }
+
+                    filterExpression = Expression.LessThanOrEqual(property, value);
+                    break;
+
+                default:
+                    throw new ArgumentException("Unsupported filter condition.");
+            }
+
+            Expression<Func<T, bool>> predicate = Expression.Lambda<Func<T, bool>>(filterExpression, parameter);
+            this._query = this._query.Where(predicate.Compile());
             return this;
         }
 
