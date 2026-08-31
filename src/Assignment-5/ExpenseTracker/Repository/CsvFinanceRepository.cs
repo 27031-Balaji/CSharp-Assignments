@@ -88,11 +88,10 @@ namespace ExpenseTracker.Repository
         /// <summary>
         /// Deletes all records associated with the specified user identifier and saves changes.
         /// </summary>
-        /// <param name="userId">The unique identifier of the user whose records are to be deleted.</param>
-        public void DeleteRecordsByUserId(Guid userId)
+        public void DeleteRecordsByUserId()
         {
-            this.records.RemoveAll(record => record.UserId == userId);
-            this.SaveRecordsToFile();
+            this.records.Clear();
+            this.csvHandler.Delete();
         }
 
         /// <summary>
@@ -179,23 +178,22 @@ namespace ExpenseTracker.Repository
         {
             List<string> values = this.csvHandler.ParseCsvLine(line);
             string id = values[0];
-            Guid userId = Guid.Parse(values[1]);
-            DateOnly date = DateOnly.Parse(values[2]);
-            RecordType recordType = Enum.Parse<RecordType>(values[3]);
-            string classification = values[4];
-            decimal amount = decimal.Parse(values[5]);
-            string? description = string.IsNullOrWhiteSpace(values[6]) ? string.Empty : values[6];
+            DateOnly date = DateOnly.Parse(values[1]);
+            RecordType recordType = Enum.Parse<RecordType>(values[2]);
+            string classification = values[3];
+            decimal amount = decimal.Parse(values[4]);
+            string? description = string.IsNullOrWhiteSpace(values[5]) ? string.Empty : values[5];
 
             FinancialRecord record;
 
             switch (recordType)
             {
                 case RecordType.Income:
-                    record = new Income(id, userId, date, amount, description, Enum.Parse<IncomeSource>(classification));
+                    record = new Income(id, date, amount, description, Enum.Parse<IncomeSource>(classification));
                     break;
 
                 case RecordType.Expense:
-                    record = new Expense(id, userId, date, amount, description, Enum.Parse<ExpenseCategory>(classification));
+                    record = new Expense(id, date, amount, description, Enum.Parse<ExpenseCategory>(classification));
                     break;
 
                 default:
@@ -215,7 +213,6 @@ namespace ExpenseTracker.Repository
             return string.Join(
                 ",",
                 this.csvHandler.CsvEscape(record.Id),
-                this.csvHandler.CsvEscape(record.UserId.ToString()),
                 this.csvHandler.CsvEscape(record.Date.ToString("dd/MM/yyyy")),
                 this.csvHandler.CsvEscape(record.Type.ToString()),
                 this.csvHandler.CsvEscape(record.Classification),

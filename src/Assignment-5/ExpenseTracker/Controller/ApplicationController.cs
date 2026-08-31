@@ -45,27 +45,27 @@ namespace ExpenseTracker.Controller
                 switch (menuOption)
                 {
                     case MainMenuOption.AddRecord:
-                        this.AddRecord(user.Id);
+                        this.AddRecord();
                         break;
 
                     case MainMenuOption.ViewRecord:
-                        this.ViewRecords(user.Id);
+                        this.ViewRecords();
                         break;
 
                     case MainMenuOption.SearchRecord:
-                        this.SearchRecords(user.Id);
+                        this.SearchRecords();
                         break;
 
                     case MainMenuOption.DeleteRecord:
-                        this.DeleteRecord(user.Id);
+                        this.DeleteRecord();
                         break;
 
                     case MainMenuOption.EditRecord:
-                        this.EditRecord(user.Id);
+                        this.EditRecord();
                         break;
 
                     case MainMenuOption.FinancialSummary:
-                        this.GetFinancialSummary(user.Id);
+                        this.GetFinancialSummary();
                         break;
 
                     case MainMenuOption.DeleteAccount:
@@ -86,7 +86,7 @@ namespace ExpenseTracker.Controller
         /// <summary>
         /// Shows the add menu and coordinates the add functionalities.
         /// </summary>
-        private void AddRecord(Guid userId)
+        private void AddRecord()
         {
             bool isRunning = true;
             while (isRunning)
@@ -95,12 +95,12 @@ namespace ExpenseTracker.Controller
                 switch (addOption)
                 {
                     case AddMenuOption.AddIncome:
-                        this.AddIncome(userId);
+                        this.AddIncome();
                         isRunning = false;
                         break;
 
                     case AddMenuOption.AddExpense:
-                        this.AddExpense(userId);
+                        this.AddExpense();
                         isRunning = false;
                         break;
 
@@ -119,9 +119,9 @@ namespace ExpenseTracker.Controller
         /// <summary>
         /// Shows the view menu and processes view functionalities.
         /// </summary>
-        private void ViewRecords(Guid userId)
+        private void ViewRecords()
         {
-            if (!this.HasRecords(userId))
+            if (!this.HasRecords())
             {
                 this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
                 return;
@@ -134,17 +134,17 @@ namespace ExpenseTracker.Controller
                 switch (viewOption)
                 {
                     case ViewMenuOption.ViewAll:
-                        this.DisplayAllRecords(userId);
+                        this.DisplayAllRecords();
                         isRunning = false;
                         break;
 
                     case ViewMenuOption.ViewIncomes:
-                        this.DisplayAllIncomes(userId);
+                        this.DisplayAllIncomes();
                         isRunning = false;
                         break;
 
                     case ViewMenuOption.ViewExpenses:
-                        this.DisplayAllExpenses(userId);
+                        this.DisplayAllExpenses();
                         isRunning = false;
                         break;
 
@@ -163,15 +163,15 @@ namespace ExpenseTracker.Controller
         /// <summary>
         /// Searches records using user input and displays matching records.
         /// </summary>
-        private void SearchRecords(Guid userId)
+        private void SearchRecords()
         {
-            if (!this.HasRecords(userId))
+            if (!this.HasRecords())
             {
                 this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
                 return;
             }
 
-            IEnumerable<FinancialRecord> searchedRecords = this.GetMatchingRecords(userId);
+            IEnumerable<FinancialRecord> searchedRecords = this.GetMatchingRecords();
             if (searchedRecords.Count() == 0)
             {
                 this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Info);
@@ -186,15 +186,15 @@ namespace ExpenseTracker.Controller
         /// <summary>
         /// Deletes a selected record after confirmation.
         /// </summary>
-        private void DeleteRecord(Guid userId)
+        private void DeleteRecord()
         {
-            if (!this.HasRecords(userId))
+            if (!this.HasRecords())
             {
                 this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
                 return;
             }
 
-            IEnumerable<FinancialRecord> searchedRecords = this.GetMatchingRecords(userId);
+            IEnumerable<FinancialRecord> searchedRecords = this.GetMatchingRecords();
             if (searchedRecords.Count() == 0)
             {
                 this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Info);
@@ -208,7 +208,7 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            FinancialRecord record = this.financeService.GetRecordById(userId, recordId) !;
+            FinancialRecord record = this.financeService.GetRecordById(recordId) !;
             this.view.DisplaySingleRecord(record);
 
             if (!this.view.ConfirmAction("delete"))
@@ -218,7 +218,7 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            this.financeService.DeleteRecord(userId, recordId);
+            this.financeService.DeleteRecord(recordId);
             this.view.ShowMessage(ConsoleMessages.DeleteOperationSuccessMessage, MessageType.Success);
             this.view.ClearScreenWithKey();
         }
@@ -226,15 +226,15 @@ namespace ExpenseTracker.Controller
         /// <summary>
         /// Edits a selected record by presenting edit options to the user.
         /// </summary>
-        private void EditRecord(Guid userId)
+        private void EditRecord()
         {
-            if (!this.HasRecords(userId))
+            if (!this.HasRecords())
             {
                 this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
                 return;
             }
 
-            IEnumerable<FinancialRecord> searchedRecords = this.GetMatchingRecords(userId);
+            IEnumerable<FinancialRecord> searchedRecords = this.GetMatchingRecords();
             if (searchedRecords.Count() == 0)
             {
                 this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Info);
@@ -248,7 +248,7 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            FinancialRecord record = this.financeService.GetRecordById(userId, recordId) !;
+            FinancialRecord record = this.financeService.GetRecordById(recordId) !;
 
             bool isRunning = true;
             while (isRunning)
@@ -298,9 +298,9 @@ namespace ExpenseTracker.Controller
         /// <summary>
         /// Prompts user for month and year, then shows a financial summary for that period.
         /// </summary>
-        private void GetFinancialSummary(Guid userId)
+        private void GetFinancialSummary()
         {
-            if (!this.HasRecords(userId))
+            if (!this.HasRecords())
             {
                 this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
                 return;
@@ -315,7 +315,7 @@ namespace ExpenseTracker.Controller
              decimal netExpense,
              decimal netBalance,
              decimal savingsRate,
-             Expense? highestExpense) = this.financeService.GetMonthlySummary(userId, month, year);
+             Expense? highestExpense) = this.financeService.GetMonthlySummary(month, year);
             this.view.ShowFinancialSummary(month, year, netIncome, netExpense, netBalance, savingsRate, highestExpense);
             this.view.ClearScreenWithKey();
         }
@@ -328,7 +328,7 @@ namespace ExpenseTracker.Controller
                 return false;
             }
 
-            this.financeService.DeleteRecordsByUserId(userId);
+            this.financeService.DeleteRecordsByUserId();
             this.authenticationService.DeleteAccount(userId);
             this.view.ShowMessage(ConsoleMessages.AccountDeletedMessage, MessageType.Success);
             this.view.ClearScreenWithKey();
@@ -354,15 +354,15 @@ namespace ExpenseTracker.Controller
         /// Determines whether there are any records available.
         /// </summary>
         /// <returns>True if there are no records, otherwise false.</returns>
-        private bool HasRecords(Guid userId)
+        private bool HasRecords()
         {
-            return !this.financeService.IsRecordListEmpty(userId);
+            return !this.financeService.IsRecordListEmpty();
         }
 
         /// <summary>
         /// Validates input and creates a new <see cref="Income"/> record.
         /// </summary>
-        private void AddIncome(Guid userId)
+        private void AddIncome()
         {
             if (!this.GetValidDate(out DateOnly date))
             {
@@ -381,7 +381,7 @@ namespace ExpenseTracker.Controller
 
             string? description = this.view.ReadRecordDescription().Trim();
 
-            this.financeService.AddIncome(userId, date, amount, source, description);
+            this.financeService.AddIncome(date, amount, source, description);
             this.view.ShowMessage(ConsoleMessages.IncomeAddedMessage, MessageType.Success);
             this.view.ClearScreenWithKey();
         }
@@ -389,7 +389,7 @@ namespace ExpenseTracker.Controller
         /// <summary>
         /// Validates input and creates a new <see cref="Expense"/> record.
         /// </summary>
-        private void AddExpense(Guid userId)
+        private void AddExpense()
         {
             if (!this.GetValidDate(out DateOnly date))
             {
@@ -408,7 +408,7 @@ namespace ExpenseTracker.Controller
 
             string? description = this.view.ReadRecordDescription().Trim();
 
-            this.financeService.AddExpense(userId, date, amount, category, description);
+            this.financeService.AddExpense(date, amount, category, description);
             this.view.ShowMessage(ConsoleMessages.ExpenseAddedMessage, MessageType.Success);
             this.view.ClearScreenWithKey();
         }
@@ -416,9 +416,9 @@ namespace ExpenseTracker.Controller
         /// <summary>
         /// Displays all records to the user.
         /// </summary>
-        private void DisplayAllRecords(Guid userId)
+        private void DisplayAllRecords()
         {
-            IEnumerable<FinancialRecord> records = this.financeService.GetAllRecords(userId);
+            IEnumerable<FinancialRecord> records = this.financeService.GetAllRecords();
             this.view.DisplayRecords(records);
             this.view.ClearScreenWithKey();
         }
@@ -426,9 +426,9 @@ namespace ExpenseTracker.Controller
         /// <summary>
         /// Displays all income records to the user.
         /// </summary>
-        private void DisplayAllIncomes(Guid userId)
+        private void DisplayAllIncomes()
         {
-            IEnumerable<FinancialRecord> records = this.financeService.GetIncomeRecords(userId);
+            IEnumerable<FinancialRecord> records = this.financeService.GetIncomeRecords();
             this.view.DisplayRecords(records);
             this.view.ClearScreenWithKey();
         }
@@ -436,9 +436,9 @@ namespace ExpenseTracker.Controller
         /// <summary>
         /// Displays all expense records to the user.
         /// </summary>
-        private void DisplayAllExpenses(Guid userId)
+        private void DisplayAllExpenses()
         {
-            IEnumerable<FinancialRecord> records = this.financeService.GetExpenseRecords(userId);
+            IEnumerable<FinancialRecord> records = this.financeService.GetExpenseRecords();
             this.view.DisplayRecords(records);
             this.view.ClearScreenWithKey();
         }
@@ -447,10 +447,10 @@ namespace ExpenseTracker.Controller
         /// Produces a set of records that match the user's search input.
         /// </summary>
         /// <returns>A collection of <see cref="FinancialRecord"/> that match the search input.</returns>
-        private IEnumerable<FinancialRecord> GetMatchingRecords(Guid userId)
+        private IEnumerable<FinancialRecord> GetMatchingRecords()
         {
             string searchTerm = this.view.ReadSearchTerm();
-            return this.financeService.Search(userId, searchTerm);
+            return this.financeService.Search(searchTerm);
         }
 
         /// <summary>

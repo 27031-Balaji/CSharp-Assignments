@@ -45,7 +45,7 @@ namespace ExpenseTracker.Repository
         /// Deletes the <see cref="FinancialRecord"/> mapped with the user's id.
         /// </summary>
         /// <param name="userId">The user id of the records to be deleted.</param>
-        void DeleteRecordsByUserId(Guid userId);
+        void DeleteRecordsByUserId();
 
         /// <summary>
         /// Updates the data of the specified <see cref="FinancialRecord"/>.

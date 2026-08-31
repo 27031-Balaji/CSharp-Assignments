@@ -11,13 +11,12 @@ namespace ExpenseTracker.Model
         /// Initializes a new instance of the <see cref="Expense"/> class.
         /// </summary>
         /// <param name="id">The unique ID of the <see cref="Expense"/> record.</param>
-        /// <param name="userId">The user ID mapped to the <see cref="Expense"/> record.</param>
         /// <param name="date">The date of the <see cref="Expense"/> record.</param>
         /// <param name="amount">The amount associated with the <see cref="Expense"/> record.</param>
         /// <param name="description">The description of the <see cref="Expense"/> record.</param>
         /// <param name="category">The <see cref="ExpenseCategory"/> of the <see cref="Expense"/>.</param>
-        public Expense(string id, Guid userId, DateOnly date, decimal amount, string? description, ExpenseCategory category)
-            : base(id, userId, date, amount, description)
+        public Expense(string id, DateOnly date, decimal amount, string? description, ExpenseCategory category)
+            : base(id, date, amount, description)
         {
             this.Category = category;
         }

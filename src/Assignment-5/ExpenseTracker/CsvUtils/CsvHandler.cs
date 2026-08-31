@@ -48,6 +48,14 @@ namespace ExpenseTracker.CsvUtils
         }
 
         /// <summary>
+        /// Deletes the file if the file exists.
+        /// </summary>
+        public void Delete()
+        {
+            File.Delete(this.filePath);
+        }
+
+        /// <summary>
         /// Determines whether the CSV file exists.
         /// </summary>
         /// <returns>True when the file exists, otherwise false.</returns>
