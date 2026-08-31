@@ -21,7 +21,6 @@ namespace ExpenseTracker
             {
                 IUserRepository userRepository = new CsvUserRepository();
                 IFinanceRepository financeRepository = new CsvFinanceRepository();
-
                 AuthenticationHelper authenticationHelper = new AuthenticationHelper();
                 FinanceHelper financeHelper = new FinanceHelper();
 
@@ -36,26 +35,21 @@ namespace ExpenseTracker
                 AuthenticationController authenticationController = new AuthenticationController(authenticationService, authenticationView, authenticationHelper, applicationController);
                 authenticationController.Run();
             }
+            catch (FormatException)
+            {
+                Console.WriteLine(ConsoleMessages.InvalidFormatMessage);
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine(ConsoleMessages.FileNotFoundMessage);
+            }
+            catch (InvalidOperationException)
+            {
+                Console.WriteLine(ConsoleMessages.InvalidRecordTypeMessage);
+            }
             catch (Exception ex)
             {
-                switch (ex)
-                {
-                    case FormatException:
-                        Console.WriteLine(ConsoleMessages.InvalidFormatMessage);
-                        break;
-
-                    case FileNotFoundException:
-                        Console.WriteLine(ConsoleMessages.FileNotFoundMessage);
-                        break;
-
-                    case InvalidOperationException:
-                        Console.WriteLine(ConsoleMessages.InvalidRecordTypeMessage);
-                        break;
-
-                    default:
-                        Console.WriteLine($"Unknown Exception: {ex.Message}");
-                        break;
-                }
+                Console.WriteLine($"Unexpected error: {ex.Message}");
             }
         }
     }
