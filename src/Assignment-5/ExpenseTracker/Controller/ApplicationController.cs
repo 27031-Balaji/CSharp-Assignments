@@ -198,6 +198,7 @@ namespace ExpenseTracker.Controller
             if (searchedRecords.Count() == 0)
             {
                 this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Info);
+                this.view.ClearScreenWithKey();
                 return;
             }
 
@@ -238,6 +239,7 @@ namespace ExpenseTracker.Controller
             if (searchedRecords.Count() == 0)
             {
                 this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Info);
+                this.view.ClearScreenWithKey();
                 return;
             }
 
