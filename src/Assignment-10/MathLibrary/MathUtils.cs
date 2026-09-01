@@ -21,7 +21,7 @@
         {
             if (b == 0)
             {
-                throw new DivideByZeroException("Cannot divide by zero");
+                throw new DivideByZeroException("Cannot divide by zero.");
             }
 
             return (double) a / b;
