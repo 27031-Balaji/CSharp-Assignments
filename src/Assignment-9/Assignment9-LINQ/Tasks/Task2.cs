@@ -23,11 +23,8 @@ namespace Assignment9.Tasks
             ConsoleTable categoryTable = new ConsoleTable("Category", "Product Count", "Most Expensive Product", "Price");
             foreach (IGrouping<string, Product> group in groupedProducts)
             {
-                Product mostExpensiveProduct = group
-                    .OrderByDescending(product => product.Price)
-                    .First();
-
-                categoryTable.AddRow(group.Key, group.Count(), mostExpensiveProduct.ProductName, mostExpensiveProduct.Price);
+                Product? mostExpensiveProduct = group.MaxBy(product => product.Price);
+                categoryTable.AddRow(group.Key, group.Count(), mostExpensiveProduct?.ProductName ?? "None", mostExpensiveProduct?.Price ?? 0);
             }
 
             categoryTable.Write(Format.MarkDown);
