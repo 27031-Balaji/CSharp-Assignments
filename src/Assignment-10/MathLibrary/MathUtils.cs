@@ -1,30 +1,58 @@
 ﻿namespace MathLibrary
 {
+    /// <summary>
+    /// Class library used to handle the calculation operations.
+    /// </summary>
     public class MathUtils
     {
-        public int Add(int a, int b)
+        /// <summary>
+        /// Used to add two numbers.
+        /// </summary>
+        /// <param name="firstNumber">The first number.</param>
+        /// <param name="secondNumber">The second number.</param>
+        /// <returns>The addition result of the two numbers.</returns>
+        public int Add(int firstNumber, int secondNumber)
         {
-            return a + b;
+            return firstNumber + secondNumber;
         }
 
-        public int Subtract(int a, int b)
+        /// <summary>
+        /// Used to subtract two numbers.
+        /// </summary>
+        /// <param name="firstNumber">The first number.</param>
+        /// <param name="secondNumber">The second number.</param>
+        /// <returns>The subtraction result of the two numbers.</returns>
+        public int Subtract(int firstNumber, int secondNumber)
         {
-            return a - b;
+            return firstNumber - secondNumber;
         }
 
-        public int Multiply(int a, int b)
+        /// <summary>
+        /// Used to multiply two numbers.
+        /// </summary>
+        /// <param name="firstNumber">The first number.</param>
+        /// <param name="secondNumber">The second number.</param>
+        /// <returns>The multiplication result of the two numbers.</returns>
+        public int Multiply(int firstNumber, int secondNumber)
         {
-            return a * b;
+            return firstNumber * secondNumber;
         }
 
-        public double Divide(int a, int b)
+        /// <summary>
+        /// Used to divide two numbers.
+        /// </summary>
+        /// <param name="firstNumber">The first number.</param>
+        /// <param name="secondNumber">The second number.</param>
+        /// <returns>The division result of the two numbers.</returns>
+        /// <exception cref="DivideByZeroException">Exception thrown when the second input is given as zero.</exception>
+        public double Divide(int firstNumber, int secondNumber)
         {
-            if (b == 0)
+            if (secondNumber == 0)
             {
                 throw new DivideByZeroException("Cannot divide by zero.");
             }
 
-            return (double) a / b;
+            return (double) firstNumber / secondNumber;
         }
     }
 }

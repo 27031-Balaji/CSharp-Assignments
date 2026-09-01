@@ -2,8 +2,15 @@
 
 namespace CalculatorApplication
 {
+    /// <summary>
+    /// The Program class is the entry point of the application.
+    /// </summary>
     internal class Program
     {
+        /// <summary>
+        /// This method Main is the main method that runs when the application is built.
+        /// </summary>
+        /// <param name="args">The command line arguments.</param>
         public static void Main(string[] args)
         {
             MathUtils mathUtils = new MathUtils();
@@ -19,7 +26,7 @@ namespace CalculatorApplication
                 Console.Write("\nEnter your choice: ");
                 string choice = (Console.ReadLine() ?? string.Empty).Trim();
 
-                switch (choice)
+                switch (choice.ToUpper())
                 {
                     case "A":
                         AdditionOperation(mathUtils);
@@ -52,6 +59,10 @@ namespace CalculatorApplication
             }
         }
 
+        /// <summary>
+        /// Handles the addition operation of the calculator.
+        /// </summary>
+        /// <param name="mathUtils">The <see cref="MathUtils"/> object for accessing calculation operations.</param>
         private static void AdditionOperation(MathUtils mathUtils)
         {
             int firstNumber = GetNumber("first");
@@ -60,6 +71,10 @@ namespace CalculatorApplication
             Console.Write($"\nAddition of {firstNumber} and {secondNumber} is {result}.\n");
         }
 
+        /// <summary>
+        /// Handles the subtraction operation of the calculator.
+        /// </summary>
+        /// <param name="mathUtils">The <see cref="MathUtils"/> object for accessing calculation operations.</param>
         private static void SubtractionOperation(MathUtils mathUtils)
         {
             int firstNumber = GetNumber("first");
@@ -68,6 +83,10 @@ namespace CalculatorApplication
             Console.Write($"\nSubtraction of {firstNumber} and {secondNumber} is {result}.\n");
         }
 
+        /// <summary>
+        /// Handles the multiplication operation of the calculator.
+        /// </summary>
+        /// <param name="mathUtils">The <see cref="MathUtils"/> object for accessing calculation operations.</param>
         private static void MultiplicationOperation(MathUtils mathUtils)
         {
             int firstNumber = GetNumber("first");
@@ -76,6 +95,11 @@ namespace CalculatorApplication
             Console.Write($"\nProduct of {firstNumber} and {secondNumber} is {result}.\n");
         }
 
+        /// <summary>
+        /// Handles the division operation of the calculator.
+        /// </summary>
+        /// <param name="mathUtils">The <see cref="MathUtils"/> object for accessing calculation operations.</param>
+        /// <exception cref="DivideByZeroException">Exception that arises when the second number is given as zero by the user.</exception>
         private static void DivisionOperation(MathUtils mathUtils)
         {
             int firstNumber = GetNumber("first");
@@ -91,6 +115,11 @@ namespace CalculatorApplication
             }
         }
 
+        /// <summary>
+        /// Helper used to get valid number input from the user.
+        /// </summary>
+        /// <param name="order">The order of the number. (Eg: First, Second)</param>
+        /// <returns>The input number given by the user.</returns>
         private static int GetNumber(string order)
         {
             bool isValidNumber = false;
@@ -109,6 +138,9 @@ namespace CalculatorApplication
             return value;
         }
 
+        /// <summary>
+        /// Waits for a keypress and clears the console.
+        /// </summary>
         private static void ClearScreenWithKey()
         {
             Console.Write("\nPress any key to go back to the main menu...");
