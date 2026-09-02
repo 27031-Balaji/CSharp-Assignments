@@ -396,7 +396,9 @@ namespace ExpenseTracker.View
                         return false;
 
                     default:
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Enter Y or N.");
+                        Console.ResetColor();
                         break;
                 }
             }
