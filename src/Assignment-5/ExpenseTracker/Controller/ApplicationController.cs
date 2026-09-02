@@ -37,7 +37,7 @@ namespace ExpenseTracker.Controller
         public void Run()
         {
             bool isRunning = true;
-            AuthenticatedUser user = this.authenticationService.LoggedInUser;
+            AuthenticatedUser user = this.authenticationService.LoggedInUser!;
             while (isRunning && this.authenticationService.IsAuthenticated)
             {
                 this.view.ShowWelcome(user.UserName);
@@ -135,16 +135,19 @@ namespace ExpenseTracker.Controller
                 {
                     case ViewMenuOption.ViewAll:
                         this.DisplayAllRecords();
+                        this.view.ClearScreenWithKey();
                         isRunning = false;
                         break;
 
                     case ViewMenuOption.ViewIncomes:
                         this.DisplayAllIncomes();
+                        this.view.ClearScreenWithKey();
                         isRunning = false;
                         break;
 
                     case ViewMenuOption.ViewExpenses:
                         this.DisplayAllExpenses();
+                        this.view.ClearScreenWithKey();
                         isRunning = false;
                         break;
 
@@ -308,7 +311,7 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            if (!this.GetValidMonthAndYear(out int month, out int year))
+            if (!this.GetValidDateRange(out DateOnly? startDate, out DateOnly? endDate))
             {
                 return;
             }
@@ -317,8 +320,8 @@ namespace ExpenseTracker.Controller
              decimal netExpense,
              decimal netBalance,
              decimal savingsRate,
-             Expense? highestExpense) = this.financeService.GetMonthlySummary(month, year);
-            this.view.ShowFinancialSummary(month, year, netIncome, netExpense, netBalance, savingsRate, highestExpense);
+             Expense? highestExpense) = this.financeService.GetMonthlySummary(startDate, endDate);
+            this.view.ShowFinancialSummary(startDate, endDate, netIncome, netExpense, netBalance, savingsRate, highestExpense);
             this.view.ClearScreenWithKey();
         }
 
@@ -420,9 +423,13 @@ namespace ExpenseTracker.Controller
         /// </summary>
         private void DisplayAllRecords()
         {
-            IEnumerable<FinancialRecord> records = this.financeService.GetAllRecords();
+            if (!this.GetValidDateRange(out DateOnly? startDate, out DateOnly? endDate))
+            {
+                return;
+            }
+
+            IEnumerable<FinancialRecord> records = this.financeService.GetByDateRange<FinancialRecord>(startDate, endDate);
             this.view.DisplayRecords(records);
-            this.view.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -430,9 +437,13 @@ namespace ExpenseTracker.Controller
         /// </summary>
         private void DisplayAllIncomes()
         {
-            IEnumerable<FinancialRecord> records = this.financeService.GetSpecificTypeRecords<Income>();
+            if (!this.GetValidDateRange(out DateOnly? startDate, out DateOnly? endDate))
+            {
+                return;
+            }
+
+            IEnumerable<FinancialRecord> records = this.financeService.GetByDateRange<Income>(startDate, endDate);
             this.view.DisplayRecords(records);
-            this.view.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -440,9 +451,13 @@ namespace ExpenseTracker.Controller
         /// </summary>
         private void DisplayAllExpenses()
         {
-            IEnumerable<FinancialRecord> records = this.financeService.GetSpecificTypeRecords<Expense>();
+            if (!this.GetValidDateRange(out DateOnly? startDate, out DateOnly? endDate))
+            {
+                return;
+            }
+
+            IEnumerable<FinancialRecord> records = this.financeService.GetByDateRange<Expense>(startDate, endDate);
             this.view.DisplayRecords(records);
-            this.view.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -534,6 +549,11 @@ namespace ExpenseTracker.Controller
             while (shouldContinue)
             {
                 input = this.view.ReadRecordDate();
+                if (string.IsNullOrEmpty(input))
+                {
+                    return true;
+                }
+
                 if (this.helper.IsValidDate(input, out date))
                 {
                     return true;
@@ -676,6 +696,55 @@ namespace ExpenseTracker.Controller
             }
 
             return false;
+        }
+
+        private bool GetValidDateRange(out DateOnly? startDate, out DateOnly? endDate)
+        {
+            startDate = null;
+            endDate = null;
+            bool shouldRetryForStartDate = true;
+            while (shouldRetryForStartDate)
+            {
+                string? input = this.view.ReadStartDate();
+                if (string.IsNullOrEmpty(input))
+                {
+                    break;
+                }
+
+                if (this.helper.IsValidDate(input, out DateOnly validStartDate))
+                {
+                    startDate = validStartDate;
+                    break;
+                }
+
+                shouldRetryForStartDate = this.CanRetry("start date");
+            }
+
+            bool shouldRetryForEndDate = true;
+            while (shouldRetryForEndDate)
+            {
+                string? input = this.view.ReadEndDate();
+                if (string.IsNullOrEmpty(input))
+                {
+                    break;
+                }
+
+                if (this.helper.IsValidDate(input, out DateOnly validEndDate))
+                {
+                    endDate = validEndDate;
+                    break;
+                }
+
+                shouldRetryForEndDate = this.CanRetry("end date");
+            }
+
+            if (startDate.HasValue && endDate.HasValue && startDate.Value > endDate.Value)
+            {
+                this.view.ShowMessage(ConsoleMessages.InvalidDateRangeMessage, MessageType.Error);
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>

@@ -24,7 +24,7 @@ namespace ExpenseTracker.Service
         /// <summary>
         /// Gets the currently authenticated user.
         /// </summary>
-        public AuthenticatedUser LoggedInUser { get; private set; }
+        public AuthenticatedUser? LoggedInUser { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether a user is currently authenticated.

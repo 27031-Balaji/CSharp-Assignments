@@ -63,28 +63,20 @@ namespace ExpenseTracker.Service
         }
 
         /// <summary>
-        /// Retrieves all stored records sorted by date (most recent first).
+        /// Retrieves all the records with the specified date range.
         /// </summary>
-        /// <param name="userId">The user ID of the record.</param>
-        /// <returns>A list of <see cref="FinancialRecord"/> sorted by date.</returns>
-        public IEnumerable<FinancialRecord> GetAllRecords()
-        {
-            IEnumerable<FinancialRecord> records = this.financeRepository
-                                        .GetRecords();
-
-            return this.SortRecordsByDate(records);
-        }
-
-        /// <summary>
-        /// Retrieves all records of the specified type sorted by date (most recent first).
-        /// </summary>
-        /// <typeparam name="T">The type of financial record to retrieve.</typeparam>
-        /// <returns>A list of records of type <typeparamref name="T"/> sorted by date.</returns>
-        public IEnumerable<FinancialRecord> GetSpecificTypeRecords<T>()
+        /// <typeparam name="T">The type of the record to be retrieved.</typeparam>
+        /// <param name="startDate">The starting date of the range.</param>
+        /// <param name="endDate">The ending date of the range.</param>
+        /// <returns>A list of <see cref="FinancialRecord"/> within the date range.</returns>
+        public IEnumerable<FinancialRecord> GetByDateRange<T>(DateOnly? startDate, DateOnly? endDate)
             where T : FinancialRecord
         {
             IEnumerable<FinancialRecord> records = this.financeRepository
-                .GetRecords(record => record is T);
+                                                    .GetRecords(record =>
+                                                        record is T &&
+                                                        (!startDate.HasValue || record.Date >= startDate.Value) &&
+                                                        (!endDate.HasValue || record.Date <= endDate.Value));
 
             return this.SortRecordsByDate(records);
         }
@@ -270,8 +262,8 @@ namespace ExpenseTracker.Service
         /// <summary>
         /// Produces a monthly summary for the specified month and year.
         /// </summary>
-        /// <param name="month">The month to summarize.</param>
-        /// <param name="year">The year to summarize.</param>
+        /// <param name="startDate">The starting date to summarize.</param>
+        /// <param name="endDate">The ending date to summarize.</param>
         /// <returns>
         /// A collection of the following: Total income for the month,
         /// Total expenses for the month,
@@ -285,10 +277,9 @@ namespace ExpenseTracker.Service
             decimal NetBalance,
             decimal SavingsRate,
             Expense? HighestExpense)
-        GetMonthlySummary(int month, int year)
+        GetMonthlySummary(DateOnly? startDate, DateOnly? endDate)
         {
-            IEnumerable<FinancialRecord> records = this.financeRepository
-                                            .GetRecords(record => record.Date.Month == month && record.Date.Year == year);
+            IEnumerable<FinancialRecord> records = this.GetByDateRange<FinancialRecord>(startDate, endDate);
             IEnumerable<Income> incomes = records.OfType<Income>();
             IEnumerable<Expense> expenses = records.OfType<Expense>();
 

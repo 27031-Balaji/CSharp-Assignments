@@ -104,5 +104,10 @@
         /// Message displayed when the record file does not exist.
         /// </summary>
         public const string FileNotFoundMessage = "The records file could not be found.";
+
+        /// <summary>
+        /// Message displayed when the start date is greater than the end date in the date range.
+        /// </summary>
+        public const string InvalidDateRangeMessage = "Start date is greater than the end date.";
     }
 }

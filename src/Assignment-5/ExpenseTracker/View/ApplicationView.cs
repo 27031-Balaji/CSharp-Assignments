@@ -136,6 +136,28 @@ namespace ExpenseTracker.View
         }
 
         /// <summary>
+        /// Prompts the user for a start date string.
+        /// </summary>
+        /// <returns>The entered date string.</returns>
+        public string ReadStartDate()
+        {
+            Console.Write($"Enter the start date in (DD/MM/YYYY) or press Enter to skip: ");
+
+            return (Console.ReadLine() ?? string.Empty).Trim();
+        }
+
+        /// <summary>
+        /// Prompts the user for an end date string.
+        /// </summary>
+        /// <returns>The entered date string.</returns>
+        public string ReadEndDate()
+        {
+            Console.Write($"Enter the end date in (DD/MM/YYYY) or press Enter to skip: ");
+
+            return (Console.ReadLine() ?? string.Empty).Trim();
+        }
+
+        /// <summary>
         /// Prompts the user for a record amount string.
         /// </summary>
         /// <returns>The entered amount string.</returns>
@@ -287,17 +309,40 @@ namespace ExpenseTracker.View
         /// <summary>
         /// Shows a financial summary for the given month and year.
         /// </summary>
-        /// <param name="month">The month being summarized.</param>
-        /// <param name="year">The year being summarized.</param>
+        /// <param name="startDate">The start date for the summary.</param>
+        /// <param name="endDate">The end date for the summary.</param>
         /// <param name="netIncome">Total income for the period.</param>
         /// <param name="netExpense">Total expense for the period.</param>
         /// <param name="netBalance">Net balance for the period.</param>
         /// <param name="netSavings">Savings rate percentage for the period.</param>
         /// <param name="highestExpense">The highest <see cref="Expense"/> for the period, if any.</param>
-        public void ShowFinancialSummary(int month, int year, decimal netIncome, decimal netExpense, decimal netBalance, decimal netSavings, Expense? highestExpense)
+        public void ShowFinancialSummary(
+             DateOnly? startDate,
+             DateOnly? endDate,
+             decimal netIncome,
+             decimal netExpense,
+             decimal netBalance,
+             decimal netSavings,
+             Expense? highestExpense)
         {
             Console.Write("\n========================================================\n");
-            Console.Write($"Financial Summary for {month}/{year}\n");
+            if (startDate.HasValue && endDate.HasValue)
+            {
+                Console.WriteLine($"Financial summary from {startDate.Value:dd/MM/yyyy} to {endDate.Value:dd/MM/yyyy}");
+            }
+            else if (startDate.HasValue && !endDate.HasValue)
+            {
+                Console.WriteLine($"Financial summary from {startDate.Value:dd/MM/yyyy} to Today");
+            }
+            else if (!startDate.HasValue && endDate.HasValue)
+            {
+                Console.WriteLine($"Financial summary until {endDate.Value:dd/MM/yyyy}");
+            }
+            else
+            {
+                Console.WriteLine($"Overall financial summary");
+            }
+
             Console.Write("========================================================\n");
             Console.Write($"\nYour Net Income: INR {netIncome:F2}\n");
             Console.Write($"Your Net Expense: INR {netExpense:F2}\n");

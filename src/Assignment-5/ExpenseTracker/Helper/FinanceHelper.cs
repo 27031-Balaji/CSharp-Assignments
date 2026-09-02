@@ -16,11 +16,6 @@ namespace ExpenseTracker.Helper
         /// <returns>True if the input was parsed successfully to a date, otherwise false.</returns>
         public bool IsValidDate(string? input, out DateOnly date)
         {
-            if (input == string.Empty)
-            {
-                return true;
-            }
-
             return DateOnly.TryParseExact(input, "dd/MM/yyyy", out date) && date <= DateOnly.FromDateTime(DateTime.Now);
         }
 
