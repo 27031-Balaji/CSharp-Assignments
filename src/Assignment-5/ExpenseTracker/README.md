@@ -3,7 +3,8 @@
 This is an Expense Tracker Console-based application developed in C# using the MVC architecture. It allows users to manage their financial records such as incomes and expenses and make financial summaries.
  
 ## Features
- 
+
+- Multi User Support
 - Add Record
 - View Records
 - Search Records
@@ -14,6 +15,19 @@ This is an Expense Tracker Console-based application developed in C# using the M
 ---
  
 # Feature Details
+
+## Multi User Support
+
+The application supports multiple users with isolated financial records.
+
+### Functionalities
+
+1. Multiple users can use the application independently.
+2. Each user's transactions are stored in a separate CSV file.
+3. User data is isolated and cannot be accessed by other users.
+4. Only the currently logged-in user's records are loaded into memory.
+
+---
  
 ## Add Record
  
@@ -30,13 +44,19 @@ The "Add Record" feature is used to add an income or an expense record to the re
 
 ## View Records
  
-The "View Records" feature displays all incomes or expenses or all the records in the repository according to the user's choice.
+The "View Records" feature displays income records, expense records, or all records within an optional date range.
  
 ### Functionalities
- 
+
 1. Users can view the entire record list or the entire income list or the entire expense list.
-2. Records are displayed in a formatted table.
-3. A menu is built to display the records according to user's preference.
+2. Records can be filtered using an optional start date and end date.
+3. Users can:
+   - View records between a start date and end date.
+   - View records from a specific date until today.
+   - View records until a specified end date.
+   - View all records by skipping both dates.
+4. Records are displayed in a formatted table.
+5. A menu is built to display the records according to user's preference.
  
 ---
 
@@ -78,7 +98,29 @@ The "Edit Record"" feature allows updating an existing record in the repository.
 4. Multiple edits can be performed until the user exits the edit menu.
 
 ---
- 
+
+## Financial Summary
+
+The "Financial Summary" feature provides an overview of the user's financial activity within an optional date range.
+
+### Functionalities
+
+1. Users can generate a financial summary for a specific date range.
+2. Both start date and end date are optional.
+3. Users can:
+   - View summary between two dates.
+   - View summary from a selected date until today.
+   - View summary until a selected end date.
+   - View an overall financial summary.
+4. Displays:
+   - Net Income
+   - Net Expense
+   - Net Balance
+   - Savings Rate
+   - Highest Expense and its Category
+
+---
+
 # Project Architecture
  
 The application follows the MVC architecture.
@@ -91,7 +133,19 @@ Stores the record information and serves as a template for storage.
  
 ## Repository
  
-Stores the records in either a record list in memory or a CSV file.
+The application uses CSV files for persistent storage of user and transaction data.
+
+## Data Storage Structure
+
+```text
+Data
+├── Users.csv
+└── Transactions
+    ├── UserId1.csv
+    ├── UserId2.csv
+    └── UserId3.csv
+    └── ...
+```
  
 ## Service
  
@@ -123,43 +177,70 @@ Provides reusable validation methods for date, amount, classification of income 
  
 ---
 
+# Recent Enhancements
+
+- Date range filtering is supported for viewing records and generating financial summaries.
+- Generic methods are used to reduce duplicate logic when retrieving records by type and date range.
+- Exception handling is implemented at the application entry point to gracefully handle unexpected errors.
+- User-specific CSV files are maintained for optimized data loading.
+- Only the active user's records are loaded into memory during login.
+- Multi-user support is implemented with isolated transaction storage.
+
+---
+
 # Project Structure
 
 ```text
 ExpenseTracker
 │
-├── Constant
-│   └── CsvConstant.cs
+├── ConstantLiteral
+│   └── Constant.cs
 |
 ├── Controller
-│   └── ExpenseController.cs
+│   └── ApplicationController.cs
+│   └── AuthenticationController.cs
 │
+├── CsvUtils
+│   └── CsvHandler.cs
+|
 ├── Enums
 │   └── AddMenuOption.cs
+│   └── AuthenticationOptionMenu.cs
 |   └── EditMenuOption.cs
-│   └── ExpenseCategoryType.cs
-|   └── IncomeSourceType.cs
+│   └── ExpenseCategory.cs
+|   └── IncomeSource.cs
 │   └── MainMenuOption.cs
 |   └── MessageType.cs
+│   └── RecordType.cs
 │   └── SearchType.cs
-|   └── ViewOptionMenu.cs
+|   └── ViewMenuOption.cs
 │
 ├── Helper
+│   └── AuthenticationHelper.cs
 │   └── ConsoleMessages.cs
-|   └── ExpenseHelper.cs
+|   └── FinanceHelper.cs
 │
 ├── Model
+│   └── AuthenticatedUser.cs
 │   └── Expense.cs
 |   └── FinancialRecord.cs
 │   └── Income.cs
+│   └── User.cs
 │
 ├── Repository
-│   └── CsvExpenseRepository.cs
-|   └── IExpenseRepository.cs
-│   └── InMemoryExpenseRepository.cs
+│   └── CsvFinanceRepository.cs
+|   └── CsvUserRepository.cs
+│   └── IFinanceRepository.cs
+│   └── IUserRepository.cs
+│
+├── Service
+│   └── AuthenticationService.cs
+│   └── FinanceService.cs
+│   └── UserService.cs
 │
 ├── View
-│   └── ConsoleOperation.cs
+│   └── ApplicationView.cs
+│   └── AuthenticationView.cs
 │
 ├── Program.cs
 │
@@ -168,27 +249,69 @@ ExpenseTracker
 
 ## File Overview
 
-- **CsvConstant.cs**: Used to store the CSV file header and the file path.
-- **ExpenseController.cs**: Acts as an intermediate between view and services by validating the input given by the user and passing to service layer.
-- **MainMenuOption.cs**: Used for segregating the input choice given in the main menu.
-- **AddMenuOption.cs**: Used for segregating the input choice given for the add operation.
-- **EditMenuOption.cs**: Used for segregating the input choice given for the edit operation.
-- **ViewOptionMenu.cs**: Used for segregating the input choice given for the view operation.
-- **ExpenseCategory.cs**: Used to store the different categories of expense.
-- **IncomeSource.cs**: Used to store the different sources of income.
-- **MessageType.cs**: Used to separate the different types of messages coming from the controller.
-- **SearchType.cs**: Used to find the search type of the user according to the user's input.
-- **ConsoleMessages.cs**: Used to store multiple console messages to be displayed to the user.
-- **ExpenseHelper.cs**: Helps to validate the inputs given by the user.
-- **Expense.cs**: A template of the user's expense record, inherited from the financial record class.
-- **FinancialRecord.cs**: A template of the user's record, serves as a base class.
-- **Income.cs**: A template of the user's income record, inherited from the financial record class.
-- **CsvExpenseRepository.cs**: Repository class mainly used to store and retrieve the records from a CSV file.
-- **IExpenseRepository.cs**: The base interface used as a contract for all the repository classes.
-- **InMemoryExpenseRepository.cs**: Repository class mainly used to store and retrieve from a in-memory list of records.
-- **ExpenseService.cs**: Communicates with the repository for storing and retrieving details.
-- **ConsoleOperation.cs**: Handles all the UI operations and interacts with the user.
-- **Program.cs**: Creates objects and passes on to the constructors and runs the controller.
+- **Constant.cs**: Stores application-wide constants such as file paths, CSV headers, validation limits, and reusable constant values.
+
+- **ApplicationController.cs**: Coordinates all finance-related operations such as adding, viewing, editing, deleting, searching records, and generating financial summaries.
+
+- **AuthenticationController.cs**: Manages user authentication workflows including user registration, login, logout, and account deletion.
+
+- **CsvHandler.cs**: Provides reusable CSV file operations such as reading, writing, updating, and managing user-specific CSV files.
+
+- **AddMenuOption.cs**: Represents the available options for adding financial records.
+
+- **AuthenticationOptionMenu.cs**: Represents the available options in the authentication menu such as login and registration.
+
+- **EditMenuOption.cs**: Represents the available options for editing financial records.
+
+- **ExpenseCategory.cs**: Contains the supported expense categories used when creating expense records.
+
+- **IncomeSource.cs**: Contains the supported income sources used when creating income records.
+
+- **MainMenuOption.cs**: Represents the available options in the application's main menu.
+
+- **MessageType.cs**: Defines the different message categories displayed to the user such as information, success, warning, and error messages.
+
+- **RecordType.cs**: Represents the different financial record types available in the application.
+
+- **SearchType.cs**: Represents the available search criteria for locating records.
+
+- **ViewMenuOption.cs**: Represents the available options in the record viewing menu.
+
+- **AuthenticationHelper.cs**: Provides reusable validation logic for authentication-related operations such as username, password, and account validation.
+
+- **ConsoleMessages.cs**: Stores reusable application messages displayed throughout the console interface.
+
+- **FinanceHelper.cs**: Provides reusable validation methods for financial record inputs such as dates, amounts, classifications, and identifiers.
+
+- **AuthenticatedUser.cs**: Stores information about the currently logged-in user and maintains the active user session.
+
+- **Expense.cs**: Represents an expense record and extends the FinancialRecord base class.
+
+- **FinancialRecord.cs**: Serves as the base model for all financial records and contains common properties shared by incomes and expenses.
+
+- **Income.cs**: Represents an income record and extends the FinancialRecord base class.
+
+- **User.cs**: Represents a user account and stores user-related information.
+
+- **CsvFinanceRepository.cs**: Handles storage and retrieval of financial records from user-specific CSV files.
+
+- **CsvUserRepository.cs**: Handles storage and retrieval of user account information from CSV files.
+
+- **IFinanceRepository.cs**: Defines the contract for finance-related repository operations.
+
+- **IUserRepository.cs**: Defines the contract for user-related repository operations.
+
+- **AuthenticationService.cs**: Contains business logic for user authentication, registration, login, logout, and account management.
+
+- **FinanceService.cs**: Contains business logic for financial record management, date range filtering, searching, editing, deleting, and financial summaries.
+
+- **UserService.cs**: Provides user-related operations and coordinates interactions between user repositories and authentication services.
+
+- **ApplicationView.cs**: Handles all console interactions related to financial record management, menus, prompts, and data display.
+
+- **AuthenticationView.cs**: Handles all console interactions related to authentication such as login, registration, and account management.
+
+- **Program.cs**: Serves as the application's entry point, initializes dependencies, configures repositories, services, controllers, handles application-level exceptions, and starts the application workflow.
 
 ---
 
@@ -235,16 +358,14 @@ This order follows the dependency flow of the application and helps to understan
 ---
  
 # Challenges Faced
- 
-- Implementing the MVC architecture while maintaining proper separation of concerns between Model, Repository, Service, Controller, and View layers.
+
+- Implementing the MVC architecture while maintaining proper separation of concerns between Model, Repository, Service, Controller and View layers.
 - Implementing flexible search functionality based on date, amount and classification.
-- Supporting in memory and CSV based storage while maintaining constant CRUD operations.
-- Managing two different record types into a common base class.
+- Supporting CSV-based storage while maintaining consistent CRUD operations.
+- Managing income and expense records using a common base class.
+- Designing optional date-range filtering across multiple features.
+- Implementing multi-user support while maintaining data isolation.
+- Optimizing CSV loading to improve application performance.
+- Reducing code duplication through generic methods.
  
 ---
- 
-# Future Enhancements
- 
-- Store records in a database instead of CSV.
-- Implement yearly financial reports.
-- Enhance the console UI.
