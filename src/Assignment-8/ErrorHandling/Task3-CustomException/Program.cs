@@ -74,12 +74,15 @@ namespace ErrorHandling
         {
             int number = 0;
             string input = (Console.ReadLine() ?? string.Empty).Trim();
-            if (!int.TryParse(input, out number))
+            try
+            {
+                number = int.Parse(input);
+                return number;
+            }
+            catch
             {
                 throw new InvalidUserInputException("Enter a valid number.\n");
             }
-
-            return number;
         }
     }
 }

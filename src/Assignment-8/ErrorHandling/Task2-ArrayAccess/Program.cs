@@ -18,7 +18,7 @@
             int[] arr = new int[lengthOfArray];
             for (int i = 0; i < lengthOfArray; i++)
             {
-                Console.Write($"Enter number {i + 1} for the array: ");
+                Console.Write($"Enter number ({i + 1}/{lengthOfArray}): ");
                 arr[i] = GetValidNumber();
             }
 

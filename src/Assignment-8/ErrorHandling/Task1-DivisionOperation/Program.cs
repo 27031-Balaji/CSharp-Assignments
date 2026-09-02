@@ -12,9 +12,9 @@
         public static void Main(string[] args)
         {
             Console.Write("\nTask 1 - Division operation\n\n");
-            Console.Write("Enter the first number: ");
+            Console.Write("Enter the dividend: ");
             int firstNumber = GetValidNumber();
-            Console.Write("Enter the second number: ");
+            Console.Write("Enter the divisor: ");
             int secondNumber = GetValidNumber();
             try
             {
@@ -47,15 +47,14 @@
             while (!isValidNumber)
             {
                 string input = (Console.ReadLine() ?? string.Empty).Trim();
-                if (int.TryParse(input, out number))
-                {
-                    isValidNumber = true;
-                }
-                else
+                if (!int.TryParse(input, out number))
                 {
                     Console.WriteLine("Input must be a valid integer.");
-                    Console.WriteLine("Enter again below.");
+                    Console.WriteLine("Enter again below.\n");
+                    continue;
                 }
+
+                isValidNumber = true;
             }
 
             return number;
