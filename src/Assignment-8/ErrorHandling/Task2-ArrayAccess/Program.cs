@@ -68,15 +68,14 @@
             while (!isValidNumber)
             {
                 string input = (Console.ReadLine() ?? string.Empty).Trim();
-                if (int.TryParse(input, out number))
-                {
-                    isValidNumber = true;
-                }
-                else
+                if (!int.TryParse(input, out number))
                 {
                     Console.WriteLine("Input must be a valid integer.");
-                    Console.WriteLine("Enter again below.");
+                    Console.WriteLine("Enter again below.\n");
+                    continue;
                 }
+
+                isValidNumber = true;
             }
 
             return number;
