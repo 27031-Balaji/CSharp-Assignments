@@ -77,7 +77,7 @@ namespace ExpenseTracker.Controller
                         break;
 
                     case MainMenuOption.Invalid:
-                        this.view.ShowInvalidMessage("option");
+                        this.view.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
                         break;
                 }
             }
@@ -110,7 +110,7 @@ namespace ExpenseTracker.Controller
                         break;
 
                     case AddMenuOption.Invalid:
-                        this.view.ShowInvalidMessage("option");
+                        this.view.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
                         break;
                 }
             }
@@ -157,7 +157,7 @@ namespace ExpenseTracker.Controller
                         break;
 
                     case ViewMenuOption.Invalid:
-                        this.view.ShowInvalidMessage("option");
+                        this.view.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
                         break;
                 }
             }
@@ -661,38 +661,13 @@ namespace ExpenseTracker.Controller
                     continue;
                 }
 
-                if (this.IsDisplayedRecord(recordId, searchedRecords))
+                if (this.financeService.IsDisplayedRecord(recordId, searchedRecords))
                 {
                     return true;
                 }
 
                 this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
                 shouldContinue = this.CanRetry("id");
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Prompts the user for a month and year and validates the values.
-        /// </summary>
-        /// <param name="month">When this method returns, contains the validated month if successful.</param>
-        /// <param name="year">When this method returns, contains the validated year if successful.</param>
-        /// <returns>True if valid month and year were provided, otherwise false.</returns>
-        private bool GetValidMonthAndYear(out int month, out int year)
-        {
-            month = 0;
-            year = 0;
-            bool shouldContinue = true;
-            while (shouldContinue)
-            {
-                string? input = this.view.ReadMonthAndYear();
-                if (this.helper.IsValidMonthAndYear(input, out month, out year))
-                {
-                    return true;
-                }
-
-                shouldContinue = this.CanRetry("month and year");
             }
 
             return false;
@@ -745,25 +720,6 @@ namespace ExpenseTracker.Controller
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// Determines whether a given record identifier is present in the provided collection.
-        /// </summary>
-        /// <param name="recordId">The identifier to search for.</param>
-        /// <param name="records">The collection of <see cref="FinancialRecord"/> to search.</param>
-        /// <returns>True if the identifier is present in the collection, otherwise false.</returns>
-        private bool IsDisplayedRecord(string recordId, IEnumerable<FinancialRecord> records)
-        {
-            foreach (FinancialRecord record in records)
-            {
-                if (record.Id == recordId)
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         /// <summary>

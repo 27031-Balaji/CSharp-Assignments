@@ -181,6 +181,17 @@ namespace ExpenseTracker.Service
         }
 
         /// <summary>
+        /// Determines whether a given record identifier is present in the provided collection.
+        /// </summary>
+        /// <param name="recordId">The identifier to search for.</param>
+        /// <param name="records">The collection of <see cref="FinancialRecord"/> to search.</param>
+        /// <returns>True if the identifier is present in the collection, otherwise false.</returns>
+        public bool IsDisplayedRecord(string recordId, IEnumerable<FinancialRecord> records)
+        {
+            return records.Any(record => record.Id == recordId);
+        }
+
+        /// <summary>
         /// Deletes the specified <see cref="FinancialRecord"/>.
         /// </summary>
         /// <param name="recordId">The record ID to be deleted.</param>
