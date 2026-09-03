@@ -13,7 +13,6 @@ namespace ExpenseTracker.Model
         /// <param name="id">The unique ID of the <see cref="Expense"/> record.</param>
         /// <param name="date">The date of the <see cref="Expense"/> record.</param>
         /// <param name="amount">The amount associated with the <see cref="Expense"/> record.</param>
-        /// <param name="type">The type of the record (<see cref="Expense"/>).</param>
         /// <param name="description">The description of the <see cref="Expense"/> record.</param>
         /// <param name="category">The <see cref="ExpenseCategory"/> of the <see cref="Expense"/>.</param>
         public Expense(string id, DateOnly date, decimal amount, string? description, ExpenseCategory category)
@@ -34,7 +33,7 @@ namespace ExpenseTracker.Model
         /// <value>
         /// The type of the <see cref="FinancialRecord"/>.
         /// </value>
-        public override RecordType Type => RecordType.Income;
+        public override RecordType Type => RecordType.Expense;
 
         /// <summary>
         /// Gets the classification of the <see cref="Expense"/> based on its <see cref="ExpenseCategory"/>.

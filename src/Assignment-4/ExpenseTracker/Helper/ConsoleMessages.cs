@@ -6,11 +6,6 @@
     internal static class ConsoleMessages
     {
         /// <summary>
-        /// Message displayed when an invalid menu option is selected.
-        /// </summary>
-        public const string InvalidOptionMessage = "Enter a valid option.";
-
-        /// <summary>
         /// Message displayed when no records are found.
         /// </summary>
         public const string NoRecordFoundMessage = "No records found.";
@@ -74,10 +69,5 @@
         /// Message displayed when the record file does not exist.
         /// </summary>
         public const string FileNotFoundMessage = "The records file could not be found.";
-
-        /// <summary>
-        /// Message displayed when there is unclosed comma when parsing back from CSV.
-        /// </summary>
-        public const string UnclosedQuoteErrorMessage = "Unclosed quotes.";
     }
 }
