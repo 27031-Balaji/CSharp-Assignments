@@ -66,7 +66,7 @@ namespace ExpenseTracker.Repository
         /// <returns>The matching <see cref="FinancialRecord"/> if found.</returns>
         public FinancialRecord? GetById(string recordId)
         {
-            FinancialRecord? record = this.FindOriginalRecord(recordId);
+            FinancialRecord record = this.FindOriginalRecord(recordId);
             return record is null ? null : this.CloneRecord(record);
         }
 

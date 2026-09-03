@@ -600,7 +600,7 @@ namespace ExpenseTracker.Controller
                     continue;
                 }
 
-                if (this.IsDisplayedRecord(recordId, searchedRecords))
+                if (this.service.IsDisplayedRecord(recordId, searchedRecords))
                 {
                     return true;
                 }
@@ -632,25 +632,6 @@ namespace ExpenseTracker.Controller
                 }
 
                 shouldContinue = this.CanRetry("month and year");
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Determines whether a given record identifier is present in the provided collection.
-        /// </summary>
-        /// <param name="recordId">The identifier to search for.</param>
-        /// <param name="records">The collection of <see cref="FinancialRecord"/> to search.</param>
-        /// <returns>True if the identifier is present in the collection, otherwise false.</returns>
-        private bool IsDisplayedRecord(string recordId, IEnumerable<FinancialRecord> records)
-        {
-            foreach (FinancialRecord record in records)
-            {
-                if (record.Id == recordId)
-                {
-                    return true;
-                }
             }
 
             return false;

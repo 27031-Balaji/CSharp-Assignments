@@ -176,6 +176,17 @@ namespace ExpenseTracker.Service
         }
 
         /// <summary>
+        /// Checks whether the ID entered by the user is only from the searched results.
+        /// </summary>
+        /// <param name="recordId">The ID entered by the user.</param>
+        /// <param name="records">The list of records to be checked.</param>
+        /// <returns>True if the ID is in the record list, otherwise false.</returns>
+        public bool IsDisplayedRecord(string recordId, IEnumerable<FinancialRecord> records)
+        {
+            return records.Any(record => record.Id == recordId);
+        }
+
+        /// <summary>
         /// Deletes the specified <see cref="FinancialRecord"/>.
         /// </summary>
         /// <param name="record">The <see cref="FinancialRecord"/> to delete.</param>
