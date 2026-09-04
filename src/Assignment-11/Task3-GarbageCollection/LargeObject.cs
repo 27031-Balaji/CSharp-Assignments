@@ -3,7 +3,7 @@
     /// <summary>
     /// The class used to make a large object.
     /// </summary>
-    class LargeObject
+    public class LargeObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LargeObject"/> class.
