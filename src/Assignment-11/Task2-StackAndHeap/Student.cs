@@ -1,4 +1,4 @@
-﻿namespace ValueAndReferenceTypes.Struct
+﻿namespace StackAndHeap.Struct
 {
     /// <summary>
     /// The student struct is used to make a struct with student ID and name.

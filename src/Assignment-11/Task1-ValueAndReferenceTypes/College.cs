@@ -1,4 +1,4 @@
-﻿namespace ValueAndReferenceTypes.Class
+﻿namespace StackAndHeap.Class
 {
     /// <summary>
     /// The college class is used to store the details of the college.

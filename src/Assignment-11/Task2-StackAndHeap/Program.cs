@@ -1,7 +1,7 @@
-﻿using ValueAndReferenceTypes.Class;
-using ValueAndReferenceTypes.Struct;
+﻿using StackAndHeap.Class;
+using StackAndHeap.Struct;
 
-namespace ValueAndReferenceTypes
+namespace StackAndHeap
 {
     /// <summary>
     /// The Program class is the entry point of the application.
