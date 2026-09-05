@@ -1,5 +1,6 @@
 ﻿using StackAndHeap.Class;
 using StackAndHeap.Struct;
+using System.Security;
 
 namespace StackAndHeap
 {
@@ -48,17 +49,17 @@ namespace StackAndHeap
 
         public static void CreateArrayAndCalculateProduct()
         {
-            long product = 1;
+            long sum = 1;
             long size = 100000;
             long[] numbers = new long[size];
             for (long i = 0; i < size; i++)
             {
                 numbers[i] = i + 1;
-                product *= numbers[i];
+                sum += numbers[i];
             }
 
             Console.WriteLine($"The array has {size} elements");
-            Console.WriteLine($"The product of elements in the array is {product}\n");
+            Console.WriteLine($"The sum of elements in the array is {sum}\n");
         }
 
         public static void CreateLocalValuesAndCalculateProduct()
