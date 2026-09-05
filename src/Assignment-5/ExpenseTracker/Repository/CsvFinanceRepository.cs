@@ -60,8 +60,10 @@ namespace ExpenseTracker.Repository
         public IEnumerable<FinancialRecord> GetRecords(Func<FinancialRecord, bool>? filter = null)
         {
             return (filter == null)
-                ? this.records
-                : this.records.Where(filter);
+                ? this.records.Select(this.CloneRecord)
+                : this.records
+                    .Where(filter)
+                    .Select(this.CloneRecord);
         }
 
         /// <summary>
@@ -71,8 +73,8 @@ namespace ExpenseTracker.Repository
         /// <returns>The matching <see cref="FinancialRecord"/> if found.</returns>
         public FinancialRecord? GetById(string recordId)
         {
-            FinancialRecord record = this.FindOriginalRecord(recordId);
-            return record is null ? null : record;
+            FinancialRecord? record = this.FindOriginalRecord(recordId);
+            return record is null ? null : this.CloneRecord(record);
         }
 
         /// <summary>
@@ -81,7 +83,8 @@ namespace ExpenseTracker.Repository
         /// <param name="record">The <see cref="FinancialRecord"/> to delete.</param>
         public void DeleteRecord(FinancialRecord record)
         {
-            this.records.Remove(record);
+            FinancialRecord originalRecord = this.FindOriginalRecord(record.Id) !;
+            this.records.Remove(originalRecord);
             this.SaveRecordsToFile();
         }
 
@@ -100,7 +103,7 @@ namespace ExpenseTracker.Repository
         /// <param name="record">The record to be updated.</param>
         public void UpdateRecord(FinancialRecord record)
         {
-            FinancialRecord originalRecord = this.FindOriginalRecord(record.Id);
+            FinancialRecord originalRecord = this.FindOriginalRecord(record.Id) !;
             originalRecord.Date = record.Date;
             originalRecord.Amount = record.Amount;
             originalRecord.Description = record.Description;
@@ -133,9 +136,9 @@ namespace ExpenseTracker.Repository
         /// </summary>
         /// <param name="recordId">The identifier of the record.</param>
         /// <returns>The original stored record.</returns>
-        private FinancialRecord FindOriginalRecord(string recordId)
+        private FinancialRecord? FindOriginalRecord(string recordId)
         {
-            return this.records.First(record => record.Id.Equals(recordId, StringComparison.OrdinalIgnoreCase));
+            return this.records.FirstOrDefault(record => record.Id.Equals(recordId, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -218,6 +221,22 @@ namespace ExpenseTracker.Repository
                 this.csvHandler.CsvEscape(record.Classification),
                 record.Amount.ToString(),
                 this.csvHandler.CsvEscape(record.Description ?? string.Empty));
+        }
+
+        /// <summary>
+        /// Creates a copy of the specified financial record.
+        /// </summary>
+        /// <param name="record">The financial record to copy.</param>
+        /// <returns>A new instance of the same type as the provided record.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when the record type is unknown.</exception>
+        private FinancialRecord CloneRecord(FinancialRecord record)
+        {
+            return record switch
+            {
+                Income income => new Income(income.Id, income.Date, income.Amount, income.Description, income.Source),
+                Expense expense => new Expense(expense.Id, expense.Date, expense.Amount, expense.Description, expense.Category),
+                _ => throw new InvalidOperationException()
+            };
         }
     }
 }
