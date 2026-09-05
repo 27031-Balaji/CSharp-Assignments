@@ -1,4 +1,5 @@
 ﻿using GarbageCollection.Class;
+using System.Diagnostics;
 
 namespace GarbageCollection
 {
@@ -17,14 +18,16 @@ namespace GarbageCollection
             Console.WriteLine($"Before: {GC.GetTotalMemory(false):N0} bytes");
 
             CreateAndDestroyObjects();
-            Console.WriteLine($"After creation/destruction: {GC.GetTotalMemory(false):N0} bytes");
             Console.WriteLine("\nTriggering Garbage Collection...");
 
+            Stopwatch stopwatch = Stopwatch.StartNew();
             GC.Collect();
             GC.WaitForPendingFinalizers();
             GC.Collect();
+            stopwatch.Stop();
 
-            Console.WriteLine($"After GC.Collect(): {GC.GetTotalMemory(false):N0} bytes");
+            Console.WriteLine($"GC execution time: {stopwatch.ElapsedMilliseconds} ms");
+            Console.WriteLine($"After GC.Collect(): {GC.GetTotalMemory(true):N0} bytes");
             Console.ReadKey();
         }
 
@@ -34,13 +37,15 @@ namespace GarbageCollection
         public static void CreateAndDestroyObjects()
         {
             List<LargeObject> objects = new List<LargeObject>();
-            for (int i = 0; i < 10000; i++)
+            for (int i = 0; i < 2000; i++)
             {
                 objects.Add(new LargeObject());
             }
 
+            Console.WriteLine($"After object creation: {GC.GetTotalMemory(false):N0} bytes");
             objects.Clear();
             objects = null!;
+            Console.WriteLine($"After creation and destruction: {GC.GetTotalMemory(true):N0} bytes");
         }
     }
 }

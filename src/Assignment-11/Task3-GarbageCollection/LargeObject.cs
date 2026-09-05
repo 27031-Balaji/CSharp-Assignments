@@ -10,7 +10,7 @@
         /// </summary>
         public LargeObject()
         {
-            this.Data = new int[1000];
+            this.Data = new int[100000];
         }
 
         /// <summary>
