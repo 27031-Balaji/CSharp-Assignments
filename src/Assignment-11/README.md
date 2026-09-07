@@ -157,8 +157,10 @@ for (int i = 0; i < 2000; i++)
 ### Releasing Objects
 
 ```csharp
-objects.Clear();
-objects = null!;
+for (int i = 0; i < 2000; i++)
+{
+    objects[i] = null!;
+}
 ```
 
 - Removes references to the created objects.
@@ -168,8 +170,6 @@ objects = null!;
 ### Manual Garbage Collection
 
 ```csharp
-GC.Collect();
-GC.WaitForPendingFinalizers();
 GC.Collect();
 ```
 
