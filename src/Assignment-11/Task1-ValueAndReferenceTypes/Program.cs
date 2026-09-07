@@ -35,7 +35,7 @@ namespace StackAndHeap
         /// This method is used to change the name of the value and reference type variable.
         /// </summary>
         /// <param name="student">The student struct as a value type.</param>
-        /// <param name="college">The college object as a reference type</param>
+        /// <param name="college">The college object as a reference type.</param>
         public static void ChangeName(Student student, College college)
         {
             student.StudentName = "Lorem Ipsum";
