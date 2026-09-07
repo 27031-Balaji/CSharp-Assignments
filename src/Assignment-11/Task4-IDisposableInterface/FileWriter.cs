@@ -7,6 +7,7 @@
     {
         private readonly string filePath;
         private readonly StreamWriter streamWriter;
+        private bool isDisposed;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileWriter"/> class.
@@ -19,11 +20,25 @@
         }
 
         /// <summary>
+        /// Finalizes an instance of the <see cref="FileWriter"/> class.
+        /// Used as a safety net to dispose the unmanaged resources if the user forgets to call Dispose().
+        /// </summary>
+        ~FileWriter()
+        {
+            this.Dispose(false);
+        }
+
+        /// <summary>
         /// Writes contents to the text file.
         /// </summary>
         /// <param name="contents">The contents to be written into the file.</param>
         public void WriteIntoFile(string contents)
         {
+            if (this.isDisposed)
+            {
+                return;
+            }
+
             this.streamWriter.WriteLine(contents);
         }
 
@@ -32,8 +47,30 @@
         /// </summary>
         public void Dispose()
         {
-            this.streamWriter.Dispose();
-            Console.WriteLine("File writing operation is disposed.\n");
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases the resources used by the component.
+        /// </summary>
+        /// <param name="disposing">True to release both managed and unmanaged resources, false to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.isDisposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                // Handling managed resources here, if any.
+                this.streamWriter.Dispose();
+            }
+
+            // Handling unmanaged resources, if any.
+            this.isDisposed = true;
+            Console.WriteLine("File writing operation is disposed.");
         }
     }
 }

@@ -7,6 +7,7 @@
     {
         private readonly string filePath;
         private readonly StreamReader streamReader;
+        private bool isDisposed;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileReader"/> class.
@@ -16,6 +17,15 @@
         {
             this.filePath = filePath;
             this.streamReader = new StreamReader(filePath);
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="FileReader"/> class.
+        /// Used as a safety net to dispose the unmanaged resources if the user forgets to call Dispose().
+        /// </summary>
+        ~FileReader()
+        {
+            this.Dispose(false);
         }
 
         /// <summary>
@@ -39,8 +49,30 @@
         /// </summary>
         public void Dispose()
         {
-            this.streamReader.Dispose();
-            Console.WriteLine("File reading operation is disposed.\n");
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases the resources used by the component.
+        /// </summary>
+        /// <param name="disposing">True to release both managed and unmanaged resources, false to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.isDisposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                // Handling managed resources here, if any.
+                this.streamReader.Dispose();
+            }
+
+            // Handling unmanaged resources, if any.
+            this.isDisposed = true;
+            Console.WriteLine("File writing operation is disposed.");
         }
     }
 }
