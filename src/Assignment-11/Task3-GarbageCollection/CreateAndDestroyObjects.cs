@@ -3,10 +3,13 @@
 namespace GarbageCollection.Class
 {
     /// <summary>
-    /// This class is used to create and destroy objects 
+    /// This class is used to create and destroy objects and test the heap size.
     /// </summary>
     internal class CreateAndDestroyObjects
     {
+        /// <summary>
+        /// This method is used to run the creation and destruction operation.
+        /// </summary>
         public void Run()
         {
             Console.WriteLine("Task 3 - Garbage Collection\n");
