@@ -14,22 +14,19 @@
 
             int[] numbers = { 10, 15, 20, 30, 40, 50, 10, 30, 20, 50, 10, 40 };
             Console.WriteLine("Numbers:");
-            for (int i = 0; i < numbers.Length - 1; i++)
-            {
-                Console.Write(numbers[i] + ", ");
-            }
-
-            Console.WriteLine(numbers[numbers.Length - 1]);
+            Console.WriteLine(string.Join(", ", numbers));
 
             IEnumerable<int> distinctNumbers = numbers.Distinct();
 
             if (distinctNumbers.Count() >= 2)
             {
-                int secondHighestNumber = distinctNumbers
-                                            .OrderByDescending(number => number)
-                                            .Skip(1)
-                                            .First();
-                Console.WriteLine($"\nSecond Highest Number: {secondHighestNumber}");
+                int highest = distinctNumbers.Max();
+
+                int secondHighest = distinctNumbers
+                    .Where(number => number < highest)
+                    .Max();
+
+                Console.WriteLine($"\nSecond Highest Number: {secondHighest}");
             }
             else
             {

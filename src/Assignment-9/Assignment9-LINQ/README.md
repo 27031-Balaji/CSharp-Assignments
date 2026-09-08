@@ -10,7 +10,7 @@ The five different tasks are as follows.
 # Task 1 – Basic LINQ Queries
 
 This task introduces fundamental LINQ operations such as filtering, projection, sorting, and aggregation.
-The program filters products belonging to the **Electronics** category with a price greater than **$500**, projects the required fields, sorts the filtered results in descending order of price, and calculates the average price of the selected products.
+The program filters products belonging to the **Electronics** category with a price greater than **$500**, projects the required fields, sorts the filtered results in descending order of price, and calculates the average price of the selected products. The task uses ConsoleTables to print the details in a nice table format.
 
 ## Understanding from the task
 
@@ -25,7 +25,7 @@ The program filters products belonging to the **Electronics** category with a pr
 # Task 2 – Complex LINQ Queries
 
 This task demonstrates more advanced LINQ operations including grouping and joining data from multiple collections.
-The program groups products by category and identifies the most expensive product within each category. It also joins products and suppliers using a common key and displays the combined information.
+The program groups products by category and identifies the most expensive product within each category. It also joins products and suppliers using a common key and displays the combined information. The task uses ConsoleTables to print the details in a nice table format.
 
 ## Understanding from the task
 
@@ -55,13 +55,14 @@ The program works with an integer array to determine the second highest distinct
 
 # Task 4 – LINQ Performance Analysis
 
-This task demonstrates how query structure affects performance.
+This task demonstrates how query structure affects performance. 
 Two similar queries are executed:
 
 1. Sorting all products first and then filtering books.
 2. Filtering books first and then sorting the smaller result set.
 
 Execution times are measured using a `Stopwatch` to compare the approaches.
+The task uses ConsoleTables to print the details in a nice table format.
 
 ## Understanding from the task
 
@@ -98,6 +99,7 @@ The task also demonstrates:
 
 1. QueryBuilder with filtering, sorting, and execution.
 2. QueryBuilder with filtering, sorting, joining, and execution.
+3. ConsoleTables to print the details in a nice table format.
 
 ## Understanding from the task
 

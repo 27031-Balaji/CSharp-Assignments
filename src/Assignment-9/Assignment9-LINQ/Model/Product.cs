@@ -6,7 +6,7 @@
     public class Product
     {
         /// <summary>
-        /// Gets or sets the ID of the product..
+        /// Gets or sets the ID of the product.
         /// </summary>
         /// <value>The ID of the product.</value>
         public int ProductId { get; set; }

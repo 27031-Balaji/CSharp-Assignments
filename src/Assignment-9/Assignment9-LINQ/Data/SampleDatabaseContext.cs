@@ -18,21 +18,21 @@ namespace Assignment9.Data
         }
 
         /// <summary>
-        /// Gets or sets the list of <see cref="Product"/>
+        /// Gets or sets the list of <see cref="Product"/>.
         /// </summary>
-        /// <value>The list of <see cref="Product"/></value>
+        /// <value>The list of <see cref="Product"/>.</value>
         public List<Product> Products { get; set; }
 
         /// <summary>
-        /// Gets or sets the list of <see cref="Supplier"/>
+        /// Gets or sets the list of <see cref="Supplier"/>.
         /// </summary>
-        /// <value>The list of <see cref="Supplier"/></value>
+        /// <value>The list of <see cref="Supplier"/>.</value>
         public List<Supplier> Suppliers { get; set; }
 
         /// <summary>
-        /// Gets or sets the list of <see cref="Order"/>
+        /// Gets or sets the list of <see cref="Order"/>.
         /// </summary>
-        /// <value>The list of <see cref="Order"/></value>
+        /// <value>The list of <see cref="Order"/>.</value>
         public List<Order> Orders { get; set; }
     }
 }
