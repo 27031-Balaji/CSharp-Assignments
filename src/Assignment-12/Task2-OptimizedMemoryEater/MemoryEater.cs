@@ -5,7 +5,9 @@
     /// </summary>
     public class MemoryEater
     {
-        private List<int[]> _memAlloc = new List<int[]>();
+        private const int BufferSize = 100;
+        private int _currentIndex;
+        private int[][] _memAlloc = new int[BufferSize][];
 
         /// <summary>
         /// Method used to allocate memory infinitely.
@@ -14,7 +16,8 @@
         {
             while (true)
             {
-                this._memAlloc.Add(new int[1000]);
+                this._memAlloc[this._currentIndex] = new int[1000];
+                this._currentIndex = (this._currentIndex + 1) % BufferSize;
                 Console.WriteLine($"Heap size: {GC.GetTotalMemory(false) / (1024.0 * 1024.0):F2} MB");
 
                 // Assume memAlloc variable is used only within this loop.
