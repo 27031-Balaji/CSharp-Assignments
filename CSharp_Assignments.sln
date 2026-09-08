@@ -26,6 +26,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task1-DiagnosticsAnalysis", "src\Assignment-12\Task1-DiagnosticsAnalysis\Task1-DiagnosticsAnalysis.csproj", "{927BB97A-6DD4-4A98-82AB-A85924CF89F2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assignment-12", "Assignment-12", "{042899E3-CC4A-4649-8B79-00960A553235}"
+	ProjectSection(SolutionItems) = preProject
+		src\Assignment-12\README.md = src\Assignment-12\README.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task2-OptimizedMemoryEater", "src\Assignment-12\Task2-OptimizedMemoryEater\Task2-OptimizedMemoryEater.csproj", "{D8AEF951-AB26-46EB-A761-F1990EAB8D65}"
 EndProject
