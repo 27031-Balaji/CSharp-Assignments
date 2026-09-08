@@ -1,0 +1,11 @@
+# Reflection on Memory Management
+
+During this assignment, I explored several important memory management concepts in C# and gained a much deeper understanding of how the .NET runtime manages objects and resources. One of the most interesting discoveries was that all types in C# ultimately derive from `System.Object`. This helped me understand why value types such as `int` can behave like objects through boxing and unboxing, even though they are fundamentally value types stored differently in memory.
+
+I also explored the differences between value types and reference types, including how enums are value types while classes and `object` are reference types. The behavior of strings was particularly interesting because they are reference types but often behave similarly to value types due to their immutability. Additionally, I investigated why `decimal` is preferred over `double` in financial applications such as the Expense Tracker, primarily due to its higher precision and ability to avoid floating-point rounding errors.
+
+Another major area of learning was stack and heap memory. I explored how local variables are typically stored on the stack, while objects and arrays are allocated on the managed heap. This naturally led to learning about garbage collection, object reachability, and the conditions that trigger the Garbage Collector. I also studied commonly used members of the `GC` class and their practical use cases.
+
+Beyond memory allocation, I explored resource management concepts such as managed and unmanaged resources, finalizers, the `IDisposable` pattern, and the `using` statement. I learned how proper disposal differs from garbage collection and why unmanaged resources require special attention.
+
+Finally, I investigated topics such as `List.Clear()`, `ReferenceEquals()`, the difference between `==` and `.Equals()`, and why memory graphs in diagnostic tools do not always immediately reflect heap changes. Overall, this assignment significantly improved my understanding of memory management, object lifetimes, and resource handling in .NET applications.
