@@ -16,73 +16,69 @@ namespace Assignment9.Tasks
         /// <param name="context">The database context to be used.</param>
         public static void Run(SampleDatabaseContext context)
         {
-            Console.WriteLine("\n========== TASK 5 ==========\n");
+            Console.WriteLine($"{Environment.NewLine}========== TASK 5 =========={Environment.NewLine}");
 
             List<Product> expensiveProducts = new QueryBuilder<Product>(context.Products)
                 .Filter("Price", 200, FilterCondition.GreaterThanOrEqualTo)
                 .SortBy(product => product.Price)
                 .Execute();
 
-            Console.WriteLine("Products With Price >= 200:\n");
+            Console.WriteLine($"Products With Price >= 200:{Environment.NewLine}");
             foreach (Product product in expensiveProducts)
             {
                 Console.WriteLine($"{product.ProductName} - {product.Price}");
             }
 
-            Console.WriteLine("\n------------------------------------\n");
+            Console.WriteLine($"{Environment.NewLine}------------------------------------{Environment.NewLine}");
 
             List<Product> affordableProducts = new QueryBuilder<Product>(context.Products)
                 .Filter("Price", 200, FilterCondition.LessThanOrEqualTo)
                 .SortBy(product => product.Price)
                 .Execute();
 
-            Console.WriteLine("Products With Price <= 200:\n");
+            Console.WriteLine($"Products With Price <= 200:{Environment.NewLine}");
             foreach (Product product in affordableProducts)
             {
                 Console.WriteLine($"{product.ProductName} - {product.Price}");
             }
 
-            Console.WriteLine("\n------------------------------------\n");
+            Console.WriteLine($"{Environment.NewLine}------------------------------------{Environment.NewLine}");
 
             List<Product> containsProducts = new QueryBuilder<Product>(context.Products)
                 .Filter("ProductName", "C#", FilterCondition.Contains)
                 .Execute();
 
-            Console.WriteLine("Products Where Name Contains 'C#':\n");
+            Console.WriteLine($"Products Where Name Contains 'C#':{Environment.NewLine}");
             foreach (Product product in containsProducts)
             {
                 Console.WriteLine(product.ProductName);
             }
 
-            Console.WriteLine("\n------------------------------------\n");
+            Console.WriteLine($"{Environment.NewLine}------------------------------------{Environment.NewLine}");
 
             List<Product> startsWithProducts = new QueryBuilder<Product>(context.Products)
                 .Filter("ProductName", "S", FilterCondition.StartsWith)
                 .Execute();
 
-            Console.WriteLine("Products Where Name Starts With 'S':\n");
+            Console.WriteLine($"Products Where Name Starts With 'S':{Environment.NewLine}");
             foreach (Product product in startsWithProducts)
             {
                 Console.WriteLine(product.ProductName);
             }
 
-            Console.WriteLine("\n------------------------------------\n");
+            Console.WriteLine($"{Environment.NewLine}------------------------------------{Environment.NewLine}");
 
             List<Product> endsWithProducts = new QueryBuilder<Product>(context.Products)
                 .Filter("ProductName", "r", FilterCondition.EndsWith)
                 .Execute();
 
-            Console.WriteLine("Products Where Name Ends With 'r':\n");
+            Console.WriteLine($"Products Where Name Ends With 'r':{Environment.NewLine}");
             foreach (Product product in endsWithProducts)
             {
                 Console.WriteLine(product.ProductName);
-
-
-
-
             }
 
-            Console.WriteLine("\n------------------------------------\n");
+            Console.WriteLine($"{Environment.NewLine}------------------------------------{Environment.NewLine}");
 
             var productSuppliers = new QueryBuilder<Product>(context.Products)
                 .Filter("Price", 200, FilterCondition.GreaterThanOrEqualTo)
@@ -102,7 +98,7 @@ namespace Assignment9.Tasks
                     })
                 .Execute();
 
-            Console.WriteLine("Products With Price >= 200 And Their Suppliers:\n");
+            Console.WriteLine($"Products With Price >= 200 And Their Suppliers:{Environment.NewLine}");
 
             ConsoleTable productSupplierTable = new ConsoleTable("Product ID", "Product Name", "Category", "Price", "Supplier ID", "Supplier Name");
             foreach (var item in productSuppliers)

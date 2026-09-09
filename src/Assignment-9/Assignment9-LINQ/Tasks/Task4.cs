@@ -15,7 +15,7 @@ namespace Assignment9.Tasks
         /// <param name="context">The database context to be used for LINQ operations.</param>
         public static void Run(SampleDatabaseContext context)
         {
-            Console.WriteLine("\n========== TASK 4 ==========\n");
+            Console.WriteLine($"{Environment.NewLine}========== TASK 4 =========={Environment.NewLine}");
 
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -28,7 +28,7 @@ namespace Assignment9.Tasks
             stopWatch.Stop();
 
             Console.WriteLine("Unoptimized Query:");
-            Console.WriteLine("Sort all products first, then filter books and materialize into a list.\n");
+            Console.WriteLine($"Sort all products first, then filter books and materialize into a list.{Environment.NewLine}");
 
             foreach (Product product in unoptimizedBooks)
             {
@@ -36,8 +36,8 @@ namespace Assignment9.Tasks
             }
 
             double unoptimizedTime = stopWatch.Elapsed.TotalMilliseconds;
-            Console.WriteLine($"\nExecution Time: {unoptimizedTime} ms\n");
-            Console.WriteLine("----------------------------------------------\n");
+            Console.WriteLine($"{Environment.NewLine}Execution Time: {unoptimizedTime} ms{Environment.NewLine}");
+            Console.WriteLine($"----------------------------------------------{Environment.NewLine}");
 
             stopWatch.Restart();
 
@@ -48,7 +48,7 @@ namespace Assignment9.Tasks
             stopWatch.Stop();
 
             Console.WriteLine("Optimized Query:");
-            Console.WriteLine("Filter books first, then sort only books.\n");
+            Console.WriteLine($"Filter books first, then sort only books.{Environment.NewLine}");
 
             foreach (Product product in optimizedBooks)
             {
@@ -56,8 +56,8 @@ namespace Assignment9.Tasks
             }
 
             double optimizedTime = stopWatch.Elapsed.TotalMilliseconds;
-            Console.WriteLine($"\nExecution Time: {optimizedTime} ms");
-            Console.WriteLine("----------------------------------------------\n");
+            Console.WriteLine($"{Environment.NewLine}Execution Time: {optimizedTime} ms");
+            Console.WriteLine($"----------------------------------------------{Environment.NewLine}");
         }
     }
 }

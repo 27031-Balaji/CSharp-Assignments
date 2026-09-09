@@ -10,7 +10,7 @@
         /// </summary>
         public static void Run()
         {
-            Console.WriteLine("\n========== TASK 3 ==========\n");
+            Console.WriteLine($"{Environment.NewLine}========== TASK 3 =========={Environment.NewLine}");
 
             int[] numbers = { 10, 15, 20, 30, 40, 50, 10, 30, 20, 50, 10, 40 };
             Console.WriteLine("Numbers:");
@@ -26,29 +26,29 @@
                     .Where(number => number < highest)
                     .Max();
 
-                Console.WriteLine($"\nSecond Highest Number: {secondHighest}");
+                Console.WriteLine($"{Environment.NewLine}Second Highest Number: {secondHighest}");
             }
             else
             {
-                Console.WriteLine("\nSecond Highest Number: Not available");
+                Console.WriteLine($"{Environment.NewLine}Second Highest Number: Not available");
             }
 
             int target = 60;
-            IEnumerable<(int FirstNumber, int SecondNumber)> pairs = numbers
+            var pairs = numbers
                 .SelectMany(
                     (firstNumber, index) => numbers
                         .Skip(index + 1)
                         .Where(secondNumber => firstNumber + secondNumber == target)
-                        .Select(secondNumber => (firstNumber, secondNumber)))
-                .Distinct();
+                        .Select(secondNumber => new { firstNumber, secondNumber })
+                .Distinct());
 
-            Console.WriteLine($"\nPairs That Add Up To {target}:\n");
+            Console.WriteLine($"{Environment.NewLine}Pairs That Add Up To {target}:{Environment.NewLine}");
 
             if (pairs.Any())
             {
-                foreach ((int firstNumber, int secondNumber) in pairs)
+                foreach (var pair in pairs)
                 {
-                    Console.WriteLine($"{firstNumber} + {secondNumber} = {target}");
+                    Console.WriteLine($"{pair.firstNumber} + {pair.secondNumber} = {target}");
                 }
             }
             else
