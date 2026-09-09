@@ -1,6 +1,7 @@
 ﻿using InventoryManagement.Exception;
 using InventoryManagement.Model;
 using InventoryManagement.Repository;
+using System.Data;
 
 namespace InventoryManagement.Service
 {
@@ -76,7 +77,8 @@ namespace InventoryManagement.Service
         /// <param name="name">The new <see cref="Product"/> name.</param>
         public void EditProductName(Product product, string name)
         {
-            this._repository.UpdateName(product, name);
+            product.Name = name;
+            this._repository.Update(product);
         }
 
         /// <summary>
@@ -86,7 +88,8 @@ namespace InventoryManagement.Service
         /// <param name="price">The new <see cref="Product"/> price.</param>
         public void EditProductPrice(Product product, decimal price)
         {
-            this._repository.UpdatePrice(product, price);
+            product.Price = price;
+            this._repository.Update(product);
         }
 
         /// <summary>
@@ -120,7 +123,8 @@ namespace InventoryManagement.Service
         /// <param name="quantity">The quantity to add.</param>
         public void RestockProduct(Product product, int quantity)
         {
-            this._repository.UpdateQuantity(product, product.Quantity + quantity);
+            product.Quantity = product.Quantity + quantity;
+            this._repository.Update(product);
         }
 
         /// <summary>
@@ -128,17 +132,15 @@ namespace InventoryManagement.Service
         /// </summary>
         /// <param name="product">The <see cref="Product"/> entry to be updated.</param>
         /// <param name="quantity">The quantity to remove.</param>
-        /// <returns>True if the stock was reduced, otherwise false.</returns>
-        public bool ReduceStock(Product product, int quantity)
+        public void ReduceStock(Product product, int quantity)
         {
             if (quantity > product.Quantity)
             {
                 throw new InsufficientStockException();
             }
 
-            this._repository.UpdateQuantity(product, product.Quantity - quantity);
-
-            return true;
+            product.Quantity = product.Quantity - quantity;
+            this._repository.Update(product);
         }
 
         /// <summary>

@@ -70,33 +70,12 @@ namespace InventoryManagement.Repository
         /// Updates the name of a <see cref="Product"/>.
         /// </summary>
         /// <param name="product">The <see cref="Product"/> to update.</param>
-        /// <param name="name">The new <see cref="Product"/> name.</param>
-        public void UpdateName(Product product, string name)
+        public void Update(Product product)
         {
             Product originalProduct = this.FindOriginalProduct(product.ProductId);
-            originalProduct.Name = name;
-        }
-
-        /// <summary>
-        /// Updates the price of a <see cref="Product"/>.
-        /// </summary>
-        /// <param name="product">The <see cref="Product"/> to update.</param>
-        /// <param name="price">The new <see cref="Product"/> price.</param>
-        public void UpdatePrice(Product product, decimal price)
-        {
-            Product originalProduct = this.FindOriginalProduct(product.ProductId);
-            originalProduct.Price = price;
-        }
-
-        /// <summary>
-        /// Updates the quantity of a <see cref="Product"/>.
-        /// </summary>
-        /// <param name="product">The <see cref="Product"/> to update.</param>
-        /// <param name="quantity">The new stock quantity.</param>
-        public void UpdateQuantity(Product product, int quantity)
-        {
-            Product originalProduct = this.FindOriginalProduct(product.ProductId);
-            originalProduct.Quantity = quantity;
+            originalProduct.Name = product.Name;
+            originalProduct.Price = product.Price;
+            originalProduct.Quantity = product.Quantity;
         }
 
         /// <summary>
@@ -135,11 +114,21 @@ namespace InventoryManagement.Repository
             return this._products.Remove(product);
         }
 
+        /// <summary>
+        /// Returns the <see cref="Product"/> from the repository.
+        /// </summary>
+        /// <param name="productId">The <see cref="Product"/> ID to be searched.</param>
+        /// <returns>The original <see cref="Product"/> in the repository.</returns>
         private Product FindOriginalProduct(string productId)
         {
             return this._products.Find(product => product.ProductId == productId) !;
         }
 
+        /// <summary>
+        /// Returns the deep copy of the product info.
+        /// </summary>
+        /// <param name="product">The product object to be cloned.</param>
+        /// <returns>The deep copy of the product.</returns>
         private Product Clone(Product product)
         {
             return new Product(product.ProductId, product.Name, product.Price, product.Quantity);
