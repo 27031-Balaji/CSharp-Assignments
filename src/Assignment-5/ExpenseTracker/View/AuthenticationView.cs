@@ -1,4 +1,5 @@
 ﻿using ExpenseTracker.Enums;
+using System.Text;
 
 namespace ExpenseTracker.View
 {
@@ -50,7 +51,7 @@ namespace ExpenseTracker.View
         public string ReadUserPassword()
         {
             Console.Write("Password: ");
-            return (Console.ReadLine() ?? string.Empty).Trim();
+            return this.MaskPassword();
         }
 
         /// <summary>
@@ -127,6 +128,37 @@ namespace ExpenseTracker.View
             Console.ReadKey();
             Console.Clear();
             Console.ResetColor();
+        }
+
+        private string MaskPassword()
+        {
+            StringBuilder originalPassword = new StringBuilder();
+
+            while (true)
+            {
+                ConsoleKeyInfo key = Console.ReadKey(true);
+                if (key.Key == ConsoleKey.Enter)
+                {
+                    break;
+                }
+
+                if (key.Key == ConsoleKey.Backspace)
+                {
+                    if (originalPassword.Length > 0)
+                    {
+                        originalPassword.Length--;
+                        Console.Write("\b \b");
+                    }
+                }
+                else
+                {
+                    originalPassword.Append(key.KeyChar);
+                    Console.Write("*");
+                }
+            }
+
+            Console.WriteLine();
+            return originalPassword.ToString();
         }
     }
 }
