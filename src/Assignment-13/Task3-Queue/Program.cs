@@ -22,8 +22,15 @@
             personQueue.Enqueue("Harini");
 
             // 3.3 - Remove a person from the queue
-            string removedPerson = personQueue.Dequeue();
-            Console.WriteLine($"Removed a person from the queue!{Environment.NewLine}The person is: {removedPerson}{Environment.NewLine}");
+            try
+            {
+                string removedPerson = personQueue.Dequeue();
+                Console.WriteLine($"Removed a person from the queue!{Environment.NewLine}The person is: {removedPerson}{Environment.NewLine}");
+            }
+            catch (InvalidOperationException)
+            {
+                Console.WriteLine("Cannot dequeue because the queue is empty.");
+            }
 
             // 3.4 - Display all the persons in the queue
             Console.WriteLine("Persons in the queue: ");
