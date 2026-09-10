@@ -3,12 +3,8 @@
     /// <summary>
     /// Represents a generic dictionary collection that stores key/value pairs.
     /// </summary>
-    /// <typeparam name="TKey">
-    /// The type of keys in the dictionary. Keys must not be null.
-    /// </typeparam>
-    /// <typeparam name="TValue">
-    /// The type of values stored in the dictionary.
-    /// </typeparam>
+    /// <typeparam name="TKey">The type of keys in the dictionary. Keys must not be null.</typeparam>
+    /// <typeparam name="TValue">The type of values stored in the dictionary.</typeparam>
     internal class GenericDictionary<TKey, TValue>
         where TKey : notnull
     {
@@ -25,9 +21,7 @@
         /// </summary>
         /// <param name="key">The key of the element to add.</param>
         /// <param name="value">The value of the element to add.</param>
-        /// <exception cref="ArgumentException">
-        /// Thrown when an element with the same key already exists.
-        /// </exception>
+        /// <exception cref="ArgumentException">Thrown when an element with the same key already exists.</exception>
         public void Add(TKey key, TValue value)
         {
             this._dictionary.Add(key, value);
@@ -46,9 +40,7 @@
         /// Determines whether the dictionary contains the specified key.
         /// </summary>
         /// <param name="key">The key to locate in the dictionary.</param>
-        /// <returns>
-        /// <c>true</c> if the dictionary contains the specified key; otherwise, <c>false</c>.
-        /// </returns>
+        /// <returns>True if the dictionary contains the specified key, otherwise false.</returns>
         public bool Contains(TKey key)
         {
             return this._dictionary.ContainsKey(key);

@@ -169,11 +169,18 @@ namespace Generics
             GenericDictionary<string, int> studentGrades = new GenericDictionary<string, int>();
 
             // 4.2 - Add five students and their grades
-            studentGrades.Add("Lakshmi", 99);
-            studentGrades.Add("Vishnu", 89);
-            studentGrades.Add("Tarrun", 69);
-            studentGrades.Add("Sowndhar", 80);
-            studentGrades.Add("Dineshbalaji", 50);
+            try
+            {
+                studentGrades.Add("Lakshmi", 99);
+                studentGrades.Add("Vishnu", 89);
+                studentGrades.Add("Tarrun", 69);
+                studentGrades.Add("Sowndhar", 80);
+                studentGrades.Add("Dineshbalaji", 50);
+            }
+            catch (ArgumentException)
+            {
+                Console.WriteLine("Cannot add the key-value pair. Key already exists.");
+            }
 
             // 4.3 - Remove a student from the dictionary
             studentGrades.Remove("Dineshbalaji");
