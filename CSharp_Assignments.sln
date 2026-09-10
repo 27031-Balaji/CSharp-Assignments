@@ -31,7 +31,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task2-Stack", "src\Assignme
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task3-Queue", "src\Assignment-13\Task3-Queue\Task3-Queue.csproj", "{06AFEEA8-4D6C-4AA7-9B72-BB228414615E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task4-Dictionaries", "Task4-Dictionaries\Task4-Dictionaries.csproj", "{720310C0-122F-47AE-8748-97DE97C60548}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task4-Dictionaries", "src\Assignment-13\Task4-Dictionaries\Task4-Dictionaries.csproj", "{720310C0-122F-47AE-8748-97DE97C60548}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
