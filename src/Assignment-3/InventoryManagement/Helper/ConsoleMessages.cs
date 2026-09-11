@@ -44,5 +44,20 @@
         /// Message displayed when no <see cref="Model.Product"/> are found with low stock levels.
         /// </summary>
         public const string NoLowStockProductsMessage = "No products are low in stock.";
+
+        /// <summary>
+        /// Message displayed when the specified <see cref="Model.Product"/> is not found in the repository.
+        /// </summary>
+        public const string ProductNotFoundExceptionMessage = "Product not found in the inventory.";
+
+        /// <summary>
+        /// Message displayed when there is insufficient stock to do any operations on the <see cref="Model.Product"/>.
+        /// </summary>
+        public const string InsufficientStockExceptionMessage = "Insufficient stock available.";
+
+        /// <summary>
+        /// Message displayed when the inventory is empty.
+        /// </summary>
+        public const string EmptyInventoryExceptionMessage = "Inventory is empty.";
     }
 }

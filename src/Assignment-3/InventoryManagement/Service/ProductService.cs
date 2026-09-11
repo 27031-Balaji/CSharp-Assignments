@@ -1,7 +1,8 @@
-﻿using InventoryManagement.Exception;
+﻿using InventoryManagement.ConstantLiteral;
+using InventoryManagement.Exception;
+using InventoryManagement.Helper;
 using InventoryManagement.Model;
 using InventoryManagement.Repository;
-using System.Data;
 
 namespace InventoryManagement.Service
 {
@@ -10,7 +11,6 @@ namespace InventoryManagement.Service
     /// </summary>
     internal class ProductService
     {
-        private const int LowStockThreshold = 5;
         private ProductRepository _repository;
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace InventoryManagement.Service
 
             if (product == null)
             {
-                throw new ProductNotFoundException();
+                throw new ProductNotFoundException(ConsoleMessages.ProductNotFoundExceptionMessage);
             }
 
             return product;
@@ -62,7 +62,7 @@ namespace InventoryManagement.Service
 
             if (products.Count == 0)
             {
-                throw new ProductNotFoundException();
+                throw new ProductNotFoundException(ConsoleMessages.ProductNotFoundExceptionMessage);
             }
 
             this.SortProductsByName(products);
@@ -112,7 +112,7 @@ namespace InventoryManagement.Service
         {
             if (!this._repository.DeleteProduct(product))
             {
-                throw new ProductNotFoundException();
+                throw new ProductNotFoundException(ConsoleMessages.ProductNotFoundExceptionMessage);
             }
         }
 
@@ -136,7 +136,7 @@ namespace InventoryManagement.Service
         {
             if (quantity > product.Quantity)
             {
-                throw new InsufficientStockException();
+                throw new InsufficientStockException(ConsoleMessages.InsufficientStockExceptionMessage);
             }
 
             product.Quantity = product.Quantity - quantity;
@@ -152,7 +152,7 @@ namespace InventoryManagement.Service
             List<Product> lowStockProducts = new List<Product>();
             foreach (Product product in this._repository.GetAllProducts())
             {
-                if (product.Quantity <= LowStockThreshold)
+                if (product.Quantity <= Constant.LowStockThreshold)
                 {
                     lowStockProducts.Add(product);
                 }
@@ -170,7 +170,7 @@ namespace InventoryManagement.Service
         {
             if (this._repository.ProductCount == 0)
             {
-                throw new EmptyInventoryException();
+                throw new EmptyInventoryException(ConsoleMessages.EmptyInventoryExceptionMessage);
             }
         }
 
@@ -183,7 +183,7 @@ namespace InventoryManagement.Service
             string productId;
             do
             {
-                productId = Guid.NewGuid().ToString("N").Substring(0, 12).ToUpper();
+                productId = Guid.NewGuid().ToString("N").Substring(0, Constant.IdLength).ToUpper();
             }
             while (this._repository.IsProductExists(productId));
 

@@ -9,7 +9,24 @@
         /// Initializes a new instance of the <see cref="EmptyInventoryException"/> class.
         /// </summary>
         public EmptyInventoryException()
-            : base("Inventory is empty.")
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EmptyInventoryException" /> class.
+        /// </summary>
+        /// <param name="message">The message to be printed when the exception arises.</param>
+        public EmptyInventoryException(string message)
+            : base(message)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EmptyInventoryException" /> class.
+        /// </summary>
+        /// <param name="message">The message to be printed when the exception arises.</param>
+        /// <param name="innerException">The inner exception that is used to preserve the exception chain.</param>
+        public EmptyInventoryException(string message, System.Exception innerException)
         {
         }
     }

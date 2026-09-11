@@ -9,7 +9,25 @@
         /// Initializes a new instance of the <see cref="InsufficientStockException"/> class.
         /// </summary>
         public InsufficientStockException()
-            : base("Insufficient stock available.")
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InsufficientStockException"/> class.
+        /// </summary>
+        /// <param name="message">The message to be printed when the exception arises.</param>
+        public InsufficientStockException(string message)
+            : base(message)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InsufficientStockException" /> class.
+        /// </summary>
+        /// <param name="message">The message to be printed when the exception arises.</param>
+        /// <param name="innerException">The inner exception that is used to preserve the exception chain.</param>
+        public InsufficientStockException(string message, System.Exception innerException)
+            : base(message, innerException)
         {
         }
     }

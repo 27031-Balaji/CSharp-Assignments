@@ -20,10 +20,10 @@ namespace Assignments
             try
             {
                 ProductRepository repository = new ProductRepository();
-                ProductService services = new ProductService(repository);
-                ProductHelper helpers = new ProductHelper();
+                ProductService service = new ProductService(repository);
+                ProductHelper helper = new ProductHelper();
                 ConsoleOperation view = new ConsoleOperation();
-                ProductController controller = new ProductController(services, helpers, view);
+                ProductController controller = new ProductController(service, helper, view);
                 controller.Run();
             }
             catch (Exception ex)
@@ -31,7 +31,7 @@ namespace Assignments
                 Console.WriteLine();
                 Console.WriteLine("An unexpected error occurred.");
                 Console.WriteLine($"Error: {ex.Message}");
-                Console.WriteLine("Press any key to continue...");
+                Console.WriteLine("Press any key to exit...");
                 Console.ReadKey();
             }
         }
