@@ -59,5 +59,10 @@
         /// Message displayed when the inventory is empty.
         /// </summary>
         public const string EmptyInventoryExceptionMessage = "Inventory is empty.";
+
+        /// <summary>
+        /// Message displayed when the user entered an invalid option.
+        /// </summary>
+        public const string InvalidOptionMessage = "Enter a valid option";
     }
 }

@@ -77,7 +77,7 @@ namespace InventoryManagement.Controller
                         break;
 
                     default:
-                        this._view.ShowInvalidMessage("option");
+                        this._view.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
                         break;
                 }
             }
@@ -144,7 +144,7 @@ namespace InventoryManagement.Controller
                         break;
 
                     default:
-                        this._view.ShowInvalidMessage("option");
+                        this._view.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
                         if (!this._view.AskRetry())
                         {
                             isRunning = false;
@@ -183,7 +183,7 @@ namespace InventoryManagement.Controller
                     return;
 
                 default:
-                    this._view.ShowInvalidMessage("option");
+                    this._view.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
                     if (!this._view.AskRetry())
                     {
                         this._view.ClearScreen();
@@ -385,6 +385,36 @@ namespace InventoryManagement.Controller
         }
 
         /// <summary>
+        /// Edits the name of the <see cref="Product"/> searched.
+        /// </summary>
+        /// <param name="product">The <see cref="Product"/> where the name is to be edited.</param>
+        private void EditProductName(Product product)
+        {
+            if (!this.GetValidProductName(out string name, "edit"))
+            {
+                return;
+            }
+
+            this._services.EditProductName(product, name);
+            this._view.ShowMessage(ConsoleMessages.NameUpdatedMessage, MessageType.Success);
+        }
+
+        /// <summary>
+        /// Edits the price of the <see cref="Product"/> searched.
+        /// </summary>
+        /// <param name="product">The <see cref="Product"/> where the name is to be edited.</param>
+        private void EditProductPrice(Product product)
+        {
+            if (!this.GetValidProductPrice(out decimal price))
+            {
+                return;
+            }
+
+            this._services.EditProductPrice(product, price);
+            this._view.ShowMessage(ConsoleMessages.PriceUpdatedMessage, MessageType.Success);
+        }
+
+        /// <summary>
         /// Checks whether the inventory system has any <see cref="Product"/>.
         /// </summary>
         /// <returns>True if the inventory has any <see cref="Product"/>, otherwise false.</returns>
@@ -522,36 +552,6 @@ namespace InventoryManagement.Controller
             }
 
             return shouldRetry;
-        }
-
-        /// <summary>
-        /// Edits the name of the <see cref="Product"/> searched.
-        /// </summary>
-        /// <param name="product">The <see cref="Product"/> where the name is to be edited.</param>
-        private void EditProductName(Product product)
-        {
-            if (!this.GetValidProductName(out string name, "edit"))
-            {
-                return;
-            }
-
-            this._services.EditProductName(product, name);
-            this._view.ShowMessage(ConsoleMessages.NameUpdatedMessage, MessageType.Success);
-        }
-
-        /// <summary>
-        /// Edits the price of the <see cref="Product"/> searched.
-        /// </summary>
-        /// <param name="product">The <see cref="Product"/> where the name is to be edited.</param>
-        private void EditProductPrice(Product product)
-        {
-            if (!this.GetValidProductPrice(out decimal price))
-            {
-                return;
-            }
-
-            this._services.EditProductPrice(product, price);
-            this._view.ShowMessage(ConsoleMessages.PriceUpdatedMessage, MessageType.Success);
         }
     }
 }
