@@ -94,6 +94,18 @@ namespace InventoryManagement.View
         }
 
         /// <summary>
+        /// Reads the serial number of the <see cref="Model.Product"/> from the displayed list.
+        /// </summary>
+        /// <param name="operation">The operation being performed.</param>
+        /// <returns>The serial number of the <see cref="Model.Product"/></returns>
+        public string ReadSerialNumber(string operation)
+        {
+            Console.Write($"Enter serial number to {operation}: ");
+
+            return (Console.ReadLine() ?? string.Empty).Trim();
+        }
+
+        /// <summary>
         /// This method is used to show success message with Green color.
         /// </summary>
         /// <param name="message">The message to be printed.</param>
@@ -207,10 +219,11 @@ namespace InventoryManagement.View
         /// <summary>
         /// Waits for a key press before clearing the console.
         /// </summary>
-        public void ClearScreenWithKey()
+        /// <param name="action">The action to be stated to the console.</param>
+        public void ClearScreenWithKey(string action)
         {
             Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.Write("\nPress any key to continue...\n");
+            Console.Write($"\nPress any key to {action}...\n");
             Console.ReadKey();
             Console.Clear();
             Console.ResetColor();

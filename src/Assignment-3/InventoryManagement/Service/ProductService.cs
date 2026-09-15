@@ -9,15 +9,15 @@ namespace InventoryManagement.Service
     /// <summary>
     /// Provides business logic for managing <see cref="Product"/> instances.
     /// </summary>
-    internal class ProductService
+    internal class ProductService : IProductService
     {
-        private ProductRepository _repository;
+        private readonly IRepository _repository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProductService"/> class.
         /// </summary>
         /// <param name="repository">The <see cref="Product"/> repository.</param>
-        public ProductService(ProductRepository repository)
+        public ProductService(IRepository repository)
         {
             this._repository = repository;
         }
@@ -78,7 +78,7 @@ namespace InventoryManagement.Service
         public void EditProductName(Product product, string name)
         {
             product.Name = name;
-            this._repository.Update(product);
+            this._repository.UpdateProduct(product);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace InventoryManagement.Service
         public void EditProductPrice(Product product, decimal price)
         {
             product.Price = price;
-            this._repository.Update(product);
+            this._repository.UpdateProduct(product);
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace InventoryManagement.Service
         public void RestockProduct(Product product, int quantity)
         {
             product.Quantity = product.Quantity + quantity;
-            this._repository.Update(product);
+            this._repository.UpdateProduct(product);
         }
 
         /// <summary>
@@ -136,11 +136,11 @@ namespace InventoryManagement.Service
         {
             if (quantity > product.Quantity)
             {
-                throw new InsufficientStockException(ConsoleMessages.InsufficientStockExceptionMessage);
+                throw new InsufficientStockException(string.Format(ConsoleMessages.InsufficientStockExceptionMessage, product.Name));
             }
 
             product.Quantity = product.Quantity - quantity;
-            this._repository.Update(product);
+            this._repository.UpdateProduct(product);
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace InventoryManagement.Service
         /// </summary>
         public void CheckInventory()
         {
-            if (this._repository.ProductCount == 0)
+            if (this._repository.Count == 0)
             {
                 throw new EmptyInventoryException(ConsoleMessages.EmptyInventoryExceptionMessage);
             }
@@ -185,7 +185,7 @@ namespace InventoryManagement.Service
             {
                 productId = Guid.NewGuid().ToString("N").Substring(0, Constant.IdLength).ToUpper();
             }
-            while (this._repository.IsProductExists(productId));
+            while (this._repository.DoesProductExist(productId));
 
             return productId;
         }

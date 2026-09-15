@@ -53,7 +53,7 @@
         /// <summary>
         /// Message displayed when there is insufficient stock to do any operations on the <see cref="Model.Product"/>.
         /// </summary>
-        public const string InsufficientStockExceptionMessage = "Insufficient stock available.";
+        public const string InsufficientStockExceptionMessage = "{0} has insufficient stock.";
 
         /// <summary>
         /// Message displayed when the inventory is empty.

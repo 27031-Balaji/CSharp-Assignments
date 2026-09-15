@@ -1,4 +1,6 @@
-﻿namespace InventoryManagement.Helper
+﻿using InventoryManagement.ConstantLiteral;
+
+namespace InventoryManagement.Helper
 {
     /// <summary>
     /// Validates product information to check whether the input entered is right or not.
@@ -44,7 +46,19 @@
         /// <returns>True if the product ID is valid, otherwise false.</returns>
         public bool IsValidProductId(string productId)
         {
-            return !string.IsNullOrWhiteSpace(productId) && productId.Length == 12 && productId.All(char.IsLetterOrDigit);
+            return !string.IsNullOrWhiteSpace(productId) && productId.Length == Constant.IdLength && productId.All(char.IsLetterOrDigit);
+        }
+
+        /// <summary>
+        /// Determines whether a serial number for the <see cref="Model.Product"/> is valid.
+        /// </summary>
+        /// <param name="input">The input entered by the user.</param>
+        /// <param name="maxCount">The maximum choice for the serial number.</param>
+        /// <param name="serialNumber">The validated serial number.</param>
+        /// <returns>True if the user entered the right serial number, else false.</returns>
+        public bool IsValidSerialNumber(string input, int maxCount, out int serialNumber)
+        {
+            return int.TryParse(input, out serialNumber) && serialNumber >= 1 && serialNumber <= maxCount;
         }
     }
 }

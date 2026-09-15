@@ -19,8 +19,8 @@ namespace Assignments
         {
             try
             {
-                ProductRepository repository = new ProductRepository();
-                ProductService service = new ProductService(repository);
+                IRepository repository = new ProductRepository();
+                IProductService service = new ProductService(repository);
                 ProductHelper helper = new ProductHelper();
                 ConsoleOperation view = new ConsoleOperation();
                 ProductController controller = new ProductController(service, helper, view);

@@ -5,7 +5,7 @@ namespace InventoryManagement.Repository
     /// <summary>
     /// Stores and manages <see cref="Product"/> data in memory.
     /// </summary>
-    internal class ProductRepository
+    internal class ProductRepository : IRepository
     {
         private readonly List<Product> _products;
 
@@ -23,7 +23,7 @@ namespace InventoryManagement.Repository
         /// <value>
         /// The number of <see cref="Product"/> stored in the repository.
         /// </value>
-        public int ProductCount { get => this._products.Count; }
+        public int Count { get => this._products.Count; }
 
         /// <summary>
         /// Adds a <see cref="Product"/> to the repository.
@@ -41,7 +41,7 @@ namespace InventoryManagement.Repository
         /// <returns>The matching <see cref="Product"/> if found, otherwise null.</returns>
         public Product? GetProductById(string productId)
         {
-            Product? product = this._products.Find(product => product.ProductId == productId);
+            Product? product = this._products.Find(p => string.Equals(p.ProductId, productId, StringComparison.OrdinalIgnoreCase));
             return product == null ? null : this.Clone(product!);
         }
 
@@ -70,7 +70,7 @@ namespace InventoryManagement.Repository
         /// Updates the name of a <see cref="Product"/>.
         /// </summary>
         /// <param name="product">The <see cref="Product"/> to update.</param>
-        public void Update(Product product)
+        public void UpdateProduct(Product product)
         {
             Product originalProduct = this.FindOriginalProduct(product.ProductId);
             originalProduct.Name = product.Name;
@@ -83,7 +83,7 @@ namespace InventoryManagement.Repository
         /// </summary>
         /// <param name="productId">The <see cref="Product"/> ID to search for.</param>
         /// <returns>True if the <see cref="Product"/> ID exists, otherwise false.</returns>
-        public bool IsProductExists(string productId)
+        public bool DoesProductExist(string productId)
         {
             return this._products.Any(product => product.ProductId == productId);
         }
@@ -111,7 +111,7 @@ namespace InventoryManagement.Repository
         public bool DeleteProduct(Product product)
         {
             Product originalProduct = this.FindOriginalProduct(product.ProductId);
-            return this._products.Remove(product);
+            return this._products.Remove(originalProduct);
         }
 
         /// <summary>

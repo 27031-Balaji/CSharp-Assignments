@@ -13,6 +13,6 @@
         /// <summary>
         /// Provides the maximum length of the product ID.
         /// </summary>
-        internal const int IdLength = 6;
+        internal const int IdLength = 8;
     }
 }
