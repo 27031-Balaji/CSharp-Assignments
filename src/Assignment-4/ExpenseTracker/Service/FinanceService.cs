@@ -190,9 +190,10 @@ namespace ExpenseTracker.Service
         /// Deletes the specified <see cref="FinancialRecord"/>.
         /// </summary>
         /// <param name="record">The <see cref="FinancialRecord"/> to delete.</param>
-        public void DeleteRecord(FinancialRecord record)
+        /// <returns>True if the delete operation is successful, else false.</returns>
+        public bool DeleteRecord(FinancialRecord record)
         {
-            this.repository.DeleteRecord(record);
+            return this.repository.DeleteRecord(record);
         }
 
         /// <summary>
@@ -200,10 +201,11 @@ namespace ExpenseTracker.Service
         /// </summary>
         /// <param name="record">The <see cref="FinancialRecord"/> to update.</param>
         /// <param name="date">The new date value.</param>
-        public void EditRecordDate(FinancialRecord record, DateOnly date)
+        /// <returns>True if the edit operation is successful, else false.</returns>
+        public bool EditRecordDate(FinancialRecord record, DateOnly date)
         {
             record.Date = date;
-            this.repository.UpdateRecord(record);
+            return this.repository.UpdateRecord(record);
         }
 
         /// <summary>
@@ -211,10 +213,11 @@ namespace ExpenseTracker.Service
         /// </summary>
         /// <param name="record">The <see cref="FinancialRecord"/> to update.</param>
         /// <param name="amount">The new amount value.</param>
-        public void EditRecordAmount(FinancialRecord record, decimal amount)
+        /// <returns>True if the edit operation is successful, else false.</returns>
+        public bool EditRecordAmount(FinancialRecord record, decimal amount)
         {
             record.Amount = amount;
-            this.repository.UpdateRecord(record);
+            return this.repository.UpdateRecord(record);
         }
 
         /// <summary>
@@ -222,10 +225,11 @@ namespace ExpenseTracker.Service
         /// </summary>
         /// <param name="record">The <see cref="Income"/> to update.</param>
         /// <param name="source">The new <see cref="IncomeSource"/>.</param>
-        public void EditRecordSource(Income record, IncomeSource source)
+        /// <returns>True if the edit operation is successful, else false.</returns>
+        public bool EditRecordSource(Income record, IncomeSource source)
         {
             record.Source = source;
-            this.repository.UpdateRecord(record);
+            return this.repository.UpdateRecord(record);
         }
 
         /// <summary>
@@ -233,10 +237,11 @@ namespace ExpenseTracker.Service
         /// </summary>
         /// <param name="record">The <see cref="Expense"/> to update.</param>
         /// <param name="category">The new <see cref="ExpenseCategory"/>.</param>
-        public void EditRecordCategory(Expense record, ExpenseCategory category)
+        /// <returns>True if the edit operation is successful, else false.</returns>
+        public bool EditRecordCategory(Expense record, ExpenseCategory category)
         {
             record.Category = category;
-            this.repository.UpdateRecord(record);
+            return this.repository.UpdateRecord(record);
         }
 
         /// <summary>
@@ -244,10 +249,11 @@ namespace ExpenseTracker.Service
         /// </summary>
         /// <param name="record">The <see cref="FinancialRecord"/> to update.</param>
         /// <param name="description">The new description value; may be empty.</param>
-        public void EditRecordDescription(FinancialRecord record, string? description)
+        /// <returns>True if the edit operation is successful, else false.</returns>
+        public bool EditRecordDescription(FinancialRecord record, string? description)
         {
             record.Description = description;
-            this.repository.UpdateRecord(record);
+            return this.repository.UpdateRecord(record);
         }
 
         /// <summary>

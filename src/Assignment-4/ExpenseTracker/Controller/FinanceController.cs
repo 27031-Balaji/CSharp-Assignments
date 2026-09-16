@@ -199,7 +199,13 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            FinancialRecord record = this.service.GetRecordById(recordId) !;
+            FinancialRecord? record = this.service.GetRecordById(recordId);
+            if (record == null)
+            {
+                this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
+                return;
+            }
+
             this.view.DisplaySingleRecord(record);
 
             if (!this.view.ConfirmDelete())
@@ -209,8 +215,14 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            this.service.DeleteRecord(record);
-            this.view.ShowMessage(ConsoleMessages.DeleteOperationSuccessMessage, MessageType.Success);
+            bool isDeleted = this.service.DeleteRecord(record);
+            string message = isDeleted
+                ? ConsoleMessages.DeleteOperationSuccessMessage
+                : ConsoleMessages.DeleteOperationFailedMessage;
+
+            MessageType messageType = isDeleted ? MessageType.Success : MessageType.Error;
+
+            this.view.ShowMessage(message, messageType);
             this.view.ClearScreenWithKey();
         }
 
@@ -239,7 +251,12 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            FinancialRecord record = this.service.GetRecordById(recordId) !;
+            FinancialRecord? record = this.service.GetRecordById(recordId);
+            if (record == null)
+            {
+                this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
+                return;
+            }
 
             bool isRunning = true;
             while (isRunning)
@@ -249,22 +266,18 @@ namespace ExpenseTracker.Controller
                 {
                     case EditMenuOption.Date:
                         this.EditDate(record);
-                        this.view.ShowMessage(ConsoleMessages.DateEditedSuccessMessage, MessageType.Success);
                         break;
 
                     case EditMenuOption.Amount:
                         this.EditAmount(record);
-                        this.view.ShowMessage(ConsoleMessages.AmountEditedSuccessMessage, MessageType.Success);
                         break;
 
                     case EditMenuOption.Classification:
                         this.EditClassification(record);
-                        this.view.ShowMessage(ConsoleMessages.ClassificationEditedSuccessMessage, MessageType.Success);
                         break;
 
                     case EditMenuOption.Description:
                         this.EditDescription(record);
-                        this.view.ShowMessage(ConsoleMessages.DescriptionEditedSuccessMessage, MessageType.Success);
                         break;
 
                     case EditMenuOption.SaveAndExit:
@@ -424,7 +437,14 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            this.service.EditRecordDate(record, date);
+            bool isEdited = this.service.EditRecordDate(record, date);
+            string message = isEdited
+                ? ConsoleMessages.EditOperationSuccessMessage
+                : ConsoleMessages.EditOperationFailedMessage;
+
+            MessageType messageType = isEdited ? MessageType.Success : MessageType.Error;
+
+            this.view.ShowMessage(message, messageType);
         }
 
         /// <summary>
@@ -438,7 +458,14 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            this.service.EditRecordAmount(record, amount);
+            bool isEdited = this.service.EditRecordAmount(record, amount);
+            string message = isEdited
+                ? ConsoleMessages.EditOperationSuccessMessage
+                : ConsoleMessages.EditOperationFailedMessage;
+
+            MessageType messageType = isEdited ? MessageType.Success : MessageType.Error;
+
+            this.view.ShowMessage(message, messageType);
         }
 
         /// <summary>
@@ -454,7 +481,14 @@ namespace ExpenseTracker.Controller
                     return;
                 }
 
-                this.service.EditRecordSource(income, source);
+                bool isEdited = this.service.EditRecordSource(income, source);
+                string message = isEdited
+                    ? ConsoleMessages.EditOperationSuccessMessage
+                    : ConsoleMessages.EditOperationFailedMessage;
+
+                MessageType messageType = isEdited ? MessageType.Success : MessageType.Error;
+
+                this.view.ShowMessage(message, messageType);
                 return;
             }
             else if (record is Expense expense)
@@ -464,7 +498,14 @@ namespace ExpenseTracker.Controller
                     return;
                 }
 
-                this.service.EditRecordCategory(expense, category);
+                bool isEdited = this.service.EditRecordCategory(expense, category);
+                string message = isEdited
+                    ? ConsoleMessages.EditOperationSuccessMessage
+                    : ConsoleMessages.EditOperationFailedMessage;
+
+                MessageType messageType = isEdited ? MessageType.Success : MessageType.Error;
+
+                this.view.ShowMessage(message, messageType);
                 return;
             }
         }
@@ -477,7 +518,14 @@ namespace ExpenseTracker.Controller
         {
             string? description = this.view.ReadRecordDescription();
 
-            this.service.EditRecordDescription(record, description);
+            bool isEdited = this.service.EditRecordDescription(record, description);
+            string message = isEdited
+                ? ConsoleMessages.EditOperationSuccessMessage
+                : ConsoleMessages.EditOperationFailedMessage;
+
+            MessageType messageType = isEdited ? MessageType.Success : MessageType.Error;
+
+            this.view.ShowMessage(message, messageType);
         }
 
         /// <summary>
@@ -487,7 +535,6 @@ namespace ExpenseTracker.Controller
         /// <returns>True if a valid date was provided, otherwise false.</returns>
         private bool GetValidDate(out DateOnly date)
         {
-            date = DateOnly.FromDateTime(DateTime.Now);
             string input;
             bool shouldContinue = true;
             while (shouldContinue)
@@ -495,6 +542,12 @@ namespace ExpenseTracker.Controller
                 input = this.view.ReadRecordDate();
                 if (this.helper.IsValidDate(input, out date))
                 {
+                    return true;
+                }
+
+                if (input == string.Empty)
+                {
+                    date = DateOnly.FromDateTime(DateTime.Now);
                     return true;
                 }
 

@@ -73,35 +73,54 @@ namespace ExpenseTracker.Repository
         /// Deletes the specified <see cref="FinancialRecord"/> from the repository and saves changes.
         /// </summary>
         /// <param name="record">The <see cref="FinancialRecord"/> to delete.</param>
-        public void DeleteRecord(FinancialRecord record)
+        /// <returns>True if the delete operation is successful, else false.</returns>
+        public bool DeleteRecord(FinancialRecord record)
         {
-            FinancialRecord originalRecord = this.FindOriginalRecord(record.Id) !;
-            this.records.Remove(originalRecord);
-            this.SaveRecordsToFile();
+            FinancialRecord? originalRecord = this.FindOriginalRecord(record.Id);
+            if (originalRecord == null)
+            {
+                return false;
+            }
+            else
+            {
+                this.records.Remove(originalRecord);
+                this.SaveRecordsToFile();
+                return true;
+            }
         }
 
         /// <summary>
         /// Updates the data of the specified <see cref="FinancialRecord"/> and saves the changes.
         /// </summary>
         /// <param name="record">The record to be updated.</param>
-        public void UpdateRecord(FinancialRecord record)
+        /// <returns>True if the edit operation is successful, else false.</returns>
+        public bool UpdateRecord(FinancialRecord record)
         {
-            FinancialRecord originalRecord = this.FindOriginalRecord(record.Id) !;
-            originalRecord.Date = record.Date;
-            originalRecord.Amount = record.Amount;
-            originalRecord.Description = record.Description;
-
-            if (originalRecord is Income originalIncome && record is Income updatedIncome)
+            FinancialRecord? originalRecord = this.FindOriginalRecord(record.Id);
+            if (originalRecord == null)
             {
-                originalIncome.Source = updatedIncome.Source;
+                return false;
             }
-
-            if (originalRecord is Expense originalExpense && record is Expense updatedExpense)
+            else
             {
-                originalExpense.Category = updatedExpense.Category;
-            }
+                originalRecord.Date = record.Date;
+                originalRecord.Amount = record.Amount;
+                originalRecord.Description = record.Description;
 
-            this.SaveRecordsToFile();
+                if (originalRecord is Income originalIncome && record is Income updatedIncome)
+                {
+                    originalIncome.Source = updatedIncome.Source;
+                }
+
+                if (originalRecord is Expense originalExpense && record is Expense updatedExpense)
+                {
+                    originalExpense.Category = updatedExpense.Category;
+                }
+
+                this.SaveRecordsToFile();
+
+                return true;
+            }
         }
 
         /// <summary>
