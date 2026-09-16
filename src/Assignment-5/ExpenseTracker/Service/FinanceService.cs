@@ -174,10 +174,9 @@ namespace ExpenseTracker.Service
         /// </summary>
         /// <param name="recordId">The identifier of the record to retrieve.</param>
         /// <returns>The matching <see cref="FinancialRecord"/> if found.</returns>
-        public FinancialRecord GetRecordById(string recordId)
+        public FinancialRecord? GetRecordById(string recordId)
         {
-            FinancialRecord record = this.financeRepository.GetById(recordId) !;
-            return record;
+            return this.financeRepository.GetById(recordId);
         }
 
         /// <summary>
@@ -194,11 +193,11 @@ namespace ExpenseTracker.Service
         /// <summary>
         /// Deletes the specified <see cref="FinancialRecord"/>.
         /// </summary>
-        /// <param name="recordId">The record ID to be deleted.</param>
-        public void DeleteRecord(string recordId)
+        /// <param name="record">The <see cref="FinancialRecord"/> to delete.</param>
+        /// <returns>True if the delete operation is successful, else false.</returns>
+        public bool DeleteRecord(FinancialRecord record)
         {
-            FinancialRecord recordToDelete = this.GetRecordById(recordId);
-            this.financeRepository.DeleteRecord(recordToDelete);
+            return this.financeRepository.DeleteRecord(record);
         }
 
         /// <summary>
@@ -215,11 +214,11 @@ namespace ExpenseTracker.Service
         /// </summary>
         /// <param name="record">The <see cref="FinancialRecord"/> to update.</param>
         /// <param name="date">The new date value.</param>
-        public void EditRecordDate(FinancialRecord record, DateOnly date)
+        /// <returns>True if the edit operation is successful, else false.</returns>
+        public bool EditRecordDate(FinancialRecord record, DateOnly date)
         {
-            FinancialRecord originalRecord = this.GetRecordById(record.Id);
-            originalRecord.Date = date;
-            this.financeRepository.UpdateRecord(originalRecord);
+            record.Date = date;
+            return this.financeRepository.UpdateRecord(record);
         }
 
         /// <summary>
@@ -227,11 +226,11 @@ namespace ExpenseTracker.Service
         /// </summary>
         /// <param name="record">The <see cref="FinancialRecord"/> to update.</param>
         /// <param name="amount">The new amount value.</param>
-        public void EditRecordAmount(FinancialRecord record, decimal amount)
+        /// <returns>True if the edit operation is successful, else false.</returns>
+        public bool EditRecordAmount(FinancialRecord record, decimal amount)
         {
-            FinancialRecord originalRecord = this.GetRecordById(record.Id);
-            originalRecord.Amount = amount;
-            this.financeRepository.UpdateRecord(originalRecord);
+            record.Amount = amount;
+            return this.financeRepository.UpdateRecord(record);
         }
 
         /// <summary>
@@ -239,11 +238,11 @@ namespace ExpenseTracker.Service
         /// </summary>
         /// <param name="record">The <see cref="Income"/> to update.</param>
         /// <param name="source">The new <see cref="IncomeSource"/>.</param>
-        public void EditRecordSource(Income record, IncomeSource source)
+        /// <returns>True if the edit operation is successful, else false.</returns>
+        public bool EditRecordSource(Income record, IncomeSource source)
         {
-            Income originalRecord = (Income)this.GetRecordById(record.Id);
-            originalRecord.Source = source;
-            this.financeRepository.UpdateRecord(originalRecord);
+            record.Source = source;
+            return this.financeRepository.UpdateRecord(record);
         }
 
         /// <summary>
@@ -251,11 +250,11 @@ namespace ExpenseTracker.Service
         /// </summary>
         /// <param name="record">The <see cref="Expense"/> to update.</param>
         /// <param name="category">The new <see cref="ExpenseCategory"/>.</param>
-        public void EditRecordCategory(Expense record, ExpenseCategory category)
+        /// <returns>True if the edit operation is successful, else false.</returns>
+        public bool EditRecordCategory(Expense record, ExpenseCategory category)
         {
-            Expense originalRecord = (Expense)this.GetRecordById(record.Id);
-            originalRecord.Category = category;
-            this.financeRepository.UpdateRecord(originalRecord);
+            record.Category = category;
+            return this.financeRepository.UpdateRecord(record);
         }
 
         /// <summary>
@@ -263,11 +262,11 @@ namespace ExpenseTracker.Service
         /// </summary>
         /// <param name="record">The <see cref="FinancialRecord"/> to update.</param>
         /// <param name="description">The new description value; may be empty.</param>
-        public void EditRecordDescription(FinancialRecord record, string? description)
+        /// <returns>True if the edit operation is successful, else false.</returns>
+        public bool EditRecordDescription(FinancialRecord record, string? description)
         {
-            FinancialRecord originalRecord = this.GetRecordById(record.Id);
-            originalRecord.Description = description;
-            this.financeRepository.UpdateRecord(originalRecord);
+            record.Description = description;
+            return this.financeRepository.UpdateRecord(record);
         }
 
         /// <summary>

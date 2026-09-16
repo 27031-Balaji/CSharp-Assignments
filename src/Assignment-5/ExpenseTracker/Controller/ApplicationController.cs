@@ -201,7 +201,6 @@ namespace ExpenseTracker.Controller
             if (searchedRecords.Count() == 0)
             {
                 this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Info);
-                this.view.ClearScreenWithKey();
                 return;
             }
 
@@ -212,7 +211,13 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            FinancialRecord record = this.financeService.GetRecordById(recordId) !;
+            FinancialRecord? record = this.financeService.GetRecordById(recordId);
+            if (record == null)
+            {
+                this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
+                return;
+            }
+
             this.view.DisplaySingleRecord(record);
 
             if (!this.view.ConfirmAction("delete"))
@@ -222,14 +227,17 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            this.financeService.DeleteRecord(recordId);
-            this.view.ShowMessage(ConsoleMessages.DeleteOperationSuccessMessage, MessageType.Success);
+            bool isDeleted = this.financeService.DeleteRecord(record);
+            string message = isDeleted
+                ? ConsoleMessages.DeleteOperationSuccessMessage
+                : ConsoleMessages.DeleteOperationFailedMessage;
+
+            MessageType messageType = isDeleted ? MessageType.Success : MessageType.Error;
+
+            this.view.ShowMessage(message, messageType);
             this.view.ClearScreenWithKey();
         }
 
-        /// <summary>
-        /// Edits a selected record by presenting edit options to the user.
-        /// </summary>
         private void EditRecord()
         {
             if (!this.HasRecords())
@@ -242,7 +250,6 @@ namespace ExpenseTracker.Controller
             if (searchedRecords.Count() == 0)
             {
                 this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Info);
-                this.view.ClearScreenWithKey();
                 return;
             }
 
@@ -253,7 +260,12 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            FinancialRecord record = this.financeService.GetRecordById(recordId) !;
+            FinancialRecord? record = this.financeService.GetRecordById(recordId);
+            if (record == null)
+            {
+                this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
+                return;
+            }
 
             bool isRunning = true;
             while (isRunning)
@@ -263,22 +275,18 @@ namespace ExpenseTracker.Controller
                 {
                     case EditMenuOption.Date:
                         this.EditDate(record);
-                        this.view.ShowMessage(ConsoleMessages.DateEditedSuccessMessage, MessageType.Success);
                         break;
 
                     case EditMenuOption.Amount:
                         this.EditAmount(record);
-                        this.view.ShowMessage(ConsoleMessages.AmountEditedSuccessMessage, MessageType.Success);
                         break;
 
                     case EditMenuOption.Classification:
                         this.EditClassification(record);
-                        this.view.ShowMessage(ConsoleMessages.ClassificationEditedSuccessMessage, MessageType.Success);
                         break;
 
                     case EditMenuOption.Description:
                         this.EditDescription(record);
-                        this.view.ShowMessage(ConsoleMessages.DescriptionEditedSuccessMessage, MessageType.Success);
                         break;
 
                     case EditMenuOption.SaveAndExit:
@@ -325,6 +333,11 @@ namespace ExpenseTracker.Controller
             this.view.ClearScreenWithKey();
         }
 
+        /// <summary>
+        /// Deletes the user account along with the transactions associated with the user.
+        /// </summary>
+        /// <param name="userId">The ID of the user to be deleted.</param>
+        /// <returns>True if the account is deleted, else false.</returns>
         private bool DeleteAccount(Guid userId)
         {
             if (!this.view.ConfirmAction("delete"))
@@ -341,6 +354,10 @@ namespace ExpenseTracker.Controller
             return true;
         }
 
+        /// <summary>
+        /// Logs out the user from the application.
+        /// </summary>
+        /// <returns>True if the user is logged out, else false.</returns>
         private bool Logout()
         {
             if (!this.view.ConfirmAction("logout"))
@@ -481,7 +498,14 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            this.financeService.EditRecordDate(record, date);
+            bool isEdited = this.financeService.EditRecordDate(record, date);
+            string message = isEdited
+                ? ConsoleMessages.EditOperationSuccessMessage
+                : ConsoleMessages.EditOperationFailedMessage;
+
+            MessageType messageType = isEdited ? MessageType.Success : MessageType.Error;
+
+            this.view.ShowMessage(message, messageType);
         }
 
         /// <summary>
@@ -495,7 +519,14 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            this.financeService.EditRecordAmount(record, amount);
+            bool isEdited = this.financeService.EditRecordAmount(record, amount);
+            string message = isEdited
+                ? ConsoleMessages.EditOperationSuccessMessage
+                : ConsoleMessages.EditOperationFailedMessage;
+
+            MessageType messageType = isEdited ? MessageType.Success : MessageType.Error;
+
+            this.view.ShowMessage(message, messageType);
         }
 
         /// <summary>
@@ -511,7 +542,14 @@ namespace ExpenseTracker.Controller
                     return;
                 }
 
-                this.financeService.EditRecordSource(income, source);
+                bool isEdited = this.financeService.EditRecordSource(income, source);
+                string message = isEdited
+                    ? ConsoleMessages.EditOperationSuccessMessage
+                    : ConsoleMessages.EditOperationFailedMessage;
+
+                MessageType messageType = isEdited ? MessageType.Success : MessageType.Error;
+
+                this.view.ShowMessage(message, messageType);
                 return;
             }
             else if (record is Expense expense)
@@ -521,7 +559,14 @@ namespace ExpenseTracker.Controller
                     return;
                 }
 
-                this.financeService.EditRecordCategory(expense, category);
+                bool isEdited = this.financeService.EditRecordCategory(expense, category);
+                string message = isEdited
+                    ? ConsoleMessages.EditOperationSuccessMessage
+                    : ConsoleMessages.EditOperationFailedMessage;
+
+                MessageType messageType = isEdited ? MessageType.Success : MessageType.Error;
+
+                this.view.ShowMessage(message, messageType);
                 return;
             }
         }
@@ -533,7 +578,15 @@ namespace ExpenseTracker.Controller
         private void EditDescription(FinancialRecord record)
         {
             string? description = this.view.ReadRecordDescription();
-            this.financeService.EditRecordDescription(record, description);
+
+            bool isEdited = this.financeService.EditRecordDescription(record, description);
+            string message = isEdited
+                ? ConsoleMessages.EditOperationSuccessMessage
+                : ConsoleMessages.EditOperationFailedMessage;
+
+            MessageType messageType = isEdited ? MessageType.Success : MessageType.Error;
+
+            this.view.ShowMessage(message, messageType);
         }
 
         /// <summary>
@@ -543,7 +596,6 @@ namespace ExpenseTracker.Controller
         /// <returns>True if a valid date was provided, otherwise false.</returns>
         private bool GetValidDate(out DateOnly date)
         {
-            date = DateOnly.FromDateTime(DateTime.Now);
             string input;
             bool shouldContinue = true;
             while (shouldContinue)
@@ -551,6 +603,7 @@ namespace ExpenseTracker.Controller
                 input = this.view.ReadRecordDate();
                 if (string.IsNullOrEmpty(input))
                 {
+                    date = DateOnly.FromDateTime(DateTime.Now);
                     return true;
                 }
 
@@ -673,6 +726,12 @@ namespace ExpenseTracker.Controller
             return false;
         }
 
+        /// <summary>
+        /// Gets a valid date range from the user.
+        /// </summary>
+        /// <param name="startDate">The start date entered by the user. (Can be empty).</param>
+        /// <param name="endDate">The end date entered by the user. (Can be empty).</param>
+        /// <returns>True if the user entered the right dates for date range, else false.</returns>
         private bool GetValidDateRange(out DateOnly? startDate, out DateOnly? endDate)
         {
             startDate = null;

@@ -46,19 +46,29 @@
         public const string NoRecordFoundMessage = "No records found.";
 
         /// <summary>
-        /// Message displayed when a delete operation is aborted by the user.
+        /// Message displayed when the delete operation is aborted by the user.
         /// </summary>
         public const string DeleteOperationAbortedMessage = "Delete operation aborted.";
 
         /// <summary>
-        /// Message displayed when a delete operation completes successfully.
+        /// Message displayed when the delete operation failed.
+        /// </summary>
+        public const string DeleteOperationFailedMessage = "Delete operation failed.";
+
+        /// <summary>
+        /// Message displayed when the delete operation completes successfully.
         /// </summary>
         public const string DeleteOperationSuccessMessage = "Delete operation successful.";
 
         /// <summary>
-        /// Message displayed when an edit operation completes successfully.
+        /// Message displayed when the edit operation completes successfully.
         /// </summary>
         public const string EditOperationSuccessMessage = "Edit operation successful.";
+
+        /// <summary>
+        /// Message displayed when the edit operation failed.
+        /// </summary>
+        public const string EditOperationFailedMessage = "Edit operation failed.";
 
         /// <summary>
         /// Message displayed when an income record is added successfully.

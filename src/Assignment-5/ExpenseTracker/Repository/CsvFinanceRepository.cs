@@ -70,7 +70,7 @@ namespace ExpenseTracker.Repository
         /// Retrieves a <see cref="FinancialRecord"/> by its identifier.
         /// </summary>
         /// <param name="recordId">The record identifier to search for.</param>
-        /// <returns>The matching <see cref="FinancialRecord"/> if found.</returns>
+        /// <returns>The matching <see cref="FinancialRecord"/> if found, else null.</returns>
         public FinancialRecord? GetById(string recordId)
         {
             FinancialRecord? record = this.FindOriginalRecord(recordId);
@@ -81,29 +81,33 @@ namespace ExpenseTracker.Repository
         /// Deletes the specified <see cref="FinancialRecord"/> from the repository and saves changes.
         /// </summary>
         /// <param name="record">The <see cref="FinancialRecord"/> to delete.</param>
-        public void DeleteRecord(FinancialRecord record)
+        /// <returns>True if the delete operation is successful, else false.</returns>
+        public bool DeleteRecord(FinancialRecord record)
         {
-            FinancialRecord originalRecord = this.FindOriginalRecord(record.Id) !;
+            FinancialRecord? originalRecord = this.FindOriginalRecord(record.Id);
+            if (originalRecord == null)
+            {
+                return false;
+            }
+
             this.records.Remove(originalRecord);
             this.SaveRecordsToFile();
-        }
-
-        /// <summary>
-        /// Deletes all records associated with the specified user identifier and saves changes.
-        /// </summary>
-        public void DeleteRecordsByUserId()
-        {
-            this.records.Clear();
-            this.csvHandler.Delete();
+            return true;
         }
 
         /// <summary>
         /// Updates the data of the specified <see cref="FinancialRecord"/> and saves the changes.
         /// </summary>
         /// <param name="record">The record to be updated.</param>
-        public void UpdateRecord(FinancialRecord record)
+        /// <returns>True if the edit operation is successful, else false.</returns>
+        public bool UpdateRecord(FinancialRecord record)
         {
-            FinancialRecord originalRecord = this.FindOriginalRecord(record.Id) !;
+            FinancialRecord? originalRecord = this.FindOriginalRecord(record.Id);
+            if (originalRecord == null)
+            {
+                return false;
+            }
+
             originalRecord.Date = record.Date;
             originalRecord.Amount = record.Amount;
             originalRecord.Description = record.Description;
@@ -119,6 +123,17 @@ namespace ExpenseTracker.Repository
             }
 
             this.SaveRecordsToFile();
+
+            return true;
+        }
+
+        /// <summary>
+        /// Deletes all records associated with the specified user identifier and saves changes.
+        /// </summary>
+        public void DeleteRecordsByUserId()
+        {
+            this.records.Clear();
+            this.csvHandler.Delete();
         }
 
         /// <summary>
@@ -135,7 +150,7 @@ namespace ExpenseTracker.Repository
         /// Retrieves the original record stored in the repository.
         /// </summary>
         /// <param name="recordId">The identifier of the record.</param>
-        /// <returns>The original stored record.</returns>
+        /// <returns>The original stored record, else null.</returns>
         private FinancialRecord? FindOriginalRecord(string recordId)
         {
             return this.records.FirstOrDefault(record => record.Id.Equals(recordId, StringComparison.OrdinalIgnoreCase));

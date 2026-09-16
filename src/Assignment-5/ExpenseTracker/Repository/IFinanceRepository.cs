@@ -39,19 +39,21 @@ namespace ExpenseTracker.Repository
         /// Deletes the specified <see cref="FinancialRecord"/> from the repository.
         /// </summary>
         /// <param name="record">The <see cref="FinancialRecord"/> to delete.</param>
-        void DeleteRecord(FinancialRecord record);
+        /// <returns>True if delete operation is successful, else false.</returns>
+        bool DeleteRecord(FinancialRecord record);
+
+        /// <summary>
+        /// Updates the data of the specified <see cref="FinancialRecord"/>.
+        /// </summary>
+        /// <param name="record">The <see cref="FinancialRecord"/> to update.</param>
+        /// <returns>True if edit operation is successful, else false.</returns>
+        bool UpdateRecord(FinancialRecord record);
 
         /// <summary>
         /// Deletes the <see cref="FinancialRecord"/> mapped with the user's id.
         /// </summary>
         /// <param name="userId">The user id of the records to be deleted.</param>
         void DeleteRecordsByUserId();
-
-        /// <summary>
-        /// Updates the data of the specified <see cref="FinancialRecord"/>.
-        /// </summary>
-        /// <param name="record">The <see cref="FinancialRecord"/> to update.</param>
-        void UpdateRecord(FinancialRecord record);
 
         /// <summary>
         /// Determines whether a record identifier already exists in the repository.
