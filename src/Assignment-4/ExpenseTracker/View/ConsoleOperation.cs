@@ -1,5 +1,6 @@
 ﻿using ConsoleTables;
 using ExpenseTracker.Enums;
+using ExpenseTracker.Helper;
 using ExpenseTracker.Model;
 
 namespace ExpenseTracker.View
@@ -296,6 +297,21 @@ namespace ExpenseTracker.View
             Console.Write($"Your Savings Rate: {netSavings:F2}%\n\n");
             Console.WriteLine($"Highest Expense: {highestExpense?.Amount.ToString("F2") ?? "None"}");
             Console.WriteLine($"Category: {highestExpense?.Classification ?? "None"}");
+        }
+
+        /// <summary>
+        /// Displays the edit result to the user.
+        /// </summary>
+        /// <param name="isEdited">The flag that specifies the status of updation.</param>
+        public void ShowEditResult(bool isEdited)
+        {
+            string message = isEdited
+                ? ConsoleMessages.EditOperationSuccessMessage
+                : ConsoleMessages.EditOperationFailedMessage;
+
+            MessageType messageType = isEdited ? MessageType.Success : MessageType.Error;
+
+            this.ShowMessage(message, messageType);
         }
 
         /// <summary>
