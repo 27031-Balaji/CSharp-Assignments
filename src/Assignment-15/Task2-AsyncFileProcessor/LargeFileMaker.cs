@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace FileDataProcessor.Class
+namespace AsyncFileProcessor.Class
 {
     /// <summary>
     /// Class used to create a file of size 1 GB.

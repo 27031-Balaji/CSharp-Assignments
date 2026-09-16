@@ -4,11 +4,18 @@ using FileDataProcessor.Class;
 
 namespace FileDataProcessor
 {
+    /// <summary>
+    /// The Program class is the entry point of the application.
+    /// </summary>
     internal class Program
     {
         private static string _readFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "BigFile.txt");
         private static string _writeFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "ProcessedBigFile.txt");
 
+        /// <summary>
+        /// This method Main is the main method that runs when the application is built.
+        /// </summary>
+        /// <param name="args">The command line arguments.</param>
         public static void Main(string[] args)
         {
             if (!File.Exists(_readFilePath))
