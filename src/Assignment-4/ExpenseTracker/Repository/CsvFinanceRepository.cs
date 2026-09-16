@@ -62,7 +62,7 @@ namespace ExpenseTracker.Repository
         /// Retrieves a <see cref="FinancialRecord"/> by its identifier.
         /// </summary>
         /// <param name="recordId">The record identifier to search for.</param>
-        /// <returns>The matching <see cref="FinancialRecord"/> if found.</returns>
+        /// <returns>The matching <see cref="FinancialRecord"/> if found, else null.</returns>
         public FinancialRecord? GetById(string recordId)
         {
             FinancialRecord? record = this.FindOriginalRecord(recordId);
@@ -81,12 +81,10 @@ namespace ExpenseTracker.Repository
             {
                 return false;
             }
-            else
-            {
-                this.records.Remove(originalRecord);
-                this.SaveRecordsToFile();
-                return true;
-            }
+
+            this.records.Remove(originalRecord);
+            this.SaveRecordsToFile();
+            return true;
         }
 
         /// <summary>
@@ -101,26 +99,24 @@ namespace ExpenseTracker.Repository
             {
                 return false;
             }
-            else
+
+            originalRecord.Date = record.Date;
+            originalRecord.Amount = record.Amount;
+            originalRecord.Description = record.Description;
+
+            if (originalRecord is Income originalIncome && record is Income updatedIncome)
             {
-                originalRecord.Date = record.Date;
-                originalRecord.Amount = record.Amount;
-                originalRecord.Description = record.Description;
-
-                if (originalRecord is Income originalIncome && record is Income updatedIncome)
-                {
-                    originalIncome.Source = updatedIncome.Source;
-                }
-
-                if (originalRecord is Expense originalExpense && record is Expense updatedExpense)
-                {
-                    originalExpense.Category = updatedExpense.Category;
-                }
-
-                this.SaveRecordsToFile();
-
-                return true;
+                originalIncome.Source = updatedIncome.Source;
             }
+
+            if (originalRecord is Expense originalExpense && record is Expense updatedExpense)
+            {
+                originalExpense.Category = updatedExpense.Category;
+            }
+
+            this.SaveRecordsToFile();
+
+            return true;
         }
 
         /// <summary>
@@ -137,7 +133,7 @@ namespace ExpenseTracker.Repository
         /// Retrieves the original record stored in the repository.
         /// </summary>
         /// <param name="recordId">The identifier of the record.</param>
-        /// <returns>The original stored record.</returns>
+        /// <returns>The original stored record, else null.</returns>
         private FinancialRecord? FindOriginalRecord(string recordId)
         {
             return this.records.FirstOrDefault(record =>
