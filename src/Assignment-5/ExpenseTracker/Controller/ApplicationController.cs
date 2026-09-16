@@ -218,7 +218,7 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            this.view.DisplaySingleRecord(record);
+            this.view.DisplayRecords(new[] { record });
 
             if (!this.view.ConfirmAction("delete"))
             {
@@ -499,13 +499,7 @@ namespace ExpenseTracker.Controller
             }
 
             bool isEdited = this.financeService.EditRecordDate(record, date);
-            string message = isEdited
-                ? ConsoleMessages.EditOperationSuccessMessage
-                : ConsoleMessages.EditOperationFailedMessage;
-
-            MessageType messageType = isEdited ? MessageType.Success : MessageType.Error;
-
-            this.view.ShowMessage(message, messageType);
+            this.view.ShowEditResult(isEdited);
         }
 
         /// <summary>
@@ -520,13 +514,7 @@ namespace ExpenseTracker.Controller
             }
 
             bool isEdited = this.financeService.EditRecordAmount(record, amount);
-            string message = isEdited
-                ? ConsoleMessages.EditOperationSuccessMessage
-                : ConsoleMessages.EditOperationFailedMessage;
-
-            MessageType messageType = isEdited ? MessageType.Success : MessageType.Error;
-
-            this.view.ShowMessage(message, messageType);
+            this.view.ShowEditResult(isEdited);
         }
 
         /// <summary>
@@ -543,13 +531,7 @@ namespace ExpenseTracker.Controller
                 }
 
                 bool isEdited = this.financeService.EditRecordSource(income, source);
-                string message = isEdited
-                    ? ConsoleMessages.EditOperationSuccessMessage
-                    : ConsoleMessages.EditOperationFailedMessage;
-
-                MessageType messageType = isEdited ? MessageType.Success : MessageType.Error;
-
-                this.view.ShowMessage(message, messageType);
+                this.view.ShowEditResult(isEdited);
                 return;
             }
             else if (record is Expense expense)
@@ -560,13 +542,7 @@ namespace ExpenseTracker.Controller
                 }
 
                 bool isEdited = this.financeService.EditRecordCategory(expense, category);
-                string message = isEdited
-                    ? ConsoleMessages.EditOperationSuccessMessage
-                    : ConsoleMessages.EditOperationFailedMessage;
-
-                MessageType messageType = isEdited ? MessageType.Success : MessageType.Error;
-
-                this.view.ShowMessage(message, messageType);
+                this.view.ShowEditResult(isEdited);
                 return;
             }
         }
@@ -580,13 +556,7 @@ namespace ExpenseTracker.Controller
             string? description = this.view.ReadRecordDescription();
 
             bool isEdited = this.financeService.EditRecordDescription(record, description);
-            string message = isEdited
-                ? ConsoleMessages.EditOperationSuccessMessage
-                : ConsoleMessages.EditOperationFailedMessage;
-
-            MessageType messageType = isEdited ? MessageType.Success : MessageType.Error;
-
-            this.view.ShowMessage(message, messageType);
+            this.view.ShowEditResult(isEdited);
         }
 
         /// <summary>

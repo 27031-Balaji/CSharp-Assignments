@@ -1,5 +1,6 @@
 ﻿using ConsoleTables;
 using ExpenseTracker.Enums;
+using ExpenseTracker.Helper;
 using ExpenseTracker.Model;
 
 namespace ExpenseTracker.View
@@ -26,19 +27,8 @@ namespace ExpenseTracker.View
         /// <returns>The selected <see cref="MainMenuOption"/>.</returns>
         public MainMenuOption ShowMainMenu()
         {
-            Console.Write("\nSelect an option:\n");
-            Console.Write("[A] Add Record\n");
-            Console.Write("[B] View Record\n");
-            Console.Write("[C] Search Record\n");
-            Console.Write("[D] Delete Record\n");
-            Console.Write("[E] Edit Record\n");
-            Console.Write("[F] Financial Summary\n");
-            Console.Write("[G] Delete Account\n");
-            Console.Write("[H] Logout\n");
-            Console.Write("\nEnter your choice: ");
-
-            string input = (Console.ReadLine() ?? string.Empty).Trim().ToUpper();
-            return input switch
+            string choice = this.ShowMenu("Select an option:", MenuMessages.MainMenu).Trim().ToUpper();
+            return choice switch
             {
                 "A" => MainMenuOption.AddRecord,
                 "B" => MainMenuOption.ViewRecord,
@@ -58,13 +48,7 @@ namespace ExpenseTracker.View
         /// <returns>The selected <see cref="AddMenuOption"/>.</returns>
         public AddMenuOption ShowAddMenu()
         {
-            Console.WriteLine("\nSelect an option:");
-            Console.WriteLine("[A] Add Income");
-            Console.WriteLine("[B] Add Expense");
-            Console.WriteLine("[C] Back");
-            Console.Write("\nEnter your choice: ");
-
-            string choice = (Console.ReadLine() ?? string.Empty).Trim().ToUpper();
+            string choice = this.ShowMenu("Select an option:", MenuMessages.AddMenu).Trim().ToUpper();
             return choice switch
             {
                 "A" => AddMenuOption.AddIncome,
@@ -80,14 +64,7 @@ namespace ExpenseTracker.View
         /// <returns>The selected <see cref="ViewMenuOption"/>.</returns>
         public ViewMenuOption ShowViewMenu()
         {
-            Console.Write("\nSelect an option to view: \n");
-            Console.Write("[A] View All Records\n");
-            Console.Write("[B] View All Incomes\n");
-            Console.Write("[C] View All Expenses\n");
-            Console.Write("[D] Back to Main Menu\n");
-            Console.Write("\nEnter your choice: ");
-
-            string choice = (Console.ReadLine() ?? string.Empty).Trim().ToUpper();
+            string choice = this.ShowMenu("Select an option:", MenuMessages.ViewMenu).Trim().ToUpper();
             return choice switch
             {
                 "A" => ViewMenuOption.ViewAll,
@@ -104,15 +81,7 @@ namespace ExpenseTracker.View
         /// <returns>The selected <see cref="EditMenuOption"/>.</returns>
         public EditMenuOption ShowEditMenu()
         {
-            Console.Write("\nSelect an option to edit data: \n");
-            Console.Write("[A] Edit Date\n");
-            Console.Write("[B] Edit Amount\n");
-            Console.Write("[C] Edit Classification\n");
-            Console.Write("[D] Edit Description\n");
-            Console.Write("[E] Back to Main Menu\n");
-            Console.Write("\nEnter your choice: ");
-
-            string choice = (Console.ReadLine() ?? string.Empty).Trim().ToUpper();
+            string choice = this.ShowMenu("Select an option:", MenuMessages.EditMenu).Trim().ToUpper();
             return choice switch
             {
                 "A" => EditMenuOption.Date,
@@ -174,16 +143,7 @@ namespace ExpenseTracker.View
         /// <returns>The entered choice string for income source selection.</returns>
         public string ReadRecordSource()
         {
-            Console.Write("Select Income Source:\n");
-            IncomeSource[] sources = Enum.GetValues<IncomeSource>();
-            for (int i = 0; i < sources.Length; i++)
-            {
-                Console.Write($"{i + 1}. {sources[i]}\n");
-            }
-
-            Console.Write("\nEnter choice: ");
-
-            return (Console.ReadLine() ?? string.Empty).Trim();
+            return this.ReadEnumOption<IncomeSource>("Select income source: ");
         }
 
         /// <summary>
@@ -192,16 +152,7 @@ namespace ExpenseTracker.View
         /// <returns>The entered choice string for expense category selection.</returns>
         public string ReadRecordCategory()
         {
-            Console.Write("Select Expense Category:\n");
-            ExpenseCategory[] categories = Enum.GetValues<ExpenseCategory>();
-            for (int i = 0; i < categories.Length; i++)
-            {
-                Console.Write($"{i + 1}. {categories[i]}\n");
-            }
-
-            Console.Write("\nEnter choice: ");
-
-            return (Console.ReadLine() ?? string.Empty).Trim();
+            return this.ReadEnumOption<ExpenseCategory>("Select expense category: ");
         }
 
         /// <summary>
@@ -295,18 +246,6 @@ namespace ExpenseTracker.View
         }
 
         /// <summary>
-        /// Displays a single <see cref="FinancialRecord"/> in a table.
-        /// </summary>
-        /// <param name="record">The <see cref="FinancialRecord"/> to display.</param>
-        public void DisplaySingleRecord(FinancialRecord record)
-        {
-            Console.WriteLine();
-            var table = new ConsoleTable("Id", "Date", "Type", "Classification", "Amount", "Description");
-            table.AddRow(record.Id, record.Date, record.Type, record.Classification, record.Amount, record.Description);
-            table.Write(Format.MarkDown);
-        }
-
-        /// <summary>
         /// Shows a financial summary for the given month and year.
         /// </summary>
         /// <param name="startDate">The start date for the summary.</param>
@@ -350,6 +289,21 @@ namespace ExpenseTracker.View
             Console.Write($"Your Savings Rate: {netSavings:F2}%\n\n");
             Console.WriteLine($"Highest Expense: {highestExpense?.Amount.ToString("F2") ?? "None"}");
             Console.WriteLine($"Category: {highestExpense?.Classification ?? "None"}");
+        }
+
+        /// <summary>
+        /// Displays the edit operation resultant message.
+        /// </summary>
+        /// <param name="isEdited">The flag used to specify the status of the edit operation.</param>
+        public void ShowEditResult(bool isEdited)
+        {
+            string message = isEdited
+                    ? ConsoleMessages.EditOperationSuccessMessage
+                    : ConsoleMessages.EditOperationFailedMessage;
+
+            MessageType messageType = isEdited ? MessageType.Success : MessageType.Error;
+
+            this.ShowMessage(message, messageType);
         }
 
         /// <summary>
@@ -402,6 +356,46 @@ namespace ExpenseTracker.View
                         break;
                 }
             }
+        }
+
+        /// <summary>
+        /// Displays a menu with a specified title and list of items, then returns the user's selection in uppercase.
+        /// </summary>
+        /// <param name="title">The title displayed at the top of the menu.</param>
+        /// <param name="menuItems">The menu items to display as selectable options.</param>
+        /// <returns>The user's selected option as an uppercase string.</returns>
+        private string ShowMenu(string title, params string[] menuItems)
+        {
+            Console.WriteLine($"\n{title}");
+            for (int i = 0; i < menuItems.Length; i++)
+            {
+                Console.WriteLine($"[{(char)('A' + i)}] {menuItems[i]}");
+            }
+
+            Console.Write("\nEnter your choice: ");
+
+            return (Console.ReadLine() ?? string.Empty).Trim().ToUpper();
+        }
+
+        /// <summary>
+        /// Displays all values of the specified enum type and returns the user's choice.
+        /// </summary>
+        /// <typeparam name="T">The enum type to display.</typeparam>
+        /// <param name="title">The title to display before the options.</param>
+        /// <returns>The entered choice string.</returns>
+        private string ReadEnumOption<T>(string title)
+            where T : struct, Enum
+        {
+            Console.WriteLine(title);
+            T[] values = Enum.GetValues<T>();
+
+            for (int i = 0; i < values.Length; i++)
+            {
+                Console.WriteLine($"{i + 1}. {values[i]}");
+            }
+
+            Console.Write("\nEnter choice: ");
+            return (Console.ReadLine() ?? string.Empty).Trim();
         }
     }
 }
