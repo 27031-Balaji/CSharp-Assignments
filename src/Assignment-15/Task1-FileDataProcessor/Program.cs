@@ -126,7 +126,7 @@ namespace FileDataProcessor
         /// Processes the data to uppercase.
         /// </summary>
         /// <param name="data">The data to be processed.</param>
-        /// <returns>The data which is uppercased.</returns>
+        /// <returns>The processed data.</returns>
         private static string ProcessData(string data)
         {
             return data.ToUpper();
