@@ -22,181 +22,34 @@ namespace ExpenseTracker.View
         }
 
         /// <summary>
-        /// Displays the main menu and reads the user's selected option.
+        /// Prompts the user to enter an input.
         /// </summary>
-        /// <returns>The selected <see cref="MainMenuOption"/>.</returns>
-        public MainMenuOption ShowMainMenu()
+        /// <param name="prompt">The prompt displayed to the console.</param>
+        /// <returns>The trimmed input entered by the user.</returns>
+        public string GetInput(string prompt)
         {
-            string choice = this.ShowMenu("Select an option:", MenuMessages.MainMenu).Trim().ToUpper();
-            return choice switch
+            Console.Write(prompt);
+            return (Console.ReadLine() ?? string.Empty).Trim();
+        }
+
+        /// <summary>
+        /// Displays all values of the specified enum type and returns the user's choice.
+        /// </summary>
+        /// <typeparam name="T">The enum type to display.</typeparam>
+        /// <param name="title">The title to display before the options.</param>
+        /// <returns>The entered choice string.</returns>
+        public string GetEnumOption<T>()
+            where T : struct, Enum
+        {
+            Console.WriteLine("Select an option: ");
+            T[] values = Enum.GetValues<T>();
+
+            for (int i = 0; i < values.Length; i++)
             {
-                "A" => MainMenuOption.AddRecord,
-                "B" => MainMenuOption.ViewRecord,
-                "C" => MainMenuOption.SearchRecord,
-                "D" => MainMenuOption.DeleteRecord,
-                "E" => MainMenuOption.EditRecord,
-                "F" => MainMenuOption.FinancialSummary,
-                "G" => MainMenuOption.DeleteAccount,
-                "H" => MainMenuOption.Logout,
-                _ => MainMenuOption.Invalid
-            };
-        }
+                Console.WriteLine($"{i + 1}. {values[i]}");
+            }
 
-        /// <summary>
-        /// Displays the add menu and reads the user's choice.
-        /// </summary>
-        /// <returns>The selected <see cref="AddMenuOption"/>.</returns>
-        public AddMenuOption ShowAddMenu()
-        {
-            string choice = this.ShowMenu("Select an option:", MenuMessages.AddMenu).Trim().ToUpper();
-            return choice switch
-            {
-                "A" => AddMenuOption.AddIncome,
-                "B" => AddMenuOption.AddExpense,
-                "C" => AddMenuOption.BackToMainMenu,
-                _ => AddMenuOption.Invalid
-            };
-        }
-
-        /// <summary>
-        /// Displays the view menu and reads the user's choice.
-        /// </summary>
-        /// <returns>The selected <see cref="ViewMenuOption"/>.</returns>
-        public ViewMenuOption ShowViewMenu()
-        {
-            string choice = this.ShowMenu("Select an option:", MenuMessages.ViewMenu).Trim().ToUpper();
-            return choice switch
-            {
-                "A" => ViewMenuOption.ViewAll,
-                "B" => ViewMenuOption.ViewIncomes,
-                "C" => ViewMenuOption.ViewExpenses,
-                "D" => ViewMenuOption.BackToMainMenu,
-                _ => ViewMenuOption.Invalid
-            };
-        }
-
-        /// <summary>
-        /// Displays the edit menu and reads the user's choice.
-        /// </summary>
-        /// <returns>The selected <see cref="EditMenuOption"/>.</returns>
-        public EditMenuOption ShowEditMenu()
-        {
-            string choice = this.ShowMenu("Select an option:", MenuMessages.EditMenu).Trim().ToUpper();
-            return choice switch
-            {
-                "A" => EditMenuOption.Date,
-                "B" => EditMenuOption.Amount,
-                "C" => EditMenuOption.Classification,
-                "D" => EditMenuOption.Description,
-                "E" => EditMenuOption.SaveAndExit,
-                _ => EditMenuOption.Invalid
-            };
-        }
-
-        /// <summary>
-        /// Prompts the user for a record date string.
-        /// </summary>
-        /// <returns>The entered date string.</returns>
-        public string ReadRecordDate()
-        {
-            Console.Write($"Enter the date of the record in (DD/MM/YYYY) or press Enter for today's date: ");
-
-            return (Console.ReadLine() ?? string.Empty).Trim();
-        }
-
-        /// <summary>
-        /// Prompts the user for a start date string.
-        /// </summary>
-        /// <returns>The entered date string.</returns>
-        public string ReadStartDate()
-        {
-            Console.Write($"Enter the start date in (DD/MM/YYYY) or press Enter to skip: ");
-
-            return (Console.ReadLine() ?? string.Empty).Trim();
-        }
-
-        /// <summary>
-        /// Prompts the user for an end date string.
-        /// </summary>
-        /// <returns>The entered date string.</returns>
-        public string ReadEndDate()
-        {
-            Console.Write($"Enter the end date in (DD/MM/YYYY) or press Enter to skip: ");
-
-            return (Console.ReadLine() ?? string.Empty).Trim();
-        }
-
-        /// <summary>
-        /// Prompts the user for a record amount string.
-        /// </summary>
-        /// <returns>The entered amount string.</returns>
-        public string ReadRecordAmount()
-        {
-            Console.Write($"Enter the amount of the record: ");
-
-            return (Console.ReadLine() ?? string.Empty).Trim();
-        }
-
-        /// <summary>
-        /// Prompts the user to select an income source and returns the user's input.
-        /// </summary>
-        /// <returns>The entered choice string for income source selection.</returns>
-        public string ReadRecordSource()
-        {
-            return this.ReadEnumOption<IncomeSource>("Select income source: ");
-        }
-
-        /// <summary>
-        /// Prompts the user to select an expense category and returns the user's input.
-        /// </summary>
-        /// <returns>The entered choice string for expense category selection.</returns>
-        public string ReadRecordCategory()
-        {
-            return this.ReadEnumOption<ExpenseCategory>("Select expense category: ");
-        }
-
-        /// <summary>
-        /// Prompts for a record identifier for the given action.
-        /// </summary>
-        /// <param name="action">The action being performed. (Eg: edit, delete).</param>
-        /// <returns>The entered record identifier string.</returns>
-        public string ReadRecordId(string action)
-        {
-            Console.Write($"Enter the record ID to {action}: ");
-
-            return (Console.ReadLine() ?? string.Empty).Trim();
-        }
-
-        /// <summary>
-        /// Prompts for an optional description for a record.
-        /// </summary>
-        /// <returns>The entered description string.</returns>
-        public string ReadRecordDescription()
-        {
-            Console.Write($"Enter the description of the record (Optional): ");
-
-            return (Console.ReadLine() ?? string.Empty).Trim();
-        }
-
-        /// <summary>
-        /// Prompts for a search term that may represent a date, amount, source or category.
-        /// </summary>
-        /// <returns>The entered search term string.</returns>
-        public string ReadSearchTerm()
-        {
-            Console.Write($"Enter the date (DD/MM/YYYY) or amount or source/category: ");
-
-            return (Console.ReadLine() ?? string.Empty).Trim();
-        }
-
-        /// <summary>
-        /// Prompts for a month and year string.
-        /// </summary>
-        /// <returns>The entered month and year string in MM/YYYY format.</returns>
-        public string ReadMonthAndYear()
-        {
-            Console.Write($"Enter the month and year in (MM/YYYY): ");
-
+            Console.Write("\nEnter choice: ");
             return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
@@ -292,18 +145,16 @@ namespace ExpenseTracker.View
         }
 
         /// <summary>
-        /// Displays the edit operation resultant message.
+        /// Displays a message indicating the result of an operation based on success or failure.
         /// </summary>
-        /// <param name="isEdited">The flag used to specify the status of the edit operation.</param>
-        public void ShowEditResult(bool isEdited)
+        /// <param name="isSuccessful">True if the operation was successful, otherwise false.</param>
+        /// <param name="successMessage">The message to display when the operation is successful.</param>
+        /// <param name="failureMessage">The message to display when the operation fails.</param>
+        public void ShowOperationResult(bool isSuccessful, string successMessage, string failureMessage)
         {
-            string message = isEdited
-                    ? ConsoleMessages.EditOperationSuccessMessage
-                    : ConsoleMessages.EditOperationFailedMessage;
-
-            MessageType messageType = isEdited ? MessageType.Success : MessageType.Error;
-
-            this.ShowMessage(message, messageType);
+            this.ShowMessage(
+                isSuccessful ? successMessage : failureMessage,
+                isSuccessful ? MessageType.Success : MessageType.Error);
         }
 
         /// <summary>
@@ -336,7 +187,7 @@ namespace ExpenseTracker.View
             while (true)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write($"Are you sure you want to {action}? (Y/N): ");
+                Console.Write(string.Format(PromptMessages.ConfirmAction, action));
                 Console.ResetColor();
 
                 string choice = Console.ReadLine() ?? string.Empty;
@@ -356,46 +207,6 @@ namespace ExpenseTracker.View
                         break;
                 }
             }
-        }
-
-        /// <summary>
-        /// Displays a menu with a specified title and list of items, then returns the user's selection in uppercase.
-        /// </summary>
-        /// <param name="title">The title displayed at the top of the menu.</param>
-        /// <param name="menuItems">The menu items to display as selectable options.</param>
-        /// <returns>The user's selected option as an uppercase string.</returns>
-        private string ShowMenu(string title, params string[] menuItems)
-        {
-            Console.WriteLine($"\n{title}");
-            for (int i = 0; i < menuItems.Length; i++)
-            {
-                Console.WriteLine($"[{(char)('A' + i)}] {menuItems[i]}");
-            }
-
-            Console.Write("\nEnter your choice: ");
-
-            return (Console.ReadLine() ?? string.Empty).Trim().ToUpper();
-        }
-
-        /// <summary>
-        /// Displays all values of the specified enum type and returns the user's choice.
-        /// </summary>
-        /// <typeparam name="T">The enum type to display.</typeparam>
-        /// <param name="title">The title to display before the options.</param>
-        /// <returns>The entered choice string.</returns>
-        private string ReadEnumOption<T>(string title)
-            where T : struct, Enum
-        {
-            Console.WriteLine(title);
-            T[] values = Enum.GetValues<T>();
-
-            for (int i = 0; i < values.Length; i++)
-            {
-                Console.WriteLine($"{i + 1}. {values[i]}");
-            }
-
-            Console.Write("\nEnter choice: ");
-            return (Console.ReadLine() ?? string.Empty).Trim();
         }
     }
 }

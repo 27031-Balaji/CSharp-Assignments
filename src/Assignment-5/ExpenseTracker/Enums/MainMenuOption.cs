@@ -6,11 +6,6 @@
     internal enum MainMenuOption
     {
         /// <summary>
-        /// Indicates an invalid menu selection.
-        /// </summary>
-        Invalid,
-
-        /// <summary>
         /// Selects the option to add a new record.
         /// </summary>
         AddRecord,

@@ -6,14 +6,9 @@
     public enum ViewMenuOption
     {
         /// <summary>
-        /// Indicates an invalid menu selection.
-        /// </summary>
-        Invalid,
-
-        /// <summary>
         /// Selects the option to view all the records.
         /// </summary>
-        ViewAll,
+        ViewAllRecords,
 
         /// <summary>
         /// Selects the option to view all the income records.

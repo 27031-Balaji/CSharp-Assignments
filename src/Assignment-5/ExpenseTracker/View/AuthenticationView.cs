@@ -1,4 +1,5 @@
 ﻿using ExpenseTracker.Enums;
+using ExpenseTracker.Helper;
 using System.Text;
 
 namespace ExpenseTracker.View
@@ -9,38 +10,34 @@ namespace ExpenseTracker.View
     internal class AuthenticationView
     {
         /// <summary>
-        /// Shows the authentication option menu and reads the user's choice.
+        /// Displays all values of the specified enum type and returns the user's choice.
         /// </summary>
-        /// <returns>An enum value representing the user's selection.
-        /// </returns>
-        public AuthenticationOptionMenu ShowMenu()
+        /// <typeparam name="T">The enum type to display.</typeparam>
+        /// <param name="title">The title to display before the options.</param>
+        /// <returns>The entered choice string.</returns>
+        public string GetEnumOption<T>()
+            where T : struct, Enum
         {
-            Console.Write("========================================================\n");
-            Console.Write("Expense Tracker Application\n");
-            Console.Write("Track Your Spending, Empower Your Savings!\n");
-            Console.Write("========================================================\n");
-            Console.Write("[A] Login\n");
-            Console.Write("[B] Sign Up\n");
-            Console.Write("[C] Exit\n");
-            Console.Write("\nEnter your choice: ");
+            Console.WriteLine("Select an option: ");
+            T[] values = Enum.GetValues<T>();
 
-            string input = (Console.ReadLine() ?? string.Empty).Trim().ToUpper();
-            return input switch
+            for (int i = 0; i < values.Length; i++)
             {
-                "A" => AuthenticationOptionMenu.Login,
-                "B" => AuthenticationOptionMenu.Signup,
-                "C" => AuthenticationOptionMenu.Exit,
-                _ => AuthenticationOptionMenu.Invalid,
-            };
+                Console.WriteLine($"{i + 1}. {values[i]}");
+            }
+
+            Console.Write("\nEnter choice: ");
+            return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
         /// <summary>
-        /// Prompts the user to enter a username.
+        /// Prompts the user to enter an input.
         /// </summary>
-        /// <returns>The entered username.</returns>
-        public string ReadUserName()
+        /// <param name="prompt">The prompt displayed to the user.</param>
+        /// <returns>The trimmed user input.</returns>
+        public string GetInput(string prompt)
         {
-            Console.Write("Username: ");
+            Console.Write(prompt);
             return (Console.ReadLine() ?? string.Empty).Trim();
         }
 
@@ -48,7 +45,7 @@ namespace ExpenseTracker.View
         /// Prompts the user to enter a password.
         /// </summary>
         /// <returns>The entered password.</returns>
-        public string ReadUserPassword()
+        public string GetUserPassword()
         {
             Console.Write("Password: ");
             return this.MaskPassword();
@@ -84,17 +81,20 @@ namespace ExpenseTracker.View
         }
 
         /// <summary>
-        /// Asks the user whether they want to retry the current operation.
+        /// Prompts the user to confirm any action from the user.
         /// </summary>
-        /// <returns>True if the user chooses to retry, otherwise false.</returns>
-        public bool AskRetry()
+        /// <param name="action">The action to be asked to perform.</param>
+        /// <returns>True if the user confirms deletion, otherwise False.</returns>
+        public bool ConfirmAction(string action = "retry")
         {
             while (true)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write("\nTry again? (Y/N): ");
+                Console.Write(string.Format(PromptMessages.ConfirmAction, action));
                 Console.ResetColor();
+
                 string choice = Console.ReadLine() ?? string.Empty;
+
                 switch (choice.Trim().ToUpper())
                 {
                     case "Y":
@@ -104,7 +104,9 @@ namespace ExpenseTracker.View
                         return false;
 
                     default:
-                        Console.WriteLine("Please enter Y or N.");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Enter Y or N.");
+                        Console.ResetColor();
                         break;
                 }
             }
@@ -130,18 +132,35 @@ namespace ExpenseTracker.View
             Console.ResetColor();
         }
 
+        /// <summary>
+        /// Reads a password from the console while masking the entered characters.
+        /// </summary>
+        /// <returns>The password entered by the user as a string.</returns>
         private string MaskPassword()
         {
+            // Stores the actual password entered by the user.
             StringBuilder originalPassword = new StringBuilder();
 
             while (true)
             {
+                // Read a key without displaying it on the console.
                 ConsoleKeyInfo key = Console.ReadKey(true);
+
+                /**
+                 * If the Enter key is pressed, the user has finished
+                 * entering the password, so exit the loop.
+                 */
                 if (key.Key == ConsoleKey.Enter)
                 {
                     break;
                 }
 
+                /**
+                 * If Backspace is pressed and the password contains
+                 * characters, remove the last character from the
+                 * password and erase the corresponding '*' from
+                 * the console.
+                 */
                 if (key.Key == ConsoleKey.Backspace)
                 {
                     if (originalPassword.Length > 0)
@@ -152,12 +171,20 @@ namespace ExpenseTracker.View
                 }
                 else
                 {
+                    /**
+                     * For any other key, append the character to the
+                     * password and display '*' instead of the actual
+                     * character to mask the input.
+                     */
                     originalPassword.Append(key.KeyChar);
                     Console.Write("*");
                 }
             }
 
+            // Move the cursor to the next line after password entry.
             Console.WriteLine();
+
+            // Return the actual password entered by the user.
             return originalPassword.ToString();
         }
     }

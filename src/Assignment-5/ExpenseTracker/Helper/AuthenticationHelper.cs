@@ -24,7 +24,19 @@ namespace ExpenseTracker.Helper
         /// <returns>True if the password is valid, otherwise false.</returns>
         public bool IsValidPassword(string password)
         {
-            return !string.IsNullOrWhiteSpace(password) && password.Length <= Constant.MaxLengthOfNameAndPassword && !password.Contains(',');
+            return !string.IsNullOrWhiteSpace(password) && password.Length <= Constant.MaxLengthOfNameAndPassword;
+        }
+
+        /// <summary>
+        /// Validates that an input string represents a numeric choice within the allowed range.
+        /// </summary>
+        /// <param name="input">The input string containing the user's numeric choice.</param>
+        /// <param name="maxChoice">The maximum valid choice value.</param>
+        /// <param name="choice">When this method returns, contains the parsed numeric choice if valid.</param>
+        /// <returns>True if input is an integer between 1 and maximum choice inclusive, otherwise false.</returns>
+        public bool IsValidChoice(string input, int maxChoice, out int choice)
+        {
+            return int.TryParse(input, out choice) && choice >= 1 && choice <= maxChoice;
         }
     }
 }

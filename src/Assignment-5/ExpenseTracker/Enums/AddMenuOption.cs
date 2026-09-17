@@ -6,11 +6,6 @@
     public enum AddMenuOption
     {
         /// <summary>
-        /// Indicates an invalid menu selection.
-        /// </summary>
-        Invalid,
-
-        /// <summary>
         /// Selects the option to add a new <see cref="Model.Income"/> record.
         /// </summary>
         AddIncome,

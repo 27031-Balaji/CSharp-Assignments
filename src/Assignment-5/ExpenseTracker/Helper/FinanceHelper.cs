@@ -31,13 +31,13 @@ namespace ExpenseTracker.Helper
         }
 
         /// <summary>
-        /// Validates that an input string represents a numeric classification choice within the allowed range.
+        /// Validates that an input string represents a numeric choice within the allowed range.
         /// </summary>
         /// <param name="input">The input string containing the user's numeric choice.</param>
         /// <param name="maxChoice">The maximum valid choice value.</param>
         /// <param name="choice">When this method returns, contains the parsed numeric choice if valid.</param>
-        /// <returns>True if <paramref name="input"/> is an integer between 1 and <paramref name="maxChoice"/> inclusive; otherwise, false.</returns>
-        public bool IsValidClassificationChoice(string input, int maxChoice, out int choice)
+        /// <returns>True if input is an integer between 1 and maximum choice inclusive, otherwise false.</returns>
+        public bool IsValidChoice(string input, int maxChoice, out int choice)
         {
             return int.TryParse(input, out choice) && choice >= 1 && choice <= maxChoice;
         }
@@ -62,28 +62,6 @@ namespace ExpenseTracker.Helper
         public bool IsValidCategory(string? input, out ExpenseCategory category)
         {
             return System.Enum.TryParse(input, ignoreCase: true, out category) && System.Enum.IsDefined(category);
-        }
-
-        /// <summary>
-        /// Parses and validates a month/year value provided in "MM/yyyy" format.
-        /// </summary>
-        /// <param name="input">The input string containing month and year in MM/YYYY format.</param>
-        /// <param name="month">When this method returns, contains the parsed month (1-12) if successful.</param>
-        /// <param name="year">When this method returns, contains the parsed year if successful.</param>
-        /// <returns>True if the input was parsed successfully to a month and year; otherwise, false.</returns>
-        public bool IsValidMonthAndYear(string? input, out int month, out int year)
-        {
-            month = 0;
-            year = 0;
-
-            if (DateOnly.TryParseExact(input, "MM/yyyy", out DateOnly date) && date.Month <= DateTime.Now.Month && date.Year <= DateTime.Now.Year)
-            {
-                month = date.Month;
-                year = date.Year;
-                return true;
-            }
-
-            return false;
         }
 
         /// <summary>

@@ -12,21 +12,21 @@ namespace ExpenseTracker.Controller
     {
         private readonly AuthenticationService authService;
         private readonly ApplicationController applicationController;
-        private readonly AuthenticationView view;
-        private readonly AuthenticationHelper helper;
+        private readonly AuthenticationView authenticationView;
+        private readonly AuthenticationHelper authenticationHelper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticationController"/> class.
         /// </summary>
         /// <param name="authService">The <see cref="AuthenticationService"/> used to perform authentication operations.</param>
-        /// <param name="view">The <see cref="AuthenticationView"/> used to interact with the user.</param>
-        /// <param name="helper">The <see cref="AuthenticationHelper"/> used to validate input.</param>
+        /// <param name="authenticationView">The <see cref="AuthenticationView"/> used to interact with the user.</param>
+        /// <param name="authenticationHelper">The <see cref="AuthenticationHelper"/> used to validate input.</param>
         /// <param name="applicationController">The <see cref="ApplicationController"/> to run after successful login.</param>
-        public AuthenticationController(AuthenticationService authService, AuthenticationView view, AuthenticationHelper helper, ApplicationController applicationController)
+        public AuthenticationController(AuthenticationService authService, AuthenticationView authenticationView, AuthenticationHelper authenticationHelper, ApplicationController applicationController)
         {
             this.authService = authService;
-            this.view = view;
-            this.helper = helper;
+            this.authenticationView = authenticationView;
+            this.authenticationHelper = authenticationHelper;
             this.applicationController = applicationController;
         }
 
@@ -39,10 +39,15 @@ namespace ExpenseTracker.Controller
             bool isRunning = true;
             while (isRunning)
             {
-                AuthenticationOptionMenu option = this.view.ShowMenu();
-                switch (option)
+                if (!this.GetValidEnumChoice(this.authenticationView.GetEnumOption<AuthenticationMenuOption>, OptionMessages.Option, out AuthenticationMenuOption authOption))
                 {
-                    case AuthenticationOptionMenu.Login:
+                    this.authenticationView.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
+                    continue;
+                }
+
+                switch (authOption)
+                {
+                    case AuthenticationMenuOption.Login:
                         if (this.Login())
                         {
                             this.applicationController.Run();
@@ -50,16 +55,12 @@ namespace ExpenseTracker.Controller
 
                         break;
 
-                    case AuthenticationOptionMenu.Signup:
+                    case AuthenticationMenuOption.Signup:
                         this.SignUp();
                         break;
 
-                    case AuthenticationOptionMenu.Exit:
+                    case AuthenticationMenuOption.Exit:
                         isRunning = false;
-                        break;
-
-                    case AuthenticationOptionMenu.Invalid:
-                        this.view.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
                         break;
                 }
             }
@@ -89,18 +90,18 @@ namespace ExpenseTracker.Controller
                 try
                 {
                     this.authService.Login(userName, password);
-                    this.view.ShowMessage(ConsoleMessages.LoginSuccessMessage, MessageType.Success);
-                    this.view.ClearScreenWithKey();
+                    this.authenticationView.ShowMessage(ConsoleMessages.LoginSuccessMessage, MessageType.Success);
+                    this.authenticationView.ClearScreenWithKey();
                     return true;
                 }
                 catch (UnauthorizedAccessException)
                 {
-                    this.view.ShowMessage(ConsoleMessages.InvalidLoginMessage, MessageType.Error);
-                    shouldContinue = this.view.AskRetry();
+                    this.authenticationView.ShowMessage(ConsoleMessages.InvalidLoginMessage, MessageType.Error);
+                    shouldContinue = this.authenticationView.ConfirmAction();
                 }
             }
 
-            this.view.ClearScreen();
+            this.authenticationView.ClearScreen();
             return false;
         }
 
@@ -116,7 +117,7 @@ namespace ExpenseTracker.Controller
 
             if (this.authService.UserNameExists(userName))
             {
-                this.view.ShowMessage(ConsoleMessages.UsernameExistsMessage, MessageType.Error);
+                this.authenticationView.ShowMessage(ConsoleMessages.UsernameExistsMessage, MessageType.Error);
                 return;
             }
 
@@ -126,8 +127,8 @@ namespace ExpenseTracker.Controller
             }
 
             this.authService.SignUp(userName, password);
-            this.view.ShowMessage(ConsoleMessages.AccountCreatedMessage, MessageType.Success);
-            this.view.ClearScreenWithKey();
+            this.authenticationView.ShowMessage(ConsoleMessages.AccountCreatedMessage, MessageType.Success);
+            this.authenticationView.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -141,8 +142,8 @@ namespace ExpenseTracker.Controller
             bool shouldContinue = true;
             while (shouldContinue)
             {
-                userName = this.view.ReadUserName();
-                if (this.helper.IsValidUserName(userName))
+                userName = this.authenticationView.GetInput(PromptMessages.UserName);
+                if (this.authenticationHelper.IsValidUserName(userName))
                 {
                     return true;
                 }
@@ -164,8 +165,8 @@ namespace ExpenseTracker.Controller
             bool shouldContinue = true;
             while (shouldContinue)
             {
-                password = this.view.ReadUserPassword();
-                if (this.helper.IsValidPassword(password))
+                password = this.authenticationView.GetUserPassword();
+                if (this.authenticationHelper.IsValidPassword(password))
                 {
                     return true;
                 }
@@ -177,17 +178,47 @@ namespace ExpenseTracker.Controller
         }
 
         /// <summary>
-        /// Shows an invalid-field message and asks the user whether to retry.
+        /// Validates user input and retrieves the corresponding value from the specified enum type.
         /// </summary>
-        /// <param name="field">The field name to include in the invalid message.</param>
-        /// <returns>True if the user chose to retry, otherwise false.</returns>
+        /// <typeparam name="T">The enum type to validate against.</typeparam>
+        /// <param name="inputGetter">A function that returns the user input as a string.</param>
+        /// <param name="field">The name of the field being validated.</param>
+        /// <param name="value">When this method returns, contains the valid enum value if successful.</param>
+        /// <returns>True if a valid enum value is retrieved, otherwise false.</returns>
+        private bool GetValidEnumChoice<T>(Func<string> inputGetter, string field, out T value)
+            where T : struct, Enum
+        {
+            value = default;
+            T[] values = Enum.GetValues<T>();
+
+            bool shouldContinue = true;
+            while (shouldContinue)
+            {
+                string input = inputGetter();
+                if (this.authenticationHelper.IsValidChoice(input, values.Length, out int choice))
+                {
+                    value = values[choice - 1];
+                    return true;
+                }
+
+                shouldContinue = this.CanRetry(field);
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Shows an invalid-input message for the specified field and asks the user whether to retry.
+        /// </summary>
+        /// <param name="field">The name of the field with invalid input.</param>
+        /// <returns>True if the user chooses to retry, otherwise false.</returns>
         private bool CanRetry(string field)
         {
-            this.view.ShowInvalidMessage(field);
-            bool shouldRetry = this.view.AskRetry();
+            this.authenticationView.ShowInvalidMessage(field);
+            bool shouldRetry = this.authenticationView.ConfirmAction();
             if (!shouldRetry)
             {
-                this.view.ClearScreen();
+                this.authenticationView.ClearScreen();
             }
 
             return shouldRetry;

@@ -13,8 +13,8 @@ namespace ExpenseTracker.Controller
     {
         private readonly FinanceService financeService;
         private readonly AuthenticationService authenticationService;
-        private readonly FinanceHelper helper;
-        private readonly ApplicationView view;
+        private readonly FinanceHelper financeHelper;
+        private readonly ApplicationView applicationView;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApplicationController"/> class.
@@ -27,8 +27,8 @@ namespace ExpenseTracker.Controller
         {
             this.financeService = financeService;
             this.authenticationService = authenticationService;
-            this.helper = helper;
-            this.view = view;
+            this.financeHelper = helper;
+            this.applicationView = view;
         }
 
         /// <summary>
@@ -40,8 +40,13 @@ namespace ExpenseTracker.Controller
             AuthenticatedUser user = this.authenticationService.LoggedInUser!;
             while (isRunning && this.authenticationService.IsAuthenticated)
             {
-                this.view.ShowWelcome(user.UserName);
-                MainMenuOption menuOption = this.view.ShowMainMenu();
+                this.applicationView.ShowWelcome(user.UserName);
+                if (!this.GetValidEnumChoice(this.applicationView.GetEnumOption<MainMenuOption>, OptionMessages.Option, out MainMenuOption menuOption))
+                {
+                    this.applicationView.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
+                    continue;
+                }
+
                 switch (menuOption)
                 {
                     case MainMenuOption.AddRecord:
@@ -75,10 +80,6 @@ namespace ExpenseTracker.Controller
                     case MainMenuOption.Logout:
                         isRunning = !this.Logout();
                         break;
-
-                    case MainMenuOption.Invalid:
-                        this.view.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
-                        break;
                 }
             }
         }
@@ -91,7 +92,12 @@ namespace ExpenseTracker.Controller
             bool isRunning = true;
             while (isRunning)
             {
-                AddMenuOption addOption = this.view.ShowAddMenu();
+                if (!this.GetValidEnumChoice(this.applicationView.GetEnumOption<AddMenuOption>, OptionMessages.Option, out AddMenuOption addOption))
+                {
+                    this.applicationView.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
+                    continue;
+                }
+
                 switch (addOption)
                 {
                     case AddMenuOption.AddIncome:
@@ -106,11 +112,7 @@ namespace ExpenseTracker.Controller
 
                     case AddMenuOption.BackToMainMenu:
                         isRunning = false;
-                        this.view.ClearScreen();
-                        break;
-
-                    case AddMenuOption.Invalid:
-                        this.view.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
+                        this.applicationView.ClearScreen();
                         break;
                 }
             }
@@ -123,41 +125,42 @@ namespace ExpenseTracker.Controller
         {
             if (!this.HasRecords())
             {
-                this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
+                this.applicationView.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
                 return;
             }
 
             bool isRunning = true;
             while (isRunning)
             {
-                ViewMenuOption viewOption = this.view.ShowViewMenu();
+                if (!this.GetValidEnumChoice(this.applicationView.GetEnumOption<ViewMenuOption>, OptionMessages.Option, out ViewMenuOption viewOption))
+                {
+                    this.applicationView.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
+                    continue;
+                }
+
                 switch (viewOption)
                 {
-                    case ViewMenuOption.ViewAll:
-                        this.DisplayAllRecords();
-                        this.view.ClearScreenWithKey();
+                    case ViewMenuOption.ViewAllRecords:
+                        this.DisplayRecordsByType<FinancialRecord>();
+                        this.applicationView.ClearScreenWithKey();
                         isRunning = false;
                         break;
 
                     case ViewMenuOption.ViewIncomes:
-                        this.DisplayAllIncomes();
-                        this.view.ClearScreenWithKey();
+                        this.DisplayRecordsByType<Income>();
+                        this.applicationView.ClearScreenWithKey();
                         isRunning = false;
                         break;
 
                     case ViewMenuOption.ViewExpenses:
-                        this.DisplayAllExpenses();
-                        this.view.ClearScreenWithKey();
+                        this.DisplayRecordsByType<Expense>();
+                        this.applicationView.ClearScreenWithKey();
                         isRunning = false;
                         break;
 
                     case ViewMenuOption.BackToMainMenu:
                         isRunning = false;
-                        this.view.ClearScreen();
-                        break;
-
-                    case ViewMenuOption.Invalid:
-                        this.view.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
+                        this.applicationView.ClearScreen();
                         break;
                 }
             }
@@ -170,20 +173,20 @@ namespace ExpenseTracker.Controller
         {
             if (!this.HasRecords())
             {
-                this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
+                this.applicationView.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
                 return;
             }
 
             IEnumerable<FinancialRecord> searchedRecords = this.GetMatchingRecords();
             if (searchedRecords.Count() == 0)
             {
-                this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Info);
-                this.view.ClearScreenWithKey();
+                this.applicationView.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Info);
+                this.applicationView.ClearScreenWithKey();
                 return;
             }
 
-            this.view.DisplayRecords(searchedRecords);
-            this.view.ClearScreenWithKey();
+            this.applicationView.DisplayRecords(searchedRecords);
+            this.applicationView.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -191,86 +194,46 @@ namespace ExpenseTracker.Controller
         /// </summary>
         private void DeleteRecord()
         {
-            if (!this.HasRecords())
-            {
-                this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
-                return;
-            }
-
-            IEnumerable<FinancialRecord> searchedRecords = this.GetMatchingRecords();
-            if (searchedRecords.Count() == 0)
-            {
-                this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Info);
-                return;
-            }
-
-            this.view.DisplayRecords(searchedRecords);
-
-            if (!this.GetValidRecordId(out string recordId, "delete", searchedRecords))
-            {
-                return;
-            }
-
-            FinancialRecord? record = this.financeService.GetRecordById(recordId);
+            FinancialRecord? record = this.GetSelectedRecord(OptionMessages.DeleteOption);
             if (record == null)
             {
-                this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
                 return;
             }
 
-            this.view.DisplayRecords(new[] { record });
+            this.applicationView.DisplayRecords(new[] { record });
 
-            if (!this.view.ConfirmAction("delete"))
+            if (!this.applicationView.ConfirmAction(OptionMessages.DeleteOption))
             {
-                this.view.ShowMessage(ConsoleMessages.DeleteOperationAbortedMessage, MessageType.Error);
-                this.view.ClearScreenWithKey();
+                this.applicationView.ShowMessage(ConsoleMessages.DeleteOperationAbortedMessage, MessageType.Error);
+                this.applicationView.ClearScreenWithKey();
                 return;
             }
 
             bool isDeleted = this.financeService.DeleteRecord(record);
-            string message = isDeleted
-                ? ConsoleMessages.DeleteOperationSuccessMessage
-                : ConsoleMessages.DeleteOperationFailedMessage;
-
-            MessageType messageType = isDeleted ? MessageType.Success : MessageType.Error;
-
-            this.view.ShowMessage(message, messageType);
-            this.view.ClearScreenWithKey();
+            this.applicationView.ShowOperationResult(isDeleted, ConsoleMessages.DeleteOperationSuccessMessage, ConsoleMessages.DeleteOperationFailedMessage);
+            this.applicationView.ClearScreenWithKey();
         }
 
+        /// <summary>
+        /// Edits the selected financial record, allowing modification of date, amount, classification, and description.
+        /// </summary>
         private void EditRecord()
         {
-            if (!this.HasRecords())
-            {
-                this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
-                return;
-            }
-
-            IEnumerable<FinancialRecord> searchedRecords = this.GetMatchingRecords();
-            if (searchedRecords.Count() == 0)
-            {
-                this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Info);
-                return;
-            }
-
-            this.view.DisplayRecords(searchedRecords);
-
-            if (!this.GetValidRecordId(out string recordId, "edit", searchedRecords))
-            {
-                return;
-            }
-
-            FinancialRecord? record = this.financeService.GetRecordById(recordId);
+            FinancialRecord? record = this.GetSelectedRecord(OptionMessages.DeleteOption);
             if (record == null)
             {
-                this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
                 return;
             }
 
             bool isRunning = true;
             while (isRunning)
             {
-                EditMenuOption editOption = this.view.ShowEditMenu();
+                if (!this.GetValidEnumChoice(this.applicationView.GetEnumOption<EditMenuOption>, OptionMessages.Option, out EditMenuOption editOption))
+                {
+                    this.applicationView.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
+                    continue;
+                }
+
                 switch (editOption)
                 {
                     case EditMenuOption.Date:
@@ -291,21 +254,12 @@ namespace ExpenseTracker.Controller
 
                     case EditMenuOption.SaveAndExit:
                         isRunning = false;
-                        this.view.ShowMessage(ConsoleMessages.EditOperationSuccessMessage, MessageType.Success);
-                        break;
-
-                    case EditMenuOption.Invalid:
-                        this.view.ShowInvalidMessage("option");
-                        if (!this.view.ConfirmAction())
-                        {
-                            isRunning = false;
-                        }
-
+                        this.applicationView.ShowMessage(ConsoleMessages.EditOperationSuccessMessage, MessageType.Success);
                         break;
                 }
             }
 
-            this.view.ClearScreenWithKey();
+            this.applicationView.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -315,7 +269,7 @@ namespace ExpenseTracker.Controller
         {
             if (!this.HasRecords())
             {
-                this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
+                this.applicationView.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
                 return;
             }
 
@@ -329,8 +283,8 @@ namespace ExpenseTracker.Controller
              decimal netBalance,
              decimal savingsRate,
              Expense? highestExpense) = this.financeService.GetMonthlySummary(startDate, endDate);
-            this.view.ShowFinancialSummary(startDate, endDate, netIncome, netExpense, netBalance, savingsRate, highestExpense);
-            this.view.ClearScreenWithKey();
+            this.applicationView.ShowFinancialSummary(startDate, endDate, netIncome, netExpense, netBalance, savingsRate, highestExpense);
+            this.applicationView.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -340,16 +294,16 @@ namespace ExpenseTracker.Controller
         /// <returns>True if the account is deleted, else false.</returns>
         private bool DeleteAccount(Guid userId)
         {
-            if (!this.view.ConfirmAction("delete"))
+            if (!this.applicationView.ConfirmAction(OptionMessages.DeleteOption))
             {
-                this.view.ShowMessage(ConsoleMessages.DeleteOperationAbortedMessage, MessageType.Error);
+                this.applicationView.ShowMessage(ConsoleMessages.DeleteOperationAbortedMessage, MessageType.Error);
                 return false;
             }
 
             this.financeService.DeleteRecordsByUserId();
             this.authenticationService.DeleteAccount(userId);
-            this.view.ShowMessage(ConsoleMessages.AccountDeletedMessage, MessageType.Success);
-            this.view.ClearScreenWithKey();
+            this.applicationView.ShowMessage(ConsoleMessages.AccountDeletedMessage, MessageType.Success);
+            this.applicationView.ClearScreenWithKey();
 
             return true;
         }
@@ -360,14 +314,14 @@ namespace ExpenseTracker.Controller
         /// <returns>True if the user is logged out, else false.</returns>
         private bool Logout()
         {
-            if (!this.view.ConfirmAction("logout"))
+            if (!this.applicationView.ConfirmAction(OptionMessages.LogoutOption))
             {
                 return false;
             }
 
             this.authenticationService.Logout();
-            this.view.ShowMessage(ConsoleMessages.LogoutSuccessMessage, MessageType.Success);
-            this.view.ClearScreenWithKey();
+            this.applicationView.ShowMessage(ConsoleMessages.LogoutSuccessMessage, MessageType.Success);
+            this.applicationView.ClearScreenWithKey();
 
             return true;
         }
@@ -396,16 +350,16 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            if (!this.GetValidSource(out IncomeSource source))
+            if (!this.GetValidEnumChoice(this.applicationView.GetEnumOption<IncomeSource>, OptionMessages.Source, out IncomeSource source))
             {
                 return;
             }
 
-            string? description = this.view.ReadRecordDescription().Trim();
+            string? description = this.applicationView.GetInput(PromptMessages.Description).Trim();
 
             this.financeService.AddIncome(date, amount, source, description);
-            this.view.ShowMessage(ConsoleMessages.IncomeAddedMessage, MessageType.Success);
-            this.view.ClearScreenWithKey();
+            this.applicationView.ShowMessage(ConsoleMessages.IncomeAddedMessage, MessageType.Success);
+            this.applicationView.ClearScreenWithKey();
         }
 
         /// <summary>
@@ -423,58 +377,32 @@ namespace ExpenseTracker.Controller
                 return;
             }
 
-            if (!this.GetValidCategory(out ExpenseCategory category))
+            if (!this.GetValidEnumChoice(this.applicationView.GetEnumOption<ExpenseCategory>, OptionMessages.Category, out ExpenseCategory category))
             {
                 return;
             }
 
-            string? description = this.view.ReadRecordDescription().Trim();
+            string? description = this.applicationView.GetInput(PromptMessages.Description).Trim();
 
             this.financeService.AddExpense(date, amount, category, description);
-            this.view.ShowMessage(ConsoleMessages.ExpenseAddedMessage, MessageType.Success);
-            this.view.ClearScreenWithKey();
+            this.applicationView.ShowMessage(ConsoleMessages.ExpenseAddedMessage, MessageType.Success);
+            this.applicationView.ClearScreenWithKey();
         }
 
         /// <summary>
-        /// Displays all records to the user.
+        /// Displays financial records of the specified type within a selected date range.
         /// </summary>
-        private void DisplayAllRecords()
+        /// <typeparam name="T">The type of financial record to display. Must inherit from FinancialRecord.</typeparam>
+        private void DisplayRecordsByType<T>()
+            where T : FinancialRecord
         {
             if (!this.GetValidDateRange(out DateOnly? startDate, out DateOnly? endDate))
             {
                 return;
             }
 
-            IEnumerable<FinancialRecord> records = this.financeService.GetByDateRange<FinancialRecord>(startDate, endDate);
-            this.view.DisplayRecords(records);
-        }
-
-        /// <summary>
-        /// Displays all income records to the user.
-        /// </summary>
-        private void DisplayAllIncomes()
-        {
-            if (!this.GetValidDateRange(out DateOnly? startDate, out DateOnly? endDate))
-            {
-                return;
-            }
-
-            IEnumerable<FinancialRecord> records = this.financeService.GetByDateRange<Income>(startDate, endDate);
-            this.view.DisplayRecords(records);
-        }
-
-        /// <summary>
-        /// Displays all expense records to the user.
-        /// </summary>
-        private void DisplayAllExpenses()
-        {
-            if (!this.GetValidDateRange(out DateOnly? startDate, out DateOnly? endDate))
-            {
-                return;
-            }
-
-            IEnumerable<FinancialRecord> records = this.financeService.GetByDateRange<Expense>(startDate, endDate);
-            this.view.DisplayRecords(records);
+            IEnumerable<FinancialRecord> records = this.financeService.GetByDateRange<T>(startDate, endDate);
+            this.applicationView.DisplayRecords(records);
         }
 
         /// <summary>
@@ -483,7 +411,7 @@ namespace ExpenseTracker.Controller
         /// <returns>A collection of <see cref="FinancialRecord"/> that match the search input.</returns>
         private IEnumerable<FinancialRecord> GetMatchingRecords()
         {
-            string searchTerm = this.view.ReadSearchTerm();
+            string searchTerm = this.applicationView.GetInput(PromptMessages.SearchKey);
             return this.financeService.Search(searchTerm);
         }
 
@@ -499,7 +427,7 @@ namespace ExpenseTracker.Controller
             }
 
             bool isEdited = this.financeService.EditRecordDate(record, date);
-            this.view.ShowEditResult(isEdited);
+            this.applicationView.ShowOperationResult(isEdited, ConsoleMessages.EditOperationSuccessMessage, ConsoleMessages.EditOperationFailedMessage);
         }
 
         /// <summary>
@@ -514,7 +442,7 @@ namespace ExpenseTracker.Controller
             }
 
             bool isEdited = this.financeService.EditRecordAmount(record, amount);
-            this.view.ShowEditResult(isEdited);
+            this.applicationView.ShowOperationResult(isEdited, ConsoleMessages.EditOperationSuccessMessage, ConsoleMessages.EditOperationFailedMessage);
         }
 
         /// <summary>
@@ -525,24 +453,24 @@ namespace ExpenseTracker.Controller
         {
             if (record is Income income)
             {
-                if (!this.GetValidSource(out IncomeSource source))
+                if (!this.GetValidEnumChoice(this.applicationView.GetEnumOption<IncomeSource>, OptionMessages.Source, out IncomeSource source))
                 {
                     return;
                 }
 
                 bool isEdited = this.financeService.EditRecordSource(income, source);
-                this.view.ShowEditResult(isEdited);
+                this.applicationView.ShowOperationResult(isEdited, ConsoleMessages.EditOperationSuccessMessage, ConsoleMessages.EditOperationFailedMessage);
                 return;
             }
             else if (record is Expense expense)
             {
-                if (!this.GetValidCategory(out ExpenseCategory category))
+                if (!this.GetValidEnumChoice(this.applicationView.GetEnumOption<ExpenseCategory>, OptionMessages.Category, out ExpenseCategory category))
                 {
                     return;
                 }
 
                 bool isEdited = this.financeService.EditRecordCategory(expense, category);
-                this.view.ShowEditResult(isEdited);
+                this.applicationView.ShowOperationResult(isEdited, ConsoleMessages.EditOperationSuccessMessage, ConsoleMessages.EditOperationFailedMessage);
                 return;
             }
         }
@@ -553,10 +481,10 @@ namespace ExpenseTracker.Controller
         /// <param name="record">The <see cref="FinancialRecord"/> to update.</param>
         private void EditDescription(FinancialRecord record)
         {
-            string? description = this.view.ReadRecordDescription();
+            string? description = this.applicationView.GetInput(PromptMessages.Description);
 
             bool isEdited = this.financeService.EditRecordDescription(record, description);
-            this.view.ShowEditResult(isEdited);
+            this.applicationView.ShowOperationResult(isEdited, ConsoleMessages.EditOperationSuccessMessage, ConsoleMessages.EditOperationFailedMessage);
         }
 
         /// <summary>
@@ -570,19 +498,19 @@ namespace ExpenseTracker.Controller
             bool shouldContinue = true;
             while (shouldContinue)
             {
-                input = this.view.ReadRecordDate();
+                input = this.applicationView.GetInput(PromptMessages.RecordDate);
                 if (string.IsNullOrEmpty(input))
                 {
                     date = DateOnly.FromDateTime(DateTime.Now);
                     return true;
                 }
 
-                if (this.helper.IsValidDate(input, out date))
+                if (this.financeHelper.IsValidDate(input, out date))
                 {
                     return true;
                 }
 
-                shouldContinue = this.CanRetry("date");
+                shouldContinue = this.CanRetry(OptionMessages.Date);
             }
 
             return false;
@@ -600,65 +528,43 @@ namespace ExpenseTracker.Controller
             bool shouldContinue = true;
             while (shouldContinue)
             {
-                input = this.view.ReadRecordAmount();
-                if (this.helper.IsValidAmount(input, out amount))
+                input = this.applicationView.GetInput(PromptMessages.Amount);
+                if (this.financeHelper.IsValidAmount(input, out amount))
                 {
                     return true;
                 }
 
-                shouldContinue = this.CanRetry("amount");
+                shouldContinue = this.CanRetry(OptionMessages.Amount);
             }
 
             return false;
         }
 
         /// <summary>
-        /// Prompts the user to choose and validates an income source option.
+        /// Validates user input and retrieves the corresponding value from the specified enum type.
         /// </summary>
-        /// <param name="source">When this method returns, contains the selected <see cref="IncomeSource"/> if successful.</param>
-        /// <returns>True if a valid source was chosen, otherwise false.</returns>
-        private bool GetValidSource(out IncomeSource source)
+        /// <typeparam name="T">The enum type to validate and retrieve.</typeparam>
+        /// <param name="inputGetter">A function that obtains user input as a string.</param>
+        /// <param name="field">The name of the field being validated.</param>
+        /// <param name="value">When this method returns, contains the valid enum value if successful.</param>
+        /// <returns>True if a valid enum value is retrieved, otherwise false.</returns>
+        private bool GetValidEnumChoice<T>(Func<string> inputGetter, string field, out T value)
+            where T : struct, Enum
         {
-            source = IncomeSource.Other;
-            IncomeSource[] sources = Enum.GetValues<IncomeSource>();
-            string input;
+            value = default;
+            T[] values = Enum.GetValues<T>();
+
             bool shouldContinue = true;
             while (shouldContinue)
             {
-                input = this.view.ReadRecordSource();
-                if (this.helper.IsValidClassificationChoice(input, sources.Length, out int choice))
+                string input = inputGetter();
+                if (this.financeHelper.IsValidChoice(input, values.Length, out int choice))
                 {
-                    source = sources[choice - 1];
+                    value = values[choice - 1];
                     return true;
                 }
 
-                shouldContinue = this.CanRetry("source");
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Prompts the user to choose and validates an expense category option.
-        /// </summary>
-        /// <param name="category">When this method returns, contains the selected <see cref="ExpenseCategory"/> if successful.</param>
-        /// <returns>True if a valid category was chosen, otherwise false.</returns>
-        private bool GetValidCategory(out ExpenseCategory category)
-        {
-            category = ExpenseCategory.Other;
-            ExpenseCategory[] categories = Enum.GetValues<ExpenseCategory>();
-            string input;
-            bool shouldContinue = true;
-            while (shouldContinue)
-            {
-                input = this.view.ReadRecordCategory();
-                if (this.helper.IsValidClassificationChoice(input, categories.Length, out int choice))
-                {
-                    category = categories[choice - 1];
-                    return true;
-                }
-
-                shouldContinue = this.CanRetry("category");
+                shouldContinue = this.CanRetry(field);
             }
 
             return false;
@@ -677,10 +583,10 @@ namespace ExpenseTracker.Controller
             bool shouldContinue = true;
             while (shouldContinue)
             {
-                recordId = this.view.ReadRecordId(action);
-                if (!this.helper.IsValidRecordId(recordId))
+                recordId = this.applicationView.GetInput(string.Format(PromptMessages.RecordId, action));
+                if (!this.financeHelper.IsValidRecordId(recordId))
                 {
-                    shouldContinue = this.CanRetry("id");
+                    shouldContinue = this.CanRetry(OptionMessages.Id);
                     continue;
                 }
 
@@ -689,8 +595,39 @@ namespace ExpenseTracker.Controller
                     return true;
                 }
 
-                this.view.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
-                shouldContinue = this.CanRetry("id");
+                this.applicationView.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
+                shouldContinue = this.CanRetry(OptionMessages.Id);
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Validates an optional date input and assigns the parsed date if valid.
+        /// </summary>
+        /// <param name="prompt">A prompt given to the user while asking for the date.</param>
+        /// <param name="field">The name of the field being validated, used for retry logic.</param>
+        /// <param name="date">When this method returns, contains the parsed date if the input is valid, otherwise null.</param>
+        /// <returns>True if a valid date is provided or if the input is empty, otherwise false.</returns>
+        private bool GetValidOptionalDate(string prompt, string field, out DateOnly? date)
+        {
+            date = null;
+            bool shouldContinue = true;
+            while (shouldContinue)
+            {
+                string input = this.applicationView.GetInput(prompt);
+                if (string.IsNullOrEmpty(input))
+                {
+                    return true;
+                }
+
+                if (this.financeHelper.IsValidDate(input, out DateOnly validDate))
+                {
+                    date = validDate;
+                    return true;
+                }
+
+                shouldContinue = this.CanRetry(field);
             }
 
             return false;
@@ -704,51 +641,63 @@ namespace ExpenseTracker.Controller
         /// <returns>True if the user entered the right dates for date range, else false.</returns>
         private bool GetValidDateRange(out DateOnly? startDate, out DateOnly? endDate)
         {
-            startDate = null;
-            endDate = null;
-            bool shouldRetryForStartDate = true;
-            while (shouldRetryForStartDate)
+            if (!this.GetValidOptionalDate(PromptMessages.StartDate, OptionMessages.StartDate, out startDate))
             {
-                string? input = this.view.ReadStartDate();
-                if (string.IsNullOrEmpty(input))
-                {
-                    break;
-                }
-
-                if (this.helper.IsValidDate(input, out DateOnly validStartDate))
-                {
-                    startDate = validStartDate;
-                    break;
-                }
-
-                shouldRetryForStartDate = this.CanRetry("start date");
+                endDate = null;
+                return false;
             }
 
-            bool shouldRetryForEndDate = true;
-            while (shouldRetryForEndDate)
+            if (!this.GetValidOptionalDate(PromptMessages.EndDate, OptionMessages.EndDate, out endDate))
             {
-                string? input = this.view.ReadEndDate();
-                if (string.IsNullOrEmpty(input))
-                {
-                    break;
-                }
-
-                if (this.helper.IsValidDate(input, out DateOnly validEndDate))
-                {
-                    endDate = validEndDate;
-                    break;
-                }
-
-                shouldRetryForEndDate = this.CanRetry("end date");
+                return false;
             }
 
             if (startDate.HasValue && endDate.HasValue && startDate.Value > endDate.Value)
             {
-                this.view.ShowMessage(ConsoleMessages.InvalidDateRangeMessage, MessageType.Error);
+                this.applicationView.ShowMessage(ConsoleMessages.InvalidDateRangeMessage, MessageType.Error);
                 return false;
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Retrieves a <see cref="FinancialRecord"/> matching the specified action, or null if no suitable record is found.
+        /// </summary>
+        /// <param name="action">The action to perform when selecting the record.</param>
+        /// <returns>A matching <see cref="FinancialRecord"/>, or null if no record is found.</returns>
+        private FinancialRecord? GetSelectedRecord(string action)
+        {
+            if (!this.HasRecords())
+            {
+                this.applicationView.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
+                return null;
+            }
+
+            IEnumerable<FinancialRecord> searchedRecords = this.GetMatchingRecords();
+
+            if (searchedRecords.Count() == 0)
+            {
+                this.applicationView.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Info);
+                return null;
+            }
+
+            this.applicationView.DisplayRecords(searchedRecords);
+
+            if (!this.GetValidRecordId(out string recordId, action, searchedRecords))
+            {
+                return null;
+            }
+
+            FinancialRecord? record = this.financeService.GetRecordById(recordId);
+
+            if (record == null)
+            {
+                this.applicationView.ShowMessage(ConsoleMessages.NoRecordFoundMessage, MessageType.Error);
+                return null;
+            }
+
+            return record;
         }
 
         /// <summary>
@@ -758,11 +707,11 @@ namespace ExpenseTracker.Controller
         /// <returns>True if the user chooses to retry, otherwise false.</returns>
         private bool CanRetry(string field)
         {
-            this.view.ShowInvalidMessage(field);
-            bool shouldRetry = this.view.ConfirmAction();
+            this.applicationView.ShowInvalidMessage(field);
+            bool shouldRetry = this.applicationView.ConfirmAction();
             if (!shouldRetry)
             {
-                this.view.ClearScreen();
+                this.applicationView.ClearScreen();
             }
 
             return shouldRetry;

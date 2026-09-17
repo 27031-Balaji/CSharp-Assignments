@@ -6,11 +6,6 @@
     public enum EditMenuOption
     {
         /// <summary>
-        /// Indicates an invalid menu selection.
-        /// </summary>
-        Invalid,
-
-        /// <summary>
         /// Selects the option to edit the date of the record.
         /// </summary>
         Date,
