@@ -46,6 +46,9 @@ namespace FileDataProcessor
             Console.ReadKey();
         }
 
+        /// <summary>
+        /// Reads data from a file using a FileStream, converts it to a string, and processes it in chunks.
+        /// </summary>
         private static void ReadUsingFileStream()
         {
             byte[] buffer = new byte[1024]; // 1 KB Buffer
@@ -67,6 +70,9 @@ namespace FileDataProcessor
             }
         }
 
+        /// <summary>
+        /// Reads data from a file using a buffered stream for improved performance.
+        /// </summary>
         private static void ReadUsingBufferedStream()
         {
             byte[] buffer = new byte[1024]; // 1 KB Buffer
@@ -89,6 +95,9 @@ namespace FileDataProcessor
             }
         }
 
+        /// <summary>
+        /// Reads from a file, processes it to upper case, then writes it to the another file.
+        /// </summary>
         private static void ProcessAndWriteFile()
         {
             byte[] buffer = new byte[1024];
@@ -113,6 +122,11 @@ namespace FileDataProcessor
             }
         }
 
+        /// <summary>
+        /// Processes the data to uppercase.
+        /// </summary>
+        /// <param name="data">The data to be processed.</param>
+        /// <returns>The data which is uppercased.</returns>
         private static string ProcessData(string data)
         {
             return data.ToUpper();

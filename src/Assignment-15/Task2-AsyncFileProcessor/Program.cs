@@ -28,6 +28,10 @@ namespace AsyncFileProcessor
             Console.ReadKey();
         }
 
+        /// <summary>
+        /// Processes two files synchronously and measures the elapsed time.
+        /// </summary>
+        /// <param name="stopwatch">A Stopwatch instance used to track the duration of the processing operation.</param>
         private static void SynchronousProcessing(Stopwatch stopwatch)
         {
             Console.WriteLine("Synchronous Processing");
@@ -38,6 +42,11 @@ namespace AsyncFileProcessor
             Console.WriteLine($"Sync Time: {stopwatch.ElapsedMilliseconds} ms.{Environment.NewLine}");
         }
 
+        /// <summary>
+        /// Performs asynchronous processing of files and measures the elapsed time.
+        /// </summary>
+        /// <param name="stopwatch">The stopwatch used to measure the duration of the asynchronous processing.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         private static async Task AsynchronousProcessing(Stopwatch stopwatch)
         {
             Console.WriteLine("Asynchronous Processing");
@@ -49,6 +58,9 @@ namespace AsyncFileProcessor
             Console.WriteLine($"Async Time: {stopwatch.ElapsedMilliseconds} ms{Environment.NewLine}");
         }
 
+        /// <summary>
+        /// Creates files at specified paths if they do not already exist.
+        /// </summary>
         private static void CreateFilesIfNotFound()
         {
             Console.WriteLine("Creating files if its not found...");
@@ -64,6 +76,11 @@ namespace AsyncFileProcessor
             }
         }
 
+        /// <summary>
+        /// Processes data from the specified input file and writes the results to the specified output file.
+        /// </summary>
+        /// <param name="inputPath">The path of the input file to be processed.</param>
+        /// <param name="outputPath">The path of the output file where the processed data will be written.</param>
         private static void ProcessAndWriteFile(string inputPath, string outputPath)
         {
             byte[] buffer = new byte[1024 * 1024];
@@ -86,6 +103,12 @@ namespace AsyncFileProcessor
             }
         }
 
+        /// <summary>
+        /// Asynchronously processes data from the specified input file and writes the results to the specified output file.
+        /// </summary>
+        /// <param name="inputPath">The path of the input file to be processed.</param>
+        /// <param name="outputPath">The path of the output file where the processed data will be written.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         private static async Task ProcessAndWriteFileAsync(string inputPath, string outputPath)
         {
             byte[] buffer = new byte[1024 * 1024];
@@ -109,9 +132,14 @@ namespace AsyncFileProcessor
             }
         }
 
+        /// <summary>
+        /// Processes the data to uppercase.
+        /// </summary>
+        /// <param name="data">The data to be processed.</param>
+        /// <returns>The processed data.</returns>
         private static string ProcessData(string data)
         {
-            return data.ToUpperInvariant();
+            return data.ToUpper();
         }
     }
 }
