@@ -328,9 +328,10 @@ The user-specific logger performs better because logging operations are distribu
 
 # Key Learnings
 
-- Learned how to use the most commonly used generic collections in C#, including List, Stack, Queue and Dictionary.
-- Learned how generics improve type safety by eliminating the need for type casting.
-- Discovered that collection methods such as `Remove()` often return a boolean value indicating whether the operation was successful.
-- Learned that `IEnumerable<T>` promotes reusability by allowing methods to work with multiple collection types such as lists, arrays, and queues through a common interface.
-- Gained experience using LINQ extension methods such as `Sum()` and learned that it can throw exceptions like `ArgumentNullException` when the source collection is null and `OverflowException` when the calculated sum exceeds the range of the numeric type.
-- Learned about the `KeyValuePair<TKey, TValue>` structure, which represents individual entries in a dictionary and is commonly used when iterating through key-value collections.
+- Learned how different stream types (`FileStream`, `BufferedStream`, and `MemoryStream`) are used for efficient file processing.
+- Understood the importance of reading large files in chunks to reduce memory consumption.
+- Learned how asynchronous file operations improve responsiveness and enable concurrent processing.
+- Identified common memory and performance issues caused by unnecessary allocations and data copying.
+- Gained experience implementing thread-safe file operations using locks.
+- Learned how file access contention can affect application performance and how user-specific files can help reduce it.
+- Developed an understanding of performance testing and benchmarking for validating optimizations.
