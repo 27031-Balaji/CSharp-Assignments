@@ -39,9 +39,9 @@ namespace ExpenseTracker.Controller
             bool isRunning = true;
             while (isRunning)
             {
+                this.authenticationView.ShowHeader();
                 if (!this.GetValidEnumChoice(this.authenticationView.GetEnumOption<AuthenticationMenuOption>, OptionMessages.Option, out AuthenticationMenuOption authOption))
                 {
-                    this.authenticationView.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
                     continue;
                 }
 

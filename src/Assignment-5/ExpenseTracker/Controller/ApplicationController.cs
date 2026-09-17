@@ -43,7 +43,6 @@ namespace ExpenseTracker.Controller
                 this.applicationView.ShowWelcome(user.UserName);
                 if (!this.GetValidEnumChoice(this.applicationView.GetEnumOption<MainMenuOption>, OptionMessages.Option, out MainMenuOption menuOption))
                 {
-                    this.applicationView.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
                     continue;
                 }
 
@@ -94,7 +93,6 @@ namespace ExpenseTracker.Controller
             {
                 if (!this.GetValidEnumChoice(this.applicationView.GetEnumOption<AddMenuOption>, OptionMessages.Option, out AddMenuOption addOption))
                 {
-                    this.applicationView.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
                     continue;
                 }
 
@@ -134,7 +132,6 @@ namespace ExpenseTracker.Controller
             {
                 if (!this.GetValidEnumChoice(this.applicationView.GetEnumOption<ViewMenuOption>, OptionMessages.Option, out ViewMenuOption viewOption))
                 {
-                    this.applicationView.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
                     continue;
                 }
 
@@ -230,7 +227,6 @@ namespace ExpenseTracker.Controller
             {
                 if (!this.GetValidEnumChoice(this.applicationView.GetEnumOption<EditMenuOption>, OptionMessages.Option, out EditMenuOption editOption))
                 {
-                    this.applicationView.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
                     continue;
                 }
 

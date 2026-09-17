@@ -10,6 +10,17 @@ namespace ExpenseTracker.View
     internal class AuthenticationView
     {
         /// <summary>
+        /// Displays the header for the application.
+        /// </summary>
+        public void ShowHeader()
+        {
+            Console.Write("========================================================\n");
+            Console.Write("Expense Tracker Application\n");
+            Console.Write("Track Your Spending, Empower Your Savings!\n");
+            Console.Write("========================================================\n");
+        }
+
+        /// <summary>
         /// Displays all values of the specified enum type and returns the user's choice.
         /// </summary>
         /// <typeparam name="T">The enum type to display.</typeparam>
@@ -23,7 +34,7 @@ namespace ExpenseTracker.View
 
             for (int i = 0; i < values.Length; i++)
             {
-                Console.WriteLine($"{i + 1}. {values[i]}");
+                Console.WriteLine($"{i + 1}. {this.FormatEnumDisplayName(values[i].ToString())}");
             }
 
             Console.Write("\nEnter choice: ");
@@ -186,6 +197,32 @@ namespace ExpenseTracker.View
 
             // Return the actual password entered by the user.
             return originalPassword.ToString();
+        }
+
+        /// <summary>
+        /// Converts a PascalCase enum value into a human-readable string.
+        /// </summary>
+        /// <param name="value">The enum value to format.</param>
+        /// <returns>A string with spaces inserted before uppercase letters.</returns>
+        private string FormatEnumDisplayName(string value)
+        {
+            StringBuilder formattedValue = new StringBuilder();
+
+            for (int i = 0; i < value.Length; i++)
+            {
+                /**
+                 * Insert a space before an uppercase letter
+                 * when it is not the first character.
+                 */
+                if (i > 0 && char.IsUpper(value[i]))
+                {
+                    formattedValue.Append(' ');
+                }
+
+                formattedValue.Append(value[i]);
+            }
+
+            return formattedValue.ToString();
         }
     }
 }
