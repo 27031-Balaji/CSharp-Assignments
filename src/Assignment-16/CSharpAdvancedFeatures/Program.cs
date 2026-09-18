@@ -1,10 +1,14 @@
-﻿namespace Assignments
+﻿using CSharpAdvancedFeatures.Tasks;
+
+namespace Assignments
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            Task1 task1 = new Task1();
+            task1.Run();
+            Console.ReadKey();
         }
     }
 }

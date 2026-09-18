@@ -3,10 +3,8 @@
 namespace CSharpAdvancedFeatures.Tasks
 {
     /// <summary>
-    /// Handles user notifications by subscribing to events and sending messages via SMS and email.
+    /// Implements the Task 1 of the advanced features of C#.
     /// </summary>
-    /// <remarks>Subscribes to notification events and executes corresponding actions to notify
-    /// users.</remarks>
     internal class Task1
     {
         /// <summary>
@@ -14,6 +12,7 @@ namespace CSharpAdvancedFeatures.Tasks
         /// </summary>
         public void Run()
         {
+            Console.WriteLine("Task 1 - Understanding and Implementing Events and Delegates in C#");
             Notifier notifier = new Notifier();
 
             notifier.OnAction += this.SendSMS;
