@@ -6,8 +6,8 @@ namespace Assignments
     {
         static void Main(string[] args)
         {
-            Task3 task3 = new Task3();
-            task3.Run();
+            Task4 task4 = new Task4();
+            task4.Run();
             Console.ReadKey();
         }
     }
