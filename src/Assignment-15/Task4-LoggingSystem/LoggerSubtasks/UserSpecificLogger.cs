@@ -32,7 +32,8 @@ namespace LoggingSystem.Subtasks
 
             lock (fileLock)
             {
-                byte[] errorBytes = Encoding.UTF8.GetBytes(errorMessage);
+                string logEntry = $"{userId}: {errorMessage}{Environment.NewLine}";
+                byte[] errorBytes = Encoding.UTF8.GetBytes(logEntry);
                 using (FileStream fileStream = new FileStream(logFilePath, FileMode.Append))
                 {
                     fileStream.Write(errorBytes, 0, errorBytes.Length);

@@ -17,16 +17,16 @@ namespace LoggingSystem.Subtasks
 
         private string[] _errorMessages = new string[]
         {
-                "Database Error\n",
-                "Connection Timeout\n",
-                "Invalid Input\n",
-                "Network Failure\n",
-                "Access Denied\n",
-                "File Not Found\n",
-                "Authentication Failed\n",
-                "Memory Overflow\n",
-                "Service Unavailable\n",
-                "Unexpected Exception\n",
+                "Database Error",
+                "Connection Timeout",
+                "Invalid Input",
+                "Network Failure",
+                "Access Denied",
+                "File Not Found",
+                "Authentication Failed",
+                "Memory Overflow",
+                "Service Unavailable",
+                "Unexpected Exception",
         };
 
         /// <summary>
@@ -62,6 +62,7 @@ namespace LoggingSystem.Subtasks
             for (int i = 0; i < 500; i++)
             {
                 tasks[i] = Task.Run(() => ThreadSafeLogger.LogError(
+                    this._userIds[random.Next(this._userIds.Length)],
                     this._errorMessages[random.Next(this._errorMessages.Length)]));
             }
 

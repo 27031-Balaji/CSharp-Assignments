@@ -13,12 +13,14 @@ namespace LoggingSystem.Subtasks
         /// <summary>
         /// Appends an error message to the log file using UTF-8 encoding.
         /// </summary>
+        /// <param name="userId">The ID of the user.</param>
         /// <param name="errorMessage">The error message to log.</param>
-        public static void LogError(string errorMessage)
+        public static void LogError(string userId, string errorMessage)
         {
             lock (_lockObject)
             {
-                byte[] errorBytes = Encoding.UTF8.GetBytes(errorMessage);
+                string logEntry = $"{userId}: {errorMessage}{Environment.NewLine}";
+                byte[] errorBytes = Encoding.UTF8.GetBytes(logEntry);
                 using (FileStream fileStream = new FileStream(_logFilePath, FileMode.Append))
                 {
                     fileStream.Write(errorBytes, 0, errorBytes.Length);
