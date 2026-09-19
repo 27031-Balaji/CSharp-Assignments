@@ -12,7 +12,7 @@ namespace CSharpAdvancedFeatures.Tasks
         /// </summary>
         public void Run()
         {
-            Console.WriteLine("Task 1 - Understanding and Implementing Events and Delegates in C#");
+            Console.WriteLine("Task 1 - Understanding and Implementing Events and Delegates in C#\n");
             Notifier notifier = new Notifier();
 
             notifier.OnAction += this.SendSMS;

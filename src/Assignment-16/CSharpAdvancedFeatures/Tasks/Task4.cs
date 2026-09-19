@@ -13,7 +13,7 @@
         /// </summary>
         public void Run()
         {
-            Console.WriteLine("Task 4 - Understanding and Using Lambda Expressions and Statements");
+            Console.WriteLine("Task 4 - Understanding and Using Lambda Expressions and Statements\n");
 
             List<int> integerList = new List<int>() { 24, 93, 12, 9, 62, 29, 72 };
             Console.WriteLine("The original list of integers before LINQ operations: ");

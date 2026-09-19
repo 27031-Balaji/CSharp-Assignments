@@ -12,7 +12,7 @@ namespace CSharpAdvancedFeatures.Tasks
         /// </summary>
         public void Run()
         {
-            Console.WriteLine("Task 6 - Implementing and Manipulating Records in C# 9.0 and Above");
+            Console.WriteLine("Task 6 - Implementing and Manipulating Records in C# 9.0 and Above\n");
 
             List<Book> bookList = this.CreateBookRecords();
 

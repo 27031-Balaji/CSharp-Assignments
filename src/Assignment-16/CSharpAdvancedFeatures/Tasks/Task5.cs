@@ -26,7 +26,7 @@ namespace CSharpAdvancedFeatures.Tasks
         /// </summary>
         public void Run()
         {
-            Console.WriteLine("Task 5 - Advanced Use of Delegates for Sorting");
+            Console.WriteLine("Task 5 - Advanced Use of Delegates for Sorting\n");
 
             List<Product> products = this.MakeProductList();
 
@@ -34,7 +34,7 @@ namespace CSharpAdvancedFeatures.Tasks
             SortDelegate sortByCategoryDelegate = this.SortByCategory;
             SortDelegate sortByPriceDelegate = this.SortByPrice;
 
-            Console.WriteLine("\nProducts Sorted By Name\n");
+            Console.WriteLine("Products Sorted By Name\n");
             this.SortAndDisplay(sortByNameDelegate, products);
 
             Console.WriteLine("\nProducts Sorted By Category\n");

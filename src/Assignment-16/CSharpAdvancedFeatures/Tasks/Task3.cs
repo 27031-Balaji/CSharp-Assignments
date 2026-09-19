@@ -16,7 +16,7 @@
         /// </summary>
         public void Run()
         {
-            Console.WriteLine("Task 3 - Implementing Anonymous Methods");
+            Console.WriteLine("Task 3 - Implementing Anonymous Methods\n");
 
             int[] arrayOfIntegers = new int[] { 45, 12, 78, 3, 25, 9, 67 };
             Console.WriteLine("The original array of integers before sorting: ");

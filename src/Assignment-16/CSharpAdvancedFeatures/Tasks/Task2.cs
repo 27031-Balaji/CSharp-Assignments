@@ -10,7 +10,7 @@
         /// </summary>
         public void Run()
         {
-            Console.WriteLine("Task 2 - Understanding the Use of Dynamic and Var Keywords and Their Differences");
+            Console.WriteLine("Task 2 - Understanding the Use of Dynamic and Var Keywords and Their Differences\n");
 
             var age = 10;
             Console.WriteLine($"Age variable initialized with var. The value of age is: {age}");
