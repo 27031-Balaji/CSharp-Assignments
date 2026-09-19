@@ -31,7 +31,7 @@
         EditRecord,
 
         /// <summary>
-        /// Selects the option to make a financial summary.
+        /// Selects the option to view a financial summary.
         /// </summary>
         FinancialSummary,
 

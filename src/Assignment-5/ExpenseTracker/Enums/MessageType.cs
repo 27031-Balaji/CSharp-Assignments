@@ -1,7 +1,7 @@
 ﻿namespace ExpenseTracker.Enums
 {
     /// <summary>
-    /// The MessageType Enum is used to display console message with specific colors based on the type of message.
+    /// The MessageType enum is used to display console messages with specific colors based on the type of message.
     /// </summary>
     public enum MessageType
     {
@@ -11,7 +11,7 @@
         Success,
 
         /// <summary>
-        /// Represents a error message.
+        /// Represents an error message.
         /// </summary>
         Error,
 

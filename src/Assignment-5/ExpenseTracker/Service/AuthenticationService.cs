@@ -77,6 +77,7 @@ namespace ExpenseTracker.Service
         public void DeleteAccount(Guid userId)
         {
             this.userService.DeleteUser(userId);
+            this.Logout();
         }
     }
 }

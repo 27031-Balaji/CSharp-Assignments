@@ -26,6 +26,7 @@ The application supports multiple users with isolated financial records.
 2. Each user's transactions are stored in a separate CSV file.
 3. User data is isolated and cannot be accessed by other users.
 4. Only the currently logged-in user's records are loaded into memory.
+5. The password of the user is hashed with a random salt for security.
 
 ---
  
@@ -36,7 +37,7 @@ The "Add Record" feature is used to add an income or an expense record to the re
 ### Functionalities
  
 1. Users can enter date, amount spent or gained, source of income (or) category of expense and an optional description.
-2. A unique product ID is generated automatically when making a financial record. It is a 12-digit alphanumeric string extracted from GUID.
+2. A unique product ID is generated automatically when making a financial record. It is a 8-digit alphanumeric string extracted from GUID.
 3. Record date, amount and classification of income/expense are validated before the product is added.
 4. A menu is built to add records according to the user's choice.
  
@@ -185,6 +186,7 @@ Provides reusable validation methods for date, amount, classification of income 
 - User-specific CSV files are maintained for optimized data loading.
 - Only the active user's records are loaded into memory during login.
 - Multi-user support is implemented with isolated transaction storage.
+- Password hashing with RFC2898DerivedBytes which helps hashing with a random generated salt.
 
 ---
 
@@ -240,5 +242,6 @@ This order follows the dependency flow of the application and helps to understan
 - Implementing multi-user support while maintaining data isolation.
 - Optimizing CSV loading to improve application performance.
 - Reducing code duplication through generic methods.
+- Facing problems in delegate type methods which have an out keyword.
  
 ---

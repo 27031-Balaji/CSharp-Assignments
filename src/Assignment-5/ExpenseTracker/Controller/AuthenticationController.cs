@@ -33,7 +33,7 @@ namespace ExpenseTracker.Controller
         /// <summary>
         /// Runs the authentication loop until the user chooses to exit.
         /// </summary>
-        /// <returns>Always returns false when the loop finishes.</returns>
+        /// <returns>False when the authentication loop terminates.</returns>
         public bool Run()
         {
             bool isRunning = true;
@@ -69,7 +69,7 @@ namespace ExpenseTracker.Controller
         }
 
         /// <summary>
-        /// Executes the login flow: prompts for credentials, attempts authentication and optionally retries on failure.
+        /// Executes the login flow: prompts for credentials, attempts authentication, and optionally retries on failure.
         /// </summary>
         /// <returns>True when login succeeds, otherwise false.</returns>
         private bool Login()
@@ -134,7 +134,7 @@ namespace ExpenseTracker.Controller
         /// <summary>
         /// Prompts the user until a valid user name is provided or the user cancels.
         /// </summary>
-        /// <param name="userName">The valid username.</param>
+        /// <param name="userName">When this method returns, contains the validated username if successful.</param>
         /// <returns>True when a valid user name was obtained, otherwise false.</returns>
         private bool GetValidUserName(out string userName)
         {
@@ -157,7 +157,7 @@ namespace ExpenseTracker.Controller
         /// <summary>
         /// Prompts the user until a valid password is provided or the user cancels.
         /// </summary>
-        /// <param name="password">The valid password.</param>
+        /// <param name="password">When this method returns, contains the validated password if successful.</param>
         /// <returns>True when a valid password was obtained, otherwise false.</returns>
         private bool GetValidPassword(out string password)
         {

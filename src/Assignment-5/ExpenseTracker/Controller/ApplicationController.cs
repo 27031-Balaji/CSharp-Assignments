@@ -21,13 +21,13 @@ namespace ExpenseTracker.Controller
         /// </summary>
         /// <param name="financeService">The <see cref="FinanceService"/>used for finance based operations.</param>
         /// <param name="authenticationService">The <see cref="AuthenticationService"/> used for authentication operations.</param>
-        /// <param name="helper">The <see cref="FinanceHelper"/> used for validation and parsing.</param>
+        /// <param name="financeHelper">The <see cref="FinanceHelper"/> used for validation and parsing.</param>
         /// <param name="view">The <see cref="ApplicationView"/> used for console input/output.</param>
-        public ApplicationController(FinanceService financeService, AuthenticationService authenticationService, FinanceHelper helper, ApplicationView view)
+        public ApplicationController(FinanceService financeService, AuthenticationService authenticationService, FinanceHelper financeHelper, ApplicationView view)
         {
             this.financeService = financeService;
             this.authenticationService = authenticationService;
-            this.financeHelper = helper;
+            this.financeHelper = financeHelper;
             this.applicationView = view;
         }
 
@@ -37,7 +37,7 @@ namespace ExpenseTracker.Controller
         public void Run()
         {
             bool isRunning = true;
-            AuthenticatedUser user = this.authenticationService.LoggedInUser!;
+            AuthenticatedUser user = this.authenticationService.LoggedInUser ?? throw new InvalidOperationException();
             while (isRunning && this.authenticationService.IsAuthenticated)
             {
                 this.applicationView.ShowWelcome(user.UserName);
@@ -216,7 +216,7 @@ namespace ExpenseTracker.Controller
         /// </summary>
         private void EditRecord()
         {
-            FinancialRecord? record = this.GetSelectedRecord(OptionMessages.DeleteOption);
+            FinancialRecord? record = this.GetSelectedRecord(OptionMessages.EditOption);
             if (record == null)
             {
                 return;
@@ -278,7 +278,7 @@ namespace ExpenseTracker.Controller
              decimal netExpense,
              decimal netBalance,
              decimal savingsRate,
-             Expense? highestExpense) = this.financeService.GetMonthlySummary(startDate, endDate);
+             Expense? highestExpense) = this.financeService.GetFinancialSummary(startDate, endDate);
             this.applicationView.ShowFinancialSummary(startDate, endDate, netIncome, netExpense, netBalance, savingsRate, highestExpense);
             this.applicationView.ClearScreenWithKey();
         }
@@ -296,7 +296,7 @@ namespace ExpenseTracker.Controller
                 return false;
             }
 
-            this.financeService.DeleteRecordsByUserId();
+            this.financeService.DeleteCurrentUserRecords();
             this.authenticationService.DeleteAccount(userId);
             this.applicationView.ShowMessage(ConsoleMessages.AccountDeletedMessage, MessageType.Success);
             this.applicationView.ClearScreenWithKey();
@@ -325,7 +325,7 @@ namespace ExpenseTracker.Controller
         /// <summary>
         /// Determines whether there are any records available.
         /// </summary>
-        /// <returns>True if there are no records, otherwise false.</returns>
+        /// <returns>True if records exist, otherwise false.</returns>
         private bool HasRecords()
         {
             return !this.financeService.IsRecordListEmpty();
@@ -388,7 +388,7 @@ namespace ExpenseTracker.Controller
         /// <summary>
         /// Displays financial records of the specified type within a selected date range.
         /// </summary>
-        /// <typeparam name="T">The type of financial record to display. Must inherit from FinancialRecord.</typeparam>
+        /// <typeparam name="T">The type of financial record to display. Must inherit from <see cref="FinancialRecord"/>.</typeparam>
         private void DisplayRecordsByType<T>()
             where T : FinancialRecord
         {
@@ -570,7 +570,7 @@ namespace ExpenseTracker.Controller
         /// Prompts for a record id and validates the record id that must exist within the provided search results.
         /// </summary>
         /// <param name="recordId">When this method returns, contains the validated identifier if successful.</param>
-        /// <param name="action">The action being performed (Eg: edit, delete).</param>
+        /// <param name="action">The action being performed (e.g., edit or delete).</param>
         /// <param name="searchedRecords">The set of records displayed to the user to pick from.</param>
         /// <returns>True if a valid record id was obtained, otherwise false.</returns>
         private bool GetValidRecordId(out string recordId, string action, IEnumerable<FinancialRecord> searchedRecords)
@@ -632,8 +632,8 @@ namespace ExpenseTracker.Controller
         /// <summary>
         /// Gets a valid date range from the user.
         /// </summary>
-        /// <param name="startDate">The start date entered by the user. (Can be empty).</param>
-        /// <param name="endDate">The end date entered by the user. (Can be empty).</param>
+        /// <param name="startDate">The start date entered by the user, or null if not provided.</param>
+        /// <param name="endDate">The end date entered by the user, or null if not provided.</param>
         /// <returns>True if the user entered the right dates for date range, else false.</returns>
         private bool GetValidDateRange(out DateOnly? startDate, out DateOnly? endDate)
         {

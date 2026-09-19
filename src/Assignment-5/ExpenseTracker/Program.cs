@@ -12,7 +12,7 @@ namespace ExpenseTracker
     internal static class Program
     {
         /// <summary>
-        /// The program entry point and creates the objects.
+        /// The program entry point that creates the application objects.
         /// </summary>
         /// <param name="args">Command-line arguments passed to the application.</param>
         public static void Main(string[] args)
@@ -23,8 +23,9 @@ namespace ExpenseTracker
                 IFinanceRepository financeRepository = new CsvFinanceRepository();
                 AuthenticationHelper authenticationHelper = new AuthenticationHelper();
                 FinanceHelper financeHelper = new FinanceHelper();
+                HashService hashService = new HashService();
 
-                UserService userService = new UserService(userRepository);
+                UserService userService = new UserService(userRepository, hashService);
                 FinanceService financeService = new FinanceService(financeRepository, financeHelper);
                 AuthenticationService authenticationService = new AuthenticationService(userService, financeService);
 

@@ -203,10 +203,9 @@ namespace ExpenseTracker.Service
         /// <summary>
         /// Deletes the records that are associated with the user.
         /// </summary>
-        /// <param name="userId">The ID of the user.</param>
-        public void DeleteRecordsByUserId()
+        public void DeleteCurrentUserRecords()
         {
-            this.financeRepository.DeleteRecordsByUserId();
+            this.financeRepository.DeleteCurrentUserRecords();
         }
 
         /// <summary>
@@ -275,11 +274,11 @@ namespace ExpenseTracker.Service
         /// <param name="startDate">The starting date to summarize.</param>
         /// <param name="endDate">The ending date to summarize.</param>
         /// <returns>
-        /// A collection of the following: Total income for the month,
-        /// Total expenses for the month,
-        /// The net balance for the month,
-        /// The savings rate for the month,
-        /// The <see cref="Expense"/> with the highest amount for the month (if any).
+        /// A collection of the following: Total income for the given range,
+        /// Total expenses for the given range,
+        /// The net balance for the given range,
+        /// The savings rate for the given range,
+        /// The <see cref="Expense"/> with the highest amount for the given range (if any).
         /// </returns>
         public (
             decimal NetIncome,
@@ -287,7 +286,7 @@ namespace ExpenseTracker.Service
             decimal NetBalance,
             decimal SavingsRate,
             Expense? HighestExpense)
-        GetMonthlySummary(DateOnly? startDate, DateOnly? endDate)
+        GetFinancialSummary(DateOnly? startDate, DateOnly? endDate)
         {
             IEnumerable<FinancialRecord> records = this.GetByDateRange<FinancialRecord>(startDate, endDate);
             IEnumerable<Income> incomes = records.OfType<Income>();

@@ -1,4 +1,4 @@
-﻿namespace ExpenseTracker.Helper
+﻿    namespace ExpenseTracker.Helper
 {
     /// <summary>
     /// Contains console prompt messages displayed to the user.

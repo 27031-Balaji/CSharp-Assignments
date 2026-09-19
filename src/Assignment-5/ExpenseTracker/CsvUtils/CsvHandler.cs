@@ -3,7 +3,7 @@
 namespace ExpenseTracker.CsvUtils
 {
     /// <summary>
-    /// Simple CSV read/write helper that performs file operations for CSV data.
+    /// Provides file operations for reading and writing CSV data.
     /// </summary>
     internal class CsvHandler
     {
@@ -19,18 +19,16 @@ namespace ExpenseTracker.CsvUtils
         }
 
         /// <summary>
-        /// Reads all lines from the configured CSV file.
+        /// A list containing all lines read from the CSV file.
         /// </summary>
-        /// <returns>
-        /// A list containing the file lines.
-        /// </returns>
+        /// <returns>A list containing the file lines.</returns>
         public List<string> Read()
         {
             return !this.Exists() ? new List<string>() : File.ReadAllLines(this.filePath).ToList();
         }
 
         /// <summary>
-        /// Writes in the CSV file with the provided lines.
+        /// Writes the provided lines to the CSV file.
         /// </summary>
         /// <param name="lines">The lines to write to the file.</param>
         public void Write(List<string> lines)
@@ -48,7 +46,7 @@ namespace ExpenseTracker.CsvUtils
         }
 
         /// <summary>
-        /// Deletes the file if the file exists.
+        /// Deletes the file if it exists.
         /// </summary>
         public void Delete()
         {

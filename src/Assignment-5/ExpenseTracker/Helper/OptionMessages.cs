@@ -46,7 +46,7 @@
         public const string Category = "category";
 
         /// <summary>
-        /// Represents the id.
+        /// Represents the ID.
         /// </summary>
         public const string Id = "id";
 
@@ -58,6 +58,6 @@
         /// <summary>
         /// Represents the end date.
         /// </summary>
-        public const string EndDate = "start date";
+        public const string EndDate = "end date";
     }
 }

@@ -11,7 +11,7 @@
         Housing,
 
         /// <summary>
-        /// Utility bills like Internet, etc.,
+        /// Utility bills like Internet, etc.
         /// </summary>
         Utilities,
 
@@ -26,7 +26,7 @@
         Dining,
 
         /// <summary>
-        /// Transportation costs like petrol, etc.,
+        /// Transportation costs like petrol, etc.
         /// </summary>
         Transportation,
 
@@ -36,7 +36,7 @@
         Healthcare,
 
         /// <summary>
-        /// Education-related expenses like books, tuition, etc.,
+        /// Education-related expenses like books, tuition, etc.
         /// </summary>
         Education,
 
@@ -56,7 +56,7 @@
         Insurance,
 
         /// <summary>
-        /// Loan repayments like student loan, etc.,
+        /// Loan repayments like student loan, etc.
         /// </summary>
         LoanRepayment,
 

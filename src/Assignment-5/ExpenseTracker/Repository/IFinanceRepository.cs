@@ -8,7 +8,7 @@ namespace ExpenseTracker.Repository
     internal interface IFinanceRepository
     {
         /// <summary>
-        /// Loads the records from the file to in-memory.
+        /// Loads the records from the file into memory.
         /// </summary>
         /// <param name="userId">The ID of the user.</param>
         void LoadRecords(Guid userId);
@@ -52,8 +52,7 @@ namespace ExpenseTracker.Repository
         /// <summary>
         /// Deletes the <see cref="FinancialRecord"/> mapped with the user's id.
         /// </summary>
-        /// <param name="userId">The user id of the records to be deleted.</param>
-        void DeleteRecordsByUserId();
+        void DeleteCurrentUserRecords();
 
         /// <summary>
         /// Determines whether a record identifier already exists in the repository.

@@ -11,7 +11,7 @@ namespace ExpenseTracker.Model
         /// Initializes a new instance of the <see cref="Income"/> class.
         /// </summary>
         /// <param name="id">The unique ID of the <see cref="Income"/> record.</param>
-        /// <param name="date">The date in which the <see cref="Income"/> record is taken.</param>
+        /// <param name="date">The date on which the <see cref="Income"/> record occurred.</param>
         /// <param name="amount">The amount associated with the <see cref="Income"/> record.</param>
         /// <param name="description">The description of the <see cref="Income"/> record.</param>
         /// <param name="source">The <see cref="IncomeSource"/> of income.</param>

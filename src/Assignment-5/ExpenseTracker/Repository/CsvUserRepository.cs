@@ -61,7 +61,7 @@ namespace ExpenseTracker.Repository
         /// <returns>The matching <see cref="User"/> if found.</returns>
         public User? GetByUserName(string userName)
         {
-            return this.users.FirstOrDefault(user => user.UserName.Equals(userName, StringComparison.Ordinal));
+            return this.users.FirstOrDefault(user => user.UserName.Equals(userName, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace ExpenseTracker.Repository
         }
 
         /// <summary>
-        /// Reads users from the CSV file.
+        /// Reads users from the CSV file, skipping corrupted rows.
         /// </summary>
         private void ReadUsersFromFile()
         {
@@ -97,7 +97,14 @@ namespace ExpenseTracker.Repository
                     continue;
                 }
 
-                this.users.Add(this.ParseToRecord(line));
+                try
+                {
+                    this.users.Add(this.ParseToRecord(line));
+                }
+                catch (Exception)
+                {
+                    continue;
+                }
             }
         }
 
@@ -126,7 +133,8 @@ namespace ExpenseTracker.Repository
                 ",",
                 this.csvHandler.CsvEscape(user.Id.ToString()),
                 this.csvHandler.CsvEscape(user.UserName),
-                this.csvHandler.CsvEscape(user.Password));
+                this.csvHandler.CsvEscape(user.PasswordHash),
+                this.csvHandler.CsvEscape(user.Salt));
         }
 
         /// <summary>
@@ -137,11 +145,13 @@ namespace ExpenseTracker.Repository
         private User ParseToRecord(string line)
         {
             List<string> values = this.csvHandler.ParseCsvLine(line);
+
             Guid id = Guid.Parse(values[0]);
             string userName = values[1];
-            string password = values[2];
+            string passwordHash = values[2];
+            string salt = values[3];
 
-            return new User(id, userName, password);
+            return new User(id, userName, passwordHash, salt);
         }
     }
 }

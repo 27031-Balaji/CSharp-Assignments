@@ -18,7 +18,7 @@ namespace ExpenseTracker.Helper
         }
 
         /// <summary>
-        /// Determines whether the specified user entered password that does not exceed the maximum allowed length.
+        /// Determines whether the specified user-entered password does not exceed the maximum allowed length.
         /// </summary>
         /// <param name="password">The password to validate.</param>
         /// <returns>True if the password is valid, otherwise false.</returns>

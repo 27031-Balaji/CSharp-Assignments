@@ -11,7 +11,7 @@ namespace ExpenseTracker.Model
         /// Initializes a new instance of the <see cref="FinancialRecord"/> class.
         /// </summary>
         /// <param name="id">The unique ID of the <see cref="FinancialRecord"/>.</param>
-        /// <param name="date">The date in which the <see cref="FinancialRecord"/> is taken.</param>
+        /// <param name="date">The date on which the <see cref="FinancialRecord"/> occurred.</param>
         /// <param name="amount">The amount associated with the <see cref="FinancialRecord"/>.</param>
         /// <param name="description">The description of the <see cref="FinancialRecord"/>.</param>
         protected FinancialRecord(string id, DateOnly date, decimal amount, string? description)
@@ -48,10 +48,8 @@ namespace ExpenseTracker.Model
 
         /// <summary>
         /// Gets the type of the <see cref="FinancialRecord"/>.
-        /// </sum
-        /// <value>
-        /// The type of the <see cref="FinancialRecord"/>.
-        /// </value>
+        /// </summary>
+        /// <value>The type of the <see cref="FinancialRecord"/>.</value>
         public abstract RecordType Type { get; }
 
         /// <summary>

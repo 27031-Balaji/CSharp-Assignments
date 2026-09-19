@@ -26,7 +26,7 @@ namespace ExpenseTracker.Repository
         /// <summary>
         /// Loads the records from the file to the in-memory list for the specific user.
         /// </summary>
-        /// <param name="userId">The ID of the user, for which the file contents should load.</param>
+        /// <param name="userId">The ID of the user whose file contents should be loaded.</param>
         public void LoadRecords(Guid userId)
         {
             this.records.Clear();
@@ -130,7 +130,7 @@ namespace ExpenseTracker.Repository
         /// <summary>
         /// Deletes all records associated with the specified user identifier and saves changes.
         /// </summary>
-        public void DeleteRecordsByUserId()
+        public void DeleteCurrentUserRecords()
         {
             this.records.Clear();
             this.csvHandler.Delete();
@@ -143,7 +143,7 @@ namespace ExpenseTracker.Repository
         /// <returns>True if the record exists, otherwise false.</returns>
         public bool RecordIdExists(string recordId)
         {
-            return this.records.Any(record => record.Id == recordId);
+            return this.records.Any(record => record.Id.Equals(recordId, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace ExpenseTracker.Repository
         }
 
         /// <summary>
-        /// Loads records from the CSV file into the in-memory list.
+        /// Loads records from the CSV file into the in-memory list, skipping corrupted rows.
         /// </summary>
         private void ReadRecordsFromFile()
         {
@@ -169,7 +169,14 @@ namespace ExpenseTracker.Repository
                     continue;
                 }
 
-                this.records.Add(this.ParseToRecord(line));
+                try
+                {
+                    this.records.Add(this.ParseToRecord(line));
+                }
+                catch (Exception)
+                {
+                    continue;
+                }
             }
         }
 
@@ -190,7 +197,7 @@ namespace ExpenseTracker.Repository
         /// <summary>
         /// Parses a CSV line into a <see cref="FinancialRecord"/>.
         /// </summary>
-        /// <param name="line">The CSV line to parse. The parsing doesn't raise any exceptions because the inputs are already validated.</param>
+        /// <param name="line">The CSV line to parse.</param>
         /// <returns>A <see cref="FinancialRecord"/> instance representing the parsed line.</returns>
         private FinancialRecord ParseToRecord(string line)
         {

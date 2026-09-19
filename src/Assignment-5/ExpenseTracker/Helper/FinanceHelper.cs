@@ -4,7 +4,7 @@ using ExpenseTracker.Enums;
 namespace ExpenseTracker.Helper
 {
     /// <summary>
-    /// Provides input validation and classification helpers used by controller.
+    /// Provides input validation and classification helpers used by controllers.
     /// </summary>
     internal class FinanceHelper
     {
@@ -68,7 +68,7 @@ namespace ExpenseTracker.Helper
         /// Validates whether the provided record identifier matches the expected format used by the application.
         /// </summary>
         /// <param name="recordId">The record identifier to validate.</param>
-        /// <returns>True if <paramref name="recordId"/> is a 12-character alphanumeric string; otherwise, false.</returns>
+        /// <returns>True if the record ID is an alphanumeric identifier whose length matches <see cref="Constant.MaxLengthOfId"/>, otherwise false.</returns>
         public bool IsValidRecordId(string? recordId)
         {
             return !string.IsNullOrWhiteSpace(recordId) && recordId.Length == Constant.MaxLengthOfId && recordId.All(char.IsLetterOrDigit);

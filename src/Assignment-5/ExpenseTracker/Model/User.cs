@@ -10,12 +10,14 @@
         /// </summary>
         /// <param name="id">The ID of the user.</param>
         /// <param name="userName">The username of the user.</param>
-        /// <param name="password">The password of the user.</param>
-        public User(Guid id, string userName, string password)
+        /// <param name="passwordHash">The password hash of the user.</param>
+        /// <param name="salt">The specific salt for the password.</param>
+        public User(Guid id, string userName, string passwordHash, string salt)
         {
             this.Id = id;
             this.UserName = userName;
-            this.Password = password;
+            this.PasswordHash = passwordHash;
+            this.Salt = salt;
         }
 
         /// <summary>
@@ -29,8 +31,13 @@
         public string UserName { get; }
 
         /// <summary>
-        /// Gets the password of the user.
+        /// Gets the password hash of the user.
         /// </summary>
-        public string Password { get; }
+        public string PasswordHash { get; }
+
+        /// <summary>
+        /// Gets the specific salt for the password.
+        /// </summary>
+        public string Salt { get; }
     }
 }
