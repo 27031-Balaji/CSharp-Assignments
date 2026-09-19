@@ -9,7 +9,21 @@
         /// Represents a delegate that compares two integers
         /// and returns a value indicating their relative order in ascending sequence.
         /// </summary>
-        private readonly Comparison<int> ascendingSortDelegate = delegate(int a, int b) { return a.CompareTo(b); };
+        private readonly Comparison<int> ascendingSortDelegate = delegate(int a, int b)
+        {
+            if (a > b)
+            {
+                return 1;
+            }
+            else if (a < b)
+            {
+                return -1;
+            }
+            else
+            {
+                return 0;
+            }
+        };
 
         /// <summary>
         /// Runs the application with the task.
