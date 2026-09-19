@@ -37,8 +37,8 @@ The "Add Record" feature is used to add an income or an expense record to the re
 ### Functionalities
  
 1. Users can enter date, amount spent or gained, source of income (or) category of expense and an optional description.
-2. A unique product ID is generated automatically when making a financial record. It is a 8-digit alphanumeric string extracted from GUID.
-3. Record date, amount and classification of income/expense are validated before the product is added.
+2. A unique record ID is generated automatically when making a financial record. It is a 8-digit alphanumeric string extracted from GUID.
+3. Record date, amount and classification of income/expense are validated before the record is added.
 4. A menu is built to add records according to the user's choice.
  
 ---
@@ -81,7 +81,7 @@ The "Delete Record" feature removes a record from the repository according to th
  
 1. Users can delete a specific record using the date or amount or classification of the record.
 2. The input is validated before searching and deleting a specific record.
-3. If multiple record exists, then the search results are displayed and the user has to enter the specific ID of the record.
+3. If multiple records exist, then the search results are displayed and the user has to enter the specific ID of the record.
 4. The input ID is again validated before deleting.
 5. The separate record is printed and asked for confirmation before deleting.
  
@@ -89,7 +89,7 @@ The "Delete Record" feature removes a record from the repository according to th
  
 ## Edit Record
  
-The "Edit Record"" feature allows updating an existing record in the repository.
+The "Edit Record" feature allows updating an existing record in the repository.
  
 ### Functionalities
  
@@ -140,11 +140,11 @@ The application uses CSV files for persistent storage of user and transaction da
 
 ```text
 Data
-├── Users.csv
+├── users.csv
 └── Transactions
-    ├── UserId1.csv
-    ├── UserId2.csv
-    └── UserId3.csv
+    ├── userId1.csv
+    ├── userId2.csv
+    └── userId3.csv
     └── ...
 ```
  
@@ -162,7 +162,7 @@ Handles all console input and output operations, including menus, prompts and di
  
 ## Helper
  
-Provides reusable validation methods for date, amount, classification of income or expense, etc.,
+Provides reusable validation methods for date, amount, classification of income or expense, etc.
  
 ---
  
@@ -242,6 +242,6 @@ This order follows the dependency flow of the application and helps to understan
 - Implementing multi-user support while maintaining data isolation.
 - Optimizing CSV loading to improve application performance.
 - Reducing code duplication through generic methods.
-- Facing problems in delegate type methods which have an out keyword.
+- Working with delegate-based methods that use out parameters.
  
 ---
