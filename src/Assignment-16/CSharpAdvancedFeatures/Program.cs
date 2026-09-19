@@ -13,8 +13,8 @@ namespace Assignments
         /// <param name="args">The command line arguments.</param>
         public static void Main(string[] args)
         {
-            Task5 task5 = new Task5();
-            task5.Run();
+            Task6 task6 = new Task6();
+            task6.Run();
             Console.ReadKey();
         }
     }
