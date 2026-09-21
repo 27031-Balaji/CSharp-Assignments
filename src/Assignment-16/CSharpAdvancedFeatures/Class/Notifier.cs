@@ -15,7 +15,7 @@
         /// Occurs when a notification is triggered.
         /// All subscribed notification handlers are invoked with the provided message.
         /// </summary>
-        public event Notify OnAction;
+        public event Notify? OnAction;
 
         /// <summary>
         /// Raises the notification event and sends the specified message to all subscribers.
