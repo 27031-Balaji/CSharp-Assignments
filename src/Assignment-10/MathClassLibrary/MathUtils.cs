@@ -6,7 +6,7 @@
     public static class MathUtils
     {
         /// <summary>
-        /// Used to add two numbers.
+        /// Used to add two numbers where the second number is added to the first number.
         /// </summary>
         /// <param name="firstNumber">The first number.</param>
         /// <param name="secondNumber">The second number.</param>
@@ -17,7 +17,7 @@
         }
 
         /// <summary>
-        /// Used to subtract two numbers.
+        /// Used to subtract two numbers, where the second number is subtracted from the first number.
         /// </summary>
         /// <param name="firstNumber">The first number.</param>
         /// <param name="secondNumber">The second number.</param>
@@ -28,7 +28,7 @@
         }
 
         /// <summary>
-        /// Used to multiply two numbers.
+        /// Used to multiply two numbers where both the numbers are multiplied.
         /// </summary>
         /// <param name="firstNumber">The first number.</param>
         /// <param name="secondNumber">The second number.</param>
@@ -39,7 +39,7 @@
         }
 
         /// <summary>
-        /// Used to divide two numbers.
+        /// Used to divide two numbers where the first number acts as the dividend and the second number acts as the divisor.
         /// </summary>
         /// <param name="firstNumber">The first number.</param>
         /// <param name="secondNumber">The second number.</param>
