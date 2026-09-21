@@ -3,7 +3,7 @@
     /// <summary>
     /// Class library used to handle the calculation operations.
     /// </summary>
-    public class MathUtils
+    public static class MathUtils
     {
         /// <summary>
         /// Used to add two numbers.
@@ -11,7 +11,7 @@
         /// <param name="firstNumber">The first number.</param>
         /// <param name="secondNumber">The second number.</param>
         /// <returns>The addition result of the two numbers.</returns>
-        public int Add(int firstNumber, int secondNumber)
+        public static int Add(int firstNumber, int secondNumber)
         {
             return firstNumber + secondNumber;
         }
@@ -22,7 +22,7 @@
         /// <param name="firstNumber">The first number.</param>
         /// <param name="secondNumber">The second number.</param>
         /// <returns>The subtraction result of the two numbers.</returns>
-        public int Subtract(int firstNumber, int secondNumber)
+        public static int Subtract(int firstNumber, int secondNumber)
         {
             return firstNumber - secondNumber;
         }
@@ -33,7 +33,7 @@
         /// <param name="firstNumber">The first number.</param>
         /// <param name="secondNumber">The second number.</param>
         /// <returns>The multiplication result of the two numbers.</returns>
-        public int Multiply(int firstNumber, int secondNumber)
+        public static int Multiply(int firstNumber, int secondNumber)
         {
             return firstNumber * secondNumber;
         }
@@ -45,7 +45,7 @@
         /// <param name="secondNumber">The second number.</param>
         /// <returns>The division result of the two numbers.</returns>
         /// <exception cref="DivideByZeroException">Exception thrown when the second input is given as zero.</exception>
-        public double Divide(int firstNumber, int secondNumber)
+        public static double Divide(int firstNumber, int secondNumber)
         {
             if (secondNumber == 0)
             {

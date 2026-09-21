@@ -13,48 +13,49 @@ namespace CalculatorApplication
         /// <param name="args">The command line arguments.</param>
         public static void Main(string[] args)
         {
-            MathUtils mathUtils = new MathUtils();
             bool isRunning = true;
             while (isRunning)
             {
                 Console.Write("Basic Calculator\n\n");
-                Console.Write("[A] Add\n");
-                Console.Write("[B] Subtract\n");
-                Console.Write("[C] Multiply\n");
-                Console.Write("[D] Divide\n");
-                Console.Write("[E] Exit\n");
+                Console.Write("1. Add\n");
+                Console.Write("2. Subtract\n");
+                Console.Write("3. Multiply\n");
+                Console.Write("4. Divide\n");
+                Console.Write("5. Exit\n");
+
                 Console.Write("\nEnter your choice: ");
                 string choice = (Console.ReadLine() ?? string.Empty).Trim();
-
-                switch (choice.ToUpper())
+                if (!int.TryParse(choice, out int menuChoice) || (menuChoice < 0 || menuChoice > 5))
                 {
-                    case "A":
-                        AdditionOperation(mathUtils);
-                        ClearScreenWithKey();
+                    Console.WriteLine("Please enter a valid choice.\n");
+                }
+
+                switch (menuChoice)
+                {
+                    case 1:
+                        AdditionOperation();
                         break;
 
-                    case "B":
-                        SubtractionOperation(mathUtils);
-                        ClearScreenWithKey();
+                    case 2:
+                        SubtractionOperation();
                         break;
 
-                    case "C":
-                        MultiplicationOperation(mathUtils);
-                        ClearScreenWithKey();
+                    case 3:
+                        MultiplicationOperation();
                         break;
 
-                    case "D":
-                        DivisionOperation(mathUtils);
-                        ClearScreenWithKey();
+                    case 4:
+                        DivisionOperation();
                         break;
 
-                    case "E":
+                    case 5:
                         isRunning = false;
                         break;
+                }
 
-                    default:
-                        Console.Write("Invalid option. Please enter a valid option.\n\n");
-                        break;
+                if (isRunning)
+                {
+                    ClearScreenWithKey();
                 }
             }
         }
@@ -62,51 +63,47 @@ namespace CalculatorApplication
         /// <summary>
         /// Handles the addition operation of the calculator.
         /// </summary>
-        /// <param name="mathUtils">The <see cref="MathUtils"/> object for accessing calculation operations.</param>
-        private static void AdditionOperation(MathUtils mathUtils)
+        private static void AdditionOperation()
         {
             int firstNumber = GetNumber("first");
             int secondNumber = GetNumber("second");
-            int result = mathUtils.Add(firstNumber, secondNumber);
+            int result = MathUtils.Add(firstNumber, secondNumber);
             Console.Write($"\nAddition of {firstNumber} and {secondNumber} is {result}.\n");
         }
 
         /// <summary>
         /// Handles the subtraction operation of the calculator.
         /// </summary>
-        /// <param name="mathUtils">The <see cref="MathUtils"/> object for accessing calculation operations.</param>
-        private static void SubtractionOperation(MathUtils mathUtils)
+        private static void SubtractionOperation()
         {
             int firstNumber = GetNumber("first");
             int secondNumber = GetNumber("second");
-            int result = mathUtils.Subtract(firstNumber, secondNumber);
+            int result = MathUtils.Subtract(firstNumber, secondNumber);
             Console.Write($"\nSubtraction of {firstNumber} and {secondNumber} is {result}.\n");
         }
 
         /// <summary>
         /// Handles the multiplication operation of the calculator.
         /// </summary>
-        /// <param name="mathUtils">The <see cref="MathUtils"/> object for accessing calculation operations.</param>
-        private static void MultiplicationOperation(MathUtils mathUtils)
+        private static void MultiplicationOperation()
         {
             int firstNumber = GetNumber("first");
             int secondNumber = GetNumber("second");
-            int result = mathUtils.Multiply(firstNumber, secondNumber);
+            int result = MathUtils.Multiply(firstNumber, secondNumber);
             Console.Write($"\nProduct of {firstNumber} and {secondNumber} is {result}.\n");
         }
 
         /// <summary>
         /// Handles the division operation of the calculator.
         /// </summary>
-        /// <param name="mathUtils">The <see cref="MathUtils"/> object for accessing calculation operations.</param>
         /// <exception cref="DivideByZeroException">Exception that arises when the second number is given as zero by the user.</exception>
-        private static void DivisionOperation(MathUtils mathUtils)
+        private static void DivisionOperation()
         {
             int firstNumber = GetNumber("first");
             int secondNumber = GetNumber("second");
             try
             {
-                double result = mathUtils.Divide(firstNumber, secondNumber);
+                double result = MathUtils.Divide(firstNumber, secondNumber);
                 Console.Write($"\nQuotient of {firstNumber} and {secondNumber} is {result}.\n");
             }
             catch (DivideByZeroException ex)
@@ -118,7 +115,7 @@ namespace CalculatorApplication
         /// <summary>
         /// Helper used to get valid number input from the user.
         /// </summary>
-        /// <param name="order">The order of the number. (Eg: First, Second)</param>
+        /// <param name="order">The order of the number. (Eg: First, Second).</param>
         /// <returns>The input number given by the user.</returns>
         private static int GetNumber(string order)
         {
@@ -128,7 +125,7 @@ namespace CalculatorApplication
             while (!isValidNumber)
             {
                 Console.Write($"Enter the {order} number: ");
-                isValidNumber = int.TryParse(Console.ReadLine() !.Trim(), out value);
+                isValidNumber = int.TryParse((Console.ReadLine() ?? string.Empty).Trim(), out value);
                 if (!isValidNumber)
                 {
                     Console.Write($"Invalid {order} number. Please enter a valid number.\n");
