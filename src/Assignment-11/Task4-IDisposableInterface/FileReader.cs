@@ -20,15 +20,6 @@
         }
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="FileReader"/> class.
-        /// Used as a safety net to dispose the unmanaged resources if the user forgets to call Dispose().
-        /// </summary>
-        ~FileReader()
-        {
-            this.Dispose(false);
-        }
-
-        /// <summary>
         /// Used to read the contents from the file.
         /// </summary>
         /// <returns>The list of lines of data from the file.</returns>
@@ -50,7 +41,6 @@
         public void Dispose()
         {
             this.Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         /// <summary>

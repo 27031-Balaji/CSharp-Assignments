@@ -1,7 +1,7 @@
 ﻿namespace StackAndHeap.Struct
 {
     /// <summary>
-    /// The student struct is used to make a struct with student ID and name.
+    /// Represents a student with the ID and name.
     /// </summary>
     public struct Student
     {

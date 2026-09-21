@@ -1,7 +1,7 @@
 ﻿namespace StackAndHeap.Class
 {
     /// <summary>
-    /// The college class is used to store the details of the college.
+    /// Represents a college with the ID and the name of the college.
     /// </summary>
     public class College
     {

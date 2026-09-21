@@ -33,6 +33,8 @@ namespace GarbageCollection.Class
 
             Stopwatch stopwatch = Stopwatch.StartNew();
             GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
             stopwatch.Stop();
 
             Console.WriteLine($"GC execution time: {stopwatch.ElapsedMilliseconds} ms");

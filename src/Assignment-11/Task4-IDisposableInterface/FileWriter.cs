@@ -20,15 +20,6 @@
         }
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="FileWriter"/> class.
-        /// Used as a safety net to dispose the unmanaged resources if the user forgets to call Dispose().
-        /// </summary>
-        ~FileWriter()
-        {
-            this.Dispose(false);
-        }
-
-        /// <summary>
         /// Writes contents to the text file.
         /// </summary>
         /// <param name="contents">The contents to be written into the file.</param>
@@ -48,7 +39,6 @@
         public void Dispose()
         {
             this.Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         /// <summary>
