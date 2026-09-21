@@ -30,63 +30,52 @@ namespace CSharpAdvancedFeatures
                 Console.WriteLine("7. Task 7 - Implementing Advanced Pattern Matching in C# 7.0 and Above");
                 Console.WriteLine("8. Exit");
                 Console.WriteLine();
+
                 Console.Write("Choose a task: ");
 
-                string? choice = Console.ReadLine();
-                Console.Clear();
+                if (!int.TryParse(Console.ReadLine(), out int choice) || choice < 1 || choice > 8)
+                {
+                    Console.WriteLine("Invalid choice. Please try again.");
+                }
+
                 switch (choice)
                 {
-                    case "1":
-                        Task1 task1 = new Task1();
-                        task1.Run();
-                        ClearScreenWithKey();
+                    case 1:
+                        new Task1().Run();
                         break;
 
-                    case "2":
-                        Task2 task2 = new Task2();
-                        task2.Run();
-                        ClearScreenWithKey();
+                    case 2:
+                        new Task2().Run();
                         break;
 
-                    case "3":
-                        Task3 task3 = new Task3();
-                        task3.Run();
-                        ClearScreenWithKey();
+                    case 3:
+                        new Task3().Run();
                         break;
 
-                    case "4":
-                        Task4 task4 = new Task4();
-                        task4.Run();
-                        ClearScreenWithKey();
+                    case 4:
+                        new Task4().Run();
                         break;
 
-                    case "5":
-                        Task5 task5 = new Task5();
-                        task5.Run();
-                        ClearScreenWithKey();
+                    case 5:
+                        new Task5().Run();
                         break;
 
-                    case "6":
-                        Task6 task6 = new Task6();
-                        task6.Run();
-                        ClearScreenWithKey();
+                    case 6:
+                        new Task6().Run();
                         break;
 
-                    case "7":
-                        Task7 task7 = new Task7();
-                        task7.Run();
-                        ClearScreenWithKey();
+                    case 7:
+                        new Task7().Run();
                         break;
 
-                    case "8":
+                    case 8:
                         isRunning = false;
-                        Console.WriteLine("Exiting application...");
                         break;
+                }
 
-                    default:
-                        Console.WriteLine("Invalid choice. Please try again.");
-                        ClearScreenWithKey();
-                        break;
+                if (isRunning)
+                {
+                    ClearScreenWithKey();
                 }
             }
         }
