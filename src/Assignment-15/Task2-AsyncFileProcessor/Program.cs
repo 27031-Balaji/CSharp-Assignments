@@ -124,7 +124,7 @@ namespace AsyncFileProcessor
                     string data = Encoding.UTF8.GetString(buffer, 0, bytesRead);
                     string processedData = ProcessData(data);
                     byte[] processedBytes = Encoding.UTF8.GetBytes(processedData);
-                    memoryStream.Write(processedBytes, 0, processedBytes.Length);
+                    await memoryStream.WriteAsync(processedBytes, 0, processedBytes.Length);
                     memoryStream.Position = 0;
                     await memoryStream.CopyToAsync(outputStream);
                     memoryStream.SetLength(0);
