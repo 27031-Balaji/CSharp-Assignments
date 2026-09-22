@@ -116,10 +116,9 @@ namespace AsyncFileProcessor
 
             using (FileStream inputStream = new FileStream(inputPath, FileMode.Open, FileAccess.Read, FileShare.Read, buffer.Length, useAsync: true))
             using (FileStream outputStream = new FileStream(outputPath, FileMode.Create, FileAccess.Write, FileShare.None, buffer.Length, useAsync: true))
-            using (BufferedStream bufferedInputStream = new BufferedStream(inputStream, 20 * 1024 * 1024))
             using (MemoryStream memoryStream = new MemoryStream())
             {
-                while ((bytesRead = await bufferedInputStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                while ((bytesRead = await inputStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                 {
                     string data = Encoding.UTF8.GetString(buffer, 0, bytesRead);
                     string processedData = ProcessData(data);
