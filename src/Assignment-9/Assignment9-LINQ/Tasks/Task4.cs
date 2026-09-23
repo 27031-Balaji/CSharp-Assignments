@@ -22,7 +22,7 @@ namespace Assignment9.Tasks
 
             List<Product> unoptimizedBooks = context.Products
                 .OrderByDescending(product => product.Price)
-                .Where(product => product.Category == "Books")
+                .Where(product => product.Category.Equals("Books"))
                 .ToList();
 
             stopWatch.Stop();
@@ -42,7 +42,7 @@ namespace Assignment9.Tasks
             stopWatch.Restart();
 
             IEnumerable<Product> optimizedBooks = context.Products
-                .Where(product => product.Category == "Books")
+                .Where(product => product.Category.Equals("Books"))
                 .OrderByDescending(product => product.Price);
 
             stopWatch.Stop();

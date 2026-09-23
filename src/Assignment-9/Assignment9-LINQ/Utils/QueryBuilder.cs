@@ -84,7 +84,7 @@ namespace Assignment9.Utils
                     break;
 
                 case FilterCondition.GreaterThanOrEqualTo:
-                    if (property.Type == typeof(string))
+                    if (property.Type.Equals(typeof(string)))
                     {
                         throw new ArgumentException("GreaterThanOrEqualTo cannot be applied to string properties.");
                     }
@@ -94,7 +94,7 @@ namespace Assignment9.Utils
 
                 case FilterCondition.LessThanOrEqualTo:
 
-                    if (property.Type == typeof(string))
+                    if (property.Type.Equals(typeof(string)))
                     {
                         throw new ArgumentException("LessThanOrEqualTo cannot be applied to string properties.");
                     }

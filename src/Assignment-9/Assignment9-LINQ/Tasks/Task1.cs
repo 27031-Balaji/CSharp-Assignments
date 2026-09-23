@@ -17,7 +17,7 @@ namespace Assignment9.Tasks
             Console.WriteLine($"{Environment.NewLine}========== TASK 1 =========={Environment.NewLine}");
 
             var filteredProducts = context.Products
-                .Where(product => product.Category == "Electronics" && product.Price > 500)
+                .Where(product => product.Category.Equals("Electronics") && product.Price > 500)
                 .Select(product => new
                 {
                     product.ProductName,
