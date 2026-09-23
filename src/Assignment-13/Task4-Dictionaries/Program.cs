@@ -1,4 +1,4 @@
-﻿namespace Dictionaries
+﻿namespace Task4
 {
     /// <summary>
     /// The Program class is the entry point of the application.

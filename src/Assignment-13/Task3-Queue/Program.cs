@@ -1,4 +1,4 @@
-﻿namespace Queues
+﻿namespace Task3
 {
     /// <summary>
     /// The Program class is the entry point of the application.
@@ -16,7 +16,7 @@
 
             // 3.2 - Add five persons to the queue
             personQueue.Enqueue("Dineshbalaji");
-            personQueue.Enqueue("Jay Kishore");
+            personQueue.Enqueue("Jaya Kishore");
             personQueue.Enqueue("Sagarika");
             personQueue.Enqueue("Kevin");
             personQueue.Enqueue("Harini");

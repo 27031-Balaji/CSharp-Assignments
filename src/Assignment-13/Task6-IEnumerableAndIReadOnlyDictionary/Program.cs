@@ -1,4 +1,4 @@
-﻿namespace IEnumerableAndIReadOnlyDictionary
+﻿namespace Task6
 {
     /// <summary>
     /// The Program class is the entry point of the application.

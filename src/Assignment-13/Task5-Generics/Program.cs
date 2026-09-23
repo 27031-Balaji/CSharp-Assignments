@@ -1,6 +1,6 @@
-﻿using Generics.Collections;
+﻿using Task5.Collections;
 
-namespace Generics
+namespace Task5
 {
     /// <summary>
     /// The Program class is the entry point of the application.
@@ -140,7 +140,7 @@ namespace Generics
 
             // 3.2 - Add five persons to the queue
             genericPersonQueue.Enqueue("Dineshbalaji");
-            genericPersonQueue.Enqueue("Jay Kishore");
+            genericPersonQueue.Enqueue("Jaya Kishore");
             genericPersonQueue.Enqueue("Sagarika");
             genericPersonQueue.Enqueue("Kevin");
             genericPersonQueue.Enqueue("Harini");

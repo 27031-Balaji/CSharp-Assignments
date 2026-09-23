@@ -1,4 +1,4 @@
-﻿namespace Generics.Collections
+﻿namespace Task5.Collections
 {
     /// <summary>
     /// Represents a generic dictionary collection that stores key/value pairs.
@@ -31,9 +31,10 @@
         /// Removes the element with the specified key from the dictionary.
         /// </summary>
         /// <param name="key">The key of the element to remove.</param>
-        public void Remove(TKey key)
+        /// <returns>True if the dictionary element is removed, else false.</returns>
+        public bool Remove(TKey key)
         {
-            this._dictionary.Remove(key);
+            return this._dictionary.Remove(key);
         }
 
         /// <summary>

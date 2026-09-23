@@ -1,4 +1,4 @@
-﻿namespace Generics.Collections
+﻿namespace Task5.Collections
 {
     /// <summary>
     /// Represents a generic queue collection that stores elements in a first-in, first-out (FIFO) order.

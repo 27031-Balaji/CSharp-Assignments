@@ -1,4 +1,4 @@
-﻿namespace Generics.Collections
+﻿namespace Task5.Collections
 {
     /// <summary>
     /// Represents a generic stack collection that stores elements in a last-in, first-out (LIFO) order.

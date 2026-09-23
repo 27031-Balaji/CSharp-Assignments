@@ -1,4 +1,4 @@
-﻿namespace Stacks
+﻿namespace Task2
 {
     /// <summary>
     /// The Program class is the entry point of the application.
@@ -16,7 +16,7 @@
 
             // 2.2 - Push each character of a given string onto the stack
             Console.Write("Enter a string to be reversed: ");
-            string input = (Console.ReadLine() ?? string.Empty).Trim();
+            string input = Console.ReadLine()?.Trim() ?? string.Empty;
 
             foreach (char ch in input)
             {

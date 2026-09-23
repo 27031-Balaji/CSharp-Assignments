@@ -1,4 +1,4 @@
-﻿namespace Generics.Collections
+﻿namespace Task5.Collections
 {
     /// <summary>
     /// Represents a generic list collection that stores elements of the specified type.
