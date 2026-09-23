@@ -1,11 +1,11 @@
 ﻿using System.Text;
 
-namespace AsyncFileProcessor.Class
+namespace FileUtilities
 {
     /// <summary>
     /// Class used to create a file of size 1 GB.
     /// </summary>
-    internal class LargeFileMaker
+    public class LargeFileMaker
     {
         private const long _fileSize = 1L * 1024 * 1024 * 1024;
         private readonly string _filePath;

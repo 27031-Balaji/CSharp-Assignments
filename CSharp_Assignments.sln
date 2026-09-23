@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task3-FileIssueInvestigatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task4-LoggingSystem", "src\Assignment-15\Task4-LoggingSystem\Task4-LoggingSystem.csproj", "{21CE69BD-33F3-4416-B278-33F31C33B2B3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileUtilities", "src\Assignment-15\FileUtilities\FileUtilities.csproj", "{EDD1BA44-B70F-48BF-924B-7878F9F17DF9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{21CE69BD-33F3-4416-B278-33F31C33B2B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21CE69BD-33F3-4416-B278-33F31C33B2B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21CE69BD-33F3-4416-B278-33F31C33B2B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDD1BA44-B70F-48BF-924B-7878F9F17DF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDD1BA44-B70F-48BF-924B-7878F9F17DF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDD1BA44-B70F-48BF-924B-7878F9F17DF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDD1BA44-B70F-48BF-924B-7878F9F17DF9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +95,7 @@ Global
 		{970FB729-C4DE-423B-932D-B98A8E05092C} = {DB5D0642-C6B3-4E97-A847-080AB402952F}
 		{1FB314EF-8924-48A3-BB43-A63AD0AC8EC8} = {DB5D0642-C6B3-4E97-A847-080AB402952F}
 		{21CE69BD-33F3-4416-B278-33F31C33B2B3} = {DB5D0642-C6B3-4E97-A847-080AB402952F}
+		{EDD1BA44-B70F-48BF-924B-7878F9F17DF9} = {DB5D0642-C6B3-4E97-A847-080AB402952F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4CECB66-8E11-49D9-AA1E-464EE0231450}

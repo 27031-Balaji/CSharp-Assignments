@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Text;
-using AsyncFileProcessor.Class;
+using FileUtilities;
 
 namespace AsyncFileProcessor
 {

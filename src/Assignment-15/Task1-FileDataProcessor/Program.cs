@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Text;
-using FileDataProcessor.Class;
+using FileUtilities;
 
 namespace FileDataProcessor
 {
