@@ -65,7 +65,6 @@ namespace FileDataProcessor
                     }
 
                     string data = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                    string upperCaseData = ProcessData(data);
                 }
             }
         }
@@ -90,7 +89,6 @@ namespace FileDataProcessor
                     }
 
                     string data = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                    string upperCaseData = ProcessData(data);
                 }
             }
         }
