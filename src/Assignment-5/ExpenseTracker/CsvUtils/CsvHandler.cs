@@ -63,6 +63,15 @@ namespace ExpenseTracker.CsvUtils
         }
 
         /// <summary>
+        /// Determines whether the CSV file exists and is empty.
+        /// </summary>
+        /// <returns>True when the file exists and is empty, otherwise false.</returns>
+        public bool IsEmpty()
+        {
+            return this.Exists() || new FileInfo(this.filePath).Length == 0;
+        }
+
+        /// <summary>
         /// Escapes a single CSV field value by quoting it when it contains commas or quotes.
         /// </summary>
         /// <param name="value">The field value to escape.</param>

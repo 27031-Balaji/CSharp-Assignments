@@ -78,7 +78,12 @@ namespace ExpenseTracker.Service
         /// <param name="userId">The user identifier.</param>
         public void DeleteUser(Guid userId)
         {
-            User user = this.userRepository.GetById(userId);
+            User? user = this.userRepository.GetById(userId);
+            if (user == null)
+            {
+                throw new InvalidOperationException();
+            }
+
             this.userRepository.DeleteUser(user);
         }
     }

@@ -42,7 +42,7 @@ namespace ExpenseTracker.Repository
         public void AddRecord(FinancialRecord record)
         {
             List<string> lines = new List<string>();
-            if (!this.csvHandler.Exists())
+            if (!this.csvHandler.IsEmpty())
             {
                 lines.Add(Constant.FinanceCsvHeader);
             }

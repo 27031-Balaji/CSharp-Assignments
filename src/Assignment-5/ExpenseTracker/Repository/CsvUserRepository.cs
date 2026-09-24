@@ -34,7 +34,7 @@ namespace ExpenseTracker.Repository
         public void AddUser(User user)
         {
             List<string> lines = new List<string>();
-            if (!this.csvHandler.Exists())
+            if (!this.csvHandler.IsEmpty())
             {
                 lines.Add(Constant.UserCsvHeader);
             }
@@ -48,10 +48,10 @@ namespace ExpenseTracker.Repository
         /// Retrieves the <see cref="User"/> with the specified user ID.
         /// </summary>
         /// <param name="userId">The identifier of the user to retrieve.</param>
-        /// <returns>The matching <see cref="User"/>.</returns>
-        public User GetById(Guid userId)
+        /// <returns>The matching <see cref="User"/> if found.</returns>
+        public User? GetById(Guid userId)
         {
-            return this.users.First(user => user.Id == userId);
+            return this.users.FirstOrDefault(user => user.Id == userId);
         }
 
         /// <summary>

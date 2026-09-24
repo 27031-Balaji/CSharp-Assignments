@@ -29,9 +29,9 @@ namespace ExpenseTracker.Service
         /// Determines whether the specified user has any associated records.
         /// </summary>
         /// <returns>True if the user has no records, otherwise false.</returns>
-        public bool IsRecordListEmpty()
+        public bool HasRecords()
         {
-            return !this.financeRepository.GetRecords().Any();
+            return this.financeRepository.GetRecords().Any();
         }
 
         /// <summary>
@@ -138,15 +138,9 @@ namespace ExpenseTracker.Service
         /// <returns>The records according to the search input.</returns>
         public IEnumerable<FinancialRecord> Search(string searchTerm)
         {
-            if (this.financeHelper.IsValidSource(searchTerm, out IncomeSource sameSource)
-                && this.financeHelper.IsValidCategory(searchTerm, out ExpenseCategory sameCategory))
-            {
-                return this.SearchBySource(sameSource)
-                    .Concat(this.SearchByCategory(sameCategory))
-                    .ToList();
-            }
+            SearchType searchType = this.financeHelper.ReturnSearchType(searchTerm);
 
-            switch (this.financeHelper.ReturnSearchType(searchTerm))
+            switch (searchType)
             {
                 case SearchType.Date:
                     this.financeHelper.IsValidDate(searchTerm, out DateOnly date);
@@ -165,7 +159,16 @@ namespace ExpenseTracker.Service
                     return this.SearchByCategory(category);
 
                 default:
-                    return new List<FinancialRecord>();
+                    // Checks for the case where the source and category of expense are the same (Other).
+                    if (this.financeHelper.IsValidSource(searchTerm, out IncomeSource sameSource)
+                        && this.financeHelper.IsValidCategory(searchTerm, out ExpenseCategory sameCategory))
+                    {
+                        return this.SearchBySource(sameSource)
+                            .Concat(this.SearchByCategory(sameCategory))
+                            .ToList();
+                    }
+
+                    return Enumerable.Empty<FinancialRecord>();
             }
         }
 
@@ -187,7 +190,7 @@ namespace ExpenseTracker.Service
         /// <returns>True if the identifier is present in the collection, otherwise false.</returns>
         public bool IsDisplayedRecord(string recordId, IEnumerable<FinancialRecord> records)
         {
-            return records.Any(record => record.Id == recordId);
+            return records.Any(record => record.Id.Equals(recordId, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>

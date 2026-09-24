@@ -16,6 +16,11 @@
         public const string InvalidLoginMessage = "Invalid username or password.";
 
         /// <summary>
+        /// Message displayed when the user is not found.
+        /// </summary>
+        public const string UserNotFoundMessage = "User not found.";
+
+        /// <summary>
         /// Message displayed when the username already exists in the repository.
         /// </summary>
         public const string UsernameExistsMessage = "Username already exists.";

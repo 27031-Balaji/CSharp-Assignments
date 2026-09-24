@@ -23,7 +23,7 @@ namespace ExpenseTracker.Repository
         /// </summary>
         /// <param name="userId">The ID of the user to retrieve.</param>
         /// <returns>The matching <see cref="User"/>.</returns>
-        User GetById(Guid userId);
+        User? GetById(Guid userId);
 
         /// <summary>
         /// Retrieves the <see cref="User"/> with the specified user name.

@@ -296,10 +296,17 @@ namespace ExpenseTracker.Controller
                 return false;
             }
 
-            this.financeService.DeleteCurrentUserRecords();
-            this.authenticationService.DeleteAccount(userId);
-            this.applicationView.ShowMessage(ConsoleMessages.AccountDeletedMessage, MessageType.Success);
-            this.applicationView.ClearScreenWithKey();
+            try
+            {
+                this.financeService.DeleteCurrentUserRecords();
+                this.authenticationService.DeleteAccount(userId);
+                this.applicationView.ShowMessage(ConsoleMessages.AccountDeletedMessage, MessageType.Success);
+                this.applicationView.ClearScreenWithKey();
+            }
+            catch (InvalidOperationException)
+            {
+                this.applicationView.ShowMessage(ConsoleMessages.UserNotFoundMessage, MessageType.Error);
+            }
 
             return true;
         }
@@ -328,7 +335,7 @@ namespace ExpenseTracker.Controller
         /// <returns>True if records exist, otherwise false.</returns>
         private bool HasRecords()
         {
-            return !this.financeService.IsRecordListEmpty();
+            return this.financeService.HasRecords();
         }
 
         /// <summary>
