@@ -1,7 +1,7 @@
 ﻿namespace CSharpAdvancedFeatures.Class
 {
     /// <summary>
-    /// Represents the triangle shape with base and height.
+    /// Represents the triangle shape.
     /// </summary>
     internal class Triangle : Shape
     {

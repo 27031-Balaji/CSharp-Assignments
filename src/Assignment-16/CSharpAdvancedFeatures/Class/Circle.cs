@@ -1,7 +1,7 @@
 ﻿namespace CSharpAdvancedFeatures.Class
 {
     /// <summary>
-    /// Represents the circle shape with radius.
+    /// Represents the circle shape.
     /// </summary>
     internal class Circle : Shape
     {

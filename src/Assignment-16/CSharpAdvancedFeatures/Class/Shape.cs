@@ -1,7 +1,7 @@
 ﻿namespace CSharpAdvancedFeatures.Class
 {
     /// <summary>
-    /// Represents a basic shape with name.
+    /// Represents a basic shape.
     /// </summary>
     internal abstract class Shape
     {
