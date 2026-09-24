@@ -260,14 +260,17 @@ namespace InventoryManagement.Controller
         /// </summary>
         private void ViewAllProducts()
         {
-            if (!this.HasProducts())
+            try
             {
-                return;
+                List<Product> products = this._services.GetAllProducts();
+                this._view.DisplayProducts(products);
+                this._view.ClearScreenWithKey(ConsoleMessages.GoBackToMainMenuMessage);
             }
-
-            List<Product> products = this._services.GetAllProducts();
-            this._view.DisplayProducts(products);
-            this._view.ClearScreenWithKey(ConsoleMessages.GoBackToMainMenuMessage);
+            catch (EmptyInventoryException ex)
+            {
+                this._view.ShowMessage(ex.Message, MessageType.Error);
+                this._view.ClearScreenWithKey(ConsoleMessages.GoBackToMainMenuMessage);
+            }
         }
 
         /// <summary>
@@ -502,19 +505,14 @@ namespace InventoryManagement.Controller
         /// <returns>True if the inventory has any <see cref="Product"/>, otherwise false.</returns>
         private bool HasProducts()
         {
-            try
+            if (!this._services.HasProducts())
             {
-                this._services.CheckInventory();
-
-                return true;
-            }
-            catch (EmptyInventoryException ex)
-            {
-                this._view.ShowMessage(ex.Message, MessageType.Error);
+                this._view.ShowMessage(ConsoleMessages.EmptyInventoryExceptionMessage, MessageType.Error);
                 this._view.ClearScreenWithKey(ConsoleMessages.GoBackToMainMenuMessage);
-
                 return false;
             }
+
+            return true;
         }
 
         /// <summary>

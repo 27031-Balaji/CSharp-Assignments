@@ -99,8 +99,13 @@ namespace InventoryManagement.Service
         public List<Product> GetAllProducts()
         {
             List<Product> products = this._repository.GetAllProducts();
-            this.SortProductsByName(products);
 
+            if (products.Count == 0)
+            {
+                throw new EmptyInventoryException(ConsoleMessages.EmptyInventoryExceptionMessage);
+            }
+
+            this.SortProductsByName(products);
             return products;
         }
 
@@ -161,14 +166,12 @@ namespace InventoryManagement.Service
         }
 
         /// <summary>
-        /// Checks whether the inventory is empty or not. Throws an exception if it is empty.
+        /// Checks whether the inventory has products.
         /// </summary>
-        public void CheckInventory()
+        /// <returns>True if the inventory has products, else false.</returns>
+        public bool HasProducts()
         {
-            if (this._repository.Count == 0)
-            {
-                throw new EmptyInventoryException(ConsoleMessages.EmptyInventoryExceptionMessage);
-            }
+            return this._repository.Count > 0;
         }
 
         /// <summary>

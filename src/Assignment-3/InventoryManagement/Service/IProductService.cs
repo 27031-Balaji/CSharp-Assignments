@@ -77,8 +77,9 @@ namespace InventoryManagement.Service
         List<Product> GetLowStockProducts();
 
         /// <summary>
-        /// Validates that the inventory contains at least one <see cref="Product"/>.
+        /// Checks whether the inventory has products.
         /// </summary>
-        void CheckInventory();
+        /// <returns>True if the inventory has products, else false.</returns>
+        bool HasProducts();
     }
 }
