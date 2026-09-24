@@ -179,6 +179,12 @@ namespace ErrorHandling
 
                 Console.WriteLine($"\nRuntime terminating: {args.IsTerminating}");
             }
+            else
+            {
+                Console.WriteLine("\n--- GLOBAL EXCEPTION HANDLER ---");
+                Console.WriteLine("An unknown non-exception object was thrown.");
+                Console.WriteLine($"\nRuntime terminating: {args.IsTerminating}");
+            }
         }
     }
 }
