@@ -1,4 +1,4 @@
-﻿namespace InventoryManagement.Enum
+﻿namespace InventoryManagement.Enums
 {
     /// <summary>
     /// The MessageType Enum is used to display console message with specific colors based on the type of message.

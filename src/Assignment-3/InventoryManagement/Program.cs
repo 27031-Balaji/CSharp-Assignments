@@ -4,7 +4,7 @@ using InventoryManagement.Repository;
 using InventoryManagement.Service;
 using InventoryManagement.View;
 
-namespace Assignments
+namespace InventoryManagement
 {
     /// <summary>
     /// The entry point of the inventory management application.

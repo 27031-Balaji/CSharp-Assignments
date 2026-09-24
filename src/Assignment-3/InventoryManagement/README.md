@@ -24,7 +24,7 @@ The Add Product feature allows users to add a new product to the inventory.
 ### Functionalities
  
 1. Users can enter a product name, price and quantity.
-2. A unique product ID is generated automatically. It is a 12-digit alphanumeric string extracted from GUID.
+2. A unique product ID is generated automatically. It is a 8-digit hex-charactered string extracted from GUID.
 3. Product name, price and quantity are validated before the product is added.
  
 ---

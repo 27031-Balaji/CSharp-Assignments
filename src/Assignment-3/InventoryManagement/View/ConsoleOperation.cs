@@ -1,5 +1,5 @@
 ﻿using ConsoleTables;
-using InventoryManagement.Enum;
+using InventoryManagement.Enums;
 using InventoryManagement.Model;
 
 namespace InventoryManagement.View

@@ -1,5 +1,5 @@
 ﻿using InventoryManagement.ConstantLiteral;
-using InventoryManagement.Exception;
+using InventoryManagement.Exceptions;
 using InventoryManagement.Helper;
 using InventoryManagement.Model;
 using InventoryManagement.Repository;
@@ -110,10 +110,7 @@ namespace InventoryManagement.Service
         /// <param name="product">The <see cref="Product"/> entry to delete.</param>
         public void DeleteProduct(Product product)
         {
-            if (!this._repository.DeleteProduct(product))
-            {
-                throw new ProductNotFoundException(ConsoleMessages.ProductNotFoundExceptionMessage);
-            }
+            this._repository.DeleteProduct(product);
         }
 
         /// <summary>
@@ -175,7 +172,7 @@ namespace InventoryManagement.Service
         }
 
         /// <summary>
-        /// Generates a unique product ID generated from the GUID and taking first 12 characters.
+        /// Generates a unique product ID generated from the GUID and taking first <see cref="Constant.IdLength"/> characters.
         /// </summary>
         /// <returns>A unique product ID.</returns>
         private string GenerateProductId()

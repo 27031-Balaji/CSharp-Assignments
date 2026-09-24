@@ -14,5 +14,15 @@
         /// Provides the maximum length of the product ID.
         /// </summary>
         internal const int IdLength = 8;
+
+        /// <summary>
+        /// Provides the minimum quantity to be entered for adding a product.
+        /// </summary>
+        internal const int MinimumQuantityForAddingProduct = 0;
+
+        /// <summary>
+        /// Provides the minimum quantity to be entered for stock changes like reduce stock or restock.
+        /// </summary>
+        internal const int MinimumQuantityForStockChange = 1;
     }
 }

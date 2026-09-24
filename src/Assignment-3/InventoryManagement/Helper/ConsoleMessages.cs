@@ -64,5 +64,15 @@
         /// Message displayed when the user entered an invalid option.
         /// </summary>
         public const string InvalidOptionMessage = "Enter a valid option";
+
+        /// <summary>
+        /// Message displayed when the operation is completed and display the message to return to the main menu.
+        /// </summary>
+        public const string GoBackToMainMenuMessage = "go back to main menu";
+
+        /// <summary>
+        /// Message displayed when the operation is completed and display the message to return to the search menu.
+        /// </summary>
+        public const string GoBackToSearchMenuMessage = "go back to search menu";
     }
 }

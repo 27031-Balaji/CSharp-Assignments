@@ -1,5 +1,6 @@
-﻿using InventoryManagement.Enum;
-using InventoryManagement.Exception;
+﻿using InventoryManagement.ConstantLiteral;
+using InventoryManagement.Enums;
+using InventoryManagement.Exceptions;
 using InventoryManagement.Helper;
 using InventoryManagement.Model;
 using InventoryManagement.Service;
@@ -88,7 +89,7 @@ namespace InventoryManagement.Controller
         /// </summary>
         private void AddProduct()
         {
-            if (!this.GetValidProductName(out string name, "add"))
+            if (!this.GetValidProductName(out string name, OptionMessages.AddOption))
             {
                 return;
             }
@@ -98,14 +99,14 @@ namespace InventoryManagement.Controller
                 return;
             }
 
-            if (!this.GetValidProductQuantity(out int quantity))
+            if (!this.GetValidProductQuantity(Constant.MinimumQuantityForAddingProduct, out int quantity))
             {
                 return;
             }
 
             this._services.AddProduct(name, price, quantity);
             this._view.ShowMessage(ConsoleMessages.ProductAddedMessage, MessageType.Success);
-            this._view.ClearScreenWithKey("go back to the main menu");
+            this._view.ClearScreenWithKey(ConsoleMessages.GoBackToMainMenuMessage);
         }
 
         /// <summary>
@@ -118,7 +119,7 @@ namespace InventoryManagement.Controller
                 return;
             }
 
-            Product? product = this.GetValidProductWithId("edit");
+            Product? product = this.GetValidProductWithId(OptionMessages.EditOption);
             if (product == null)
             {
                 return;
@@ -154,7 +155,7 @@ namespace InventoryManagement.Controller
                 }
             }
 
-            this._view.ClearScreenWithKey("go back to the main menu");
+            this._view.ClearScreenWithKey(ConsoleMessages.GoBackToMainMenuMessage);
         }
 
         /// <summary>
@@ -167,30 +168,36 @@ namespace InventoryManagement.Controller
                 return;
             }
 
-            string searchChoice = this._view.ShowSearchMenu();
-            switch (searchChoice.ToUpper())
+            bool isRunning = true;
+            while (isRunning)
             {
-                case "A":
-                    this.SearchProductById();
-                    break;
+                this._view.ClearScreen();
+                string searchChoice = this._view.ShowSearchMenu();
+                switch (searchChoice.ToUpper())
+                {
+                    case "A":
+                        this.SearchProductById();
+                        break;
 
-                case "B":
-                    this.SearchProductByName();
-                    break;
+                    case "B":
+                        this.SearchProductByName();
+                        break;
 
-                case "C":
-                    this._view.ClearScreen();
-                    return;
-
-                default:
-                    this._view.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
-                    if (!this._view.AskRetry())
-                    {
+                    case "C":
+                        isRunning = false;
                         this._view.ClearScreen();
                         return;
-                    }
 
-                    break;
+                    default:
+                        this._view.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
+                        if (!this._view.AskRetry())
+                        {
+                            this._view.ClearScreen();
+                            return;
+                        }
+
+                        break;
+                }
             }
         }
 
@@ -199,14 +206,14 @@ namespace InventoryManagement.Controller
         /// </summary>
         private void SearchProductById()
         {
-            Product? product = this.GetValidProductWithId("search");
+            Product? product = this.GetValidProductWithId(OptionMessages.SearchOption);
             if (product == null)
             {
                 return;
             }
 
             this._view.DisplaySingleProduct(product);
-            this._view.ClearScreenWithKey("go back to the main menu");
+            this._view.ClearScreenWithKey(ConsoleMessages.GoBackToSearchMenuMessage);
         }
 
         /// <summary>
@@ -217,7 +224,7 @@ namespace InventoryManagement.Controller
             bool continueSearch = true;
             while (continueSearch)
             {
-                if (!this.GetValidProductName(out string name, "search"))
+                if (!this.GetValidProductName(out string name, OptionMessages.SearchOption))
                 {
                     return;
                 }
@@ -226,7 +233,7 @@ namespace InventoryManagement.Controller
                 {
                     List<Product> products = this._services.SearchProductsByName(name);
                     this._view.DisplayProducts(products);
-                    this._view.ClearScreenWithKey("go back to the main menu");
+                    this._view.ClearScreenWithKey(ConsoleMessages.GoBackToSearchMenuMessage);
                     continueSearch = false;
                 }
                 catch (ProductNotFoundException ex)
@@ -253,7 +260,7 @@ namespace InventoryManagement.Controller
 
             List<Product> products = this._services.GetAllProducts();
             this._view.DisplayProducts(products);
-            this._view.ClearScreenWithKey("go back to the main menu");
+            this._view.ClearScreenWithKey(ConsoleMessages.GoBackToMainMenuMessage);
         }
 
         /// <summary>
@@ -266,7 +273,7 @@ namespace InventoryManagement.Controller
                 return;
             }
 
-            Product? product = this.GetValidProductWithId("delete");
+            Product? product = this.GetValidProductWithId(OptionMessages.DeleteOption);
             if (product == null)
             {
                 return;
@@ -286,7 +293,7 @@ namespace InventoryManagement.Controller
                 }
             }
 
-            this._view.ClearScreenWithKey("go back to the main menu");
+            this._view.ClearScreenWithKey(ConsoleMessages.GoBackToMainMenuMessage);
         }
 
         /// <summary>
@@ -302,7 +309,7 @@ namespace InventoryManagement.Controller
             bool continueSearch = true;
             while (continueSearch)
             {
-                if (!this.GetValidProductName(out string name, "restock"))
+                if (!this.GetValidProductName(out string name, OptionMessages.RestockOption))
                 {
                     return;
                 }
@@ -337,7 +344,7 @@ namespace InventoryManagement.Controller
             bool continueSearch = true;
             while (continueSearch)
             {
-                if (!this.GetValidProductName(out string name, "restock"))
+                if (!this.GetValidProductName(out string name, OptionMessages.ReduceStockOption))
                 {
                     return;
                 }
@@ -379,7 +386,7 @@ namespace InventoryManagement.Controller
                 this._view.DisplayProducts(lowStockProducts);
             }
 
-            this._view.ClearScreenWithKey("go back to the main menu");
+            this._view.ClearScreenWithKey(ConsoleMessages.GoBackToMainMenuMessage);
         }
 
         /// <summary>
@@ -388,7 +395,7 @@ namespace InventoryManagement.Controller
         /// <param name="product">The <see cref="Product"/> where the name is to be edited.</param>
         private void EditProductName(Product product)
         {
-            if (!this.GetValidProductName(out string name, "edit"))
+            if (!this.GetValidProductName(out string name, OptionMessages.EditOption))
             {
                 return;
             }
@@ -400,7 +407,7 @@ namespace InventoryManagement.Controller
         /// <summary>
         /// Edits the price of the <see cref="Product"/> searched.
         /// </summary>
-        /// <param name="product">The <see cref="Product"/> where the name is to be edited.</param>
+        /// <param name="product">The <see cref="Product"/> whose price is to be edited.</param>
         private void EditProductPrice(Product product)
         {
             if (!this.GetValidProductPrice(out decimal price))
@@ -420,7 +427,7 @@ namespace InventoryManagement.Controller
         {
             List<Product> products = this._services.SearchProductsByName(name);
             this._view.DisplayProducts(products);
-            if (!this.GetValidSerialNumber(products.Count, out int serialNumber))
+            if (!this.GetValidSerialNumber(products.Count, OptionMessages.RestockOption, out int serialNumber))
             {
                 return;
             }
@@ -428,14 +435,14 @@ namespace InventoryManagement.Controller
             Product product = products[serialNumber - 1];
             this._view.DisplaySingleProduct(product);
 
-            if (!this.GetValidProductQuantity(out int quantity))
+            if (!this.GetValidProductQuantity(Constant.MinimumQuantityForStockChange, out int quantity))
             {
                 return;
             }
 
             this._services.RestockProduct(product, quantity);
             this._view.ShowMessage(ConsoleMessages.StockRestockedMessage, MessageType.Success);
-            this._view.ClearScreenWithKey("go back to the main menu");
+            this._view.ClearScreenWithKey(ConsoleMessages.GoBackToMainMenuMessage);
         }
 
         /// <summary>
@@ -446,7 +453,7 @@ namespace InventoryManagement.Controller
         {
             List<Product> products = this._services.SearchProductsByName(name);
             this._view.DisplayProducts(products);
-            if (!this.GetValidSerialNumber(products.Count, out int serialNumber))
+            if (!this.GetValidSerialNumber(products.Count, OptionMessages.ReduceStockOption, out int serialNumber))
             {
                 return;
             }
@@ -457,7 +464,7 @@ namespace InventoryManagement.Controller
             bool shouldRetry = true;
             while (shouldRetry)
             {
-                if (!this.GetValidProductQuantity(out int quantity))
+                if (!this.GetValidProductQuantity(Constant.MinimumQuantityForStockChange, out int quantity))
                 {
                     return;
                 }
@@ -466,7 +473,7 @@ namespace InventoryManagement.Controller
                 {
                     this._services.ReduceStock(product, quantity);
                     this._view.ShowMessage(ConsoleMessages.StockReducedMessage, MessageType.Success);
-                    this._view.ClearScreenWithKey("go back to the main menu");
+                    this._view.ClearScreenWithKey(ConsoleMessages.GoBackToMainMenuMessage);
                     shouldRetry = false;
                 }
                 catch (InsufficientStockException ex)
@@ -497,7 +504,7 @@ namespace InventoryManagement.Controller
             catch (EmptyInventoryException ex)
             {
                 this._view.ShowMessage(ex.Message, MessageType.Error);
-                this._view.ClearScreenWithKey("go back to the main menu");
+                this._view.ClearScreenWithKey(ConsoleMessages.GoBackToMainMenuMessage);
 
                 return false;
             }
@@ -505,8 +512,9 @@ namespace InventoryManagement.Controller
 
         /// <summary>
         /// Reads and validates a <see cref="Product"/> ID by searching it in the repository.
+        /// The method keeps prompting until a valid product is found or the user cancels.
         /// </summary>
-        /// <param name="operation">The operation being performed.</param>
+        /// <param name="operation">The operation for which the product ID is being requested.</param>
         /// <returns>The matching <see cref="Product"/> if found, otherwise null.</returns>
         private Product? GetValidProductWithId(string operation)
         {
@@ -516,7 +524,7 @@ namespace InventoryManagement.Controller
                 string productId = this._view.ReadProductId(operation);
                 if (!this._helper.IsValidProductId(productId))
                 {
-                    shouldContinue = this.CanRetry("Product ID");
+                    shouldContinue = this.CanRetry(OptionMessages.ProductIdOption);
                     continue;
                 }
 
@@ -527,27 +535,34 @@ namespace InventoryManagement.Controller
                 catch (ProductNotFoundException ex)
                 {
                     this._view.ShowMessage(ex.Message, MessageType.Error);
-                    shouldContinue = this.CanRetry("Product ID");
+                    shouldContinue = this.CanRetry(OptionMessages.ProductIdOption);
                 }
             }
 
             return null;
         }
 
-        private bool GetValidSerialNumber(int maxCount, out int serialNumber)
+        /// <summary>
+        /// Gets the valid serial number of the product from the user.
+        /// </summary>
+        /// <param name="maxCount">The maximum valid serial number that can be selected.</param>
+        /// <param name="operation">The operation to be done.</param>
+        /// <param name="serialNumber">The validated <see cref="Product"/> serial number.</param>
+        /// <returns>True if a valid serial number is provided, otherwise false when the user cancels.</returns>
+        private bool GetValidSerialNumber(int maxCount, string operation, out int serialNumber)
         {
             serialNumber = 0;
             bool shouldContinue = true;
             while (shouldContinue)
             {
-                string input = this._view.ReadSerialNumber("restock");
+                string input = this._view.ReadSerialNumber(operation);
 
                 if (this._helper.IsValidSerialNumber(input, maxCount, out serialNumber))
                 {
                     return true;
                 }
 
-                shouldContinue = this.CanRetry("serial number");
+                shouldContinue = this.CanRetry(OptionMessages.SerialNumberOption);
             }
 
             return false;
@@ -557,6 +572,7 @@ namespace InventoryManagement.Controller
         /// Reads and validates a <see cref="Product"/> name.
         /// </summary>
         /// <param name="name">The validated <see cref="Product"/> name.</param>
+        /// <param name="operation">The operation for which the product name is being requested.</param>
         /// <returns>True if the <see cref="Product"/> name is valid, otherwise false.</returns>
         private bool GetValidProductName(out string name, string operation)
         {
@@ -570,7 +586,7 @@ namespace InventoryManagement.Controller
                     return true;
                 }
 
-                shouldContinue = this.CanRetry("name");
+                shouldContinue = this.CanRetry(OptionMessages.ProductNameOption);
             }
 
             return false;
@@ -594,7 +610,7 @@ namespace InventoryManagement.Controller
                     return true;
                 }
 
-                shouldContinue = this.CanRetry("price");
+                shouldContinue = this.CanRetry(OptionMessages.ProductPriceOption);
             }
 
             return false;
@@ -605,20 +621,22 @@ namespace InventoryManagement.Controller
         /// </summary>
         /// <param name="quantity">The validated <see cref="Product"/> quantity.</param>
         /// <returns>True if the <see cref="Product"/> quantity is valid, otherwise false.</returns>
-        private bool GetValidProductQuantity(out int quantity)
+        private bool GetValidProductQuantity(int minimumQuantity, out int quantity)
         {
             string input;
             quantity = 0;
             bool shouldContinue = true;
+
             while (shouldContinue)
             {
                 input = this._view.ReadProductQuantity();
-                if (this._helper.IsValidQuantity(input, out quantity))
+
+                if (this._helper.IsValidQuantity(input, minimumQuantity, out quantity))
                 {
                     return true;
                 }
 
-                shouldContinue = this.CanRetry("quantity");
+                shouldContinue = this.CanRetry(OptionMessages.ProductQuantityOption);
             }
 
             return false;

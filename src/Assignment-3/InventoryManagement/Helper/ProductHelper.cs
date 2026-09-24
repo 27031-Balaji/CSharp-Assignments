@@ -29,14 +29,15 @@ namespace InventoryManagement.Helper
         }
 
         /// <summary>
-        /// Determines whether a <see cref="Model.Product"/> quantity is valid.
+        /// Determines whether a <see cref="Model.Product"/> quantity meets the specified minimum value.
         /// </summary>
         /// <param name="input">The quantity entered by the user.</param>
+        /// <param name="minimumQuantity">The minimum allowed quantity.</param>
         /// <param name="quantity">The validated product quantity.</param>
         /// <returns>True if the product quantity is valid, otherwise false.</returns>
-        public bool IsValidQuantity(string input, out int quantity)
+        public bool IsValidQuantity(string input, int minimumQuantity, out int quantity)
         {
-            return int.TryParse(input, out quantity) && quantity >= 0;
+            return int.TryParse(input, out quantity) && quantity >= minimumQuantity;
         }
 
         /// <summary>

@@ -20,17 +20,16 @@ namespace InventoryManagement.Repository
         void AddProduct(Product product);
 
         /// <summary>
-        /// Updates a specific <see cref="Model.Product"/> to the repository.
+        /// Updates a specific <see cref="Model.Product"/> in the repository.
         /// </summary>
-        /// <param name="product">The <see cref="Model.Product"/> to be added.</param>
+        /// <param name="product">The <see cref="Model.Product"/> to be updated.</param>
         void UpdateProduct(Product product);
 
         /// <summary>
-        /// Deletes a <see cref="Model.Product"/> to the repository.
+        /// Deletes a <see cref="Model.Product"/> from the repository.
         /// </summary>
-        /// <param name="product">The <see cref="Model.Product"/> to be added.</param>
-        /// <returns>True if the <see cref="Model.Product"/> is deleted, else false.</returns>
-        bool DeleteProduct(Product product);
+        /// <param name="product">The <see cref="Model.Product"/> to be deleted.</param>
+        void DeleteProduct(Product product);
 
         /// <summary>
         /// Returns all products from the repository.

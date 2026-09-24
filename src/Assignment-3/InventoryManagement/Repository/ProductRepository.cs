@@ -1,4 +1,5 @@
-﻿using InventoryManagement.Model;
+﻿using InventoryManagement.Exceptions;
+using InventoryManagement.Model;
 
 namespace InventoryManagement.Repository
 {
@@ -7,14 +8,14 @@ namespace InventoryManagement.Repository
     /// </summary>
     internal class ProductRepository : IRepository
     {
-        private readonly List<Product> _products;
+        private readonly Dictionary<string, Product> _products;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProductRepository"/> class.
         /// </summary>
         public ProductRepository()
         {
-            this._products = new List<Product>();
+            this._products = new Dictionary<string, Product>(StringComparer.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -31,7 +32,7 @@ namespace InventoryManagement.Repository
         /// <param name="product">The <see cref="Product"/> to add.</param>
         public void AddProduct(Product product)
         {
-            this._products.Add(product);
+            this._products.Add(product.ProductId, product);
         }
 
         /// <summary>
@@ -41,8 +42,12 @@ namespace InventoryManagement.Repository
         /// <returns>The matching <see cref="Product"/> if found, otherwise null.</returns>
         public Product? GetProductById(string productId)
         {
-            Product? product = this._products.Find(p => string.Equals(p.ProductId, productId, StringComparison.OrdinalIgnoreCase));
-            return product == null ? null : this.Clone(product!);
+            if (!this._products.TryGetValue(productId, out Product? product))
+            {
+                return null;
+            }
+
+            return this.Clone(product);
         }
 
         /// <summary>
@@ -54,7 +59,7 @@ namespace InventoryManagement.Repository
         {
             List<Product> products = new List<Product>();
             string searchName = nameOfProduct.Replace(" ", string.Empty);
-            foreach (Product product in this._products)
+            foreach (Product product in this._products.Values)
             {
                 string productName = product.Name.Replace(" ", string.Empty);
                 if (productName.Contains(searchName, StringComparison.OrdinalIgnoreCase))
@@ -67,12 +72,13 @@ namespace InventoryManagement.Repository
         }
 
         /// <summary>
-        /// Updates the name of a <see cref="Product"/>.
+        /// Updates the details of a <see cref="Product"/>.
         /// </summary>
-        /// <param name="product">The <see cref="Product"/> to update.</param>
+        /// <param name="product">The <see cref="Product"/> containing the updated details.</param>
         public void UpdateProduct(Product product)
         {
             Product originalProduct = this.FindOriginalProduct(product.ProductId);
+
             originalProduct.Name = product.Name;
             originalProduct.Price = product.Price;
             originalProduct.Quantity = product.Quantity;
@@ -85,7 +91,7 @@ namespace InventoryManagement.Repository
         /// <returns>True if the <see cref="Product"/> ID exists, otherwise false.</returns>
         public bool DoesProductExist(string productId)
         {
-            return this._products.Any(product => product.ProductId == productId);
+            return this._products.ContainsKey(productId);
         }
 
         /// <summary>
@@ -95,7 +101,7 @@ namespace InventoryManagement.Repository
         public List<Product> GetAllProducts()
         {
             List<Product> products = new List<Product>();
-            foreach (Product product in this._products)
+            foreach (Product product in this._products.Values)
             {
                 products.Add(this.Clone(product));
             }
@@ -107,11 +113,15 @@ namespace InventoryManagement.Repository
         /// Removes a <see cref="Product"/> from the repository.
         /// </summary>
         /// <param name="product">The <see cref="Product"/> to remove.</param>
-        /// <returns>True if the <see cref="Product"/> was removed, otherwise false.</returns>
-        public bool DeleteProduct(Product product)
+        /// <exception cref="ProductNotFoundException">
+        /// Thrown when the specified product does not exist in the repository.
+        /// </exception>
+        public void DeleteProduct(Product product)
         {
-            Product originalProduct = this.FindOriginalProduct(product.ProductId);
-            return this._products.Remove(originalProduct);
+            if (!this._products.Remove(product.ProductId))
+            {
+                throw new ProductNotFoundException(product.ProductId);
+            }
         }
 
         /// <summary>
@@ -119,9 +129,17 @@ namespace InventoryManagement.Repository
         /// </summary>
         /// <param name="productId">The <see cref="Product"/> ID to be searched.</param>
         /// <returns>The original <see cref="Product"/> in the repository.</returns>
+        /// <exception cref="ProductNotFoundException">
+        /// Thrown when the specified product does not exist in the repository.
+        /// </exception>
         private Product FindOriginalProduct(string productId)
         {
-            return this._products.Find(product => product.ProductId == productId) !;
+            if (!this._products.TryGetValue(productId, out Product? product))
+            {
+                throw new ProductNotFoundException(productId);
+            }
+
+            return product;
         }
 
         /// <summary>
