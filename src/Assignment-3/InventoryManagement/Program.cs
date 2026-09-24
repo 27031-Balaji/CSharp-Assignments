@@ -17,23 +17,12 @@ namespace InventoryManagement
         /// <param name="args">The command line arguments.</param>
         public static void Main(string[] args)
         {
-            try
-            {
-                IRepository repository = new ProductRepository();
-                IProductService service = new ProductService(repository);
-                ProductHelper helper = new ProductHelper();
-                ConsoleOperation view = new ConsoleOperation();
-                ProductController controller = new ProductController(service, helper, view);
-                controller.Run();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine();
-                Console.WriteLine("An unexpected error occurred.");
-                Console.WriteLine($"Error: {ex.Message}");
-                Console.WriteLine("Press any key to exit...");
-                Console.ReadKey();
-            }
+            IRepository repository = new ProductRepository();
+            IProductService service = new ProductService(repository);
+            ProductHelper helper = new ProductHelper();
+            ConsoleOperation view = new ConsoleOperation();
+            ProductController controller = new ProductController(service, helper, view);
+            controller.Run();
         }
     }
 }

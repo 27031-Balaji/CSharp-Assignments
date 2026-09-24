@@ -209,6 +209,19 @@ namespace InventoryManagement.View
         }
 
         /// <summary>
+        /// Prints the exception message when any unhandled exception occurs.
+        /// </summary>
+        /// <param name="exception">The exception to be printed.</param>
+        public void PrintExceptionMessage(Exception exception)
+        {
+            Console.WriteLine();
+            Console.WriteLine("An unexpected error occurred.");
+            Console.WriteLine($"Error: {exception.Message}");
+            Console.WriteLine("Press any key to exit...");
+            Console.ReadKey();
+        }
+
+        /// <summary>
         /// Clears the console.
         /// </summary>
         public void ClearScreen()

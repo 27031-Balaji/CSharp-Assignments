@@ -35,52 +35,59 @@ namespace InventoryManagement.Controller
         /// </summary>
         public void Run()
         {
-            bool isRunning = true;
-            while (isRunning)
+            try
             {
-                string menuChoice = this._view.ShowMainMenu();
-                switch (menuChoice.ToUpper())
+                bool isRunning = true;
+                while (isRunning)
                 {
-                    case "A":
-                        this.AddProduct();
-                        break;
+                    string menuChoice = this._view.ShowMainMenu();
+                    switch (menuChoice.ToUpper())
+                    {
+                        case "A":
+                            this.AddProduct();
+                            break;
 
-                    case "B":
-                        this.EditProduct();
-                        break;
+                        case "B":
+                            this.EditProduct();
+                            break;
 
-                    case "C":
-                        this.SearchProduct();
-                        break;
+                        case "C":
+                            this.SearchProduct();
+                            break;
 
-                    case "D":
-                        this.ViewAllProducts();
-                        break;
+                        case "D":
+                            this.ViewAllProducts();
+                            break;
 
-                    case "E":
-                        this.DeleteProduct();
-                        break;
+                        case "E":
+                            this.DeleteProduct();
+                            break;
 
-                    case "F":
-                        this.RestockProduct();
-                        break;
+                        case "F":
+                            this.RestockProduct();
+                            break;
 
-                    case "G":
-                        this.ReduceStock();
-                        break;
+                        case "G":
+                            this.ReduceStock();
+                            break;
 
-                    case "H":
-                        this.ViewLowStockProducts();
-                        break;
+                        case "H":
+                            this.ViewLowStockProducts();
+                            break;
 
-                    case "I":
-                        isRunning = false;
-                        break;
+                        case "I":
+                            isRunning = false;
+                            break;
 
-                    default:
-                        this._view.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
-                        break;
+                        default:
+                            this._view.ShowMessage(ConsoleMessages.InvalidOptionMessage, MessageType.Error);
+                            break;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                this._view.PrintExceptionMessage(ex);
             }
         }
 
