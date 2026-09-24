@@ -13,7 +13,7 @@
         {
             Console.Write("\nTask 2 - Array access operation with division\n\n");
             Console.Write("Enter the array length: ");
-            int lengthOfArray = GetValidNumber();
+            int lengthOfArray = GetValidPositiveNumber();
 
             int[] arr = new int[lengthOfArray];
             for (int i = 0; i < lengthOfArray; i++)
@@ -37,22 +37,26 @@
                     int result = elementInDividendIndex / elementInDivisorIndex;
                     Console.WriteLine($"The division of {elementInDividendIndex} and {elementInDivisorIndex} is {result}");
                 }
-                catch (IndexOutOfRangeException)
+                catch (IndexOutOfRangeException ex)
                 {
-                    throw new IndexOutOfRangeException("Cannot access the element outside the array bounds.\n");
+                    throw new IndexOutOfRangeException("Cannot access the element outside the array bounds.\n", ex);
                 }
                 catch (DivideByZeroException)
                 {
                     Console.WriteLine("Division operation is impossible with the second number being zero!\n");
                 }
             }
-            catch (Exception ex)
+            catch (IndexOutOfRangeException ex)
             {
                 Console.WriteLine(ex.Message);
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Base execution error: {ex.Message}\n");
+            }
             finally
             {
-                Console.WriteLine("Array access operation ended successfully.");
+                Console.WriteLine("Array access operation finished.");
                 Console.ReadKey();
             }
         }
@@ -71,6 +75,31 @@
                 if (!int.TryParse(input, out number))
                 {
                     Console.WriteLine("Input must be a valid integer.");
+                    Console.WriteLine("Enter again below.\n");
+                    continue;
+                }
+
+                isValidNumber = true;
+            }
+
+            return number;
+        }
+
+        /// <summary>
+        /// Prompts the user until they enter the right valid positive number greater than 0.
+        /// </summary>
+        /// <returns>The number in the right format.</returns>
+        public static int GetValidPositiveNumber()
+        {
+            int number = 0;
+            bool isValidNumber = false;
+            while (!isValidNumber)
+            {
+                string input = (Console.ReadLine() ?? string.Empty).Trim();
+
+                if (!int.TryParse(input, out number) || number <= 0)
+                {
+                    Console.WriteLine("Input must be a valid integer and greater than 0.");
                     Console.WriteLine("Enter again below.\n");
                     continue;
                 }

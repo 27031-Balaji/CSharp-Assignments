@@ -3,7 +3,7 @@
     /// <summary>
     /// This is used to make a new exception when the user enters an invalid user input.
     /// </summary>
-    internal class InvalidUserInputException : Exception
+    public class InvalidUserInputException : Exception
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="InvalidUserInputException" /> class.

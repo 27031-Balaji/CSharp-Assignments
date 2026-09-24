@@ -57,33 +57,29 @@ The program continues to use custom exception handling, array access validation,
 
 # Task 5 – Understanding and Interpreting Exception Stack Traces
 
-This task extends the program from Task 4 by focusing on exception stack traces. The objective is to understand how exceptions travel through the application and how stack traces can be used to identify the exact location where an error occurred.
+This task extends the program from Task 4 by focusing on exception stack traces. The objective is to understand how exceptions propagate through multiple method calls and how stack traces can be used to identify the exact origin of an error.
 
-The program continues to use custom exception handling, array validation, and global exception handling. When an exception occurs, the stack trace is displayed, allowing developers to trace the execution path that led to the error.
+The program continues to use custom exception handling, array validation, and global exception handling. In addition, a dedicated call chain is introduced using MethodA(), MethodB(), and MethodC(). An exception is intentionally thrown from MethodC(), propagated through the call chain, and then analyzed using its stack trace.
 
 ## Interpretation of Stack Trace
 
-During the execution, I reviewed the following stack traces:
+During the execution, I reviewed the following stack trace:
 
 ```text
-at ErrorHandling.Program.Main(String[] args)
-in C:\CSharp-Assignments\CSharp-Assignments\src\Assignment-8\ErrorHandling\Task5-StackTrace\Program.cs:line 44
+   at ErrorHandling.Program.MethodC() in C:\CSharp-Assignments\CSharp-Assignments\src\Assignment-8\ErrorHandling\Task5-StackTrace\Program.cs:line 147
+   at ErrorHandling.Program.MethodB() in C:\CSharp-Assignments\CSharp-Assignments\src\Assignment-8\ErrorHandling\Task5-StackTrace\Program.cs:line 142
+   at ErrorHandling.Program.MethodA() in C:\CSharp-Assignments\CSharp-Assignments\src\Assignment-8\ErrorHandling\Task5-StackTrace\Program.cs:line 137
+   at ErrorHandling.Program.DemonstrateStackTrace() in C:\CSharp-Assignments\CSharp-Assignments\src\Assignment-8\ErrorHandling\Task5-StackTrace\Program.cs:line 111
 ```
-in the main exception.
-
-```text
-at ErrorHandling.Program.Main(String[] args)
-in C:\CSharp-Assignments\CSharp-Assignments\src\Assignment-8\ErrorHandling\Task5-StackTrace\Program.cs:line 27
-```
-in the inner exception. 
 
 From this I came to an interpretation that,
 
-- The exception occurred inside the Main() method of the Program class.
-- The source file where the exception originated is Program.cs.
-- The runtime identified the exact locations of the exception at **line 27** and **line 44**.
-- These line numbers helped me quickly locate the statements responsible for the error without manually searching through the entire code.
-- The stack trace provides valuable debugging information by showing where the exception occurred and the path taken during program execution.
+- The exception originated inside MethodC().
+- The exception propagated from MethodC() to MethodB().
+- The exception then continued to MethodA().
+- The exception was finally handled inside DemonstrateStackTrace().
+- The stack trace clearly shows the exact sequence of method calls that were active when the exception occurred.
+- By reading the stack trace from top to bottom, it is possible to determine both the source of the error and the path the exception followed through the application.
 
 ## Understanding from the task
 

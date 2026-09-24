@@ -25,13 +25,13 @@
             {
                 Console.WriteLine("Division operation is impossible with the second number being zero!\n");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Console.WriteLine("Base execution error.\n");
+                Console.WriteLine($"Base execution error: {ex.Message}\n");
             }
             finally
             {
-                Console.WriteLine("Division operation ended successfully.\n");
+                Console.WriteLine("Division operation has finished.\n");
                 Console.ReadKey();
             }
         }
