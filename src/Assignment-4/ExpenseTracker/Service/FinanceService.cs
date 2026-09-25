@@ -1,0 +1,327 @@
+﻿using ExpenseTracker.ConstantLiteral;
+using ExpenseTracker.Enums;
+using ExpenseTracker.Helper;
+using ExpenseTracker.Model;
+using ExpenseTracker.Repository;
+
+namespace ExpenseTracker.Service
+{
+    /// <summary>
+    /// Coordinates application-level operations for creating, retrieving and modifying <see cref="FinancialRecord"/> instances.
+    /// </summary>
+    internal class FinanceService
+    {
+        private readonly IRepository repository;
+        private readonly FinanceHelper helper;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FinanceService"/> class.
+        /// </summary>
+        /// <param name="repository">The <see cref="IRepository"/> used to save and query records.</param>
+        /// <param name="helper">The helper class used to validate the input.</param>
+        public FinanceService(IRepository repository, FinanceHelper helper)
+        {
+            this.repository = repository;
+            this.helper = helper;
+        }
+
+        /// <summary>
+        /// Creates and stores a new <see cref="Income"/> record.
+        /// </summary>
+        /// <param name="date">The date value for the new record.</param>
+        /// <param name="amount">The amount for the income.</param>
+        /// <param name="source">The <see cref="IncomeSource"/> of the income.</param>
+        /// <param name="description">An optional description for the record.</param>
+        public void AddIncome(DateOnly date, decimal amount, IncomeSource source, string? description)
+        {
+            string recordId = this.GenerateUniqueId();
+            Income income = new Income(recordId, date, amount, description, source);
+            this.repository.AddRecord(income);
+        }
+
+        /// <summary>
+        /// Creates and stores a new <see cref="Expense"/> record.
+        /// </summary>
+        /// <param name="date">The date value for the new record.</param>
+        /// <param name="amount">The amount for the expense.</param>
+        /// <param name="category">The <see cref="ExpenseCategory"/> of the expense.</param>
+        /// <param name="description">An optional description for the record.</param>
+        public void AddExpense(DateOnly date, decimal amount, ExpenseCategory category, string? description)
+        {
+            string recordId = this.GenerateUniqueId();
+            Expense expense = new Expense(recordId, date, amount, description, category);
+            this.repository.AddRecord(expense);
+        }
+
+        /// <summary>
+        /// Retrieves all stored records sorted by date (most recent first).
+        /// </summary>
+        /// <returns>A list of <see cref="FinancialRecord"/> sorted by date.</returns>
+        public IEnumerable<FinancialRecord> GetAllRecords()
+        {
+            IEnumerable<FinancialRecord> records = this.repository.GetRecords();
+            return this.SortRecordsByDate(records);
+        }
+
+        /// <summary>
+        /// Retrieves all stored income records sorted by date (most recent first).
+        /// </summary>
+        /// <returns>A list of <see cref="FinancialRecord"/> representing incomes sorted by date.</returns>
+        public IEnumerable<FinancialRecord> GetIncomeRecords()
+        {
+            IEnumerable<FinancialRecord> incomeRecords = this.repository.GetRecords(record => record is Income);
+            return this.SortRecordsByDate(incomeRecords);
+        }
+
+        /// <summary>
+        /// Retrieves all stored expense records sorted by date (most recent first).
+        /// </summary>
+        /// <returns>A list of <see cref="FinancialRecord"/> representing expenses sorted by date.</returns>
+        public IEnumerable<FinancialRecord> GetExpenseRecords()
+        {
+            IEnumerable<FinancialRecord> expenseRecords = this.repository.GetRecords(record => record is Expense);
+            return this.SortRecordsByDate(expenseRecords);
+        }
+
+        /// <summary>
+        /// Retrieves records that match the specified date, sorted by date.
+        /// </summary>
+        /// <param name="date">The date value to search for.</param>
+        /// <returns>A list of <see cref="FinancialRecord"/> that occur on the specified date, sorted by date.</returns>
+        public IEnumerable<FinancialRecord> SearchByDate(DateOnly date)
+        {
+            IEnumerable<FinancialRecord> dateRecords = this.repository.GetRecords(record => record.Date == date);
+            return this.SortRecordsByDate(dateRecords);
+        }
+
+        /// <summary>
+        /// Retrieves records that match the specified amount, sorted by date.
+        /// </summary>
+        /// <param name="amount">The amount to search for.</param>
+        /// <returns>A list of <see cref="FinancialRecord"/> with the specified amount, sorted by date.</returns>
+        public IEnumerable<FinancialRecord> SearchByAmount(decimal amount)
+        {
+            IEnumerable<FinancialRecord> amountRecords = this.repository.GetRecords(record => record.Amount == amount);
+            return this.SortRecordsByDate(amountRecords);
+        }
+
+        /// <summary>
+        /// Retrieves income records that match the specified <see cref="IncomeSource"/>, sorted by date.
+        /// </summary>
+        /// <param name="source">The <see cref="IncomeSource"/> to filter by.</param>
+        /// <returns>A list of <see cref="FinancialRecord"/> representing incomes with the specified source, sorted by date.</returns>
+        public IEnumerable<FinancialRecord> SearchBySource(IncomeSource source)
+        {
+            IEnumerable<FinancialRecord> sourceRecords = this.repository.GetRecords(record => record is Income income && income.Source == source);
+            return this.SortRecordsByDate(sourceRecords);
+        }
+
+        /// <summary>
+        /// Retrieves expense records that match the specified <see cref="ExpenseCategory"/>, sorted by date.
+        /// </summary>
+        /// <param name="category">The <see cref="ExpenseCategory"/> to filter by.</param>
+        /// <returns>A list of <see cref="FinancialRecord"/> representing expenses in the specified category, sorted by date.</returns>
+        public IEnumerable<FinancialRecord> SearchByCategory(ExpenseCategory category)
+        {
+            IEnumerable<FinancialRecord> categoryRecords = this.repository.GetRecords(record => record is Expense expense && expense.Category == category);
+            return this.SortRecordsByDate(categoryRecords);
+        }
+
+        /// <summary>
+        /// Retrieves a record by its identifier.
+        /// </summary>
+        /// <param name="recordId">The identifier of the record to retrieve.</param>
+        /// <returns>The matching <see cref="FinancialRecord"/> if found.</returns>
+        public FinancialRecord? GetRecordById(string recordId)
+        {
+            return this.repository.GetById(recordId);
+        }
+
+        /// <summary>
+        /// Searches the records according to the specific input term given by the user.
+        /// </summary>
+        /// <param name="searchTerm">The search input given by the user.</param>
+        /// <returns>The records according to the search input.</returns>
+        public IEnumerable<FinancialRecord> Search(string searchTerm)
+        {
+            if (this.helper.IsValidSource(searchTerm, out IncomeSource sameSource)
+                && this.helper.IsValidCategory(searchTerm, out ExpenseCategory sameCategory))
+            {
+                return this.SearchBySource(sameSource)
+                    .Concat(this.SearchByCategory(sameCategory))
+                    .ToList();
+            }
+
+            switch (this.helper.ReturnSearchType(searchTerm))
+            {
+                case SearchType.Date:
+                    this.helper.IsValidDate(searchTerm, out DateOnly date);
+                    return this.SearchByDate(date);
+
+                case SearchType.Amount:
+                    this.helper.IsValidAmount(searchTerm, out decimal amount);
+                    return this.SearchByAmount(amount);
+
+                case SearchType.Source:
+                    this.helper.IsValidSource(searchTerm, out IncomeSource source);
+                    return this.SearchBySource(source);
+
+                case SearchType.Category:
+                    this.helper.IsValidCategory(searchTerm, out ExpenseCategory category);
+                    return this.SearchByCategory(category);
+
+                default:
+                    return new List<FinancialRecord>();
+            }
+        }
+
+        /// <summary>
+        /// Checks whether the ID entered by the user is only from the searched results.
+        /// </summary>
+        /// <param name="recordId">The ID entered by the user.</param>
+        /// <param name="records">The list of records to be checked.</param>
+        /// <returns>True if the ID is in the record list, otherwise false.</returns>
+        public bool IsDisplayedRecord(string recordId, IEnumerable<FinancialRecord> records)
+        {
+            return records.Any(record => record.Id == recordId);
+        }
+
+        /// <summary>
+        /// Deletes the specified <see cref="FinancialRecord"/>.
+        /// </summary>
+        /// <param name="record">The <see cref="FinancialRecord"/> to delete.</param>
+        /// <returns>True if the delete operation is successful, else false.</returns>
+        public bool DeleteRecord(FinancialRecord record)
+        {
+            return this.repository.DeleteRecord(record);
+        }
+
+        /// <summary>
+        /// Updates the date of the specified <see cref="FinancialRecord"/>.
+        /// </summary>
+        /// <param name="record">The <see cref="FinancialRecord"/> to update.</param>
+        /// <param name="date">The new date value.</param>
+        /// <returns>True if the edit operation is successful, else false.</returns>
+        public bool EditRecordDate(FinancialRecord record, DateOnly date)
+        {
+            record.Date = date;
+            return this.repository.UpdateRecord(record);
+        }
+
+        /// <summary>
+        /// Updates the amount of the specified <see cref="FinancialRecord"/>.
+        /// </summary>
+        /// <param name="record">The <see cref="FinancialRecord"/> to update.</param>
+        /// <param name="amount">The new amount value.</param>
+        /// <returns>True if the edit operation is successful, else false.</returns>
+        public bool EditRecordAmount(FinancialRecord record, decimal amount)
+        {
+            record.Amount = amount;
+            return this.repository.UpdateRecord(record);
+        }
+
+        /// <summary>
+        /// Updates the source of the specified <see cref="Income"/>.
+        /// </summary>
+        /// <param name="record">The <see cref="Income"/> to update.</param>
+        /// <param name="source">The new <see cref="IncomeSource"/>.</param>
+        /// <returns>True if the edit operation is successful, else false.</returns>
+        public bool EditRecordSource(Income record, IncomeSource source)
+        {
+            record.Source = source;
+            return this.repository.UpdateRecord(record);
+        }
+
+        /// <summary>
+        /// Updates the category of the specified <see cref="Expense"/>.
+        /// </summary>
+        /// <param name="record">The <see cref="Expense"/> to update.</param>
+        /// <param name="category">The new <see cref="ExpenseCategory"/>.</param>
+        /// <returns>True if the edit operation is successful, else false.</returns>
+        public bool EditRecordCategory(Expense record, ExpenseCategory category)
+        {
+            record.Category = category;
+            return this.repository.UpdateRecord(record);
+        }
+
+        /// <summary>
+        /// Updates the description of the specified <see cref="FinancialRecord"/>.
+        /// </summary>
+        /// <param name="record">The <see cref="FinancialRecord"/> to update.</param>
+        /// <param name="description">The new description value; may be empty.</param>
+        /// <returns>True if the edit operation is successful, else false.</returns>
+        public bool EditRecordDescription(FinancialRecord record, string? description)
+        {
+            record.Description = description;
+            return this.repository.UpdateRecord(record);
+        }
+
+        /// <summary>
+        /// Determines whether the repository contains no records.
+        /// </summary>
+        /// <returns>True if the record list is empty, otherwise False.</returns>
+        public bool IsRecordListEmpty()
+        {
+            return this.repository.RecordCount == 0;
+        }
+
+        /// <summary>
+        /// Produces a monthly summary for the specified month and year.
+        /// </summary>
+        /// <param name="month">The month to summarize.</param>
+        /// <param name="year">The year to summarize.</param>
+        /// <returns>
+        /// A collection of the following: Total income for the month,
+        /// Total expenses for the month,
+        /// The net balance for the month,
+        /// The savings rate for the month,
+        /// The <see cref="Expense"/> with the highest amount for the month (if any).
+        /// </returns>
+        public (
+            decimal NetIncome,
+            decimal NetExpense,
+            decimal NetBalance,
+            decimal SavingsRate,
+            Expense? HighestExpense)
+        GetMonthlySummary(int month, int year)
+        {
+            IEnumerable<FinancialRecord> records = this.repository.GetRecords(record => record.Date.Month == month && record.Date.Year == year);
+            IEnumerable<Income> incomes = records.OfType<Income>();
+            IEnumerable<Expense> expenses = records.OfType<Expense>();
+
+            decimal totalIncome = incomes.Sum(income => income.Amount);
+            decimal totalExpense = expenses.Sum(expense => expense.Amount);
+            Expense? highestExpense = expenses.MaxBy(expense => expense.Amount);
+
+            decimal netBalance = totalIncome - totalExpense;
+            decimal savingsRate = totalIncome == 0 ? 0 : (netBalance / totalIncome) * 100;
+            return (totalIncome, totalExpense, netBalance, savingsRate, highestExpense);
+        }
+
+        /// <summary>
+        /// Generates a short unique identifier for a record.
+        /// </summary>
+        /// <returns>A unique uppercase identifier string used for new records.</returns>
+        private string GenerateUniqueId()
+        {
+            string recordId;
+            do
+            {
+                recordId = Guid.NewGuid().ToString("N").Substring(0, Constant.MaxLengthOfId).ToUpper();
+            }
+            while (this.repository.RecordIdExists(recordId));
+
+            return recordId;
+        }
+
+        /// <summary>
+        /// Returns the provided records ordered by date in descending order.
+        /// </summary>
+        /// <param name="records">A collection of <see cref="FinancialRecord"/> to sort.</param>
+        /// <returns>A list of <see cref="FinancialRecord"/> ordered by date (most recent first).</returns>
+        private IEnumerable<FinancialRecord> SortRecordsByDate(IEnumerable<FinancialRecord> records)
+        {
+            return records.OrderByDescending(record => record.Date).ToList();
+        }
+    }
+}
