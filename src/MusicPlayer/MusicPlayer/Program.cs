@@ -73,7 +73,7 @@
             foreach (MusicalNote note in sequence)
             {
                 Console.WriteLine($"Playing {note.Name}");
-                Console.Beep(note.Frequency, note.Duration);
+                Console.Beep(note.Frequency, 500);
             }
         }
     }

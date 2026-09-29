@@ -10,12 +10,10 @@
         /// </summary>
         /// <param name="name">The name of the note.</param>
         /// <param name="frequency">The frequency of the note.</param>
-        /// <param name="duration">The duration of the note.</param>
-        public MusicalNote(string name, int frequency, int duration = 500) // Default store duration as 500 ms.
+        public MusicalNote(string name, int frequency)
         {
             this.Name = name;
             this.Frequency = frequency;
-            this.Duration = duration;
         }
 
         /// <summary>
@@ -29,11 +27,5 @@
         /// </summary>
         /// <value>The frequency of the note.</value>
         public int Frequency { get; }
-
-        /// <summary>
-        /// Gets the duration of the note.
-        /// </summary>
-        /// <value>The duration of the note.</value>
-        public int Duration { get; }
     }
 }
