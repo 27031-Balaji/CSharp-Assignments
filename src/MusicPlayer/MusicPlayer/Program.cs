@@ -7,19 +7,21 @@
     {
         private static readonly Dictionary<string, MusicalNote> Notes = new Dictionary<string, MusicalNote>
         {
-            { "C", new MusicalNote("C", 262) },
-            { "C#", new MusicalNote("C#", 277) },
-            { "D", new MusicalNote("D", 294) },
-            { "D#", new MusicalNote("D#", 311) },
-            { "E", new MusicalNote("E", 330) },
-            { "F", new MusicalNote("F", 349) },
-            { "F#", new MusicalNote("F#", 370) },
-            { "G", new MusicalNote("G", 392) },
-            { "G#", new MusicalNote("G#", 415) },
-            { "A", new MusicalNote("A", 440) },
-            { "A#", new MusicalNote("A#", 466) },
-            { "B", new MusicalNote("B", 494) },
+            { "C", new MusicalNote("C", (int)261.63) },
+            { "C#", new MusicalNote("C#", (int)271.18) },
+            { "D", new MusicalNote("D", (int)293.66) },
+            { "D#", new MusicalNote("D#", (int)311.13) },
+            { "E", new MusicalNote("E", (int)329.63) },
+            { "F", new MusicalNote("F", (int)349.23) },
+            { "F#", new MusicalNote("F#", (int)369.99) },
+            { "G", new MusicalNote("G", (int)392.00) },
+            { "G#", new MusicalNote("G#", (int)415.30) },
+            { "A", new MusicalNote("A", (int)440.00) },
+            { "A#", new MusicalNote("A#", (int)466.16) },
+            { "B", new MusicalNote("B", (int)493.88) },
         };
+
+        private static readonly int MusicNoteDuration = 500;
 
         /// <summary>
         /// The main method is the method that runs when the application is run.
@@ -73,7 +75,7 @@
             foreach (MusicalNote note in sequence)
             {
                 Console.WriteLine($"Playing {note.Name}");
-                Console.Beep(note.Frequency, 500);
+                Console.Beep(note.Frequency, MusicNoteDuration);
             }
         }
     }
