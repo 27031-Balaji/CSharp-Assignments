@@ -31,6 +31,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assignment-18", "Assignment
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task1-WebsiteContentExtraction", "src\Assignment-18\Task1-AsyncAwait\Task1-WebsiteContentExtraction.csproj", "{D9901B48-8480-451C-AFC8-32B309BA0964}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task2-TaskParallelLibrary", "src\Assignment-18\Task2-TaskParallelLibrary\Task2-TaskParallelLibrary.csproj", "{83C711AF-3981-4912-ADF3-E99255B1877B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{D9901B48-8480-451C-AFC8-32B309BA0964}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9901B48-8480-451C-AFC8-32B309BA0964}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9901B48-8480-451C-AFC8-32B309BA0964}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83C711AF-3981-4912-ADF3-E99255B1877B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83C711AF-3981-4912-ADF3-E99255B1877B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83C711AF-3981-4912-ADF3-E99255B1877B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83C711AF-3981-4912-ADF3-E99255B1877B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +84,7 @@ Global
 		{D7409F15-2728-4E04-9E46-48658CB7D78C} = {DCAA095E-2796-41FA-A1D0-1134E29309E7}
 		{E12C26F4-A9FD-4F80-86EA-FBD8E037F941} = {DCAA095E-2796-41FA-A1D0-1134E29309E7}
 		{D9901B48-8480-451C-AFC8-32B309BA0964} = {E12C26F4-A9FD-4F80-86EA-FBD8E037F941}
+		{83C711AF-3981-4912-ADF3-E99255B1877B} = {E12C26F4-A9FD-4F80-86EA-FBD8E037F941}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4CECB66-8E11-49D9-AA1E-464EE0231450}
