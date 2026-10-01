@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task1-WebsiteContentExtract
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task2-TaskParallelLibrary", "src\Assignment-18\Task2-TaskParallelLibrary\Task2-TaskParallelLibrary.csproj", "{83C711AF-3981-4912-ADF3-E99255B1877B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task3-MultiThreading", "src\Assignment-18\Task3-MultiThreading\Task3-MultiThreading.csproj", "{F4B72AB5-C4C3-473C-B0DB-13CCBC651E5D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{83C711AF-3981-4912-ADF3-E99255B1877B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83C711AF-3981-4912-ADF3-E99255B1877B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83C711AF-3981-4912-ADF3-E99255B1877B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4B72AB5-C4C3-473C-B0DB-13CCBC651E5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4B72AB5-C4C3-473C-B0DB-13CCBC651E5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4B72AB5-C4C3-473C-B0DB-13CCBC651E5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4B72AB5-C4C3-473C-B0DB-13CCBC651E5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +91,7 @@ Global
 		{E12C26F4-A9FD-4F80-86EA-FBD8E037F941} = {DCAA095E-2796-41FA-A1D0-1134E29309E7}
 		{D9901B48-8480-451C-AFC8-32B309BA0964} = {E12C26F4-A9FD-4F80-86EA-FBD8E037F941}
 		{83C711AF-3981-4912-ADF3-E99255B1877B} = {E12C26F4-A9FD-4F80-86EA-FBD8E037F941}
+		{F4B72AB5-C4C3-473C-B0DB-13CCBC651E5D} = {E12C26F4-A9FD-4F80-86EA-FBD8E037F941}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4CECB66-8E11-49D9-AA1E-464EE0231450}
