@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task4-AsyncAwaitRealWorld",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task5-DeadlockAnalysis", "src\Assignment-18\Task5-DeadlockAnalysis\Task5-DeadlockAnalysis.csproj", "{91253846-EAF3-4AA4-8EDA-6507A007DAE7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task6-ConfigureAwait", "src\Assignment-18\Task6-ConfigureAwait\Task6-ConfigureAwait.csproj", "{D3C98DA2-399F-4F15-9DAC-0F1D4A269475}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,10 @@ Global
 		{91253846-EAF3-4AA4-8EDA-6507A007DAE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91253846-EAF3-4AA4-8EDA-6507A007DAE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91253846-EAF3-4AA4-8EDA-6507A007DAE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3C98DA2-399F-4F15-9DAC-0F1D4A269475}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3C98DA2-399F-4F15-9DAC-0F1D4A269475}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3C98DA2-399F-4F15-9DAC-0F1D4A269475}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3C98DA2-399F-4F15-9DAC-0F1D4A269475}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -106,6 +112,7 @@ Global
 		{F4B72AB5-C4C3-473C-B0DB-13CCBC651E5D} = {E12C26F4-A9FD-4F80-86EA-FBD8E037F941}
 		{4C0B3E39-D599-4DEB-830C-71EE80DE3E8D} = {E12C26F4-A9FD-4F80-86EA-FBD8E037F941}
 		{91253846-EAF3-4AA4-8EDA-6507A007DAE7} = {E12C26F4-A9FD-4F80-86EA-FBD8E037F941}
+		{D3C98DA2-399F-4F15-9DAC-0F1D4A269475} = {E12C26F4-A9FD-4F80-86EA-FBD8E037F941}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4CECB66-8E11-49D9-AA1E-464EE0231450}
