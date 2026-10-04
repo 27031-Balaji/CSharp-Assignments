@@ -262,3 +262,20 @@ After completing this task, I gained an understanding of:
 - How improper resource management can cause file access exceptions.
 
 ---
+
+# How to Run the Applications
+
+## Prerequisites
+
+- .NET 6 SDK or later
+- Visual Studio 2022 or Visual Studio Code
+
+## Steps
+
+1. Clone or download the project.
+2. Open the solution in Visual Studio.
+3. This solution consists of three different projects.
+4. Build the solution and set one of the projects as the startup project.
+5. Run the project.
+
+---
