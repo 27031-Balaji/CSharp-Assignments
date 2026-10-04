@@ -206,39 +206,6 @@ Finally, the task illustrates immutability by showing that elements cannot be mo
 
 ---
 
-# Project Structure
-
-```text
-Assignment-13
-│
-├── Task1-List
-│   └── Program.cs
-│
-├── Task2-Stack
-│   └── Program.cs
-│
-├── Task3-Queue
-│   └── Program.cs
-│
-├── Task4-Dictionaries
-│   └── Program.cs
-│
-├── Task5-Generics
-│   └── Collections
-│		└── GenericList.cs
-│		└── GenericDictionary.cs
-│		└── GenericQueue.cs
-│		└── GenericStack.cs
-│   └── Program.cs
-│
-├── Task6-IEnumerableAndIReadOnlyDictionary
-│   └── Program.cs
-│
-└── README.md
-```
-
----
-
 # How to Run the Applications
 
 ## Prerequisites
