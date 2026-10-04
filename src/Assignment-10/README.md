@@ -133,12 +133,8 @@ For division operations, exception handling was implemented to safely manage div
 
 ## Challenges Faced
 
-### 1. Resolving Project Reference and Dependency Issues
+### Resolving Project Reference and Dependency Issues
 
-While setting up the solution, the `CalculatorApplication` project was unable to recognize the `MathLibrary` project even after adding the project reference. The issue was resolved by rebuilding the solution and verifying that the library reference was correctly added. Once the solution was successfully built, the dependency was loaded properly and the classes became accessible.
-
-### 2. Implementing Reliable Input Validation
-
-One challenge was ensuring that the application handled incorrect user inputs. Users could enter alphabets, symbols, or empty values instead of integers. This was resolved by using `int.TryParse()` along with a validation loop that repeatedly prompts the user until a valid integer is entered.
+While setting up the solution, the `CalculatorApplication` project was unable to recognize the `MathLibrary` project even after adding the project reference. The issue was resolved by rebuilding the solution and verifying that the library reference was correctly added. Once the solution was successfully built, the dependency was loaded properly and the classes became accessible. Also, making the class library with the CSharp StyleCop Template is a challenge.
 
 ---
