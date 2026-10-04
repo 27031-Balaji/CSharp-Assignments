@@ -1,15 +1,8 @@
 # Assignment 12 - Memory Management - Basic Profiling
 
 ## Introduction
-
-This assignment explores fundamental memory management concepts in C#. It demonstrates how data is stored and managed in memory using value types, reference types, stack and heap allocation, garbage collection, and resource cleanup through the `IDisposable` interface and the `using` statement.
-
-The assignment consists of four tasks:
-
-- Task 1 – Value Types and Reference Types
-- Task 2 – Stack and Heap Memory
-- Task 3 – Garbage Collection
-- Task 4 – IDisposable and Using Statement
+ 
+This assignment focuses on understanding memory management in .NET through the identification, analysis, and optimization of memory-related issues. Using memory profiling techniques and diagnostic tools, the assignment explores how object allocation, reference retention, and garbage collection impact an application's memory usage.
 
 ---
 
@@ -196,29 +189,6 @@ In addition to Visual Studio Diagnostic Tools, I explored some popular memory pr
 - ANTS Memory Profiler
 
 I explored them and found out that they are paid platforms and I didn't try the trial version as well :(. So I just used Visual Studio's Diagnostic Tool.
-
----
-
-# Project Structure
-
-```text
-Assignment-12
-│
-├── Task1-DiagnosticsAnalysis
-│   ├── MemoryEater.cs
-│   └── Program.cs
-│
-├── Task2-OptimizedMemoryEater
-│   ├── MemoryEater.cs
-│   └── Program.cs
-|
-├── Images
-│   ├── Task1.png
-│   └── Task2(1).png
-│   └── Task2(2).png
-│
-└── README.md
-```
 
 ---
 
