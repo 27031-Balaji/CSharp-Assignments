@@ -11,7 +11,7 @@
         /// <param name="firstNumber">The first number.</param>
         /// <param name="secondNumber">The second number.</param>
         /// <returns>The addition result of the two numbers.</returns>
-        public static int Add(int firstNumber, int secondNumber)
+        public static double Add(int firstNumber, int secondNumber)
         {
             return firstNumber + secondNumber;
         }
@@ -22,7 +22,7 @@
         /// <param name="firstNumber">The first number.</param>
         /// <param name="secondNumber">The second number.</param>
         /// <returns>The subtraction result of the two numbers.</returns>
-        public static int Subtract(int firstNumber, int secondNumber)
+        public static double Subtract(int firstNumber, int secondNumber)
         {
             return firstNumber - secondNumber;
         }
@@ -33,7 +33,7 @@
         /// <param name="firstNumber">The first number.</param>
         /// <param name="secondNumber">The second number.</param>
         /// <returns>The multiplication result of the two numbers.</returns>
-        public static int Multiply(int firstNumber, int secondNumber)
+        public static double Multiply(int firstNumber, int secondNumber)
         {
             return firstNumber * secondNumber;
         }

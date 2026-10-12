@@ -17,94 +17,61 @@ namespace CalculatorApplication
             while (isRunning)
             {
                 Console.Write("Basic Calculator\n\n");
-                Console.Write("1. Add\n");
-                Console.Write("2. Subtract\n");
-                Console.Write("3. Multiply\n");
-                Console.Write("4. Divide\n");
-                Console.Write("5. Exit\n");
-
-                Console.Write("\nEnter your choice: ");
-                string choice = (Console.ReadLine() ?? string.Empty).Trim();
-                if (!int.TryParse(choice, out int menuChoice) || (menuChoice < 0 || menuChoice > 5))
-                {
-                    Console.WriteLine("Please enter a valid choice.\n");
-                }
-
-                switch (menuChoice)
-                {
-                    case 1:
-                        AdditionOperation();
-                        break;
-
-                    case 2:
-                        SubtractionOperation();
-                        break;
-
-                    case 3:
-                        MultiplicationOperation();
-                        break;
-
-                    case 4:
-                        DivisionOperation();
-                        break;
-
-                    case 5:
-                        isRunning = false;
-                        break;
-                }
-
-                if (isRunning)
-                {
-                    ClearScreenWithKey();
-                }
+                int firstNumber = GetNumber("first");
+                int secondNumber = GetNumber("second");
+                AdditionOperation(firstNumber, secondNumber);
+                SubtractionOperation(firstNumber, secondNumber);
+                MultiplicationOperation(firstNumber, secondNumber);
+                DivisionOperation(firstNumber, secondNumber);
+                ClearScreenWithKey();
             }
         }
 
         /// <summary>
         /// Handles the addition operation of the calculator.
+        /// <param name="firstNumber">The first number.</param>
+        /// <param name="secondNumber">The second number.</param>
         /// </summary>
-        private static void AdditionOperation()
+        private static void AdditionOperation(int firstNumber, int secondNumber)
         {
-            int firstNumber = GetNumber("first");
-            int secondNumber = GetNumber("second");
-            int result = MathUtils.Add(firstNumber, secondNumber);
-            Console.Write($"\nAddition of {firstNumber} and {secondNumber} is {result}.\n");
+            double result = MathUtils.Add(firstNumber, secondNumber);
+            Console.Write($"\nAddition of {firstNumber} and {secondNumber} is {result:F2}\n");
         }
 
         /// <summary>
         /// Handles the subtraction operation of the calculator.
+        /// <param name="firstNumber">The first number.</param>
+        /// <param name="secondNumber">The second number.</param>
         /// </summary>
-        private static void SubtractionOperation()
+        private static void SubtractionOperation(int firstNumber, int secondNumber)
         {
-            int firstNumber = GetNumber("first");
-            int secondNumber = GetNumber("second");
-            int result = MathUtils.Subtract(firstNumber, secondNumber);
-            Console.Write($"\nSubtraction of {firstNumber} and {secondNumber} is {result}.\n");
+            double result = MathUtils.Subtract(firstNumber, secondNumber);
+            Console.Write($"Subtraction of {firstNumber} and {secondNumber} is {result:F2}\n");
         }
 
         /// <summary>
         /// Handles the multiplication operation of the calculator.
+        /// <param name="firstNumber">The first number.</param>
+        /// <param name="secondNumber">The second number.</param>
         /// </summary>
-        private static void MultiplicationOperation()
+        private static void MultiplicationOperation(int firstNumber, int secondNumber)
         {
-            int firstNumber = GetNumber("first");
-            int secondNumber = GetNumber("second");
-            int result = MathUtils.Multiply(firstNumber, secondNumber);
-            Console.Write($"\nProduct of {firstNumber} and {secondNumber} is {result}.\n");
+            double result = MathUtils.Multiply(firstNumber, secondNumber);
+            Console.Write($"Product of {firstNumber} and {secondNumber} is {result:F2}\n");
         }
 
         /// <summary>
         /// Handles the division operation of the calculator.
         /// </summary>
+        /// <param name="firstNumber">The first number.</param>
+        /// <param name="secondNumber">The second number.</param>
         /// <exception cref="DivideByZeroException">Exception that arises when the second number is given as zero by the user.</exception>
-        private static void DivisionOperation()
+        private static void DivisionOperation(int firstNumber, int secondNumber)
         {
-            int firstNumber = GetNumber("first");
-            int secondNumber = GetNumber("second");
             try
             {
                 double result = MathUtils.Divide(firstNumber, secondNumber);
-                Console.Write($"\nQuotient of {firstNumber} and {secondNumber} is {result}.\n");
+                Console.Write($"Quotient of {firstNumber} and {secondNumber} is {result:F2}\n");
             }
             catch (DivideByZeroException ex)
             {
