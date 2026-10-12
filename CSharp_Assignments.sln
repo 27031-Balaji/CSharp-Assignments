@@ -28,6 +28,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assignment-2", "Assignment-2", "{D7409F15-2728-4E04-9E46-48658CB7D78C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assignment-18", "Assignment-18", "{E12C26F4-A9FD-4F80-86EA-FBD8E037F941}"
+	ProjectSection(SolutionItems) = preProject
+		src\Assignment-18\Task1-AsyncAwait\README.md = src\Assignment-18\Task1-AsyncAwait\README.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task1-WebsiteContentExtraction", "src\Assignment-18\Task1-AsyncAwait\Task1-WebsiteContentExtraction.csproj", "{D9901B48-8480-451C-AFC8-32B309BA0964}"
 EndProject
