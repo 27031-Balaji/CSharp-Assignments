@@ -1,5 +1,8 @@
 ﻿namespace DeadlockAnalysis.Class
 {
+    /// <summary>
+    /// Contains the code which prevents the deadlock.
+    /// </summary>
     internal class DeadlockPreventionCode
     {
         /// <summary>
