@@ -57,13 +57,9 @@ namespace DisplayApp
         /// <param name="firstNumber">The first number.</param>
         /// <param name="secondNumber">The second number.</param>
         /// <param name="operatorToBeUsed">The operator to use.</param>
-        private void DisplayResult(
-            int firstNumber,
-            int secondNumber,
-            string operatorToBeUsed)
+        private void DisplayResult(int firstNumber, int secondNumber, string operatorToBeUsed)
         {
             double result;
-
             switch (operatorToBeUsed)
             {
                 case "+":
