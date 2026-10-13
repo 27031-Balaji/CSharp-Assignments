@@ -16,7 +16,8 @@ namespace DisplayApp
         /// </summary>
         public void Start()
         {
-            Console.WriteLine("Calculator Application");
+            this.DisplayMessage("Calculator Application");
+
             while (true)
             {
                 int firstNumber = this.GetValidNumberInput("first");
@@ -29,11 +30,10 @@ namespace DisplayApp
                 }
                 catch (DivideByZeroException ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    this.DisplayMessage(ex.Message);
                 }
 
-                bool shouldContinue = this.GetValidContinueOperatorInput();
-                if (!shouldContinue)
+                if (!this.GetValidContinueOperatorInput())
                 {
                     break;
                 }
@@ -42,9 +42,28 @@ namespace DisplayApp
             }
         }
 
-        private void DisplayResult(int firstNumber, int secondNumber, string operatorToBeUsed)
+        /// <summary>
+        /// Displays a message on the console.
+        /// </summary>
+        /// <param name="message">The message to display.</param>
+        public void DisplayMessage(string message)
+        {
+            Console.WriteLine(message);
+        }
+
+        /// <summary>
+        /// Calculates and displays the result.
+        /// </summary>
+        /// <param name="firstNumber">The first number.</param>
+        /// <param name="secondNumber">The second number.</param>
+        /// <param name="operatorToBeUsed">The operator to use.</param>
+        private void DisplayResult(
+            int firstNumber,
+            int secondNumber,
+            string operatorToBeUsed)
         {
             double result;
+
             switch (operatorToBeUsed)
             {
                 case "+":
@@ -64,13 +83,18 @@ namespace DisplayApp
                     break;
 
                 default:
-                    Console.WriteLine("Unsupported operator.");
+                    this.DisplayMessage("Unsupported operator.");
                     return;
             }
 
-            Console.WriteLine($"The result is: {result:F2}");
+            this.DisplayMessage($"The result is: {result:F2}");
         }
 
+        /// <summary>
+        /// Gets a valid number from the user.
+        /// </summary>
+        /// <param name="order">The order of the number.</param>
+        /// <returns>The validated number.</returns>
         private int GetValidNumberInput(string order)
         {
             while (true)
@@ -82,10 +106,14 @@ namespace DisplayApp
                     return number;
                 }
 
-                Console.WriteLine("Enter a valid integer value.");
+                this.DisplayMessage("Enter a valid integer value.");
             }
         }
 
+        /// <summary>
+        /// Gets a valid operator from the user.
+        /// </summary>
+        /// <returns>The validated operator.</returns>
         private string GetValidOperatorInput()
         {
             while (true)
@@ -97,28 +125,28 @@ namespace DisplayApp
                     return operatorInput;
                 }
 
-                Console.WriteLine("Enter a valid operator (+, -, *, /).");
+                this.DisplayMessage("Enter a valid operator (+, -, *, /).");
             }
         }
 
+        /// <summary>
+        /// Gets a valid continue choice from the user.
+        /// </summary>
+        /// <returns>
+        /// True if the user chooses to continue; otherwise, false.
+        /// </returns>
         private bool GetValidContinueOperatorInput()
         {
-            string choice;
             while (true)
             {
                 Console.Write("\nDo you want to continue (Y/N)? ");
-                choice = (Console.ReadLine() ?? string.Empty).Trim();
+                string choice = (Console.ReadLine() ?? string.Empty).Trim();
                 if (this._validator.IsValidContinueChoice(choice))
                 {
-                    if (choice.Equals("N", StringComparison.OrdinalIgnoreCase))
-                    {
-                        return false;
-                    }
-
-                    return true;
+                    return choice.Equals("Y", StringComparison.OrdinalIgnoreCase);
                 }
 
-                Console.WriteLine("Enter either Y or N.");
+                this.DisplayMessage("Enter either Y or N.");
             }
         }
     }

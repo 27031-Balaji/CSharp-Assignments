@@ -1,4 +1,4 @@
-﻿using DisplayApp;
+﻿using AdditionalProject;
 
 namespace GreetingsApp
 {
@@ -13,9 +13,9 @@ namespace GreetingsApp
         /// <param name="args">Command-line arguments.</param>
         public static void Main(string[] args)
         {
-            ConsoleUI consoleUI = new ConsoleUI();
             Console.WriteLine("Welcome to Project Build Order.");
-            consoleUI.Start();
+            CalculatorStarter calculatorStarter = new CalculatorStarter();
+            calculatorStarter.Start();
         }
     }
 }

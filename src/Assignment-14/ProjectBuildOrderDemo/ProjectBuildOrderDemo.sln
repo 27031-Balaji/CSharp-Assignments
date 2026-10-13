@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreetingsApp", "GreetingsApp\GreetingsApp.csproj", "{0355CF07-59D4-4DF2-A3CA-C73E606ABE40}"
 	ProjectSection(ProjectDependencies) = postProject
 		{50E04D1F-6119-4304-89F6-00AEA2970E58} = {50E04D1F-6119-4304-89F6-00AEA2970E58}
+		{87D80907-BE0D-4CB2-9A0D-5C845B49A92F} = {87D80907-BE0D-4CB2-9A0D-5C845B49A92F}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathApp", "MathApp\MathApp.csproj", "{50E04D1F-6119-4304-89F6-00AEA2970E58}"
@@ -17,6 +18,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DisplayApp", "DisplayApp\Di
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilityApp", "UtilityApp\UtilityApp.csproj", "{5E97DFCE-738E-455B-BCC4-19261FB629CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdditionalProject", "AdditionalProject\AdditionalProject.csproj", "{87D80907-BE0D-4CB2-9A0D-5C845B49A92F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{15AF2930-4B4A-487E-8750-2CEE0BC060FD} = {15AF2930-4B4A-487E-8750-2CEE0BC060FD}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,6 +46,10 @@ Global
 		{5E97DFCE-738E-455B-BCC4-19261FB629CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E97DFCE-738E-455B-BCC4-19261FB629CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E97DFCE-738E-455B-BCC4-19261FB629CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87D80907-BE0D-4CB2-9A0D-5C845B49A92F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87D80907-BE0D-4CB2-9A0D-5C845B49A92F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87D80907-BE0D-4CB2-9A0D-5C845B49A92F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87D80907-BE0D-4CB2-9A0D-5C845B49A92F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
