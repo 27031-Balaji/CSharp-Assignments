@@ -15,7 +15,7 @@ namespace DynamicMethodInvoker
         {
             Calculator calculator = new Calculator();
             MethodInvoker invoker = new MethodInvoker();
-            Console.Write("Enter method name (Add, Subtract, Multiply): ");
+            Console.Write("Enter method name: ");
             string methodName = Console.ReadLine() ?? string.Empty;
             invoker.InvokeMethod(calculator, methodName);
             Console.ReadKey();
