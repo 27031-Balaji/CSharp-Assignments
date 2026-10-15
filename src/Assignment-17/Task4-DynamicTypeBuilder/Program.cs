@@ -44,7 +44,7 @@ namespace DynamicTypeBuilder
             methodIL.Emit(OpCodes.Call, typeof(Console).GetMethod(nameof(Console.WriteLine), new Type[] { typeof(string) }) !);
             methodIL.Emit(OpCodes.Ret);
 
-            Type employeeType = typeBuilder.CreateType()!;
+            Type employeeType = typeBuilder.CreateType() !;
             Console.WriteLine($"Assembly: {assemblyBuilder.GetName().Name}");
             Console.WriteLine($"Module: {moduleBuilder.ScopeName}");
             Console.WriteLine($"Type: {employeeType.Name}");
