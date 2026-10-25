@@ -77,6 +77,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaesarCipherPlugin", "src\A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainApplication", "src\Assignment-17\Task5-PluginSystem\MainApplication\MainApplication.csproj", "{817470CC-BEDC-49C5-9DAE-221E438DDE9A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task6-MockingFramework", "src\Assignment-17\Task6-MockingFramework\Task6-MockingFramework.csproj", "{D474796A-CA20-4A99-8247-A0EB93EBFEB8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -171,6 +173,10 @@ Global
 		{817470CC-BEDC-49C5-9DAE-221E438DDE9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{817470CC-BEDC-49C5-9DAE-221E438DDE9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{817470CC-BEDC-49C5-9DAE-221E438DDE9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D474796A-CA20-4A99-8247-A0EB93EBFEB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D474796A-CA20-4A99-8247-A0EB93EBFEB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D474796A-CA20-4A99-8247-A0EB93EBFEB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D474796A-CA20-4A99-8247-A0EB93EBFEB8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -211,6 +217,7 @@ Global
 		{0F6E6A93-13E6-4D5E-ADC5-61A22A77E3D5} = {69B8D169-E477-4336-A779-3BCA75D94F03}
 		{99E21941-9971-4804-8EB5-9D2556D4D43D} = {69B8D169-E477-4336-A779-3BCA75D94F03}
 		{817470CC-BEDC-49C5-9DAE-221E438DDE9A} = {40E3C03D-EEBF-4623-B914-E538FA351FC8}
+		{D474796A-CA20-4A99-8247-A0EB93EBFEB8} = {14A42778-1C23-49DE-B077-9F97B92ECA56}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4CECB66-8E11-49D9-AA1E-464EE0231450}

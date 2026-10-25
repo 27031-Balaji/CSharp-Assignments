@@ -52,7 +52,7 @@ namespace MainApplication
                 {
                     ShowPluginOperations();
                     Console.Write("Enter your choice: ");
-                    string operationChoice = (Console.ReadLine() ?? string.Empty).Trim();
+                    string operationChoice = (Console.ReadLine() ?? string.Empty).ToUpper().Trim();
                     switch (operationChoice)
                     {
                         case "A":
